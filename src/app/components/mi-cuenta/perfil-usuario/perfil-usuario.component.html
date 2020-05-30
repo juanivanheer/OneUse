@@ -1,0 +1,234 @@
+<div fxLayout="row" fxFlexFill>
+    <div fxLayout fxFlexOrder="1" ngClass.lt-lg="toolbar-div-lt-md">
+        <mat-toolbar>
+            <mat-toolbar-row>
+                <a [routerLink]="['/mi-cuenta']">
+                    <!-- [routerLink]="['/perfil']" -->
+                    <mat-icon>insert_emoticon</mat-icon><span class="iconitos" fxHide.lt-lg="true">Mi Cuenta</span>
+                </a>
+            </mat-toolbar-row>
+
+            <mat-toolbar-row>
+                <a [routerLink]="['/mi-cuenta/notificaciones']">
+                    <!-- [routerLink]="['/perfil']" -->
+                    <mat-icon>notifications_active</mat-icon><span class="iconitos"
+                        fxHide.lt-lg="true">Notificaciones</span>
+                </a>
+            </mat-toolbar-row>
+
+            <mat-toolbar-row>
+                <a [routerLink]="['/mi-cuenta/perfil']">
+                    <!-- [routerLink]="['/perfil']" -->
+                    <mat-icon>account_circle</mat-icon><span class="iconitos" fxHide.lt-lg="true">Mi Perfil</span>
+                </a>
+            </mat-toolbar-row>
+
+            <mat-toolbar-row>
+                <a [routerLink]="['/mi-cuenta/mis-publicaciones']">
+                    <!-- [routerLink]="['/mis-publicaciones']" -->
+                    <mat-icon>book</mat-icon><span class="iconitos" fxHide.lt-lg="true">Mis Publicaciones</span>
+                </a>
+            </mat-toolbar-row>
+
+            <mat-toolbar-row>
+                <a [routerLink]="['/mi-cuenta/mis-alquileres']">
+                    <!-- [routerLink]="['mis-alquileres']"  -->
+                    <mat-icon>assignment</mat-icon> <span class="iconitos" fxHide.lt-lg="true">Mis Alquileres</span>
+                </a>
+            </mat-toolbar-row>
+
+            <mat-toolbar-row>
+                <a fxFlexAlign.lt-lg="flex-end" (click)="cerrarSesion()">
+                    <mat-icon>exit_to_app</mat-icon><span class="iconitos" fxHide.lt-lg="true">Salir</span>
+                </a>
+            </mat-toolbar-row>
+        </mat-toolbar>
+
+    </div>
+    <div fxLayout="column" style="width:100%" fxFlexOrder="2" fxLayoutAlign="center start" fxLayout.lt-lg="column"
+        fxLayoutAlign.lt-lg="center center">
+        <div class="contenedorDeDatos" ngClass.gt-md="tab-gt-md" ngClass.lt-lg="tab-lt-md">
+            <h3>Datos de tu cuenta</h3>
+            <hr>
+            <br>
+            <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+                <!-- #udpdateForm="ngForm" -->
+                <mat-tab-group (selectedTabChange)="cambioTab($event)">
+                    <mat-tab>
+                        <div fxHide.lt-lg="true">
+                            <ng-template mat-tab-label>
+                                <mat-icon class="iconitos">person_pin</mat-icon>
+                                Datos Personales
+                            </ng-template>
+                        </div>
+                        <div fxShow.lt-lg="true">
+                            <ng-template mat-tab-label>
+                                <mat-icon class="iconitos">person_pin</mat-icon>
+                                Datos
+                            </ng-template>
+                        </div>
+                        <br>
+                        <mat-form-field>
+                            <input [value]="name" formControlName="name" name="name" matInput
+                                (ngModelChange)="name = $event" placeholder="Nombre Usuario" disabled="true">
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <input [value]="nombre" formControlName="nombre" name="nombre" matInput
+                                (ngModelChange)="nombre = $event" placeholder="Nombre" soloLetrasDirective>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <input [value]="apellido" formControlName="apellido" name="apellido" matInput
+                                (ngModelChange)="apellido = $event" placeholder="Apellido" soloLetrasDirective>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <input [value]="email" formControlName="email" name="email" matInput placeholder="Email"
+                                (ngModelChange)="email = $event" email disabled="true">
+                        </mat-form-field>
+                        <div fxLayout="row" fxLayoutGap="10px">
+
+                            <mat-form-field>
+                                <span matPrefix>+549 &nbsp;</span>
+                                <input matInput #codAreaa maxlength="4" [value]="codArea" soloNumerosDirective
+                                    formControlName="codArea" name="codArea" (ngModelChange)="codArea = $event"
+                                    placeholder="CodArea" style="width: 70px !important;"
+                                    (keyup)="obtenerMaxTelefono($event)">
+                                <mat-hint align="end">{{codAreaa.value.length}} / 4</mat-hint>
+                            </mat-form-field>
+
+                            <mat-form-field>
+                                <input [value]="telefono" formControlName="telefono" name="telefono" matInput
+                                    soloNumerosDirective (ngModelChange)="telefono = $event" placeholder="Teléfono"
+                                    #telefonoo [maxlength]=maxTelefono style="width: 100px !important;">
+                                <mat-hint align="end">{{telefonoo.value.length}} / {{maxTelefono}}</mat-hint>
+                                <mat-icon matSuffix>phone</mat-icon>
+                            </mat-form-field>
+                        </div>
+                        <mat-form-field>
+                            <input matInput placeholder="Fecha de nacimiento" [matDatepicker]="picker" [max]="maxDate"
+                                (ngModelChange)="fechaNacimiento = $event" ngModel formControlName="fecha_nacimiento"
+                                name="date" [formControl]="date">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker touchUi #picker disabled="false"></mat-datepicker>
+                            <mat-hint>Debes ser mayor de 18 años</mat-hint>
+                        </mat-form-field>
+                    </mat-tab>
+                    <mat-tab>
+                        <ng-template mat-tab-label>
+                            <mat-icon class="iconitos">home</mat-icon>
+                            Datos de Dirección
+                        </ng-template>
+                        <br>
+
+                        <mat-form-field>
+                            <mat-select placeholder="Provincia" [value]="provinciaActual"
+                                (selectionChange)="onSelectionChanged($event)" formControlName="provincia"
+                                name="provincia">
+                                <mat-option *ngFor="let provincia of datosProvincias" [value]="provincia.value">
+                                    {{provincia.viewValue}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <mat-select placeholder="Ciudad" [formControl]="ciudadControl"
+                                (ngModelChange)="ciudad = $event" name="ciudad">
+                                <mat-option *ngFor="let ciudad of ciudadesFiltradas" [value]="ciudad.value">
+                                    {{ciudad.viewValue}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput placeholder="Barrio" [value]="barrio" formControlName="barrio"
+                                (ngModelChange)="barrio = $event" name="barrio" required soloLetrasDirective>
+                        </mat-form-field>
+                        <div fxLayout="row" fxLayoutGap="40px">
+                            <mat-form-field>
+                                <input matInput placeholder="Calle" [value]="calle" formControlName="calle"
+                                    (ngModelChange)="calle = $event" name="calle" required soloLetrasDirective>
+                            </mat-form-field>
+                            <mat-form-field>
+                                <input matInput type="number" placeholder="Número" [value]="numero"
+                                    formControlName="numero" (ngModelChange)="numero = $event" name="numero" required
+                                    soloNumerosDirective>
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayoutGap="40px">
+                            <mat-form-field>
+                                <input matInput type="number" placeholder="Piso" [value]="piso" formControlName="piso"
+                                    (ngModelChange)="piso = $event" name="piso" soloNumerosDirective>
+                            </mat-form-field>
+                            <mat-form-field>
+                                <input matInput placeholder="Departamento" [value]="departamento"
+                                    formControlName="departamento" (ngModelChange)="departamento = $event"
+                                    name="departamento" soloLetrasDirective>
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayoutGap="40px">
+                            <mat-form-field>
+                                <input matInput type="number" placeholder="Código Postal" [value]="codigoPostal"
+                                    formControlName="codigoPostal" (ngModelChange)="codigoPostal = $event"
+                                    name="codigoPostal" required soloNumerosDirective>
+                            </mat-form-field>
+                        </div>
+                    </mat-tab>
+                    <mat-tab>
+                        <ng-template mat-tab-label>
+                            <mat-icon class="iconitos">image</mat-icon>
+                            Imágen personal
+                        </ng-template>
+                        <br>
+                        <div fxLayout="column">
+                            <div fxFlexFill>
+                                <mat-form-field>
+                                    <ngx-mat-file-input type="file" #removableInput formControlName="removableFile"
+                                        (ngModelChange)="imagen = $event" placeholder="Subir imagen"
+                                        [accept]="'.png, .jpg, .jpeg, .gif'"
+                                        (change)="fileChangeEvent($event); preview($event)">
+                                    </ngx-mat-file-input>
+                                    <button mat-icon-button matSuffix *ngIf="!removableInput.empty"
+                                        (click)="removableInput.clear($event)">
+                                        <mat-icon>clear</mat-icon>
+                                    </button>
+                                    <mat-icon matSuffix>image_search</mat-icon>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayoutGap="80px">
+                                <div fxLayout="column" *ngIf="tabCambiada" fxLayoutAlign="center center"
+                                    fxLayoutGap="20px">
+                                    <p>Imágen actual</p>
+                                    <mat-icon *ngIf="!tieneImagen" class="previsualizacion-icon ">face</mat-icon>
+                                    <img *ngIf="tieneImagen" class="previsualizacion"
+                                        src="{{'http://localhost:4201/api/get-image/'+_id}}">
+                                </div>
+                                <div fxLayout="column" fxLayoutAlign="center center" [fxShow]="hayImagen">
+                                    <mat-icon>compare_arrows</mat-icon>
+                                </div>
+                                <div fxLayout="column" *ngIf="tabCambiada" fxLayoutAlign="center center"
+                                    fxLayoutGap="20px" [fxShow]="hayImagen">
+                                    <p>Imágen a cambiar</p>
+                                    <img class="previsualizacion" [src]="imgURL" *ngIf="imgURL">
+                                </div>
+                            </div>
+
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+            </form>
+        </div>
+        <div fxLayout="row" fxFlexOrder="3" style="width:100%" fxLayoutAlign="center start" fxShow.lt-lg="true"
+            fxHide.gt-md="true">
+            <div style="padding-bottom: 15px; padding-top: 20px;">
+                <button (click)="onSubmit()" mat-raised-button color="primary">Guardar datos</button>
+            </div>
+        </div>
+    </div>
+
+    <div fxLayout="column" style="width:100%; margin-left: 35px" fxFlexOrder="3" fxLayoutAlign="end start"
+        fxShow.gt-md="true" fxHide.lt-lg="true">
+        <div style="padding-left: 35px; padding-bottom: 15px">
+            <button (click)="onSubmit()" mat-raised-button color="primary">Guardar datos</button>
+        </div>
+    </div>
+
+</div>

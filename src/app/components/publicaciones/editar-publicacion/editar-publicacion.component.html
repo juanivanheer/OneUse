@@ -1,0 +1,902 @@
+<div class="text-center">
+    <br>
+    <h2>Edita tu publicación</h2>
+    <br>
+</div>
+
+<!--VERSIÓN XL-->
+<section fxLayout="column" fxLayoutAlign="center center" fxShow.gt-md="true" fxHide.lt-md="true"
+    style="margin-bottom: 20px; margin-left: 100px; margin-right: 100px">
+    <mat-horizontal-stepper #stepper (selectionChange)="actualizarDatos();" linear>
+        <!-- linear -->
+        <!--CATEGORIAS PRODUCTO-->
+        <mat-step [stepControl]="categoriaFormGroup" errorMessage="Elige una categoría para tu producto">
+            <form [formGroup]="categoriaFormGroup">
+                <ng-template matStepLabel>Categoría del producto</ng-template>
+                <h3>Selecciona la categoría de tu producto</h3>
+                <br>
+                <mat-accordion>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header #b1 title="Hogar">
+                            <mat-panel-title>
+                                Hogar
+                            </mat-panel-title>
+                            <mat-panel-description>
+                                Artículos para el hogar.
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <mat-radio-group formControlName="subcategoria" name="arrayHogar"
+                            (change)="obtenerSubCategoria($event); obtenerCategoria(b1)">
+                            <div fxLayout="column" fxLayoutAlign="center start" *ngFor="let hogar of hogarArray">
+                                <mat-selection-list fxFlexOffset="20px">
+                                    <mat-radio-button color="primary" value="{{hogar}}">
+                                        {{hogar}}
+                                    </mat-radio-button>
+                                </mat-selection-list>
+                            </div>
+                        </mat-radio-group>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header #b2 title="Musica">
+                            <mat-panel-title>
+                                Música
+                            </mat-panel-title>
+                            <mat-panel-description>
+                                Instrumentos musicales, parlantes, micrófonos, otros.
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <mat-radio-group formControlName="subcategoria" name="musica"
+                            (change)="obtenerSubCategoria($event);obtenerCategoria(b2)">
+                            <div fxLayout="column" fxLayoutAlign="center start" *ngFor="let musica of musicaArray">
+                                <mat-selection-list fxFlexOffset="20px">
+                                    <mat-radio-button color="primary" value="{{musica}}">
+                                        {{musica}}
+                                    </mat-radio-button>
+                                </mat-selection-list>
+                            </div>
+                        </mat-radio-group>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header #b3 title="Tecnologia">
+                            <mat-panel-title>
+                                Tecnología
+                            </mat-panel-title>
+                            <mat-panel-description>
+                                Computación, electrónica, accesorios, otros.
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <mat-radio-group formControlName="subcategoria" name="tecnologia"
+                            (change)="obtenerSubCategoria($event);obtenerCategoria(b3)">
+                            <div fxLayout="column" fxLayoutAlign="center start"
+                                *ngFor="let electronica of electronicaArray">
+                                <mat-selection-list fxFlexOffset="20px">
+                                    <mat-radio-button color="primary" value="{{electronica}}">
+                                        {{electronica}}
+                                    </mat-radio-button>
+                                </mat-selection-list>
+                            </div>
+                        </mat-radio-group>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header #b10 title="Libros">
+                            <mat-panel-title>
+                                Libros
+                            </mat-panel-title>
+                            <mat-panel-description>
+                                Aventura, Ciencia Ficción, Otros.
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <mat-radio-group formControlName="subcategoria" name="libros"
+                            (change)="obtenerSubCategoria($event);obtenerCategoria(b10)">
+                            <div fxLayout="column" fxLayoutAlign="center start" *ngFor="let libros of librosArray">
+                                <mat-selection-list fxFlexOffset="20px">
+                                    <mat-radio-button color="primary" value="{{libros}}">
+                                        {{libros}}
+                                    </mat-radio-button>
+                                </mat-selection-list>
+                            </div>
+                        </mat-radio-group>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header #b4 title="Mascotas">
+                            <mat-panel-title>
+                                Mascotas
+                            </mat-panel-title>
+                            <mat-panel-description>
+                                Accesorios, ropa, otros.
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <mat-radio-group formControlName="subcategoria" name="mascotas"
+                            (change)="obtenerSubCategoria($event);obtenerCategoria(b4)">
+                            <div fxLayout="column" fxLayoutAlign="center start" *ngFor="let mascotas of animalesArray">
+                                <mat-selection-list fxFlexOffset="20px">
+                                    <mat-radio-button color="primary" value="{{mascotas}}">
+                                        {{mascotas}}
+                                    </mat-radio-button>
+                                </mat-selection-list>
+                            </div>
+                        </mat-radio-group>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header #b5 title="Deporte">
+                            <mat-panel-title>
+                                Deporte
+                            </mat-panel-title>
+                            <mat-panel-description>
+                                Accesorios, indumentaria, otros.
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <mat-radio-group (change)="obtenerSubCategoria($event); obtenerCategoria(b5)"
+                            formControlName="subcategoria" name="deporte">
+                            <div fxLayout="column" fxLayoutAlign="center start" *ngFor="let deporte of deportesArray">
+                                <mat-selection-list fxFlexOffset="20px">
+                                    <mat-radio-button color="primary" value="{{deporte}}">
+                                        {{deporte}}
+                                    </mat-radio-button>
+                                </mat-selection-list>
+                            </div>
+                        </mat-radio-group>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header #b6 title="Belleza">
+                            <mat-panel-title>
+                                Belleza
+                            </mat-panel-title>
+                            <mat-panel-description>
+                                Maquillaje, cremas, cuidado personal, otros
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <mat-radio-group (change)="obtenerSubCategoria($event);obtenerCategoria(b6)"
+                            formControlName="subcategoria" name="belleza">
+                            <div fxLayout="column" fxLayoutAlign="center start" *ngFor="let belleza of bellezaArray">
+                                <mat-selection-list fxFlexOffset="20px">
+                                    <mat-radio-button color="primary" value="{{belleza}}">
+                                        {{belleza}}
+                                    </mat-radio-button>
+                                </mat-selection-list>
+                            </div>
+                        </mat-radio-group>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header #b7 title="Bebes">
+                            <mat-panel-title>
+                                Bebés
+                            </mat-panel-title>
+                            <mat-panel-description>
+                                Cunas, cochecitos, otros
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <mat-radio-group (change)="obtenerSubCategoria($event); obtenerCategoria(b7)"
+                            formControlName="subcategoria" name="bebe">
+                            <div fxLayout="column" fxLayoutAlign="center start" *ngFor="let bebe of bebesArray">
+                                <mat-selection-list fxFlexOffset="20px">
+                                    <mat-radio-button color="primary" value="{{bebe}}">
+                                        {{bebe}}
+                                    </mat-radio-button>
+                                </mat-selection-list>
+                            </div>
+                        </mat-radio-group>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header #b9 title="Herramientas">
+                            <mat-panel-title>
+                                Herramientas
+                            </mat-panel-title>
+                            <mat-panel-description>
+                                Máquinas, Accesorios, etc
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <mat-radio-group (change)="obtenerSubCategoria($event); obtenerCategoria(b9)"
+                            formControlName="subcategoria" name="herramienta">
+                            <div fxLayout="column" fxLayoutAlign="center start"
+                                *ngFor="let herramienta of herramientasArray">
+                                <mat-selection-list fxFlexOffset="20px">
+                                    <mat-radio-button color="primary" value="{{herramienta}}">
+                                        {{herramienta}}
+                                    </mat-radio-button>
+                                </mat-selection-list>
+                            </div>
+                        </mat-radio-group>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header #b8 title="Otros">
+                            <mat-panel-title>
+                                Otros
+                            </mat-panel-title>
+                            <mat-panel-description>
+                                Otra categoría en la que no se encuentre tu producto
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <mat-radio-group (change)="obtenerSubCategoria($event); obtenerCategoria(b8)"
+                            formControlName="subcategoria" name="otro">
+                            <div fxLayout="column" fxLayoutAlign="center start" *ngFor="let otro of otrosArray">
+                                <mat-selection-list fxFlexOffset="20px">
+                                    <mat-radio-button color="primary" value="{{otro}}">
+                                        {{otro}}
+                                    </mat-radio-button>
+                                </mat-selection-list>
+                            </div>
+                        </mat-radio-group>
+                    </mat-expansion-panel>
+                </mat-accordion>
+                <br>
+
+                <div fxLayout="row" fxLayoutAlign="end" fxFlexFill>
+                    <button mat-raised-button matStepperNext color="primary">Siguiente</button>
+                </div>
+            </form>
+        </mat-step>
+
+        <!--DATOS DEL PRODUCTO-->
+        <mat-step [stepControl]="datosProductosGroup" errorMessage="Los datos de tu productos son necesarios.">
+            <form [formGroup]="datosProductosGroup">
+                <ng-template matStepLabel>Datos del producto</ng-template>
+                <h3>Completá los datos de tu producto</h3>
+                <br>
+                <mat-form-field>
+                    <input matInput placeholder="Título de la Publicación" formControlName="titulo" name="titulo"
+                        (ngModelChange)="titulo = $event" required>
+                </mat-form-field>
+                <mat-form-field>
+                    <textarea matInput placeholder="Descrpción del producto" cdkTextareaAutosize
+                        formControlName="descripcion" name="descripcion" required
+                        (ngModelChange)="descripcion = $event"></textarea>
+                </mat-form-field>
+                <mat-form-field>
+                    <span matPrefix>$ &nbsp;</span>
+                    <input matInput type="number" placeholder="Precio por día de alquiler" formControlName="preciodia"
+                        name="preciodia" required (ngModelChange)="preciodia = $event">
+                </mat-form-field>
+                <mat-form-field>
+                    <span matPrefix>$ &nbsp;</span>
+                    <input matInput type="number" placeholder="Precio por semana de alquiler"
+                        formControlName="preciosemana" name="preciosemana" (ngModelChange)="preciosemana = $event">
+                </mat-form-field>
+                <mat-form-field>
+                    <span matPrefix>$ &nbsp;</span>
+                    <input matInput type="number" placeholder="Precio por mes de alquiler" formControlName="preciomes"
+                        optional name="preciomes" (ngModelChange)="preciomes = $event">
+                </mat-form-field>
+
+                <div fxLayout="row" fxFlexFill>
+                    <div fxFlex>
+                        <button mat-raised-button matStepperPrevious color="primary">Volver</button>
+                    </div>
+                    <div fxLayoutAlign="end" fxFlex>
+                        <button mat-raised-button matStepperNext color="primary">Siguiente</button>
+                    </div>
+                </div>
+            </form>
+        </mat-step>
+
+        <!--AGREGAR FOTO DEL PRODUCTO-->
+        <mat-step [stepControl]="fotoProductoGroup" errorMessage="La foto de tu producto es necesaria.">
+            <form [formGroup]="fotoProductoGroup">
+                <!-- (change)="pasoImagen()" -->
+                <ng-template matStepLabel>Fotos del producto</ng-template>
+                <div fxLayout="column" fxLayoutAlign="center center">
+                    <div>
+                        <h3 style="text-align: center">Carga las imágenes de tu producto</h3>
+                        <br>
+                        <div fxLayout="column" fxLayoutAlign="center center">
+                            <div class="contenedor-imagenes">
+                                <ngx-dropzone [accept]="'image/png,image/jpeg,image/gif'"
+                                    [label]="'Clickea aquí para subir tu imágen o arrastrala'" [multiple]="true"
+                                    (filesAdded)="onFilesAdded($event)" [showPreviews]="true" [preserveFiles]="false"
+                                    #dropzone></ngx-dropzone>
+                            </div>
+                            <div fxLayoutAlign="center" fxFlex style="margin-top: 22px">
+                                <button #btnDropzone mat-raised-button color="accent" (click)="dropzone.reset()">Volver
+                                    a
+                                    cargar</button>
+                            </div>
+                        </div>
+
+                        <div class="chkImagen">
+                            <mat-checkbox #img (change)="mantenerImagen(dropzone, btnDropzone)">Mantener las imágenes de
+                                mi
+                                publicación
+                            </mat-checkbox>
+                        </div>
+                        <h3 style="text-align: center">Imágenes de tu publicación</h3>
+                        <br>
+                        <swiper class="swiper-container" [config]="config">
+                            <div *ngFor="let img of arrayJSON; let indice2 = index">
+                                <div class="swiper-slide" fxLayout="column" fxLayoutAlign="center center">
+                                    <img src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}"
+                                        class="img-carrousel">
+                                </div>
+                            </div>
+                        </swiper>
+                        <br>
+                    </div>
+                </div>
+                <div fxLayout="row" fxFlexFill>
+                    <div fxFlex>
+                        <button mat-raised-button matStepperPrevious color="primary">Volver</button>
+                    </div>
+                    <div fxLayoutAlign="end" fxFlex>
+                        <button mat-raised-button matStepperNext color="primary">Siguiente</button>
+                    </div>
+                </div>
+            </form>
+        </mat-step>
+        <!--TIPO DE ALQUILER-->
+        <mat-step [stepControl]="tipoAlquilerGroup" errorMessage="Debes seleccionar el tipo de alquiler">
+            <form [formGroup]="tipoAlquilerGroup">
+                <ng-template matStepLabel>Tipo de alquiler del producto</ng-template>
+                <h3>Selecciona el tipo de alquiler de tu producto</h3>
+                <br>
+                <div fxLayout="column">
+                    <p id="formatoLetra">
+                        La primera forma de alquiler se denomina “sin intervención” y permite establecer el contacto
+                        entre las partes que
+                        realizan la transacción sin intervenir en ella. Los participantes de la misma se rigen en
+                        base a los términos y condiciones establecidos en la plataforma y esta no responde
+                        por posibles problemas que pueda surgir.
+                        <br><br>
+                        La segunda forma de alquiler se denomina “con intervención” y se basa en la obtención de un
+                        seguro
+                        contra reembolso con el objetivo de proteger al objeto alquilado de algún daño que pueda
+                        surgir durante la
+                        ejecución del alquiler. Este seguro consiste en el depósito de un monto adicional que
+                        depende del tipo de objeto que el interesado en alquilar ha pagado por el mismo y
+                        será devuelto luego de que el propietario verifique el estado del objeto, no pudiendo
+                        pasar más de 24 hs de lo contrario se considera que el objeto fue entregado en
+                        buenas condiciones, finalizando la transacción.
+                    </p>
+                    <mat-radio-group formControlName="tipoAlquiler" (change)="obtenerTipoAlquiler($event)">
+                        <div fxLayout="column" fxLayoutAlign="center start">
+                            <mat-selection-list fxFlexOffset="20px">
+                                <mat-radio-button class="radioButton" color="primary" value="AlquilerSinIntervencion" name="AlquilerSinIntervencion">
+                                    Alquiler sin Intervencíon
+                                </mat-radio-button>
+                                <mat-radio-button class="radioButton" color="primary" value="AlquilerConIntervencion" name="AlquilerConIntervencion">
+                                    Alquiler con Intervencíon
+                                </mat-radio-button>
+                            </mat-selection-list>
+                        </div>
+                    </mat-radio-group>
+                    <br>
+                </div>
+                <div fxLayout="row" fxFlexFill>
+                    <div fxFlex>
+                        <button mat-raised-button matStepperPrevious color="primary">Volver</button>
+                    </div>
+                    <div fxLayoutAlign="end" fxFlex>
+                        <button mat-raised-button matStepperNext color="primary">Siguiente</button>
+                    </div>
+                </div>
+            </form>
+        </mat-step>
+        <!--PUBLICACION/RESUMEN DEL PRODUCTO-->
+        <mat-step>
+            <ng-template matStepLabel>Publicar</ng-template>
+            <h2 class="mt-30 center">Tu publicación está lista para ser editada</h2>
+            <br>
+            <h4>Resúmen de tu publicación</h4>
+            <br>
+            <div>
+                <form>
+                    <mat-form-field>
+                        <input matInput placeholder="Título" [value]=joinGroup.titulo disabled>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input matInput placeholder="Descripción" [value]=joinGroup.descripcion disabled>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input matInput placeholder="Categoría" [value]=joinGroup.categoria disabled>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input matInput placeholder="Sub Categoría" [value]=joinGroup.subcategoria disabled>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput placeholder="Tipo de Alquiler" [value]=joinGroup.tipoAlquiler disabled>
+                    </mat-form-field>
+
+                    <div fxLayout="row" fxLayoutGap="40px">
+                        <mat-form-field>
+                            <span matPrefix>$ &nbsp;</span>
+                            <input type="number" matInput placeholder="Precio por día" [value]=joinGroup.preciodia
+                                disabled>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <span matPrefix>$ &nbsp;</span>
+                            <input type="number" matInput placeholder="Precio por semana" [value]=joinGroup.preciosemana
+                                disabled>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <span matPrefix>$ &nbsp;</span>
+                            <input type="number" matInput placeholder="Precio por mes" [value]=joinGroup.preciomes
+                                disabled>
+                        </mat-form-field>
+                    </div>
+                    <br>
+                    <h5>Imágenes</h5>
+                    <mat-divider></mat-divider>
+                    <!-- <div class="contenedor-imagenes">
+                            <ul>
+                                <li *ngFor="let imagen of arrayImagenes" class="contenedor-imagen-final">
+                                    <img src={{imagen}} class="container-muestra-imagenes">
+                                </li>
+                            </ul>
+                        </div> -->
+                    <div style="margin-top: 30px" *ngIf="!mantenerImg">
+                        <swiper class="swiper-container" [config]="config">
+                            <div *ngFor="let imagen of arrayImagenes">
+                                <div class="swiper-slide" fxLayout="column" fxLayoutAlign="center center">
+                                    <img src={{imagen}} class="img-carrousel">
+                                </div>
+                            </div>
+                        </swiper>
+                    </div>
+                    <div style="margin-top: 30px">
+                        <swiper class="swiper-container" [config]="config" *ngIf="mantenerImg">
+                            <div *ngFor="let img of arrayJSON; let indice2 = index">
+                                <div class="swiper-slide" fxLayout="column" fxLayoutAlign="center center">
+                                    <img src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}"
+                                        class="img-carrousel">
+                                </div>
+                            </div>
+                        </swiper>
+                    </div>
+                    <br>
+                    <br>
+                </form>
+            </div>
+            <div fxLayout="row" fxFlexFill>
+                <div fxFlex>
+                    <button mat-raised-button color="primary" matStepperPrevious>Volver</button>
+                </div>
+                <div fxLayoutAlign="end" fxFlex>
+                    <button mat-raised-button color="accent" (click)="resetearDatos();stepper.reset();dropzone.reset()"
+                        style="margin-right: 10px;">Volver
+                        a comenzar</button>
+
+                    <button mat-raised-button color="primary" (click)="onSubmit()">Editar</button>
+                </div>
+            </div>
+        </mat-step>
+    </mat-horizontal-stepper>
+</section>
+
+
+
+
+
+
+<!--VERSIÓN MOBILE-->
+<section fxShow.lt-md="true" fxHide.gt-md="true" *ngIf="modoMobile">
+    <!-- *ngIf="modoMobile" -->
+    <mat-vertical-stepper #stepperM (selectionChange)="actualizarDatos()" linear>
+        <!-- linear -->
+        <!--CATEGORIAS PRODUCTO-->
+        <mat-step [stepControl]="categoriaFormGroup" errorMessage="Elige una categoría para tu producto">
+            <form [formGroup]="categoriaFormGroup">
+                <ng-template matStepLabel>Categoría del producto</ng-template>
+                <h4 style="text-align: center">Seleccioná categoria de tu producto</h4>
+                <br>
+                <mat-accordion>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header #b1 title="Hogar">
+                            <mat-panel-title>
+                                Hogar
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-radio-group formControlName="subcategoria" name="arrayHogar"
+                            (change)="obtenerSubCategoria($event); obtenerCategoria(b1)">
+                            <div fxLayout="column" fxLayoutAlign="center start" *ngFor="let hogar of hogarArray">
+                                <mat-selection-list fxFlexOffset="20px">
+                                    <mat-radio-button color="primary" value="{{hogar}}">
+                                        {{hogar}}
+                                    </mat-radio-button>
+                                </mat-selection-list>
+                            </div>
+                        </mat-radio-group>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header #b2 title="Musica">
+                            <mat-panel-title>
+                                Música
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-radio-group formControlName="subcategoria" name="musica"
+                            (change)="obtenerSubCategoria($event);obtenerCategoria(b2)">
+                            <div fxLayout="column" fxLayoutAlign="center start" *ngFor="let musica of musicaArray">
+                                <mat-selection-list fxFlexOffset="20px">
+                                    <mat-radio-button color="primary" value="{{musica}}">
+                                        {{musica}}
+                                    </mat-radio-button>
+                                </mat-selection-list>
+                            </div>
+                        </mat-radio-group>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header #b3 title="Tecnologia">
+                            <mat-panel-title>
+                                Tecnología
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-radio-group formControlName="subcategoria" name="tecnologia"
+                            (change)="obtenerSubCategoria($event);obtenerCategoria(b3)">
+                            <div fxLayout="column" fxLayoutAlign="center start"
+                                *ngFor="let electronica of electronicaArray">
+                                <mat-selection-list fxFlexOffset="20px">
+                                    <mat-radio-button color="primary" value="{{electronica}}">
+                                        {{electronica}}
+                                    </mat-radio-button>
+                                </mat-selection-list>
+                            </div>
+                        </mat-radio-group>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header #b4 title="Mascotas">
+                            <mat-panel-title>
+                                Mascotas
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-radio-group formControlName="subcategoria" name="mascotas"
+                            (change)="obtenerSubCategoria($event);obtenerCategoria(b4)">
+                            <div fxLayout="column" fxLayoutAlign="center start" *ngFor="let mascotas of animalesArray">
+                                <mat-selection-list fxFlexOffset="20px">
+                                    <mat-radio-button color="primary" value="{{mascotas}}">
+                                        {{mascotas}}
+                                    </mat-radio-button>
+                                </mat-selection-list>
+                            </div>
+                        </mat-radio-group>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header #b10 title="Libros">
+                            <mat-panel-title>
+                                Libros
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-radio-group formControlName="subcategoria" name="libros"
+                            (change)="obtenerSubCategoria($event);obtenerCategoria(b10)">
+                            <div fxLayout="column" fxLayoutAlign="center start" *ngFor="let libros of librosArray">
+                                <mat-selection-list fxFlexOffset="20px">
+                                    <mat-radio-button color="primary" value="{{libros}}">
+                                        {{libros}}
+                                    </mat-radio-button>
+                                </mat-selection-list>
+                            </div>
+                        </mat-radio-group>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header #b5 title="Deporte">
+                            <mat-panel-title>
+                                Deporte
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-radio-group (change)="obtenerSubCategoria($event); obtenerCategoria(b5)"
+                            formControlName="subcategoria" name="deporte">
+                            <div fxLayout="column" fxLayoutAlign="center start" *ngFor="let deporte of deportesArray">
+                                <mat-selection-list fxFlexOffset="20px">
+                                    <mat-radio-button color="primary" value="{{deporte}}">
+                                        {{deporte}}
+                                    </mat-radio-button>
+                                </mat-selection-list>
+                            </div>
+                        </mat-radio-group>
+                    </mat-expansion-panel>
+
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header #b6 title="Belleza">
+                            <mat-panel-title>
+                                Belleza
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-radio-group (change)="obtenerSubCategoria($event);obtenerCategoria(b6)"
+                            formControlName="subcategoria" name="belleza">
+                            <div fxLayout="column" fxLayoutAlign="center start" *ngFor="let belleza of bellezaArray">
+                                <mat-selection-list fxFlexOffset="20px">
+                                    <mat-radio-button color="primary" value="{{belleza}}">
+                                        {{belleza}}
+                                    </mat-radio-button>
+                                </mat-selection-list>
+                            </div>
+                        </mat-radio-group>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header #b7 title="Bebes">
+                            <mat-panel-title>
+                                Bebés
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-radio-group (change)="obtenerSubCategoria($event); obtenerCategoria(b7)"
+                            formControlName="subcategoria" name="bebe">
+                            <div fxLayout="column" fxLayoutAlign="center start" *ngFor="let bebe of bebesArray">
+                                <mat-selection-list fxFlexOffset="20px">
+                                    <mat-radio-button color="primary" value="{{bebe}}">
+                                        {{bebe}}
+                                    </mat-radio-button>
+                                </mat-selection-list>
+                            </div>
+                        </mat-radio-group>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header #b9 title="Herramientas">
+                            <mat-panel-title>
+                                Herramientas
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-radio-group (change)="obtenerSubCategoria($event); obtenerCategoria(b9)"
+                            formControlName="subcategoria" name="herramienta">
+                            <div fxLayout="column" fxLayoutAlign="center start"
+                                *ngFor="let herramienta of herramientasArray">
+                                <mat-selection-list fxFlexOffset="20px">
+                                    <mat-radio-button color="primary" value="{{herramienta}}">
+                                        {{herramienta}}
+                                    </mat-radio-button>
+                                </mat-selection-list>
+                            </div>
+                        </mat-radio-group>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header #b8 title="Otros">
+                            <mat-panel-title>
+                                Otros
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-radio-group (change)="obtenerSubCategoria($event); obtenerCategoria(b8)"
+                            formControlName="subcategoria" name="otro">
+                            <div fxLayout="column" fxLayoutAlign="center start" *ngFor="let otro of otrosArray">
+                                <mat-selection-list fxFlexOffset="20px">
+                                    <mat-radio-button color="primary" value="{{otro}}">
+                                        {{otro}}
+                                    </mat-radio-button>
+                                </mat-selection-list>
+                            </div>
+                        </mat-radio-group>
+                    </mat-expansion-panel>
+                </mat-accordion>
+                <br>
+                <div fxLayout="row" fxLayoutAlign="end" fxFlexFill>
+                    <button mat-raised-button matStepperNext color="primary">Siguiente</button>
+                </div>
+            </form>
+        </mat-step>
+
+        <!--DATOS DEL PRODUCTO-->
+        <mat-step [stepControl]="datosProductosGroup" errorMessage="Los datos de tu productos son necesarios.">
+            <form [formGroup]="datosProductosGroup">
+                <ng-template matStepLabel>Datos del producto</ng-template>
+                <h4 style="text-align: center">Completá los datos de tu producto</h4>
+                <br>
+                <mat-form-field>
+                    <input matInput placeholder="Título de la Publicación" formControlName="titulo" name="titulo"
+                        (ngModelChange)="titulo = $event" required>
+                </mat-form-field>
+                <mat-form-field>
+                    <textarea matInput placeholder="Descrpción del producto" cdkTextareaAutosize
+                        formControlName="descripcion" name="descripcion" required
+                        (ngModelChange)="descripcion = $event"></textarea>
+                </mat-form-field>
+                <mat-form-field>
+                    <span matPrefix>$ &nbsp;</span>
+                    <input matInput type="number" placeholder="Precio por día de alquiler" formControlName="preciodia"
+                        name="preciodia" required (ngModelChange)="preciodia = $event">
+                </mat-form-field>
+                <mat-form-field>
+                    <span matPrefix>$ &nbsp;</span>
+                    <input matInput type="number" placeholder="Precio por semana de alquiler"
+                        formControlName="preciosemana" name="preciosemana" (ngModelChange)="preciosemana = $event">
+                </mat-form-field>
+                <mat-form-field>
+                    <span matPrefix>$ &nbsp;</span>
+                    <input matInput type="number" placeholder="Precio por mes de alquiler" formControlName="preciomes"
+                        optional name="preciomes" (ngModelChange)="preciomes = $event">
+                </mat-form-field>
+
+                <div fxLayout="row" fxFlexFill>
+                    <div fxFlex>
+                        <button mat-raised-button matStepperPrevious color="primary">Volver</button>
+                    </div>
+                    <div fxLayoutAlign="end" fxFlex>
+                        <button mat-raised-button matStepperNext color="primary">Siguiente</button>
+                    </div>
+                </div>
+            </form>
+        </mat-step>
+
+        <!--AGREGAR FOTO DEL PRODUCTO-->
+        <mat-step [stepControl]="fotoProductoGroup" errorMessage="La foto de tu producto es necesaria.">
+            <form [formGroup]="fotoProductoGroup">
+                <!-- (change)="pasoImagen()" -->
+                <ng-template matStepLabel>Fotos del producto</ng-template>
+                <div fxLayout="column" fxLayoutAlign="center center">
+                    <div>
+                        <h3 style="font-size: 17px; text-align: center">Carga las imágenes de tu producto</h3>
+                        <br>
+                        <div class="contenedor-imagenes-lt-md">
+                            <ngx-dropzone [accept]="'image/png,image/jpeg,image/gif'"
+                                [label]="'Clickea aquí para subir tu imágen'" [multiple]="true"
+                                (filesAdded)="onFilesAdded($event)" [showPreviews]="true" [preserveFiles]="false"
+                                #dropzoneM></ngx-dropzone>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="chkImagen">
+                        <mat-checkbox #img (change)="mantenerImagen(dropzone, btnDropzone)">Mantener las imágenes de mi
+                            publicación
+                        </mat-checkbox>
+                    </div>
+                    <h3 style="text-align: center">Imágenes de tu publicación</h3>
+                    <br>
+                    <swiper class="swiper-container-sm" [config]="config">
+                        <div *ngFor="let img of arrayJSON; let indice2 = index">
+                            <div class="swiper-slide" fxLayout="column" fxLayoutAlign="center center">
+                                <img src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}"
+                                    class="img-carrousel-sm">
+                            </div>
+                        </div>
+                    </swiper>
+                    <br>
+                </div>
+                <div fxLayout="row" fxFlexFill>
+                    <div fxFlex>
+                        <button mat-raised-button matStepperPrevious color="primary">Volver</button>
+                    </div>
+                    <div fxLayoutAlign="center" fxFlex>
+                        <button mat-raised-button color="accent" (click)="dropzoneM.reset()">Resetear</button>
+                    </div>
+                    <div fxLayoutAlign="end" fxFlex>
+                        <button mat-raised-button matStepperNext color="primary">Siguiente</button>
+                    </div>
+                </div>
+            </form>
+        </mat-step>
+        <!--TIPO DE ALQUILER-->
+        <mat-step [stepControl]="tipoAlquilerGroup" errorMessage="Debes seleccionar el tipo de alquiler">
+            <form [formGroup]="tipoAlquilerGroup">
+                <ng-template matStepLabel>Tipo de alquiler del producto</ng-template>
+                <h4 style="text-align: center">Seleccioná el tipo de alquiler de tu producto</h4>
+                <br>
+                <div fxLayout="column">
+                    <p id="formatoLetra">
+                        La primera forma de alquiler se denomina “sin intervención” y permite establecer el contacto
+                        entre las partes que
+                        realizan la transacción sin intervenir en ella. Los participantes de la misma se rigen en
+                        base a los términos y condiciones establecidos en la plataforma y esta no responde
+                        por posibles problemas que pueda surgir.
+                        <br><br>
+                        La segunda forma de alquiler se denomina “con intervención” y se basa en la obtención de un
+                        seguro
+                        contra reembolso con el objetivo de proteger al objeto alquilado de algún daño que pueda
+                        surgir durante la
+                        ejecución del alquiler. Este seguro consiste en el depósito de un monto adicional que
+                        depende del tipo de objeto que el interesado en alquilar ha pagado por el mismo y
+                        será devuelto luego de que el propietario verifique el estado del objeto, no pudiendo
+                        pasar más de 24 hs de lo contrario se considera que el objeto fue entregado en
+                        buenas condiciones, finalizando la transacción.
+                    </p>
+                    <mat-radio-group formControlName="tipoAlquiler" (change)="obtenerTipoAlquiler($event)">
+                        <div fxLayout="column" fxLayoutAlign="center start">
+                            <mat-selection-list fxFlexOffset="20px">
+                                <mat-radio-button class="radioButton" color="primary" value="AlquilerSinIntervencion">
+                                    Alquiler sin Intervencíon
+                                </mat-radio-button>
+                                <mat-radio-button class="radioButton" color="primary" value="AlquilerConIntervencion">
+                                    Alquiler con Intervencíon
+                                </mat-radio-button>
+                            </mat-selection-list>
+                        </div>
+                    </mat-radio-group>
+                    <br>
+                </div>
+                <div fxLayout="row" fxFlexFill>
+                    <div fxFlex>
+                        <button mat-raised-button matStepperPrevious color="primary">Volver</button>
+                    </div>
+                    <div fxLayoutAlign="end" fxFlex>
+                        <button mat-raised-button matStepperNext color="primary">Siguiente</button>
+                    </div>
+                </div>
+            </form>
+        </mat-step>
+        <!--PUBLICACION/RESUMEN DEL PRODUCTO-->
+        <mat-step>
+            <ng-template matStepLabel>Publicar</ng-template>
+            <h2 class="mt-30 center">Tu publicación está lista para ser editada</h2>
+            <br>
+            <h4>Resúmen de tu publicación</h4>
+            <br>
+            <div>
+                <form>
+                    <mat-form-field>
+                        <input matInput placeholder="Título" [value]=joinGroup.titulo disabled>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input matInput placeholder="Descripción" [value]=joinGroup.descripcion disabled>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input matInput placeholder="Categoría" [value]=joinGroup.categoria disabled>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input matInput placeholder="Sub Categoría" [value]=joinGroup.subcategoria disabled>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput placeholder="Tipo de Alquiler" [value]=joinGroup.tipoAlquiler disabled>
+                    </mat-form-field>
+
+                    <div fxLayout="row" fxLayoutGap="40px">
+                        <mat-form-field>
+                            <span matPrefix>$ &nbsp;</span>
+                            <input type="number" matInput placeholder="Precio por día" [value]=joinGroup.preciodia
+                                disabled>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <span matPrefix>$ &nbsp;</span>
+                            <input type="number" matInput placeholder="Precio por semana" [value]=joinGroup.preciosemana
+                                disabled>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <span matPrefix>$ &nbsp;</span>
+                            <input type="number" matInput placeholder="Precio por mes" [value]=joinGroup.preciomes
+                                disabled>
+                        </mat-form-field>
+                    </div>
+                    <br>
+                    <h5>Imágenes</h5>
+                    <mat-divider></mat-divider>
+                    <!-- <div class="contenedor-imagenes">
+                                <ul>
+                                    <li *ngFor="let imagen of arrayImagenes" class="contenedor-imagen-final">
+                                        <img src={{imagen}} class="container-muestra-imagenes">
+                                    </li>
+                                </ul>
+                            </div> -->
+                    <div style="margin-top: 30px" *ngIf="!mantenerImg">
+                        <swiper class="swiper-container-sm" [config]="config">
+                            <div *ngFor="let imagen of arrayImagenes">
+                                <div class="swiper-slide" fxLayout="column" fxLayoutAlign="center center">
+                                    <img src={{imagen}} class="img-carrousel-sm">
+                                </div>
+                            </div>
+                        </swiper>
+                    </div>
+                    <div style="margin-top: 30px">
+                        <swiper class="swiper-container-sm" [config]="config" *ngIf="mantenerImg">
+                            <div *ngFor="let img of arrayJSON; let indice2 = index">
+                                <div class="swiper-slide" fxLayout="column" fxLayoutAlign="center center">
+                                    <img src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}"
+                                        class="img-carrousel-sm">
+                                </div>
+                            </div>
+                        </swiper>
+                    </div>
+                    <br>
+                    <br>
+                </form>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px" fxFlexFill>
+                <button mat-raised-button color="primary" matStepperPrevious>Volver</button>
+                <button mat-raised-button color="accent"
+                    (click)="resetearDatos(); stepperM.reset(); dropzoneM.reset()">Volver a comenzar</button>
+                <button mat-raised-button color="primary" (click)="onSubmit()">Editar</button>
+            </div>
+
+        </mat-step>
+    </mat-vertical-stepper>
+</section>

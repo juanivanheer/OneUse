@@ -1,0 +1,11 @@
+<h2 mat-dialog-title style="text-align: center">Eliminar publicación</h2>
+<mat-dialog-content class="mat-typography">
+  <h3>¿Está seguro de eliminar la publicación?</h3>
+  <p>Tené en cuenta que la misma va a ser eliminada y no podrás recuperarla.</p>
+
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="warn" mat-dialog-close (click)="close()">Cancelar</button>
+  <button mat-raised-button color="primary" [mat-dialog-close]="true" (click)="eliminarPublicacion(publicacion)" cdkFocusInitial>Eliminar</button>
+</mat-dialog-actions>     

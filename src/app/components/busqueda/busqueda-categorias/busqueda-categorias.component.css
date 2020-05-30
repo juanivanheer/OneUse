@@ -1,0 +1,71 @@
+.container-general {
+    margin-top: 40px;
+    margin-bottom: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.contenedor-filtros {
+    width: 269px;
+    margin-left: 87px;
+}
+
+.contenedor-publicaciones {
+    margin-bottom: 50px;
+    margin-right: 142px;
+}
+
+.container-muestra-imagenes {
+    width: 230px;
+    height: 230px;
+}
+
+.filtros {
+    margin-left: 20px;
+    line-height: 32px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.slider {
+    width: 180px;
+}
+
+.chips{
+    max-width: 270px;
+    margin-left: 87px;
+    margin-bottom: 10px;
+}
+
+.pb-1, .py-1 {
+    padding-bottom: .5rem!important;
+}
+
+.product-tile .product-tile-header {
+    min-height: 5rem;
+}
+
+a {
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+    font-size: 18px;
+    transition: all 0.25s ease 0s;
+    -moz-transition: all 0.25s ease 0s;
+    -webkit-transition: all 0.25s ease 0s;
+    -o-transition: all 0.25s ease 0s;
+}
+
+a:hover, a:focus {
+    color: rgb(253, 187, 48);
+    text-decoration: none;
+    transition: all 0.25s ease 0s;
+    -moz-transition: all 0.25s ease 0s;
+    -webkit-transition: all 0.25s ease 0s;
+    -o-transition: all 0.25s ease 0s;
+}
+
+a, a:focus, a:active, a:link, img {
+    outline: none;
+    text-decoration: none;
+}

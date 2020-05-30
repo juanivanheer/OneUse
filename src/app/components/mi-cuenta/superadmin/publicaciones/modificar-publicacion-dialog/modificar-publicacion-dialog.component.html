@@ -1,0 +1,108 @@
+<h2 mat-dialog-title style="text-align: center">Modificar usuario</h2>
+<mat-dialog-content class="mat-typography">
+    <mat-dialog-content class="mat-typography">
+        <form [formGroup]="datosUsuariosGroup">
+            <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="30px">
+                <div>
+                    <mat-form-field>
+                        <input [value]="titulo" formControlName="titulo" name="titulo" matInput
+                            (ngModelChange)="titulo = $event" placeholder="Título">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="categoria" formControlName="categoria" name="categoria" matInput
+                            (ngModelChange)="categoria = $event" placeholder="Categoría" soloLetrasDirective>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="subcategoria" formControlName="subcategoria" name="subcategoria" matInput
+                            (ngModelChange)="subcategoria = $event" placeholder="Subcategoría" soloLetrasDirective>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                            cdkAutosizeMaxRows="5" [value]="descripcion" formControlName="descripcion"
+                            name="descripcion" matInput (ngModelChange)="descripcion = $event"
+                            placeholder="Descripción"></textarea>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <span matPrefix>$</span>
+                        <input [value]="preciodia" formControlName="preciodia" name="preciodia" matInput
+                            placeholder="Precio por día" (ngModelChange)="preciodia = $event" email>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <span matPrefix>$ </span>
+                        <input [value]="preciosemana" formControlName="preciosemana" name="preciosemana" matInput
+                            (ngModelChange)="preciosemana = $event" placeholder="Precio por semana">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <span matPrefix>$ </span>
+                        <input [value]="preciomes" formControlName="preciomes" name="preciomes" matInput
+                            (ngModelChange)="preciomes = $event" placeholder="Precio por mes">
+                    </mat-form-field>
+                </div>
+
+                <div>
+                    <mat-form-field>
+                        <input [value]="_id" formControlName="_id" name="_id" matInput (ngModelChange)="_id = $event"
+                            placeholder="ID">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="email" formControlName="email" name="email" matInput
+                            (ngModelChange)="email = $event" placeholder="E-mail publicador">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="tipoAlquiler" formControlName="tipoAlquiler" name="tipoAlquiler" matInput
+                            (ngModelChange)="tipoAlquiler = $event" placeholder="Tipo de alquiler">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="destacar" formControlName="destacar" name="destacar" matInput
+                            (ngModelChange)="destacar = $event" placeholder="¿Destacado?">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="estado" formControlName="estado" name="estado" matInput
+                            (ngModelChange)="estado = $event" placeholder="Estado de la publicación">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="createdAt" formControlName="createdAt" name="createdAt" matInput
+                            (ngModelChange)="createdAt = $event" placeholder="Fecha de cración">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="updatedAt" formControlName="updatedAt" name="updatedAt" matInput
+                            (ngModelChange)="updatedAt = $event" placeholder="Última fecha de actualización">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="cantDias" formControlName="cantDias" name="cantDias" matInput
+                            (ngModelChange)="cantDias = $event" placeholder="Cantidad de días">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="cantidadDisponible" formControlName="cantidadDisponible"
+                            name="cantidadDisponible" matInput (ngModelChange)="cantidadDisponible = $event"
+                            placeholder="Cantidad disponible">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="contadorDeVisita" formControlName="contadorDeVisita" name="contadorDeVisita"
+                            matInput (ngModelChange)="contadorDeVisita = $event" placeholder="Contador de visitas">
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+    </mat-dialog-content>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button color="warn" mat-dialog-close (click)="close()">Cancelar</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]="true" (click)="modificarPublicacion()"
+        cdkFocusInitial>Modificar</button>
+</mat-dialog-actions>

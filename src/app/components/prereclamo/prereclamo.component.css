@@ -1,0 +1,26 @@
+.tab-lt-md {
+    height: 422px;
+    width: 760px;
+    text-align: justify;
+    }
+
+
+ .titulo {
+        /* text-transform: uppercase;*/
+        font-weight: 700;
+        border-bottom: 2px solid #000;
+        display: inline-block;
+        margin-bottom: 20px;
+        padding-top: 40px;
+    }
+
+    .mat-list-base .mat-list-item, .mat-list-base .mat-list-option {
+        display: block;
+        height: 170px;
+        -webkit-tap-highlight-color: transparent;
+        width: 100%;
+        padding: 0;
+    }  
+
+        
+    

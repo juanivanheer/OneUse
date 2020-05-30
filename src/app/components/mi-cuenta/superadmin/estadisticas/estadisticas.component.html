@@ -1,0 +1,82 @@
+<div fxLayout="row" fxFlexFill>
+    <div fxLayout fxFlexOrder="1" ngClass.lt-lg="toolbar-div-lt-md">
+        <mat-toolbar>
+
+            <mat-toolbar-row>
+                <a [routerLink]="['/mi-cuenta/superadmin/usuarios']">
+                    <!-- [routerLink]="['/perfil']" -->
+                    <mat-icon>account_box</mat-icon><span class="iconitos" fxHide.lt-lg="true">Usuarios</span>
+                </a>
+            </mat-toolbar-row>
+
+            <mat-toolbar-row>
+                <a [routerLink]="['/mi-cuenta/superadmin/publicaciones']">
+                    <!-- [routerLink]="['/perfil']" -->
+                    <mat-icon>storefront</mat-icon><span class="iconitos" fxHide.lt-lg="true">Publicaciones</span>
+                </a>
+            </mat-toolbar-row>
+
+            <mat-toolbar-row>
+                <a [routerLink]="['/mi-cuenta/superadmin/alquileres']">
+                    <!-- [routerLink]="['/perfil']" -->
+                    <mat-icon>dashboard</mat-icon><span class="iconitos" fxHide.lt-lg="true">Alquileres</span>
+                </a>
+            </mat-toolbar-row>
+
+            <mat-toolbar-row>
+                <a [routerLink]="['/mi-cuenta/superadmin/reclamos']">
+                    <!-- [routerLink]="['/mis-publicaciones']" -->
+                    <mat-icon>menu_book</mat-icon><span class="iconitos" fxHide.lt-lg="true">Reclamos</span>
+                </a>
+            </mat-toolbar-row>
+
+            <mat-toolbar-row>
+                <a [routerLink]="['/mi-cuenta/superadmin/estadisticas']">
+                    <!-- [routerLink]="['/mis-publicaciones']" -->
+                    <mat-icon>assessment</mat-icon><span class="iconitos" fxHide.lt-lg="true">Estadísticas</span>
+                </a>
+            </mat-toolbar-row>
+
+            <mat-toolbar-row>
+                <a fxFlexAlign.lt-lg="flex-end" (click)="cerrarSesion()">
+                    <mat-icon>exit_to_app</mat-icon><span class="iconitos" fxHide.lt-lg="true">Salir</span>
+                </a>
+            </mat-toolbar-row>
+        </mat-toolbar>
+    </div>
+
+    <div fxLayout="column" fxFlexOrder="2" fxLayoutAlign="start center" fxLayout.lt-lg="column"
+        fxLayoutAlign.lt-lg="center center" style="width: 100%; margin-top: 20px; margin-bottom: 20px;">
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+            <mat-form-field class="selector">
+                <mat-label>Tipo de estadística</mat-label>
+                <mat-select [(value)]="selected">
+                    <mat-option (click)="deshabilitarEncuestas()">
+                        -Elegir encuesta-
+                    </mat-option>
+                    <mat-option *ngFor="let e of estadisticas" [value]="e" (click)="clickSelectEncuesta()">
+                        {{e}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="selector" *ngIf="publicacionesCategoriasSeleccionada">
+                <mat-label>Estadística</mat-label>
+                <mat-select [(value)]="categoriaSeleccionada">
+                    <mat-option (click)="deshabilitarPublicacionesCategorias()">
+                        -Elegir subcategoria-
+                    </mat-option>
+                    <mat-option *ngFor="let s of seleccionada" [value]="s" (click)="clickSelectSubEncuesta()">
+                        {{s}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div>
+            <fusioncharts [width]="width" [height]="height" [type]="type" [dataFormat]="dataFormat"
+                [dataSource]="dataSource" *ngIf="mostrarGrafico">
+            </fusioncharts>
+        </div>
+    </div>
+</div>

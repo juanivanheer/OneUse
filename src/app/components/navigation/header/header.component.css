@@ -1,0 +1,125 @@
+.input-xl {
+    width: 400px;
+    height: 100%;
+}
+
+.buscador-lt-md {
+    margin-left: 30px;
+}
+
+.buscador-md {
+    margin-left: 30px;
+}
+
+.mat-input-element, .mat-toolbar {
+    color: white !important;
+}
+
+.img-logo-index {
+    width: 80px;
+    height: 50px;
+    margin-top: 14px;
+    margin-left: 70px;
+}
+
+.img-logo-index-sm {
+    width: 52px;
+    height: 34px;
+    margin-top: 6px;
+}
+
+/* DROPDOWN MI CUENTA */
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    position: absolute;
+    display: block;
+    align-self: center;
+    width: 520px;
+    opacity: 0;
+    margin: -.25rem 0 0 10%;
+    padding: 0.25rem;
+    list-style-type: none;
+    background-color: #fff;
+    border-radius: 4px;
+    transition: .2s all ease-in;
+    right: 0;
+    color: black;
+    z-index: 900;
+}
+
+.dropdown-menu li {
+    padding: .5rem .5rem;
+}
+
+.dropdown-menu li+li {
+    border-top: 1px solid #e1e1e1;
+    padding-top: .5rem;
+}
+
+.dropdown-menu li>a {
+    display: block;
+    border-radius: 4px;
+    padding: 1rem 1.5rem;
+    transition: .2s background-color ease-in;
+}
+
+.dropdown-menu li>a:hover {
+    background-color: #e9e9e9;
+    color: black;
+}
+
+.dropdown.open .dropdown-menu {
+    opacity: 1;
+    margin-top: 0;
+}
+
+a.neat {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* PARA EL CUADRADO DE BIENVENIDA */
+
+.bienvenida-mensaje {
+    text-align: center;
+}
+
+.bienvenida-container {
+    margin-top: 25px;
+}
+
+.bienvenida-boton {
+    margin-top: 25px;
+}
+
+.circulo-container{
+    position: relative;
+}
+
+.posicion-icono{
+    position: absolute;
+    top: 3%;
+    left: 3%;
+}
+
+.tamaño-icono{
+    font-size: 140px;
+}
+
+.img-user-logged{
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    border-radius: 70px;
+    top: 3%;
+    left: 3%;
+}
+
+.icono-notificaciones{
+    font-size: 25px;
+}
+

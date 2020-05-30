@@ -1,0 +1,22 @@
+[
+     {
+        "descripción": "El producto que alquilé no estaba en las mismas condiciones que se mostraban en las fotos",
+        "id": "1"
+    },
+    {
+        "descripción": "El producto que alquilé no funciona como lo especifica el propietario",
+        "id": "2"
+    },
+    {
+        "descripción": "No me devolvieron el producto",
+        "id": "3"
+    },
+    {
+        "descripción": "El producto fue devuelto en malas condiciones",
+        "id": "4"
+    },
+    {
+        "descripción": "Otro (Especificar en información)",
+        "id": "5"
+    }
+]

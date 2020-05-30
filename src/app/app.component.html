@@ -1,0 +1,189 @@
+<mat-sidenav-container>
+  <mat-sidenav #sidenav>
+    <app-sidenav-list (closeSidenav)="sidenav.close()" (cambiarEstado)="header.checkPage($event)"></app-sidenav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div fxLayout="column" fxFlexFill>
+      <app-header #header (sidenavToggle)="sidenav.toggle()"></app-header>
+      <div fxFlex>
+        <router-outlet></router-outlet>
+      </div>
+      <app-footer></app-footer>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+
+
+
+
+
+<!--
+<div class="wrapper">
+  <header id="header">
+    <div class="header-top">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-6">
+          </div>
+          <div class="col-sm-6">
+            <ul class="header-top-right text-right">
+              <li class="account"><a [routerLink]="['/login']">Mi cuenta</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="header header-index">
+      <div class="container container-index">
+        <nav class="navbar navbar-index">
+          <div id="imagen-logo" class="navbar-header mtb_20">
+            <a class="navbar-index" [routerLink]="['/home']"> <img alt="1UseLogo" src="../assets/images/E3.png"> </a>
+          </div>
+          <div class="header-right pull-right mtb_50">
+            <button class="navbar-toggle pull-left" type="button" data-toggle="collapse"
+              data-target=".js-navbar-collapse"> <span class="i-bar"><i class="fa fa-bars"></i></span></button>
+          </div>
+          <div class="navbar-index navbar-collapse js-navbar-collapse pull-right">
+            <ul id="menu" class="nav navbar-nav">
+              <li>
+                <div class="buscador-div">
+                  <input type="text" class="buscador-input" placeholder="Buscar productos..."
+                    aria-label="Buscar productos..." aria-describedby="button-addon2">
+                  <button class="buscador-boton btn glyphicon glyphicon-search" type="button"
+                    id="button-addon2"></button>
+                </div>
+              </li>
+              <li class="dropdown mega-dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown">Collection
+                </a>
+                <ul class="dropdown-menu mega-dropdown-menu row">
+                  <li class="col-md-3">
+                    <ul>
+                      <li class="dropdown-header">Women's</li>
+                      <li><a href="#">Unique Features</a></li>
+                      <li><a href="#">Image Responsive</a></li>
+                      <li><a href="#">Auto Carousel</a></li>
+                      <li><a href="#">Newsletter Form</a></li>
+                      <li><a href="#">Four columns</a></li>
+                      <li><a href="#">Four columns</a></li>
+                      <li><a href="#">Good Typography</a></li>
+                    </ul>
+                  </li>
+                  <li class="col-md-3">
+                    <ul>
+                      <li class="dropdown-header">Man's</li>
+                      <li><a href="#">Unique Features</a></li>
+                      <li><a href="#">Image Responsive</a></li>
+                      <li><a href="#">Four columns</a></li>
+                      <li><a href="#">Auto Carousel</a></li>
+                      <li><a href="#">Newsletter Form</a></li>
+                      <li><a href="#">Four columns</a></li>
+                      <li><a href="#">Good Typography</a></li>
+                    </ul>
+                  </li>
+                  <li class="col-md-3">
+                    <ul>
+                      <li class="dropdown-header">Children's</li>
+                      <li><a href="#">Unique Features</a></li>
+                      <li><a href="#">Four columns</a></li>
+                      <li><a href="#">Image Responsive</a></li>
+                      <li><a href="#">Auto Carousel</a></li>
+                      <li><a href="#">Newsletter Form</a></li>
+                      <li><a href="#">Four columns</a></li>
+                      <li><a href="#">Good Typography</a></li>
+                    </ul>
+                  </li>
+                  <li class="col-md-3">
+                    <ul>
+                      <li id="myCarousel" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                          <div class="item active"> <a href="#"><img src="../assets/images/menu-banner1.jpg"
+                                class="img-responsive" alt="Banner1"></a></div>
+                          
+                          <div class="item"> <a href="#"><img src="../assets/images/menu-banner2.jpg"
+                                class="img-responsive" alt="Banner1"></a></div>
+
+                          <div class="item"> <a href="#"><img src="../assets/images/menu-banner3.jpg"
+                                class="img-responsive" alt="Banner1"></a></div>
+
+                        </div>
+
+                      </li>
+
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <li><a [routerLink]="['/about']">Sobre Nosotros</a></li>
+            </ul>
+          </div>
+
+        </nav>
+      </div>
+    </div>
+  </header>
+  <section>
+    <router-outlet></router-outlet>
+  </section>
+
+  <div class="footer pt_30">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3 footer-block">
+          <div class="content_footercms_right">
+            <div class="footer-contact">
+              <div class="footer-logo mb_40"> <a href="index.html"> <img src="../assets/images/E3.png" alt="OneUse">
+                </a>
+              </div>
+              <ul>
+                <li>Boulevar Illia 255 7C</li>
+                <li>(02336) - 492851</li>
+                <li>OneUse@loscracks.com</li>
+              </ul>
+              <div class="social_icon">
+                <ul>
+                  <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                  <li><a href="#"><i class="fa fa-google"></i></a></li>
+                  <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                  <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                  <li><a href="#"><i class="fa fa-rss"></i></a></li>
+                </ul>
+              </div>
+              <div class="copyright-part">@ 2018 All Rights Reserved One Use</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 footer-block">
+          <h6 class="footer-title ptb_20">Categories</h6>
+          <ul>
+            <li><a href="#">Women</a></li>
+            <li><a href="#">Men</a></li>
+            <li><a href="#">Footwear</a></li>
+            <li><a href="#">Jewellery</a></li>
+            <li><a href="#">Accessories</a></li>
+            <li><a href="#">Accessories</a></li>
+          </ul>
+        </div>
+        <div class="col-md-2 footer-block">
+          <h6 class="footer-title ptb_20">Information</h6>
+          <ul>
+            <li><a [routerLink]="['/about']">Sobre nosotros</a></li>
+            <li><a [routerLink]="['/terminos-condiciones']">TÈrminos y condiciones</a></li>
+          </ul>
+        </div>
+        <div class="col-md-2 footer-block">
+          <h6 class="footer-title ptb_20">My Account</h6>
+          <ul>
+            <li><a href="#">Checkout</a></li>
+            <li><a href="#">My Account</a></li>
+            <li><a href="#">My Orders</a></li>
+            <li><a href="#">My Credit Slips</a></li>
+            <li><a href="#">My Addresses</a></li>
+            <li><a href="#">My Personal Info</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+-->

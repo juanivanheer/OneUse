@@ -1,0 +1,10 @@
+<h2 mat-dialog-title style="text-align: center">Datos del locatario</h2>
+<mat-dialog-content class="mat-typography">
+    <p><b>Nombre: </b> {{locatario.nombre}} </p>
+    <p><b>Apellido: </b> {{locatario.apellido}} </p>
+    <p><b>Telefono: </b> ({{locatario.codArea}}) {{locatario.telefono}} </p>
+    <p><b>Email: </b> {{locatario.email}} </p>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" mat-dialog-close (click)="close()">Volver</button>
+</mat-dialog-actions>

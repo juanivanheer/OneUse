@@ -1,0 +1,102 @@
+<div fxLayout="row" fxFlexFill>
+    <div fxLayout fxFlexOrder="1" ngClass.lt-lg="toolbar-div-lt-md">
+        <mat-toolbar>
+
+            <mat-toolbar-row>
+                <a [routerLink]="['/mi-cuenta/superadmin/usuarios']">
+                    <!-- [routerLink]="['/perfil']" -->
+                    <mat-icon>account_box</mat-icon><span class="iconitos" fxHide.lt-lg="true">Usuarios</span>
+                </a>
+            </mat-toolbar-row>
+
+            <mat-toolbar-row>
+                <a [routerLink]="['/mi-cuenta/superadmin/publicaciones']">
+                    <!-- [routerLink]="['/perfil']" -->
+                    <mat-icon>storefront</mat-icon><span class="iconitos" fxHide.lt-lg="true">Publicaciones</span>
+                </a>
+            </mat-toolbar-row>
+
+            <mat-toolbar-row>
+                <a [routerLink]="['/mi-cuenta/superadmin/alquileres']">
+                    <!-- [routerLink]="['/perfil']" -->
+                    <mat-icon>dashboard</mat-icon><span class="iconitos" fxHide.lt-lg="true">Alquileres</span>
+                </a>
+            </mat-toolbar-row>
+
+            <mat-toolbar-row>
+                <a [routerLink]="['/mi-cuenta/superadmin/reclamos']">
+                    <!-- [routerLink]="['/mis-publicaciones']" -->
+                    <mat-icon>menu_book</mat-icon><span class="iconitos" fxHide.lt-lg="true">Reclamos</span>
+                </a>
+            </mat-toolbar-row>
+
+            <mat-toolbar-row>
+                <a [routerLink]="['/mi-cuenta/superadmin/estadisticas']">
+                    <!-- [routerLink]="['/mis-publicaciones']" -->
+                    <mat-icon>assessment</mat-icon><span class="iconitos" fxHide.lt-lg="true">Estadísticas</span>
+                </a>
+            </mat-toolbar-row>
+
+            <mat-toolbar-row>
+                <a fxFlexAlign.lt-lg="flex-end" (click)="cerrarSesion()">
+                    <mat-icon>exit_to_app</mat-icon><span class="iconitos" fxHide.lt-lg="true">Salir</span>
+                </a>
+            </mat-toolbar-row>
+        </mat-toolbar>
+    </div>
+
+    <div fxLayout="column" fxFlexOrder="2" fxLayoutAlign="start center" fxLayout.lt-lg="column"
+        fxLayoutAlign.lt-lg="center center" style="width: 95%; margin-top: 20px; margin-bottom: 20px;">
+        <div class="mat-elevation-z8" style="width: 95%;">
+            <div fxLayout="row" fxLayoutGap="20px" style="margin-left: 30px;">
+                <mat-form-field style="width: 60%;margin-left: 20px; margin-top: 20px;">
+                    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
+                </mat-form-field>
+
+                <button mat-icon-button (click)="ngOnInit()">
+                    <mat-icon>autorenew</mat-icon>
+                </button>
+            </div>
+
+            <table mat-table #table [dataSource]="dataSource" matSort aria-label="Elements">
+
+                <ng-container matColumnDef="nombre">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Username</th>
+                    <td mat-cell *matCellDef="let row"> {{row.name}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="email">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+                    <td mat-cell *matCellDef="let row"> {{row.email}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="fecha">
+                    <th mat-header-cell *matHeaderCellDef>Fecha de creación</th>
+                    <td mat-cell *matCellDef="let row"> {{row.createdAt}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="boton">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let row">
+                        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                            <button mat-stroked-button color="primary" (click)="openDialogUsuarios(row)">Ver
+                                usuario</button>
+                            <button mat-stroked-button color="primary"
+                                (click)="openDialogModificarUsuario(row)">Modificar</button>
+                            <button mat-stroked-button color="warn"
+                                (click)="openDialogEliminarUsuario(row)">Eliminar</button>
+                        </div>
+                    </td>
+                </ng-container>
+
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <mat-paginator #paginator [length]="dataSource.data.length" [pageIndex]="0" [pageSize]="5"
+                [pageSizeOptions]="[1,5,10,15,20,25,50]">
+            </mat-paginator>
+        </div>
+    </div>
+</div>

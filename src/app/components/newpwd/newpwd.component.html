@@ -1,0 +1,72 @@
+<section fxFlexFill>
+    <form #frmLogin="ngForm" id="login-form" action="#" method="post" [formGroup]="formGroup" fxLayout="column" fxLayoutAlign="center center"
+        fxLayout.lt-lg="column" fxLayoutAlign.lt-lg="center center" fxFlexFill>
+        <div class="panel-heading">
+            <h3>Cambio de contraseña</h3>
+        </div>
+        <hr>
+        
+
+        <mat-form-field hideRequiredMarker  ngClass.xs="input-sm">
+            <input type="password" matInput placeholder="Contraseña" [(ngModel)]="newPwdData.password"
+                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d$@$!%*?&]{8,15}$" name="password"
+                [type]="hide ? 'password' : 'text'" class="input-login" style="color: black !important" name="password"
+                id="password" tabindex="2" formControlName="password" ngModel required>
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+
+            <mat-error *ngIf="password.hasError('pattern')">La contraseña debe tener al menos 8(ocho) caracteres y
+                contener al menos una mayúscula y un dígito.</mat-error>
+            <mat-error *ngIf="password.hasError('required')">Contraseña requerida</mat-error>
+
+        </mat-form-field>
+
+        <mat-form-field hideRequiredMarker ngClass.xs="input-sm">
+            <input type="password" matInput placeholder="Repetir contraseña"  [(ngModel)]="newPwdData.password2"  
+            [type]="hide2 ? 'password' : 'text'"
+                class="input-login" style="color: black !important"  name="password2" formControlName="password2"
+                (input)="onPasswordInput()" ngModel required>
+            <button mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide2">
+                <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <mat-error *ngIf="password.hasError('required')">Contraseña es requerida</mat-error>
+            <mat-error *ngIf="password2.hasError('required')">Por favor, confirmar la contraseña</mat-error>
+            <mat-error *ngIf="password2.invalid && !password2.hasError('required')">Las contraseñas no coinciden
+            </mat-error>
+        </mat-form-field>
+
+
+        
+        <div class="text-center mt_30" ngClass.xs="input-sm">
+            <button (click)="newPwd()" type="submit"  [disabled]="formGroup.invalid" mat-raised-button  color="primary">Cambiar Contraseña</button>
+        </div>
+        <br>
+        </form>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a id="scrollup">Scroll</a>

@@ -1,0 +1,228 @@
+<mat-toolbar class="navbar">
+    <div fxHide.gt-md>
+        <button mat-icon-button (click)="onToggleSidenav()">
+            <mat-icon>menu</mat-icon>
+        </button>
+    </div>
+    <div fxFlex fxLayout fxFlexOrder="1" fxLayoutAlign.lt-lg="end" fxFlexOrder.lt-lg="3">
+        <a [routerLink]="['/home']" (click)="checkPage('/home');obtenerNombreLogueado(); setearInicioSesion()">
+            <img ngClass.lt-lg="img-logo-index-sm" class="img-logo-index" alt="1UseLogo" src="../assets/images/E3.png">
+        </a>
+    </div>
+
+    <div fxFlex.gt-md fxLayout.gt-md fxLayoutAlign.gt-md="center center" fxFlexOrder.gt-md="2" ngClass.gt-md="input-xl"
+        fxLayout.lt-lg="20px" fxFlexOrder.lt-lg="2" ngClass.lt-lg="buscador-lt-md" [fxShow.gt-md]=estadoBuscador
+        [fxHide.lt-lg]=!estadoBuscador>
+        <form>
+            <mat-form-field>
+                <input #inputPalabra matInput>
+                <button mat-button (click)="buscarPalabra(inputPalabra.value)">
+                    <mat-icon>search</mat-icon>
+                </button>
+            </mat-form-field>
+        </form>
+    </div>
+
+    <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.lt-lg fxFlexOrder="3">
+
+        <!-- Notificaciones -->
+        <button mat-button class="spanToolbar"
+            (click)="checkPage('/register-publicacion');obtenerNombreLogueado(); setearInicioSesion(); verificarUsuario()"
+            [fxShow]=inicioSesion>Publicar</button>
+
+        <button mat-button [matMenuTriggerFor]="appMenu" class="spanToolbar">Categorías</button>
+
+        <button mat-button class="spanToolbar" [routerLink]="['/about']"
+            (click)="checkPage('/about'); obtenerNombreLogueado(); setearInicioSesion()">Sobre
+            Nosotros</button>
+
+        <div [fxShow]=inicioSesion>
+            <div (click)="desactivarBadge()">
+                <p mat-icon-button [matMenuTriggerFor]="menu" [matBadge]=cantidad matBadgeColor="warn"
+                    matBadgePosition="above after" matBadgeSize="small" matBadgeOverlap="true"
+                    [matBadgeHidden]=noHayNotificacionesNuevas style="margin-right: 8px; margin-top: 4px;">
+                    <mat-icon [fxShow]=!noHayNotificacionesNuevas>notifications</mat-icon>
+                    <mat-icon [fxShow]=noHayNotificacionesNuevas>notifications_none</mat-icon>
+                </p>
+            </div>
+            <mat-menu #menu="matMenu" xPosition="before">
+                <div mat-menu-item *ngFor="let not of notificaciones; let indice = index"
+                    style="max-width: 1000px !important">
+                    <p [fxShow]=!noHayNotificaciones routerLink="/publicaciones/{{not.id_publicacion}}">
+                        {{not.mensaje_notificacion}} {{arrayTitulos[indice]}}</p>
+                    <mat-divider style="margin: -1px"></mat-divider>
+                </div>
+                <p mat-menu-item [fxShow]=noHayNotificaciones> No hay notificaciones por mostrar </p>
+                <div mat-menu-item style="padding: 0 5px; margin-top: 5px">
+                    <button mat-raised-button routerLink="/mi-cuenta/notificaciones" color="primary"
+                        style="text-align: center" fxFlexFill>Mostrar todas</button>
+                </div>
+            </mat-menu>
+        </div>
+
+        <button mat-button class="spanToolbar" [routerLink]="['/login']"
+            (click)="checkPage('/login');setearInicioSesion()" [fxShow]=!inicioSesion>Iniciar
+            Sesión</button>
+
+        <div class="dropdown" #myDropdown=dropdown dropdown>
+            <button mat-button class="spanToolbar" (click)="ngOnInit(); setearInicioSesion(); openNow();obtenerNombreLogueado()"
+                [fxShow]=inicioSesion class="dropdown-toggle" dropdownToggle *ngIf="tieneNombre">
+                <mat-icon>account_circle</mat-icon> {{usuarioIniciado.nombre}}
+            </button>
+            <button mat-button class="spanToolbar" (click)="ngOnInit(); setearInicioSesion(); openNow();obtenerNombreLogueado()"
+                [fxShow]=inicioSesion class="dropdown-toggle" dropdownToggle *ngIf="!tieneNombre">
+                <mat-icon>account_circle</mat-icon> {{usuarioIniciado.name}}
+            </button>
+            <ul class="dropdown-menu" dropdownMenu fxLayout="row" fxLayoutAlign="center" [fxHide]=!estadoDropdown>
+                <!-- *ngIf=estadoDropdown -->
+                <div class="bienvenida-container" fxLayout="column" fxFlex>
+                    <div fxFlexAlign="center" class="circulo-container">
+                        <svg width="150" height="150">
+                            <circle cx="75" cy="75" r="70" stroke="gray" stroke-width="2" fill="white" />
+                        </svg>
+                        <div class="posicion-icono" *ngIf="!mostrarImagen">
+                            <mat-icon class="tamaño-icono">face</mat-icon>
+                        </div>
+                        <div *ngIf="mostrarImagen">
+                            <img class="img-user-logged" src="{{'http://localhost:4201/api/get-image/'+_id}}">
+                        </div>
+                    </div>
+                    <div *ngIf="tieneNombre">
+                        <p class="bienvenida-mensaje">¡Hola, {{usuarioIniciado.nombre}}!</p>
+                    </div>
+                    <div *ngIf="!tieneNombre">
+                        <p class="bienvenida-mensaje">¡Hola, {{usuarioIniciado.name}}!</p>
+                    </div>
+                    <div fxFlexAlign="center" class="bienvenida-boton">
+                        <button mat-raised-button color="primary" (click)="checkPage('/mi-cuenta'); myDropdown.close();obtenerNombreLogueado()"
+                            routerLink="/mi-cuenta">Ir a mi cuenta</button>
+                    </div>
+                </div>
+                <mat-divider [vertical]="true"></mat-divider>
+                <div fxLayout="column">
+                    <li><a class="neat" rel="noopener" (click)="checkPage('/mis-publicaciones');obtenerNombreLogueado()"
+                            routerLink="/mi-cuenta/mis-publicaciones"> Mis publicaciones</a></li>
+                    <li><a class="neat" rel="noopener" (click)="checkPage('/mis-alquileres');obtenerNombreLogueado()"
+                            routerLink="/mi-cuenta/mis-alquileres"> Mis alquileres</a></li>
+                    <li><a class="neat" rel="noopener" (click)="checkPage('/perfil');obtenerNombreLogueado()" routerLink="/mi-cuenta/perfil"> Mi
+                            Perfil</a></li>
+                    <li><a class="neat" rel="noopener" (click)="cerrarSesion()"> Cerrar sesión</a></li>
+                </div>
+            </ul>
+        </div>
+
+
+        <mat-menu #appMenu="matMenu">
+            <button mat-menu-item [matMenuTriggerFor]="subHogar" (click)="redirigirCategoria('Hogar')">Hogar</button>
+            <button mat-menu-item [matMenuTriggerFor]="subBebes" (click)="redirigirCategoria('Bebes')">Bebés</button>
+            <button mat-menu-item [matMenuTriggerFor]="subMusica" (click)="redirigirCategoria('Musica')">Música</button>
+            <button mat-menu-item [matMenuTriggerFor]="subLibros" (click)="redirigirCategoria('Libros')">Libros</button>
+            <button mat-menu-item [matMenuTriggerFor]="subBelleza"
+                (click)="redirigirCategoria('Belleza')">Belleza</button>
+            <button mat-menu-item [matMenuTriggerFor]="subMascotas"
+                (click)="redirigirCategoria('Mascotas')">Mascotas</button>
+            <button mat-menu-item [matMenuTriggerFor]="subDeportes"
+                (click)="redirigirCategoria('Deporte')">Deportes</button>
+            <button mat-menu-item [matMenuTriggerFor]="subElectronica"
+                (click)="redirigirCategoria('Electronica')">Electrónica</button>
+            <button mat-menu-item [matMenuTriggerFor]="subHerramientas"
+                (click)="redirigirCategoria('Herramientas')">Herramientas</button>
+            <button mat-menu-item [matMenuTriggerFor]="subOtros" (click)="redirigirCategoria('Otros')">Otros</button>
+        </mat-menu>
+
+        <mat-menu #subElectronica="matMenu">
+            <button mat-menu-item
+                (click)="redirigirSubcategoria('Electronica','TV-Audio-Video')">TV-Audio-Video</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Electronica','Celulares - Tablets')">Celulares -
+                Tablets</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Electronica','Computadoras')">Computadoras</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Electronica','Notebooks')">Notebooks</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Electronica','Videojuegos')">Videojuegos</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Electronica','Consolas')">Consolas</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Electronica','Cámaras y accesorios')">Cámaras y
+                accesorios</button>
+        </mat-menu>
+
+        <mat-menu #subHogar="matMenu">
+            <button mat-menu-item (click)="redirigirSubcategoria('Hogar','Accesorios(Hogar)')">Accesorios</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Hogar','Decoración')">Decoración</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Hogar','Muebles')">Muebles</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Hogar','Jardín')">Jardín</button>
+            <button mat-menu-item
+                (click)="redirigirSubcategoria('Hogar','Electrodomésticos')">Electrodomésticos</button>
+        </mat-menu>
+
+        <mat-menu #subDeportes="matMenu">
+            <button mat-menu-item (click)="redirigirSubcategoria('Deportes','Aerobics y fitness')">Aerobics y
+                fitness</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Deportes','Bicicletas y ciclismo')">Bicicletas y
+                ciclismo</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Deportes','Camping y pesca')">Camping y pesca</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Deportes','Deportes acuaticos')">Deportes
+                acuaticos</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Deportes','Futbol')">Futbol</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Deportes','Otros deportes')">Otros deportes</button>
+        </mat-menu>
+
+        <mat-menu #subMusica="matMenu">
+            <button mat-menu-item (click)="redirigirSubcategoria('Musica','Arte y antiguedades')">Arte y
+                antiguedades</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Musica','CDs - DVDs')">CDs - DVDs</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Musica','Instrumentos musicales')">Instrumentos
+                musicales</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Musica','Libros y revistas')">Libros y
+                revistas</button>
+        </mat-menu>
+
+        <mat-menu #subLibros="matMenu">
+            <button mat-menu-item (click)="redirigirSubcategoria('Libros','Novela')">Novela</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Libros','Gótico')">Gótico</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Libros','Ciencia Ficción')">Ciencia Ficción</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Libros','Cuento de hadas')">Cuento de hadas</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Libros','Acción')">Acción</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Libros','Drama')">Drama</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Libros','Suspenso')">Suspenso</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Libros','Terror')">Terror</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Libros','Fantástica')">Fantástica</button>
+        </mat-menu>
+
+        <mat-menu #subMascotas="matMenu">
+            <button mat-menu-item (click)="redirigirSubcategoria('Mascotas','Accesorios para perros')">Accesorios para
+                perros</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Mascotas','Accesorios para gatos')">Accesorios para
+                gatos</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Mascotas','Otros')">Otros</button>
+        </mat-menu>
+
+        <mat-menu #subBelleza="matMenu">
+            <button mat-menu-item (click)="redirigirSubcategoria('Belleza','Relojes - joyas - accesorios')">Relojes -
+                joyas - accesorios</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Belleza','Ropa y calzado')">Ropa y calzado</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Belleza','Salud y belleza')">Salud y belleza</button>
+        </mat-menu>
+
+        <mat-menu #subBebes="matMenu">
+            <button mat-menu-item (click)="redirigirSubcategoria('Bebes','Cunas - Accesorios')">Cunas -
+                Accesorios</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Bebes','Juegos - juguetes')">Juegos -
+                juguetes</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Bebes','Ropa bebés y niños')">Ropa bebés y
+                niños</button>
+        </mat-menu>
+
+        <mat-menu #subHerramientas="matMenu">
+            <button mat-menu-item (click)="redirigirSubcategoria('Herramientas','Industria')">Industria</button>
+            <button mat-menu-item (click)="redirigirSubcategoria('Herramientas','Repuestos')">Repuestos</button>
+            <button mat-menu-item
+                (click)="redirigirSubcategoria('Herramientas','Muebles para negocios - oficinas')">Muebles
+                para negocios
+                - oficinas</button>
+        </mat-menu>
+
+        <mat-menu #subOtros="matMenu">
+            <button mat-menu-item (click)="redirigirSubcategoria('Otros','Otras categorías')">Otras categorías</button>
+        </mat-menu>
+
+    </div>
+
+</mat-toolbar>

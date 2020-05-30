@@ -1,0 +1,34 @@
+section{
+    background-color: #4a70af;
+}
+
+
+.div-img-gt-md{
+    margin-top: 10px;
+    margin-bottom: 25px;
+}
+
+.img-gt-md{
+    max-height: 100px;
+}
+
+.div-img-lt-md{
+    margin-top: 10px;
+    margin-bottom: 44px;
+}
+
+.img-lt-md{
+    max-height: 80px;
+}
+
+.text{
+    text-align: justify;
+}
+
+img{
+    height: 100%;
+}
+
+ul{
+    list-style: none;
+}

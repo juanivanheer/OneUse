@@ -1,0 +1,14 @@
+<h2 mat-dialog-title style="text-align: center">¡Ingresa el código del locatario!</h2>
+<mat-dialog-content class="mat-typography">
+    <p>¡Pide al locatario del producto su número de verificación e ingrésalo!</p>
+    <mat-form-field>
+        <input matInput #codigo maxlength="10" placeholder="Código del locatario">
+        <mat-hint>El código consta de 10 números alfanuméricos</mat-hint>
+        <mat-hint align="end">{{codigo.value.length}} / 10</mat-hint>
+        <mat-error *ngIf="codigoIncorrecto">El código ingresado no es correcto</mat-error>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" (click)="codigoIngresado(codigo.value)">Continuar</button>
+    <button mat-raised-button color="primary" mat-dialog-close (click)="close()">Volver</button>
+</mat-dialog-actions>

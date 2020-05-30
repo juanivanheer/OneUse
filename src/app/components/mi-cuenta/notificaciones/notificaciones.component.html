@@ -1,0 +1,95 @@
+<div fxLayout="row" fxFlexFill>
+    <div fxLayout ngClass.lt-lg="toolbar-div-lt-md">
+        <mat-toolbar>
+            <mat-toolbar-row>
+                <a [routerLink]="['/mi-cuenta']">
+                    <!-- [routerLink]="['/perfil']" -->
+                    <mat-icon>insert_emoticon</mat-icon><span class="iconitos" fxHide.lt-lg="true">Mi Cuenta</span>
+                </a>
+            </mat-toolbar-row>
+
+            <mat-toolbar-row>
+                <a [routerLink]="['/mi-cuenta/notificaciones']">
+                    <!-- [routerLink]="['/perfil']" -->
+                    <mat-icon>notifications_active</mat-icon><span class="iconitos"
+                        fxHide.lt-lg="true">Notificaciones</span>
+                </a>
+            </mat-toolbar-row>
+
+            <mat-toolbar-row>
+                <a [routerLink]="['/mi-cuenta/perfil']">
+                    <!-- [routerLink]="['/perfil']" -->
+                    <mat-icon>account_circle</mat-icon><span class="iconitos" fxHide.lt-lg="true">Mi Perfil</span>
+                </a>
+            </mat-toolbar-row>
+
+            <mat-toolbar-row>
+                <a [routerLink]="['/mi-cuenta/mis-publicaciones']">
+                    <!-- [routerLink]="['/mis-publicaciones']" -->
+                    <mat-icon>book</mat-icon><span class="iconitos" fxHide.lt-lg="true">Mis Publicaciones</span>
+                </a>
+            </mat-toolbar-row>
+
+            <mat-toolbar-row>
+                <a [routerLink]="['/mi-cuenta/mis-alquileres']">
+                    <!-- [routerLink]="['mis-alquileres']"  -->
+                    <mat-icon>assignment</mat-icon> <span class="iconitos" fxHide.lt-lg="true">Mis Alquileres</span>
+                </a>
+            </mat-toolbar-row>
+
+            <mat-toolbar-row>
+                <a fxFlexAlign.lt-lg="flex-end" (click)="cerrarSesion()">
+                    <mat-icon>exit_to_app</mat-icon><span class="iconitos" fxHide.lt-lg="true">Salir</span>
+                </a>
+            </mat-toolbar-row>
+        </mat-toolbar>
+    </div>
+
+
+    <!--     <section class="container-notificaciones" fxLayout="column" fxLayoutGap="15px">
+        <div fxLayoutAlign="center center">
+            <h1>Notificaciones</h1>
+        </div>
+        <div class="container-una-notificacion" *ngFor="let vec of vector; let indice = index" fxAlign="start start">
+            <mat-divider *ngIf="indice == 0" style="margin-bottom:15px;"></mat-divider>
+            <p>Notificación re piola</p>
+            <p>Con una descripción re piola mal mal</p>
+            <mat-divider style="margin-top:15px;"></mat-divider>
+        </div>
+        <mat-paginator [pageSizeOptions]="[1,3,5,6]"></mat-paginator>
+    </section> -->
+
+    <section class="container-notificaciones" fxLayout="column" fxLayoutGap="15px">
+
+        <div class="mat-elevation-z8">
+            <mat-table #table [dataSource]="dataSource" matSort aria-label="Elements">
+
+                <ng-container matColumnDef="id">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
+                    <mat-cell mat-menu-item *matCellDef="let row" style="height: 100%; line-height: 38px"
+                        routerLink="/publicaciones/{{row.id_publicacion}}">
+                        <div fxLayout="row" fxLayoutGap="20px" style="margin-top: 10px;">
+                            <div>
+                                <img class="container-muestra-imagenes"
+                                    src="{{'http://localhost:4201/api/get-image-publicacion/'+ row.imagen}}">
+                            </div>
+                            <div>
+                                <h4> {{row.titulo}} {{row.tituloPublicacion}} </h4>
+                                <p> {{row.mensaje_notificacion}} </p>
+                                <p> Fecha de notificación: {{row.createdAt}} </p>
+                            </div>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row> -->
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+
+            <mat-paginator #paginator [length]="dataSource.data.length" [pageIndex]="0" [pageSize]="5"
+                [pageSizeOptions]="[1,5,10,15,20,25,50]">
+            </mat-paginator>
+        </div>
+    </section>
+
+</div>

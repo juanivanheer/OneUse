@@ -1,0 +1,225 @@
+<section fxLayout="row" class="container-general" fxFlexFill>
+    <!-- Sección de filtros -->
+    <section fxFlex="28%">
+        <div class="chips">
+            <!-- Sección de Chips -->
+            <mat-chip-list #chipList>
+                <mat-chip color="primary" *ngFor="let filtro of arrayFiltrosSeleccionados" [selectable]="selectable"
+                    [removable]="removable">    
+                    {{filtro.nombre}} : {{filtro.valor}}
+                    <mat-icon matChipRemove (click)="eliminarFiltro(filtro)">cancel</mat-icon>
+                </mat-chip>
+            </mat-chip-list>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="15px"
+            class="mat-elevation-z8 contenedor-filtros">
+            <div *ngIf="!filtroCategoria" fxLayout="column" class="filtros">
+                <p style="font-size: 16px;"><b>Categoría</b></p>
+                <a style="color: black;" *ngFor="let cat of arrayCategorias" (click)="filtroSeleccionado('c',cat)">
+                    {{cat}}
+                </a>
+            </div>
+
+            <!-- MOSTRAR SOLO CUANDO SE SELECCIONÓ UNA CATEGORÍA -->
+            <div *ngIf="!filtroSubcategoria && filtroCategoria" class="filtros" fxLayout="column"
+                fxLayoutAlign="center start" fxLayoutGap="15px">
+                <p style="font-size: 16px;"><b>Subcategoria</b></p>
+                <a style="color: black;" *ngFor="let sub of arraySubcategorias" (click)="filtroSeleccionado('sc',sub)">
+                    {{sub}}
+                </a>
+            </div>
+
+            <div *ngIf="!filtroPrecioDia" class="filtros">
+                <p style="font-size: 16px;"> <b>Precio por día</b></p>
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <mat-slider #slider class="slider" [displayWith]="formatoSlider" color="primary"
+                        [max]="sliderMax.value" [min]="sliderMin.value" thumbLabel="true">
+                    </mat-slider>
+                    <mat-hint> ${{slider.value}} </mat-hint>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px">
+                    <mat-form-field>
+                        <span matPrefix>$ &nbsp;</span>
+                        <input soloNumerosDirective maxlength="8" style="width: 70px;" matInput #sliderMin
+                            placeholder="Desde" value="0">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <span matPrefix>$ &nbsp;</span>
+                        <input soloNumerosDirective maxlength="8" style="width: 70px;" matInput #sliderMax
+                            placeholder="Hasta" value="1000">
+                    </mat-form-field>
+                    <button mat-icon-button color="primary" (click)="filtroSeleccionado('precio',slider.value)">
+                        <mat-icon>check_box</mat-icon>
+                    </button>
+                </div>
+
+            </div>
+
+            <div *ngIf="!filtroEstrellas" class="filtros">
+                <p style="font-size: 16px;"><b>Puntuación del propietario</b></p>
+                <mat-star-rating [rating]="rating" [starCount]="starCount" [color]="starColorP"
+                    (ratingUpdated)="onRatingChanged($event)"></mat-star-rating>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de publicaciones -->
+    <section fxFlex="72%" class="mat-elevation-z8 contenedor-publicaciones">
+        <div>
+            <mat-table #table [dataSource]="dataSource" matSort aria-label="Elements">
+                <ng-container matColumnDef="id">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
+                    <mat-cell *matCellDef="let row" style="height: 100%; line-height: 38px">
+                        <div fxLayout="row" fxLayoutGap="20px" style="margin-top: 10px;">
+                            <div *ngIf="!hayPublicaciones">
+                                {{mensaje}}
+                            </div>
+                            <div>
+                                <img class="container-muestra-imagenes"
+                                    src="{{'http://localhost:4201/api/get-image-publicacion/'+ row.multiplefile}}">
+                            </div>
+                            <div>
+                                <a routerLink="/publicaciones/{{row._id}}">{{row.titulo}} </a>
+                                <p> <b> Precio por día </b>: ${{row.preciodia}} </p>
+                                <p> <b> Categoría </b>: {{row.categoria}}</p>
+                                <div class="row tile-ratings">
+                                    
+                                    <a aria-label="4.0 out of 5 stars. 1 review "
+                                        itemprop="aggregateRating" itemscope="">
+                                                <span
+                                                    style="padding-left: 12px;" aria-hidden="true">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16px"
+                                                        height="16px" viewBox="0 0 25 25"
+                                                        style="width: 16px !important; height: 16px !important;">
+                                                        <polygon
+                                                            points="25 9.12 15.5669599 9.12 12.512219 0 9.40860215 9.12 0 9.12 7.55131965 14.856 4.47214076 24 12.512219 18.216 20.5522972 24 17.4731183 14.856"
+                                                            style="fill: url(&quot;#bv_inline_ratings_star_filled_0_99.99_ZRRdu1lA5k&quot;) !important;">
+                                                        </polygon>
+                                                        <path d=""
+                                                            style="fill: url(&quot;#bv_inline_ratings_star_filled_0_99.99_ZRRdu1lA5k&quot;) !important;">
+                                                        </path>
+                                                        <defs>
+                                                            <linearGradient
+                                                                id="bv_inline_ratings_star_filled_0_99.99_ZRRdu1lA5k"
+                                                                x1="99.99%" y1="0%" x2="100%" y2="0%">
+                                                                <stop offset="0%"
+                                                                    style="stop-color: rgb(218, 41, 28); stop-opacity: 1;">
+                                                                </stop>
+                                                                <stop offset="1%"
+                                                                    style="stop-color: rgb(227, 227, 227); stop-opacity: 1;">
+                                                                </stop>
+                                                            </linearGradient>
+                                                        </defs>
+                                                    </svg>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16px"
+                                                        height="16px" viewBox="0 0 25 25"
+                                                        style="width: 16px !important; height: 16px !important;">
+                                                        <polygon
+                                                            points="25 9.12 15.5669599 9.12 12.512219 0 9.40860215 9.12 0 9.12 7.55131965 14.856 4.47214076 24 12.512219 18.216 20.5522972 24 17.4731183 14.856"
+                                                            style="fill: url(&quot;#bv_inline_ratings_star_filled_1_99.99_RPqzb6ur3e&quot;) !important;">
+                                                        </polygon>
+                                                        <path d=""
+                                                            style="fill: url(&quot;#bv_inline_ratings_star_filled_1_99.99_RPqzb6ur3e&quot;) !important;">
+                                                        </path>
+                                                        <defs>
+                                                            <linearGradient
+                                                                id="bv_inline_ratings_star_filled_1_99.99_RPqzb6ur3e"
+                                                                x1="99.99%" y1="0%" x2="100%" y2="0%">
+                                                                <stop offset="0%"
+                                                                    style="stop-color: rgb(218, 41, 28); stop-opacity: 1;">
+                                                                </stop>
+                                                                <stop offset="1%"
+                                                                    style="stop-color: rgb(227, 227, 227); stop-opacity: 1;">
+                                                                </stop>
+                                                            </linearGradient>
+                                                        </defs>
+                                                    </svg>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16px"
+                                                        height="16px" viewBox="0 0 25 25"
+                                                        style="width: 16px !important; height: 16px !important;">
+                                                        <polygon
+                                                            points="25 9.12 15.5669599 9.12 12.512219 0 9.40860215 9.12 0 9.12 7.55131965 14.856 4.47214076 24 12.512219 18.216 20.5522972 24 17.4731183 14.856"
+                                                            style="fill: url(&quot;#bv_inline_ratings_star_filled_2_99.99_ci2oHAJXCs&quot;) !important;">
+                                                        </polygon>
+                                                        <path d=""
+                                                            style="fill: url(&quot;#bv_inline_ratings_star_filled_2_99.99_ci2oHAJXCs&quot;) !important;">
+                                                        </path>
+                                                        <defs>
+                                                            <linearGradient
+                                                                id="bv_inline_ratings_star_filled_2_99.99_ci2oHAJXCs"
+                                                                x1="99.99%" y1="0%" x2="100%" y2="0%">
+                                                                <stop offset="0%"
+                                                                    style="stop-color: rgb(218, 41, 28); stop-opacity: 1;">
+                                                                </stop>
+                                                                <stop offset="1%"
+                                                                    style="stop-color: rgb(227, 227, 227); stop-opacity: 1;">
+                                                                </stop>
+                                                            </linearGradient>
+                                                        </defs>
+                                                    </svg>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16px"
+                                                        height="16px" viewBox="0 0 25 25"
+                                                        style="width: 16px !important; height: 16px !important;">
+                                                        <polygon
+                                                            points="25 9.12 15.5669599 9.12 12.512219 0 9.40860215 9.12 0 9.12 7.55131965 14.856 4.47214076 24 12.512219 18.216 20.5522972 24 17.4731183 14.856"
+                                                            style="fill: url(&quot;#bv_inline_ratings_star_filled_3_99.99_yQ70B0PlT2&quot;) !important;">
+                                                        </polygon>
+                                                        <path d=""
+                                                            style="fill: url(&quot;#bv_inline_ratings_star_filled_3_99.99_yQ70B0PlT2&quot;) !important;">
+                                                        </path>
+                                                        <defs>
+                                                            <linearGradient
+                                                                id="bv_inline_ratings_star_filled_3_99.99_yQ70B0PlT2"
+                                                                x1="99.99%" y1="0%" x2="100%" y2="0%">
+                                                                <stop offset="0%"
+                                                                    style="stop-color: rgb(218, 41, 28); stop-opacity: 1;">
+                                                                </stop>
+                                                                <stop offset="1%"
+                                                                    style="stop-color: rgb(227, 227, 227); stop-opacity: 1;">
+                                                                </stop>
+                                                            </linearGradient>
+                                                        </defs>
+                                                    </svg>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16px"
+                                                        height="16px" viewBox="0 0 25 25"
+                                                        style="width: 16px !important; height: 16px !important;">
+                                                        <polygon
+                                                            points="25 9.12 15.5669599 9.12 12.512219 0 9.40860215 9.12 0 9.12 7.55131965 14.856 4.47214076 24 12.512219 18.216 20.5522972 24 17.4731183 14.856"
+                                                            style="fill: url(&quot;#bv_inline_ratings_star_filled_4_0.00_57T0xaN4ai&quot;) !important;">
+                                                        </polygon>
+                                                        <path d=""
+                                                            style="fill: url(&quot;#bv_inline_ratings_star_filled_4_0.00_57T0xaN4ai&quot;) !important;">
+                                                        </path>
+                                                        <defs>
+                                                            <linearGradient
+                                                                id="bv_inline_ratings_star_filled_4_0.00_57T0xaN4ai"
+                                                                x1="0.00%" y1="0%" x2="100%" y2="0%">
+                                                                <stop offset="0%"
+                                                                    style="stop-color: rgb(218, 41, 28); stop-opacity: 1;">
+                                                                </stop>
+                                                                <stop offset="1%"
+                                                                    style="stop-color: rgb(227, 227, 227); stop-opacity: 1;">
+                                                                </stop>
+                                                            </linearGradient>
+                                                        </defs>
+                                                    </svg>
+                                                </span>
+                                            
+                                    </a>
+            
+                        </div>
+                            </div>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row> -->
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+
+            <mat-paginator #paginator [length]="dataSource.data.length" [pageIndex]="0" [pageSize]="5"
+                [pageSizeOptions]="[1,5,10,15,20,25,50]">
+            </mat-paginator>
+        </div>
+    </section>
+</section>

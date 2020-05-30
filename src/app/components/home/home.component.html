@@ -1,0 +1,118 @@
+<section>
+  <swiper class="swiper-container" [config]="config">
+    <div class="swiper-slide">
+      <div fxLayout="column" fxLayoutAlign="center center" fxFlexFill>
+        <mat-video [autoplay]="true" [preload]="true" [overlay]="false" [loop]="true" [keyboard]="false"
+          src="../../../assets/images/homeVideo.mp4"></mat-video>
+      </div>
+    </div>
+    <div class="swiper-slide">
+      <div class="banner-area relative">
+        <div class="overlay overlay-bg"></div>
+        <div class="container">
+          <div class="row fullscreen justify-content-center align-items-center" style="height: 400px;">
+            <div class="col-lg-8">
+              <div class="banner-content text-center">
+                <p class="text-uppercase text-white">1 Use te permite alquilar
+                  los objetos que necesites</p>
+                <h1 class=" text-white">Si no lo quieres vender, ¡Alquílalo!</h1>
+                <a class="primary-btn banner-btn text-white" (click)="checkPagina()">Publicar</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="swiper-slide">
+      <div class="banner-area1 relative">
+        <div class="overlay overlay-bg"></div>
+        <div class="container">
+          <div class="row fullscreen justify-content-center align-items-center" style="height: 400px;">
+            <div class="col-lg-8">
+              <div class="banner-content text-center">
+                <p class="text-uppercase text-white">Conocé todas las categorías disponibles en nuestra web</p>
+                <h1 class=" text-white">¡Comenzá ahora!</h1>
+                <a class="primary-btn banner-btn text-white" (click)="scroll(target)">Ver categorías</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="swiper-slide">
+      <div fxLayout="column" fxLayoutAlign="center center" fxFlexFill>
+        <iframe width="1518" height="450" src="https://www.youtube.com/embed/b13mQgTU2_Y?autoplay=1&disablekb=1&fs=0&loop=1&controls=0" frameborder="0"
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div> -->
+  </swiper>
+
+  <!--Publicaciones destacadas-->
+
+  <div class="container-destacados">
+    <div>
+      <h2 style="text-align: center; margin-bottom: 15px">Publicaciones destacadas</h2>
+    </div>
+    <div fxHide.lt-md="true" fxShow.gt-md="true">
+      <mat-grid-list cols="4" rowHeight="367px" gutterSize="20px">
+        <mat-grid-tile *ngFor="let destacadas of arrayRandoms; let indice of index" [colspan]=1 [rowspan]=1>
+          <div *ngIf="destacadas == indice">
+            <mat-card class="container-card">
+              <mat-card-header>
+                <mat-card-title><a (click)="contador(publicacionesDestacadas[destacadas]._id)" style="color:black;"
+                    routerLink="/publicaciones/{{publicacionesDestacadas[destacadas]._id}}">
+                    {{publicacionesDestacadas[destacadas].titulo}} </a>
+                </mat-card-title>
+                <mat-card-subtitle> {{publicacionesDestacadas[destacadas].categoria}},
+                  {{publicacionesDestacadas[destacadas].subcategoria}} </mat-card-subtitle>
+              </mat-card-header>
+
+              <mat-card-content style="height: 230px;">
+                <swiper class="swiper-container" [config]="config2">
+                  <div *ngFor="let img of publicacionesDestacadas[destacadas].multiplefile; let indice2 = index">
+                    <img class="container-img-card"
+                      src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacionesDestacadas[destacadas].multiplefile[indice2]}}">
+                  </div>
+                </swiper>
+                <p> <b>Precio por día:</b> ${{publicacionesDestacadas[destacadas].preciodia}} </p>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+    <div fxHide.gt-md="true" fxShow.lt-md="true">
+      <mat-grid-list cols="2" rowHeight="367px" gutterSize="20px">
+        <mat-grid-tile *ngFor="let destacadas of arrayRandoms; let indice of index" [colspan]=1 [rowspan]=1>
+          <div *ngIf="destacadas == indice">
+            <mat-card class="container-card-sm">
+              <mat-card-header>
+                <mat-card-title><a style="color:black;"
+                    routerLink="/publicaciones/{{publicacionesDestacadas[destacadas]._id}}">
+                    {{publicacionesDestacadas[destacadas].titulo}} </a>
+                </mat-card-title>
+                <mat-card-subtitle> {{publicacionesDestacadas[destacadas].categoria}},
+                  {{publicacionesDestacadas[destacadas].subcategoria}} </mat-card-subtitle>
+              </mat-card-header>
+
+              <mat-card-content style="height: 230px;">
+                <swiper class="swiper-container" [config]="config2">
+                  <div *ngFor="let img of publicacionesDestacadas[destacadas].multiplefile; let indice2 = index">
+                    <img class="container-img-card"
+                      src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacionesDestacadas[destacadas].multiplefile[indice2]}}">
+                  </div>
+                </swiper>
+                <p> <b>Precio por día:</b> ${{publicacionesDestacadas[destacadas].preciodia}} </p>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+  </div>
+
+  <div #target>
+    <app-categorias></app-categorias>
+  </div>
+</section>

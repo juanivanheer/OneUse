@@ -1,0 +1,77 @@
+.contenedor-principal {
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .3);
+    border-radius: 4px;
+    margin-left: 240px;
+    margin-top: 15px;
+    margin-bottom: 50px;
+    width: 1070px;
+    max-width: 1400px;
+    box-sizing: border-box;
+}
+
+.contenedor-1 {
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.contenedor-2 {
+    margin-top: 26px;
+    margin-left: 23px;
+}
+
+.container-muestra-imagenes {
+    width: 530px;
+    height: 530px;
+    margin-top: 25px
+}
+
+.chips {
+    margin-top: 50px;
+    margin-left: 240px;
+    width: 500px;
+}
+
+.descripcion {
+    margin-top: 10px;
+    margin-left: 15px;
+    margin-bottom: 20px;
+}
+
+.btnAlquilar {
+    text-align: center;
+}
+
+.tipoAlquiler {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.mediosPago {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.preguntasRespuestas{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    margin: 15px;
+}
+
+.btnPreguntar{
+    float: right;
+    margin-top: 10px;
+}
+
+.ultimasPreguntas{
+    margin-top: 80px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+}
+
+.respuesta{
+    margin-top: 15px;
+    margin-bottom: 15px;
+}

@@ -1,0 +1,44 @@
+<h2 mat-dialog-title style="text-align: center">Datos del alquiler</h2>
+<mat-dialog-content class="mat-typography">
+    <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="20px">
+        <div>
+            <h3><b>Datos del alquiler</b></h3>
+            <p><b>ID alquiler: </b> {{datos._id}} </p>
+            <p><b>ID publicación: </b> {{datos.id_publicacion}} </p>
+            <p><b>Estado: </b> {{datos.estado}} </p>
+            <p><b>Usuario propietario: </b> {{datos.name_usuarioPropietario}} </p>
+            <p><b>Usuario locatario: </b> {{datos.name_usuarioLocatario}} </p>
+            <p><b>Cantidad de días alquilado: </b> {{datos.cantidadDias}}</p>
+            <p><b>Cantidad alquilada: </b> {{datos.cantidadAlquilar}}</p>
+            <p><b>¿Fue pagado?: </b> {{datos.fuePagado}} </p>
+            <p><b>Fecha de entrega: </b> {{datos.fechaEntrega}}</p>
+            <p><b>Fecha de caducidad de entrega: </b> {{datos.fechaCaducidadEntrega}}</p>
+            <p><b>Imagen: </b> {{datos.imagen}} </p>
+            <p><b>Fecha de creación: </b> {{datos.createdAt}}</p>
+            <p><b>Última fecha de actualización: </b> {{datos.updatedAt}}</p>
+            <p><b>Versión: </b> {{datos.__v}}</p>
+        </div>
+
+        <div>
+            <h3><b>Entrega</b></h3>
+            <p><b>Código de entrega propietario: </b> {{datos.codigoEntregaPropietario}}</p>
+            <p><b>Código de entrega locatario: </b> {{datos.codigoEntregaLocatario}}</p>
+            <p><b>¿Ingresado código devolución propietario?: </b> {{datos.codigoPropietarioDevolucionIngresado}}</p>
+            <p><b>¿Ingresado código devolución locatario?: </b> {{datos.codigoLocatarioDevolucionIngresado}}</p>
+        </div>
+
+        <div>
+            <h3><b>Devolución</b></h3>
+            <p><b>Código de devolución propietario: </b> {{datos.codigoDevolucionPropietario}}</p>
+            <p><b>Código de devolución locatario: </b> {{datos.codigoDevolucionLocatario}}</p>
+            <p><b>¿Ingresado código entrega propietario?: </b> {{datos.codigoPropietarioIngresado}}</p>
+            <p><b>¿Ingresado código entrega locatario?: </b> {{datos.codigoLocatarioIngresado}}</p>
+            <p><b>Fecha de devolución: </b> {{datos.fechaDevolucion}}</p>
+            <p><b>Fecha de caducidad de devolución: </b> {{datos.fechaCaducidadDevolucion}}</p>
+        </div>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" mat-dialog-close (click)="close()">Salir</button>
+</mat-dialog-actions>

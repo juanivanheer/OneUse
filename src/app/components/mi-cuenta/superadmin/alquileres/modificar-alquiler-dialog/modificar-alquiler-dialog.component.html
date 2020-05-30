@@ -1,0 +1,156 @@
+<h3 mat-dialog-title style="text-align: center">Modificar usuario</h3>
+<mat-dialog-content class="mat-typography">
+    <mat-dialog-content class="mat-typography">
+        <form [formGroup]="datosUsuariosGroup">
+            <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="20px">
+                <div>
+                    <h3><b>Datos del alquiler</b></h3>
+                    <mat-form-field>
+                        <input [value]="_id" formControlName="_id" name="_id" matInput (ngModelChange)="_id = $event"
+                            placeholder="ID alquiler">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="id_publicacion" formControlName="id_publicacion" name="id_publicacion" matInput (ngModelChange)="id_publicacion = $event"
+                            placeholder="ID publicación">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="estado" formControlName="estado" name="estado" matInput (ngModelChange)="estado = $event"
+                            placeholder="Estado del alquiler">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="name_usuarioPropietario" formControlName="name_usuarioPropietario"
+                            name="name_usuarioPropietario" matInput (ngModelChange)="name_usuarioPropietario = $event"
+                            placeholder="Username propietario">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="name_usuarioLocatario" formControlName="name_usuarioLocatario"
+                            name="name_usuarioLocatario" matInput placeholder="Username locatario"
+                            (ngModelChange)="name_usuarioLocatario = $event" email>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="cantidadDias" formControlName="cantidadDias" name="cantidadDias" matInput
+                            (ngModelChange)="cantidadDias = $event" placeholder="Cantidad de días alquilado">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="cantidadAlquilar" formControlName="cantidadAlquilar" name="cantidadAlquilar"
+                            matInput (ngModelChange)="cantidadAlquilar = $event" placeholder="Cantidad alquilada">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="fuePagado" formControlName="fuePagado" name="fuePagado" matInput
+                            (ngModelChange)="fuePagado = $event" placeholder="¿Fue pagado?">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="fechaEntrega" formControlName="fechaEntrega" name="fechaEntrega" matInput
+                            (ngModelChange)="fechaEntrega = $event" placeholder="Fecha de entrega">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="fechaCaducidadEntrega" formControlName="fechaCaducidadEntrega"
+                            name="fechaCaducidadEntrega" matInput (ngModelChange)="fechaCaducidadEntrega = $event"
+                            placeholder="Fecha de caducidad de entrega">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="imagen" formControlName="imagen" name="imagen" matInput
+                            (ngModelChange)="imagen = $event" placeholder="Imagen">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="createdAt" formControlName="createdAt" name="createdAt" matInput
+                            (ngModelChange)="createdAt = $event" placeholder="Fecha de creación">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="updatedAt" formControlName="updatedAt" name="updatedAt" matInput
+                            (ngModelChange)="updatedAt = $event" placeholder="Última fecha de modificación">
+                    </mat-form-field>
+                </div>
+
+                <div>
+                    <h3><b>Entrega</b></h3>
+                    <mat-form-field>
+                        <input [value]="codigoEntregaPropietario" formControlName="codigoEntregaPropietario"
+                            name="codigoEntregaPropietario" matInput (ngModelChange)="codigoEntregaPropietario = $event"
+                            placeholder="Código de entrega del propietario">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="codigoEntregaLocatario" formControlName="codigoEntregaLocatario"
+                            name="codigoEntregaLocatario" matInput (ngModelChange)="codigoEntregaLocatario = $event"
+                            placeholder="Código de entrega del locatario">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="codigoPropietarioIngresado" formControlName="codigoPropietarioIngresado"
+                            name="codigoPropietarioIngresado" matInput
+                            (ngModelChange)="codigoPropietarioIngresado = $event"
+                            placeholder="¿Código entrega propietario ingresado?">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="codigoLocatarioIngresado" formControlName="codigoLocatarioIngresado"
+                            name="codigoLocatarioIngresado" matInput (ngModelChange)="codigoLocatarioIngresado = $event"
+                            placeholder="¿Código entrega locatario ingresado?">
+                    </mat-form-field>
+                </div>
+
+                <div>
+                    <h3><b>Devolución</b></h3>
+                    <mat-form-field>
+                        <input [value]="codigoDevolucionPropietario" formControlName="codigoDevolucionPropietario"
+                            name="codigoDevolucionPropietario" matInput
+                            (ngModelChange)="codigoDevolucionPropietario = $event"
+                            placeholder="Código de devolución del propietario">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="codigoDevolucionLocatario" formControlName="codigoDevolucionLocatario"
+                            name="codigoDevolucionLocatario" matInput
+                            (ngModelChange)="codigoDevolucionLocatario = $event"
+                            placeholder="Código de devolución del locatario">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="codigoLocatarioDevolucionIngresado"
+                            formControlName="codigoLocatarioDevolucionIngresado"
+                            name="codigoLocatarioDevolucionIngresado" matInput
+                            (ngModelChange)="codigoLocatarioDevolucionIngresado = $event"
+                            placeholder="¿Código devolución locatario ingresado?">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="codigoPropietarioDevolucionIngresado"
+                            formControlName="codigoPropietarioDevolucionIngresado"
+                            name="codigoPropietarioDevolucionIngresado" matInput
+                            (ngModelChange)="codigoPropietarioDevolucionIngresado = $event"
+                            placeholder="¿Código devolución propietario ingresado?">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="fechaDevolucion" formControlName="fechaDevolucion" name="fechaDevolucion"
+                            matInput (ngModelChange)="fechaDevolucion = $event" placeholder="Fecha de devolución">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="fechaCaducidadDevolucion" formControlName="fechaCaducidadDevolucion"
+                            name="fechaCaducidadDevolucion" matInput (ngModelChange)="fechaCaducidadDevolucion = $event"
+                            placeholder="Fecha de caducidad de devolución">
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+    </mat-dialog-content>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button color="warn" mat-dialog-close (click)="close()">Cancelar</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]="true" (click)="modificarAlquiler()"
+        cdkFocusInitial>Modificar</button>
+</mat-dialog-actions>

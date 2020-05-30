@@ -1,0 +1,19 @@
+<h2 mat-dialog-title style="text-align: center">Datos de la publicación</h2>
+<mat-dialog-content class="mat-typography">
+    <p><b>Título: </b> {{datos.titulo}} </p>
+    <p><b>Categoría: </b> {{datos.categoria}} </p>
+    <p><b>Descripción: </b> {{datos.descripcion}} </p>
+    <p><b>Precio por día: </b> ${{datos.preciodia}} </p>
+    <p><b>Precio por semana: </b> ${{datos.preciosemana}} </p>
+    <p><b>Precio por mes: </b> ${{datos.preciomes}} </p>
+    <p><b>Tipo de alquiler: </b> {{datos.tipoAlquiler}} </p>
+    <p><b>¿Destacado?: </b> {{datos.destacar}}</p>
+    <p><b>Estado: </b> {{datos.estado}}</p>
+    <p><b>Cantidad de días: </b> {{datos.cantDias}}</p>
+    <p><b>Cantidad disponible: </b> {{datos.cantidadDisponible}}</p>
+    <p><b>Visitas: </b> {{datos.contadorDeVisita}}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" mat-dialog-close (click)="close()">Salir</button>
+</mat-dialog-actions>

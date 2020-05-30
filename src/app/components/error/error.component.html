@@ -1,0 +1,21 @@
+<section fxLayout.gt-md="row" fxLayoutAlign.gt-md="center center" fxFlexFill fxLayoutGap.gt-md="25px"
+    fxLayout.lt-lg="column" fxLayoutAlign.lt-lg="center center" fxLayoutGap.lt-lg="40px">
+    <div ngClass.gt-md="imagen" ngClass.lt-lg="imagen-lt-md">
+        <img src="../../../assets/images/error.png">
+    </div>
+    <div>
+        <div fxLayout.gt-md="row" fxLayoutAlign.gt-md="start" fxLayout.lt-lg="column" fxLayoutAlign.lt-lg="start">
+            <p class="titulo"><b>Página no encontrada</b></p>
+        </div>
+        <br>
+        <div fxLayout.lt-lg="column" fxLayoutAlign.lt-lg="center center" ngClass.lt-lg="texto-lt-md">
+            <p>No se ha encontrado la página que buscas.</p>
+            <br>
+            <p>Puedes volver a la página anterior, visitar nuestra página de inicio o <br fxHide.lt-lg> ponerte en contacto con
+                nuestro equipo de asistencia técnica.</p>
+        </div>
+        <div fxLayout.gt-md="row" fxLayoutAlign.gt-md="start" fxLayout.lt-lg="column" fxLayoutAlign.lt-lg="center center">
+            <button mat-raised-button id="btnError" color="primary" (click)="inicio()">Visitar página de inicio</button>
+        </div>
+    </div>
+</section>

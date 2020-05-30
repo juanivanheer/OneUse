@@ -1,0 +1,117 @@
+<h2 mat-dialog-title style="text-align: center">Modificar usuario</h2>
+<mat-dialog-content class="mat-typography">
+    <mat-dialog-content class="mat-typography">
+        <form [formGroup]="datosUsuariosGroup">
+            <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="30px">
+                <div>
+                    <mat-form-field>
+                        <input [value]="_id" formControlName="_id" name="_id" matInput (ngModelChange)="_id = $event"
+                            placeholder="ID">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="name" formControlName="name" name="name" matInput
+                            (ngModelChange)="name = $event" placeholder="Nombre de usuario">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="nombre" formControlName="nombre" name="nombre" matInput
+                            (ngModelChange)="nombre = $event" placeholder="Nombre" soloLetrasDirective>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="apellido" formControlName="apellido" name="apellido" matInput
+                            (ngModelChange)="apellido = $event" placeholder="Apellido" soloLetrasDirective>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="fecha_nacimiento" formControlName="fecha_nacimiento" name="fecha_nacimiento"
+                            matInput (ngModelChange)="fecha_nacimiento = $event" placeholder="Fecha de nacimiento">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="email" formControlName="email" name="email" matInput placeholder="Email"
+                            (ngModelChange)="email = $event" email>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="password" formControlName="password" name="password" matInput
+                            (ngModelChange)="password = $event" placeholder="Contraseña">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="confirmed" formControlName="confirmed" name="confirmed" matInput
+                            (ngModelChange)="confirmed = $event" placeholder="Mail confirmado">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="createdAt" formControlName="createdAt" name="createdAt" matInput
+                            (ngModelChange)="createdAt = $event" placeholder="Fecha de cración">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="updatedAt" formControlName="updatedAt" name="updatedAt" matInput
+                            (ngModelChange)="updatedAt = $event" placeholder="Ultima fecha de actualización">
+                    </mat-form-field>
+                </div>
+
+                <div>
+                    <mat-form-field>
+                        <input [value]="__v" formControlName="__v" name="__v" matInput (ngModelChange)="__v = $event"
+                            placeholder="Versión">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="provincia" formControlName="provincia" name="provincia" matInput
+                            (ngModelChange)="provincia = $event" placeholder="Provincia">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="barrio" formControlName="barrio" name="barrio" matInput
+                            (ngModelChange)="barrio = $event" placeholder="Barrio">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="ciudad" formControlName="ciudad" name="ciudad" matInput
+                            (ngModelChange)="ciudad = $event" placeholder="Ciudad">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="calle" formControlName="calle" name="calle" matInput
+                            (ngModelChange)="calle = $event" placeholder="Calle">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="numero" formControlName="numero" name="numero" matInput
+                            (ngModelChange)="numero = $event" placeholder="Altura">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="codArea" formControlName="codArea" name="codArea" matInput
+                            (ngModelChange)="codArea = $event" placeholder="Código de area">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="telefono" formControlName="telefono" name="telefono" matInput
+                            (ngModelChange)="telefono = $event" placeholder="Teleono">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="piso" formControlName="piso" name="piso" matInput
+                            (ngModelChange)="piso = $event" placeholder="Piso">
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input [value]="departamento" formControlName="departamento" name="departamento" matInput
+                            (ngModelChange)="departamento = $event" placeholder="Departamento">
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+    </mat-dialog-content>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button color="warn" mat-dialog-close (click)="close()">Cancelar</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]="true" (click)="modificarUsuario()"
+        cdkFocusInitial>Modificar</button>
+</mat-dialog-actions>

@@ -1,0 +1,10 @@
+<h2 mat-dialog-title style="text-align: center">Datos del propietario</h2>
+<mat-dialog-content class="mat-typography">
+    <p><b>Nombre: </b> {{propietario.nombre}} </p>
+    <p><b>Apellido: </b> {{propietario.apellido}} </p>
+    <p><b>Telefono: </b> ({{propietario.codArea}}) {{propietario.telefono}} </p>
+    <p><b>Email: </b> {{propietario.email}} </p>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" mat-dialog-close (click)="close()">Volver</button>
+</mat-dialog-actions>

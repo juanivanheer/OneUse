@@ -1,0 +1,16 @@
+<h2 mat-dialog-title style="text-align: center">Datos del usuario</h2>
+<mat-dialog-content class="mat-typography">
+    <p><b>Nombre: </b> {{datos.nombre}} </p>
+    <p><b>Apellido: </b> {{datos.apellido}} </p>
+    <p><b>Telefono: </b> ({{datos.codArea}}) {{datos.telefono}} </p>
+    <p><b>Fecha de nacimiento: </b> {{datos.fecha_nacimiento}} </p>
+    <p><b>Provincia: </b> {{datos.provincia}} </p>
+    <p><b>Ciudad: </b> {{datos.ciudad}} </p>
+    <p><b>Barrio: </b> {{datos.barrio}} </p>
+    <p><b>Dirección: </b> {{datos.calle}} {{datos.numero}} </p>
+    <p><b>Departamento: </b> {{datos.piso}} {{datos.departamento}} </p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" mat-dialog-close (click)="close()">Salir</button>
+</mat-dialog-actions>

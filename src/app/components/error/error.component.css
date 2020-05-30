@@ -1,0 +1,33 @@
+ .imagen{
+    max-height: 200px;
+    height: 100%;   
+}
+
+.imagen-lt-md{
+    max-height: 200px;
+    height: 100%;   
+}
+
+img{
+    height: 100%;
+}
+
+.titulo{
+    font-size: 24px;
+    text-align: center;
+}
+
+.texto-lt-md{
+    text-align: center;
+}
+
+.texto{
+    justify-content: center;
+    line-height: 20px;
+    text-align: justify;
+}
+
+#btnError{
+    margin-top: 10px;
+    
+}

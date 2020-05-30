@@ -1,0 +1,167 @@
+<section>
+    <form #frmLogin="ngForm" name=register id="login-form" action="#" method="post"
+        [formGroup]="formGroup" fxLayout="column" fxLayoutAlign="center center" fxLayout.lt-lg="column"
+        fxLayoutAlign.lt-lg="center center">
+        <div class="panel-heading">
+            <h3>Registrarse en el Sitio</h3>
+        </div>
+        <hr>
+        <br>
+        <mat-form-field hideRequiredMarker ngClass.lt-lg="input-sm">
+            <input type="email" matInput placeholder="Nombre de usuario" [(ngModel)]="registerUserData.name" name="name"
+                class="input-login" style="color: black !important" id="Nombre" tabindex="1"
+                formControlName="name" ngModel required>
+            <button mat-button matSuffix mat-icon-button aria-label="Clear">
+                <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="name.hasError('required')">Usuario requerido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field hideRequiredMarker ngClass.lt-lg="input-sm">
+            <input #email_usuario type="email" matInput placeholder="E-mail" [(ngModel)]="registerUserData.email"
+                [pattern]="emailPattern" name="email" class="input-login" style="color: black !important" name="email"
+                id="username1" tabindex="1" formControlName="email" ngModel required>
+            <button mat-button matSuffix mat-icon-button aria-label="Clear">
+                <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="email.hasError('pattern')">Email no válido</mat-error>
+            <mat-error *ngIf="email.hasError('required')">Email no válido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field hideRequiredMarker ngClass.lt-lg="input-sm">
+            <input type="password" matInput placeholder="Contraseña" [(ngModel)]="registerUserData.password"
+                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d$@$!%*?&]{8,15}$" name="password"
+                [type]="hide ? 'password' : 'text'" class="input-login" style="color: black !important" name="password"
+                id="password" tabindex="2" formControlName="password" ngModel required>
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+
+            <mat-error *ngIf="password.hasError('pattern')">La contraseña debe tener al menos 8(ocho) caracteres y
+                contener al menos una mayúscula y un dígito.</mat-error>
+            <mat-error *ngIf="password.hasError('required')">Contraseña requerida</mat-error>
+
+        </mat-form-field>
+
+        <mat-form-field hideRequiredMarker ngClass.lt-lg="input-sm">
+            <input type="password" matInput placeholder="Repetir contraseña" [type]="hide2 ? 'password' : 'text'"
+                class="input-login" style="color: black !important" formControlName="password2"
+                (input)="onPasswordInput()" required>
+            <button mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide2">
+                <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <mat-error *ngIf="password.hasError('required')">Contraseña es requerida</mat-error>
+            <mat-error *ngIf="password2.hasError('required')">Por favor, confirmar la contraseña</mat-error>
+            <mat-error *ngIf="password2.invalid && !password2.hasError('required')">Las contraseñas no coinciden
+            </mat-error>
+        </mat-form-field>
+
+        <div class="text-center mt_30" ngClass.lt-lg="input-sm">
+            <button (click)="registerUser()" type="submit" [disabled]="formGroup.invalid" mat-raised-button
+                color="primary">Registrarse</button>
+            <p class="tycFoot">
+                <br>
+                Al registrarse, declara que es mayor de edad <br> y acepta los <a class="active" href="/terminos-condiciones"
+                    title="Leer términos y condiciones">Términos y condiciones</a> de OneUse.
+            </p>
+            <!--
+                <input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Iniciar Sesión">
+            -->
+        </div>
+        <br>
+        <div class="text-center" ngClass.lt-lg="input-sm">
+            <img id="image-FaceGoogle" src="../../../assets/images/FacebookGoogle.PNG">
+        </div>
+        <div class="text-center" ngClass.lt-lg="input-sm">
+            <a [routerLink]="['/login']" tabindex="5" class="active"> ¿ Ya tienes una cuenta? Iniciar Sesión </a>
+        </div>
+        <div class="text-center" ngClass.lt-lg="input-sm">
+            <a href="#" tabindex="5" class="forgot-password active">¿Olvidaste tu contraseña?</a>
+        </div>
+    </form>
+</section>
+
+
+
+<!-- 
+    <div class="container">
+        <div class="row ">
+            <div class="mtb_30">
+                
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <div class="panel-register">
+                            <div class="panel-heading">
+                                <div class="row mb_20">
+                                    <div class="col-xs-6">
+                                        <p class="active" id="login-form-link">Registrarse en el sitio </p>
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                            <div class="panel-body" style="line-height: 10px">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <form #frmLogin="ngForm" id="login-form" action="#" method="post" (ngSubmit)="onLogin(frmLogin)">
+                                            <div class="form-group">
+                                                <input type="Nombre de usuario" name="Nombre de usuario" id="Nombre" tabindex="1" class="form-control" placeholder="Nombre de usuario" value="" ngModel required>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="email" name="email" id="username1" tabindex="1" class="form-control" placeholder="Usuario" value="" ngModel required>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Contraseña" ngModel required>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-sm-6 col-sm-offset-3">
+                                                        <input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Registrarme ">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="text-center">
+                                                            <img id="image-FaceGoogle" src="../../../assets/images/FacebookGoogle.PNG">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="text-center">
+                                                            <a href="#" tabindex="5" class="active"> ¿ Ya tienes una cuenta? Iniciar Sesión </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="text-center">
+                                                            <a href="#" tabindex="5" class="forgot-password active">Olvidaste tu contraseña?</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    -->
+
+
+<a id="scrollup"> </a>

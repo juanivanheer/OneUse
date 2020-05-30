@@ -1,0 +1,56 @@
+<div fxLayout="row" fxFlexFill>
+    <div fxLayout fxFlexOrder="1" ngClass.lt-lg="toolbar-div-lt-md">
+        <mat-toolbar>
+
+            <mat-toolbar-row>
+                <a [routerLink]="['/mi-cuenta/superadmin/usuarios']">
+                    <!-- [routerLink]="['/perfil']" -->
+                    <mat-icon>account_box</mat-icon><span class="iconitos" fxHide.lt-lg="true">Usuarios</span>
+                </a>
+            </mat-toolbar-row>
+
+            <mat-toolbar-row>
+                <a [routerLink]="['/mi-cuenta/superadmin/publicaciones']">
+                    <!-- [routerLink]="['/perfil']" -->
+                    <mat-icon>storefront</mat-icon><span class="iconitos"
+                        fxHide.lt-lg="true">Publicaciones</span>
+                </a>
+            </mat-toolbar-row>
+
+            <mat-toolbar-row>
+                <a [routerLink]="['/mi-cuenta/superadmin/alquileres']">
+                    <!-- [routerLink]="['/perfil']" -->
+                    <mat-icon>dashboard</mat-icon><span class="iconitos" fxHide.lt-lg="true">Alquileres</span>
+                </a>
+            </mat-toolbar-row>
+
+            <mat-toolbar-row>
+                <a [routerLink]="['/mi-cuenta/superadmin/reclamos']">
+                    <!-- [routerLink]="['/mis-publicaciones']" -->
+                    <mat-icon>menu_book</mat-icon><span class="iconitos" fxHide.lt-lg="true">Reclamos</span>
+                </a>
+            </mat-toolbar-row>
+
+            <mat-toolbar-row>
+                <a [routerLink]="['/mi-cuenta/superadmin/estadisticas']">
+                    <!-- [routerLink]="['/mis-publicaciones']" -->
+                    <mat-icon>assessment</mat-icon><span class="iconitos" fxHide.lt-lg="true">Estadísticas</span>
+                </a>
+            </mat-toolbar-row>
+
+            <mat-toolbar-row>
+                <a fxFlexAlign.lt-lg="flex-end" (click)="cerrarSesion()">
+                    <mat-icon>exit_to_app</mat-icon><span class="iconitos" fxHide.lt-lg="true">Salir</span>
+                </a>
+            </mat-toolbar-row>
+        </mat-toolbar>
+    </div>
+
+    <div fxLayout="column" fxFlexOrder="2" fxLayoutAlign="start center" fxLayout.lt-lg="column"
+        fxLayoutAlign.lt-lg="center center" style="width: 100%; margin-top: 20px;">
+        <div fxFlexFill>
+
+
+        </div>
+    </div>
+</div>

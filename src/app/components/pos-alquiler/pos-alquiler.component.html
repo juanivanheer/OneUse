@@ -1,0 +1,42 @@
+<div fxLayoutAlign="center center" style="margin-top: 30px;">
+    <h2>¡Estás a punto de alquilar "{{titulo}}" !</h2>
+</div>
+
+<div fxLayoutAlign="center center" fxLayout="row" class="datosAlquiler">
+    <div fxFlex="600" fxFlexFill>
+        <div fxLayout="column">
+            <div style="top: 0; padding-right: 20px;">
+                <h3 style="text-align: center; margin-top: 15px;"> ¡Excelente! ¡Estás a un paso de realizar el alquiler! </h3>
+                <p style="text-align: justify;margin-top: 25px; "> Ten en cuenta de que es un compromiso de tu parte realizar el alquiler. Por eso, deberás ser responsable a la hora de acordar responsablemente los horarios y formas de entrega con el dueño de la publicación. En esta sección, te brindaremos los datos del propietario para que luego puedas comunicarte con el</p>
+                <br>
+                <h4 style="margin-left:10px;text-align: justify; margin-top: 25px"> De parte de One Use, muchas gracias por usar nuestros servicios</h4>
+            </div>
+
+            <!-- <div class="contenedor">
+                <swiper [config]="config">
+                    <div *ngFor="let img of publicacion.multiplefile; let indice2 = index">
+                        <img class="container-muestra-imagenes"
+                            src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}">
+                    </div>
+                </swiper>
+            </div> -->
+        </div>
+    </div>
+    <div fxFlex="780,400" fxFlexFill>
+        <h5><b>El dueño de tu producto</b></h5>
+        <h5>Nombre y Apellido: {{nombre}} {{apellido}}</h5>
+        <h5>Email: {{email}}</h5>
+        <h5>Teléfono: ({{codArea}}) {{telefono}}</h5>
+        <br>
+        <mat-divider></mat-divider>
+        <br>
+        <h5><b>El producto que vas alquilar</b></h5>
+        <h5>Titulo: {{titulo}}</h5>
+        <h5>Precio por dia: {{preciodia}}</h5>
+        <h5>Precio por semana: {{preciosemana}}</h5>
+        <h5>Precio por mes: {{preciomes}}</h5>
+        <br>
+        <br>
+        <button (click)="registrarAlquiler()" style="width: 300px;" mat-raised-button color="primary">Continuar con el pago</button>
+    </div>
+</div>

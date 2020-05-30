@@ -1,0 +1,47 @@
+.bloque-nuestros-valores{
+    margin-right: 20px;
+}
+
+.bloque-que-es-1use{
+    text-align: justify;
+    margin-left: 90px;
+    margin-right: 90px;
+    margin-top: 30px;
+}
+
+
+.bloque-que-es-1use-mobile{
+    font-size: 12px;
+    text-align: justify;
+    margin: 30px;
+}
+
+.bloque-que-es-1use-mobile h2{
+    font-size: 20px;
+}
+
+.bloque-nuestros-valores-lt-md{
+    width: 80%;
+}
+
+.bloque-herramientas-lt-md{
+    width: 100%;
+}
+
+mat-progress-bar{
+    height: 20px;
+}
+
+.mat-progress-bar .mat-progress-bar-fill::after{
+    content: 'HOLIS';
+}
+
+.progress-type{
+    color: white
+}
+#tamaño{
+    font-size: 20px;
+}
+#texto{
+    text-align: center;
+}

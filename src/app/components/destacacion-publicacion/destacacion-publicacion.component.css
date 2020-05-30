@@ -1,0 +1,39 @@
+.tamaño-card {
+    width: 350px;
+    margin-left: 30px;
+    margin-right: 30px;
+    bottom: 20px;
+  }
+  .plata {
+    background-image: url("https://image.flaticon.com/icons/svg/179/179251.svg");
+    background-size: cover;
+  }
+  .oro{
+    background-image: url('https://image.flaticon.com/icons/svg/179/179249.svg');
+    background-size: cover;
+  }
+  .mat-card {
+    border-radius: 30px;
+  }
+  p{
+    text-align: center
+  }
+  .escudos{
+    width: 200px;  
+  }
+  .datosDestacacion{
+    width: 700px;
+    height: 150px;
+    border: 1px solid black;
+    margin-top: 20px;
+    border-radius: 20px;
+    box-shadow: 0 2px 30px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+}
+h5{
+    margin-left: 10px;
+    margin-top: 20px;
+}
+.mercadoPago{
+  width: 500px !important;
+  
+}

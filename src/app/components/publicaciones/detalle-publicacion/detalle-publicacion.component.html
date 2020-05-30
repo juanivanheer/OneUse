@@ -1,0 +1,196 @@
+<section>
+    <div class="chips">
+        <mat-chip-list>
+            <mat-chip color="primary" selected>{{categoria}}</mat-chip>
+            <mat-chip color="primary" selected>{{subcategoria}}</mat-chip>
+        </mat-chip-list>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center center" class="contenedor-principal">
+        <!--Contenedor blanco-->
+        <div fxLayout="row" fxLayoutAlign="center" fxFlexFill>
+
+
+            <!--Contenedor fotos + descripción-->
+            <div fxFlex="568px">
+                <div class="contenedor-1">
+
+                    <swiper class="swiper-container" [config]="config" fxFlexAlign="center">
+                        <div *ngFor="let img of publicacion.multiplefile; let indice2 = index">
+                            <img class="container-muestra-imagenes"
+                                src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}">
+                        </div>
+                    </swiper>
+                </div>
+                <mat-divider style="margin-top: 10px;"></mat-divider>
+                <div class="descripcion">
+                    <h3>Descripción </h3>
+                    <br>
+                    <p style="text-align: justify; font-size: 17px;">{{descripcion}} </p>
+                </div>
+                <mat-divider></mat-divider>
+                <div class="preguntasRespuestas" *ngIf="!es_publicador">
+                    <h3>Preguntas y respuestas</h3>
+                    <br><br>
+                    <mat-form-field>
+                        <textarea #message maxlength="256" style="min-height: 0px;" matInput [(ngModel)]=valorPregunta
+                            placeholder="Escribir una pregunta..."></textarea>
+                        <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
+                    </mat-form-field>
+                    <button #btnPreguntar class="btnPreguntar" (click)="enviarPregunta(message.value)" mat-raised-button
+                        color="primary">Preguntar</button>
+                </div>
+                <div class="ultimasPreguntas">
+                    <h3><b>Últimas preguntas</b></h3>
+                    <br>
+                    <div *ngIf="tienePreguntas">
+                        <div *ngFor="let pregunta of preguntas">
+                            <!--Pregunta-->
+                            <div fxLayout="row" style="margin-bottom: 10px; margin-left: 10px">
+                                <div fxLayoutAlign="center center">
+                                    <p style="font-size: 9px; margin-right: 7px"> {{pregunta.usuario_pregunta}} </p>
+                                </div>
+                                <div fxLayoutAlign="center center">
+                                    <mat-icon>chat</mat-icon>
+                                </div>
+                                <div style="margin-left: 10px">
+                                    <p>{{pregunta.pregunta}}</p>
+                                </div>
+                            </div>
+                            <!--Respuesta-->
+                            <div *ngIf="pregunta.tiene_respuesta">
+                                <div fxLayout="row" style="margin-bottom: 30px; margin-left: 10px">
+                                    <div fxLayoutAlign="center center">
+                                        <p style="font-size: 9px; margin-right: 7px"> {{pregunta.usuario_publicacion}}
+                                        </p>
+                                    </div>
+                                    <div fxLayoutAlign="center center">
+                                        <mat-icon>comment</mat-icon>
+                                    </div>
+                                    <div style="margin-left: 10px">
+                                        <p> {{pregunta.respuesta}} </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="!pregunta.tiene_respuesta">
+                                <div fxLayout="row" style="margin-bottom: 30px; margin-left: 10px; margin-right: 15px;">
+                                    <div fxLayoutAlign="center center" *ngIf="!es_publicador">
+                                        <mat-icon>comment</mat-icon>
+                                    </div>
+                                    <div style="margin-left: 10px" *ngIf="!es_publicador">
+                                        <p> Por el momento no hay respuesta a esta pregunta </p>
+                                    </div>
+                                    <div class="respuesta" *ngIf="es_publicador && !pregunta.tiene_respuesta"
+                                        fxFlexFill>
+                                        <mat-form-field>
+                                            <textarea #message maxlength="256" style="min-height: 0px;" matInput
+                                                placeholder="Escribir una respuesta..."></textarea>
+                                            <mat-hint align="end">{{message.value.length}} / 256</mat-hint>
+                                        </mat-form-field>
+                                        <button class="btnPreguntar" (click)="enviarRespuesta(message.value, pregunta)"
+                                            mat-raised-button color="primary">Responder</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="!tienePreguntas">
+                        <div fxLayout="row" style="margin-bottom: 10px; margin-left: 10px">
+                            <div fxLayoutAlign="center center">
+                                <mat-icon>chat</mat-icon>
+                            </div>
+                            <div style="margin-left: 10px">
+                                <p>Hasta el momento, no se han realizado preguntas</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <mat-divider vertical="true"></mat-divider>
+
+
+            <!--Contenedor de precio + Alquilar-->
+            <div fxLayout="column" fxFlexAlign="start" fxFlex="500px">
+                <div class="contenedor-2">
+                    <h2 fxFlexAlign="center"> <b>{{titulo}}</b> </h2>
+                    <br>
+                    <h2 fxFlexAlign="start"><b>${{preciodia}}</b></h2>
+                    <br>
+                    <p fxFlexAlign="start"><b>Precio por semana: </b> ${{preciosemana}} </p>
+                    <p fxFlexAlign="start"><b>Precio por mes: </b> ${{preciomes}} </p>
+                    <p fxFlexAlign="start"><b>Publicado por: </b> {{usuario.name}} </p>
+                    <br>
+                    <form [formGroup]="cantidades">
+                        <div fxLayout="row" fxFlexFill fxLayoutGap="20px" *ngIf="estaLogueado && !es_publicador">
+                            <mat-form-field style="width: 150px">
+                                <mat-label>Cantidad a alquilar</mat-label>
+                                <mat-select formControlName="cantidadDisponibleSeleccionada"
+                                    name="cantidadDisponibleSeleccionada"
+                                    (ngModelChange)="cantidadDisponibleSeleccionada = $event; habilitarAlquilar()">
+                                    <mat-option *ngFor="let c of arrayCantidadDisponible; let indice = index"
+                                        [value]="arrayCantidadDisponible[indice]">
+                                        {{arrayCantidadDisponible[indice]}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field style="width: 240px">
+                                <mat-label>Cantidad de días de alquiler</mat-label>
+                                <mat-select formControlName="cantidadDiasSeleccionado" name="cantidadDiasSeleccionado"
+                                    (ngModelChange)="cantidadDiasSeleccionado = $event; habilitarAlquilar()">
+                                    <mat-option *ngFor="let c of arraycantidadDias; let indice = index"
+                                        [value]="arraycantidadDias[indice]">
+                                        {{arraycantidadDias[indice]}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </form>
+                    <br>
+                    <div class="btnAlquilar">
+                        <button routerLink='/login' style="width: 300px;" mat-raised-button color="primary"
+                            *ngIf="!estaLogueado">Iniciar sesión para poder alquilar</button>
+                        <button routerLink='/editar-publicacion/{{id}}' style="width: 300px;" mat-raised-button
+                            color="primary" *ngIf="estaLogueado && es_publicador">Editar</button>
+                        <button routerLink='/pos-alquiler/{{publicacion._id}}' (click)="registrarAlquiler()"
+                            style="width: 300px;" mat-raised-button color="primary"
+                            *ngIf="estaLogueado && !es_publicador" [disabled]="btnAlquilar">Alquilar</button>
+                    </div>
+                </div>
+                <br>
+                <mat-divider></mat-divider>
+                <div class="tipoAlquiler">
+                    <h3>Tipo de alquiler</h3>
+                    <br>
+                    <div *ngIf=esConIntervencion>
+                        <p style="text-align: justify; margin-left: 23px">Este producto se encuentra asegurado ante
+                            incidentes.</p>
+                        <br>
+                        <a [matTooltipPosition]="position" matTooltip="Se basa en la obtención de un seguro contra reembolso con el objetivo de proteger
+                        al objeto alquilado de algún daño que pueda surgir durante la ejecución del alquiler.
+                         Este seguro consiste en el depósito de un monto adicional que
+                        depende del tipo de objeto que el interesado en alquilar ha pagado por el mismo y
+                        será devuelto luego de que el propietario verifique el estado del objeto, no pudiendo
+                        pasar más de 24 hs de lo contrario se considera que el objeto fue entregado en
+                        buenas condiciones, finalizando la transacción."
+                        
+                         style="color: cornflowerblue">Más información
+                        </a>
+                    </div>
+                    <div *ngIf=!esConIntervencion>
+                        <p style="text-align: justify; margin-left: 23px">Este producto no se encuentra asegurado ante
+                            incidentes.</p>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div class="mediosPago">
+                    <h3>Medios de pago</h3>
+                    <br>
+                    <img src="../../../../assets/images/mediosPago.PNG">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</section>
