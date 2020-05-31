@@ -312,7 +312,9 @@
                         <swiper class="swiper-container" [config]="config">
                             <div *ngFor="let img of arrayJSON; let indice2 = index">
                                 <div class="swiper-slide" fxLayout="column" fxLayoutAlign="center center">
-                                    <img src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}"
+                                    <!-- <img src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}"
+                                        class="img-carrousel"> -->
+                                    <img src="{{'https://oneuse-backend.herokuapp.com/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}"
                                         class="img-carrousel">
                                 </div>
                             </div>
@@ -357,10 +359,12 @@
                     <mat-radio-group formControlName="tipoAlquiler" (change)="obtenerTipoAlquiler($event)">
                         <div fxLayout="column" fxLayoutAlign="center start">
                             <mat-selection-list fxFlexOffset="20px">
-                                <mat-radio-button class="radioButton" color="primary" value="AlquilerSinIntervencion" name="AlquilerSinIntervencion">
+                                <mat-radio-button class="radioButton" color="primary" value="AlquilerSinIntervencion"
+                                    name="AlquilerSinIntervencion">
                                     Alquiler sin Intervencíon
                                 </mat-radio-button>
-                                <mat-radio-button class="radioButton" color="primary" value="AlquilerConIntervencion" name="AlquilerConIntervencion">
+                                <mat-radio-button class="radioButton" color="primary" value="AlquilerConIntervencion"
+                                    name="AlquilerConIntervencion">
                                     Alquiler con Intervencíon
                                 </mat-radio-button>
                             </mat-selection-list>
@@ -446,7 +450,9 @@
                         <swiper class="swiper-container" [config]="config" *ngIf="mantenerImg">
                             <div *ngFor="let img of arrayJSON; let indice2 = index">
                                 <div class="swiper-slide" fxLayout="column" fxLayoutAlign="center center">
-                                    <img src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}"
+                                    <!-- <img src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}"
+                                        class="img-carrousel"> -->
+                                    <img src="{{'https://oneuse-backend.herokuapp.com/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}"
                                         class="img-carrousel">
                                 </div>
                             </div>
@@ -744,7 +750,9 @@
                     <swiper class="swiper-container-sm" [config]="config">
                         <div *ngFor="let img of arrayJSON; let indice2 = index">
                             <div class="swiper-slide" fxLayout="column" fxLayoutAlign="center center">
-                                <img src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}"
+                                <!-- <img src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}"
+                                    class="img-carrousel-sm"> -->
+                                <img src="{{'https://oneuse-backend.herokuapp.com/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}"
                                     class="img-carrousel-sm">
                             </div>
                         </div>
@@ -880,7 +888,9 @@
                         <swiper class="swiper-container-sm" [config]="config" *ngIf="mantenerImg">
                             <div *ngFor="let img of arrayJSON; let indice2 = index">
                                 <div class="swiper-slide" fxLayout="column" fxLayoutAlign="center center">
-                                    <img src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}"
+                                    <!-- <img src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}"
+                                        class="img-carrousel-sm"> -->
+                                    <img src="{{'https://oneuse-backend.herokuapp.com/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}"
                                         class="img-carrousel-sm">
                                 </div>
                             </div>

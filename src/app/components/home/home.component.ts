@@ -38,7 +38,6 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit() {
-    console.log(Mercadopago);
     this._auth.get_publicaciones_destacadas().subscribe(
       res => {
         this.publicacionesDestacadas = res.publicaciones; //ARRAY DE PUBLICACIONES DESTACADAS
@@ -52,8 +51,6 @@ export class HomeComponent implements OnInit {
           this.publicacionesDestacadas[i].multiplefile = this.arrayJSON;
           this.arrayJSON = [];
         }
-
-        console.log(this.publicacionesDestacadas)
 
         if (this.publicacionesDestacadas.length > 8) this.cantidad = 100;
         if (this.publicacionesDestacadas.length > 100) this.cantidad = 1000;

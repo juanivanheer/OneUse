@@ -115,6 +115,8 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       );
   }
 
-
+  cerrarSesion() {
+    this.singleton.cerrarSesion();
+  }
 
 }

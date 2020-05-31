@@ -14,7 +14,7 @@ export class StarRatingComponent implements OnInit {
     @Input('color') private color: string = 'primary';
     @Output() private ratingUpdated = new EventEmitter();
 
-    private ratingArr = [];
+    ratingArr = [];
 
     constructor() { }
 

@@ -48,7 +48,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.urlActual = window.location.href;
-    this.urlRecortada = this.urlActual.substr(21);
+    if(window.location.hostname != "localhost"){
+      this.urlRecortada = this.urlActual.substr(40);
+      console.log(this.urlRecortada)
+    } else {
+      this.urlRecortada = this.urlActual.substr(21);
+      console.log(this.urlRecortada)
+    }
+    
     this.paginaActual = this.urlRecortada;
     this.checkPage(this.paginaActual);
     this.setearInicioSesion();

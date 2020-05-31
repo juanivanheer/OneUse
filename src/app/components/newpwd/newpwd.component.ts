@@ -13,6 +13,8 @@ import { FormGroup, FormBuilder, Validators, ValidatorFn, ValidationErrors } fro
 })
 
 export class NewpwdComponent implements OnInit {
+  hide = true;
+  hide2 = true;
   formGroup: FormGroup;
   passwordPattern: " ^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,15}$";
 

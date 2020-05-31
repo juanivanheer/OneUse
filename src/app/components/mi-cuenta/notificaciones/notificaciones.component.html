@@ -70,8 +70,10 @@
                         routerLink="/publicaciones/{{row.id_publicacion}}">
                         <div fxLayout="row" fxLayoutGap="20px" style="margin-top: 10px;">
                             <div>
+                                <!-- <img class="container-muestra-imagenes"
+                                    src="{{'http://localhost:4201/api/get-image-publicacion/'+ row.imagen}}"> -->
                                 <img class="container-muestra-imagenes"
-                                    src="{{'http://localhost:4201/api/get-image-publicacion/'+ row.imagen}}">
+                                    src="{{'https://oneuse-backend.herokuapp.com/api/get-image-publicacion/'+ row.imagen}}">
                             </div>
                             <div>
                                 <h4> {{row.titulo}} {{row.tituloPublicacion}} </h4>

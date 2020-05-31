@@ -5,7 +5,8 @@ export class UploadService {
     public url: string;
 
     constructor() {
-        this.url = "http://localhost:4201/api/";
+        //this.url = "http://localhost:4201/api/";
+        this.url = "https://oneuse-backend.herokuapp.com/api/";
     }
 
     makeFileRequest(url: string, params: Array<string>, files: Array<File>, name: string) {

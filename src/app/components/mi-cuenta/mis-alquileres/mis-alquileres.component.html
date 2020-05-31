@@ -71,8 +71,10 @@
                                 <mat-list-item role="listitem">
                                     <div fxLayout="row" fxFlexFill>
                                         <div fxLayoutAlign="center" fxFlex="500">
+                                            <!-- <img class="imagen"
+                                                src="{{'http://localhost:4201/api/get-image-publicacion/'+ datos.imagen}}"> -->
                                             <img class="imagen"
-                                                src="{{'http://localhost:4201/api/get-image-publicacion/'+ datos.imagen}}">
+                                                src="{{'https://oneuse-backend.herokuapp.com/api/get-image-publicacion/'+ datos.imagen}}">
                                         </div>
 
                                         <div class="info" fxLayout="column" fxFlex="300" fxLayoutAlign="center">
@@ -105,12 +107,14 @@
                                         <div class="info2" fxLayout="row" fxFlex="400" fxLayoutAlign="center center"
                                             fxLayoutGap="10px" *ngIf="datos.fuePagado">
 
-                                            <button *ngIf="datos.estado == 'En proceso de entrega'" mat-raised-button routerLink="/reclamar-alquiler" color="warn">
+                                            <button *ngIf="datos.estado == 'En proceso de entrega'" mat-raised-button
+                                                routerLink="/reclamar-alquiler" color="warn">
                                                 <mat-icon>cancel</mat-icon>
                                                 <span> Reclamar alquiler</span>
                                             </button>
 
-                                            <button *ngIf="datos.estado == 'En proceso de devolución'" mat-raised-button routerLink="/prereclamo" color="warn">
+                                            <button *ngIf="datos.estado == 'En proceso de devolución'" mat-raised-button
+                                                routerLink="/prereclamo" color="warn">
                                                 <mat-icon>cancel</mat-icon>
                                                 <span> Reclamar alquiler</span>
                                             </button>
@@ -174,8 +178,10 @@
                                 <mat-list-item role="listitem">
                                     <div fxLayout="row" fxFlexFill>
                                         <div fxLayoutAlign="center" fxFlex="500">
+                                            <!-- <img class="imagen"
+                                                src="{{'http://localhost:4201/api/get-image-publicacion/'+ alquilerPropio.imagen}}"> -->
                                             <img class="imagen"
-                                                src="{{'http://localhost:4201/api/get-image-publicacion/'+ alquilerPropio.imagen}}">
+                                                src="{{'https://oneuse-backend.herokuapp.com/api/get-image-publicacion/'+ alquilerPropio.imagen}}">
                                         </div>
 
                                         <div class="info" fxLayout="column" fxFlex="300" fxLayoutAlign="center">
@@ -203,12 +209,15 @@
                                         </div>
                                         <div class="info2" fxLayout="row" fxFlex="400" fxLayoutAlign="center center"
                                             fxLayoutGap="10px">
-                                            
-                                            <button *ngIf="alquilerPropio.estado == 'En proceso de entrega'" mat-raised-button routerLink="/reclamar-alquiler" color="warn">
+
+                                            <button *ngIf="alquilerPropio.estado == 'En proceso de entrega'"
+                                                mat-raised-button routerLink="/reclamar-alquiler" color="warn">
                                                 <mat-icon>cancel</mat-icon>
                                                 <span> Reclamar alquiler</span>
                                             </button>
-                                            <button *ngIf="alquilerPropio.estado == 'En proceso de pago'" mat-raised-button (click)="openDialogCancelar(alquilerPropio)" color="warn">
+                                            <button *ngIf="alquilerPropio.estado == 'En proceso de pago'"
+                                                mat-raised-button (click)="openDialogCancelar(alquilerPropio)"
+                                                color="warn">
                                                 <mat-icon>cancel</mat-icon>
                                                 <span> Cancelar alquiler</span>
                                             </button>

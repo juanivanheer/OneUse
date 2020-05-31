@@ -11,7 +11,13 @@ export class DatosLocatarioDialogComponent implements OnInit {
 
   constructor(private dialogRef: MatDialogRef<DatosLocatarioDialogComponent>, private _auth: AuthService, @Inject(MAT_DIALOG_DATA) private data) { }
 
-  locatario = {};
+  locatario = {
+    nombre: '',
+    apellido: '',
+    codArea: '',
+    telefono: '',
+    email: ''
+  };
 
   ngOnInit() {
     this._auth.getPropietarioAlquiler(this.data.alquiler.name_usuarioLocatario).subscribe(

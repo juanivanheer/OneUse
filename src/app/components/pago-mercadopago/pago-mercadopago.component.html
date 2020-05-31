@@ -18,8 +18,8 @@
 
             <mat-form-field>
                 <input matInput placeholder="Número de tarjeta" formControlName="cardNumber" name="cardNumber"
-                    id="cardNumber" (ngModelChange)="cardNumber = $event" required (keyup)="guessPaymentMethod($event)"
-                    (change)="guessPaymentMethod($event)" onselectstart="return false" data-checkout="cardNumber">
+                    id="cardNumber" (ngModelChange)="cardNumber = $event" required (keyup)="guessPaymentMethod()"
+                    (change)="guessPaymentMethod()" onselectstart="return false" data-checkout="cardNumber">
             </mat-form-field>
 
             <mat-form-field>

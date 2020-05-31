@@ -41,7 +41,7 @@ export class PublicacionesComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  constructor(private _auth: AuthService, public dialog: MatDialog) { }
+  constructor(private _auth: AuthService, public dialog: MatDialog, private singleton: SingletonService) { }
 
   private subscription: Subscription;
 
@@ -114,6 +114,10 @@ export class PublicacionesComponent implements OnInit, OnDestroy {
   redireccionar(row) {
     let url = 'http://localhost:4200/publicaciones/' + row._id;
     window.open(url, '_blank');
+  }
+
+  cerrarSesion() {
+    this.singleton.cerrarSesion();
   }
 
 

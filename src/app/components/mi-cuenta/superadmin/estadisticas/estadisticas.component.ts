@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { AuthService } from "src/app/services/auth.service";
+import { SingletonService } from 'src/app/components/singleton.service';
 
 @Component({
   selector: "app-estadisticas",
@@ -7,7 +8,7 @@ import { AuthService } from "src/app/services/auth.service";
   styleUrls: ["./estadisticas.component.css"],
 })
 export class EstadisticasComponent implements OnInit {
-  constructor(private _auth: AuthService) { }
+  constructor(private _auth: AuthService, private singleton: SingletonService) { }
 
   array_completo = [];
   arrayPublicacionesCategorias = [];
@@ -105,6 +106,10 @@ export class EstadisticasComponent implements OnInit {
   ngOnInit() {
   }
 
+  cerrarSesion() {
+    this.singleton.cerrarSesion();
+  }
+
   deshabilitarEncuestas() {
     this.publicacionesCategoriasSeleccionada = false;
     this.arrayPublicacionesCategorias = []
@@ -123,6 +128,7 @@ export class EstadisticasComponent implements OnInit {
       this.seleccionada = ["Tecnologia", "Hogar", "Deportes", "Musica", "Belleza", "Bebes", "Mascotas", "Herramientas", "Libros", "Otros"]
     }
   }
+
 
   clickSelectSubEncuesta() {
     //this.mostrarGrafico = false;

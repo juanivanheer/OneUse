@@ -34,4 +34,8 @@ export class CodigoLocatarioDialogComponent implements OnInit {
     )
   }
 
+  close() {
+    this.dialogRef.close();
+  }
+
 }

@@ -3,6 +3,7 @@ import { MatPaginator, MatSort } from '@angular/material';
 import { DataTableDataSource } from './data-table-datasource';
 import { AuthService } from 'src/app/services/auth.service';
 import { Subscription } from 'rxjs';
+import { SingletonService } from '../../singleton.service';
 
 @Component({
   selector: 'app-notificaciones',
@@ -31,7 +32,7 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
   month;
   dt;
 
-  constructor(private _auth: AuthService) { }
+  constructor(private singleton: SingletonService, private _auth: AuthService) { }
 
   ngOnInit() {
     this.subscription = this._auth.user_data(localStorage.getItem("email")).subscribe(
@@ -62,5 +63,9 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(){
     this.subscription.unsubscribe();
+  }
+
+  cerrarSesion() {
+    this.singleton.cerrarSesion();
   }
 }

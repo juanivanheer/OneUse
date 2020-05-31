@@ -33,5 +33,9 @@ export class CodigoDevolucionLocatarioDialogComponent implements OnInit {
       }
     )
   }
+  
+  close() {
+    this.dialogRef.close();
+  }
 
 }

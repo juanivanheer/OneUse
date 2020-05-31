@@ -13,4 +13,8 @@ export class ReclamosComponent implements OnInit {
   ngOnInit() {
   }
 
+  cerrarSesion() {
+    this.singleton.cerrarSesion();
+  }
+
 }

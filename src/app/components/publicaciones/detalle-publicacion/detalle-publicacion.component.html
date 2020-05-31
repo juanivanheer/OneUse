@@ -16,8 +16,10 @@
 
                     <swiper class="swiper-container" [config]="config" fxFlexAlign="center">
                         <div *ngFor="let img of publicacion.multiplefile; let indice2 = index">
+                            <!-- <img class="container-muestra-imagenes"
+                                src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}"> -->
                             <img class="container-muestra-imagenes"
-                                src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}">
+                                src="{{'https://oneuse-backend.herokuapp.com/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}">
                         </div>
                     </swiper>
                 </div>
@@ -170,9 +172,7 @@
                         depende del tipo de objeto que el interesado en alquilar ha pagado por el mismo y
                         será devuelto luego de que el propietario verifique el estado del objeto, no pudiendo
                         pasar más de 24 hs de lo contrario se considera que el objeto fue entregado en
-                        buenas condiciones, finalizando la transacción."
-                        
-                         style="color: cornflowerblue">Más información
+                        buenas condiciones, finalizando la transacción." style="color: cornflowerblue">Más información
                         </a>
                     </div>
                     <div *ngIf=!esConIntervencion>

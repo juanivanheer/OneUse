@@ -46,9 +46,17 @@ export class BusquedaCategoriasComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.clearURL();
     this.urlActual = document.location.href;
-    let parametro = this.urlActual.slice(33);
-    this.categoria = parametro;
-    this.arraySubcategorias = this.obtenerSubcategoria(this.categoria);
+    let parametro;
+    if (document.location.hostname != "localhost") {
+      parametro = this.urlActual.slice(40);
+      this.categoria = parametro;
+      this.arraySubcategorias = this.obtenerSubcategoria(this.categoria);
+    } else {
+      parametro = this.urlActual.slice(33);
+      this.categoria = parametro;
+      this.arraySubcategorias = this.obtenerSubcategoria(this.categoria);
+    }
+
 
     if (this.url.search.includes("?s=")) {
       let subcategoria = decodeURI(this.url.search.slice(3));

@@ -60,7 +60,12 @@ export class DetallePublicacionComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     var urlActual = window.location.href;
-    this.id = urlActual.substr(36);
+    if(window.location.hostname != 'localhost'){
+      this.id = urlActual.substr(43);
+    } else {
+      this.id = urlActual.substr(36);
+    }
+    
 
     this.cantidades = this._formBuilder.group({
       cantidadDisponibleSeleccionada: ['', Validators.required],

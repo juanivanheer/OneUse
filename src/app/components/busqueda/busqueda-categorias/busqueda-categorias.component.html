@@ -74,139 +74,139 @@
                                 {{mensaje}}
                             </div>
                             <div>
+                                <!-- <img class="container-muestra-imagenes"
+                                    src="{{'http://localhost:4201/api/get-image-publicacion/'+ row.multiplefile}}"> -->
                                 <img class="container-muestra-imagenes"
-                                    src="{{'http://localhost:4201/api/get-image-publicacion/'+ row.multiplefile}}">
+                                    src="{{'https://oneuse-backend.herokuapp.com/api/get-image-publicacion/'+ row.multiplefile}}">
                             </div>
                             <div>
-                                <a  routerLink="/publicaciones/{{row._id}}">{{row.titulo}} </a>
+                                <a routerLink="/publicaciones/{{row._id}}">{{row.titulo}} </a>
                                 <p> <b> Precio por día </b>: ${{row.preciodia}} </p>
                                 <p> <b> Categoría </b>: {{row.categoria}}</p>
 
                                 <div class="row tile-ratings">
-                                    
-                                            <a aria-label="4.0 out of 5 stars. 1 review "
-                                                itemprop="aggregateRating" itemscope="">
-                                                        <span
-                                                            style="padding-left: 12px;" aria-hidden="true">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16px"
-                                                                height="16px" viewBox="0 0 25 25"
-                                                                style="width: 16px !important; height: 16px !important;">
-                                                                <polygon
-                                                                    points="25 9.12 15.5669599 9.12 12.512219 0 9.40860215 9.12 0 9.12 7.55131965 14.856 4.47214076 24 12.512219 18.216 20.5522972 24 17.4731183 14.856"
-                                                                    style="fill: url(&quot;#bv_inline_ratings_star_filled_0_99.99_ZRRdu1lA5k&quot;) !important;">
-                                                                </polygon>
-                                                                <path d=""
-                                                                    style="fill: url(&quot;#bv_inline_ratings_star_filled_0_99.99_ZRRdu1lA5k&quot;) !important;">
-                                                                </path>
-                                                                <defs>
-                                                                    <linearGradient
-                                                                        id="bv_inline_ratings_star_filled_0_99.99_ZRRdu1lA5k"
-                                                                        x1="99.99%" y1="0%" x2="100%" y2="0%">
-                                                                        <stop offset="0%"
-                                                                            style="stop-color: rgb(218, 41, 28); stop-opacity: 1;">
-                                                                        </stop>
-                                                                        <stop offset="1%"
-                                                                            style="stop-color: rgb(227, 227, 227); stop-opacity: 1;">
-                                                                        </stop>
-                                                                    </linearGradient>
-                                                                </defs>
-                                                            </svg>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16px"
-                                                                height="16px" viewBox="0 0 25 25"
-                                                                style="width: 16px !important; height: 16px !important;">
-                                                                <polygon
-                                                                    points="25 9.12 15.5669599 9.12 12.512219 0 9.40860215 9.12 0 9.12 7.55131965 14.856 4.47214076 24 12.512219 18.216 20.5522972 24 17.4731183 14.856"
-                                                                    style="fill: url(&quot;#bv_inline_ratings_star_filled_1_99.99_RPqzb6ur3e&quot;) !important;">
-                                                                </polygon>
-                                                                <path d=""
-                                                                    style="fill: url(&quot;#bv_inline_ratings_star_filled_1_99.99_RPqzb6ur3e&quot;) !important;">
-                                                                </path>
-                                                                <defs>
-                                                                    <linearGradient
-                                                                        id="bv_inline_ratings_star_filled_1_99.99_RPqzb6ur3e"
-                                                                        x1="99.99%" y1="0%" x2="100%" y2="0%">
-                                                                        <stop offset="0%"
-                                                                            style="stop-color: rgb(218, 41, 28); stop-opacity: 1;">
-                                                                        </stop>
-                                                                        <stop offset="1%"
-                                                                            style="stop-color: rgb(227, 227, 227); stop-opacity: 1;">
-                                                                        </stop>
-                                                                    </linearGradient>
-                                                                </defs>
-                                                            </svg>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16px"
-                                                                height="16px" viewBox="0 0 25 25"
-                                                                style="width: 16px !important; height: 16px !important;">
-                                                                <polygon
-                                                                    points="25 9.12 15.5669599 9.12 12.512219 0 9.40860215 9.12 0 9.12 7.55131965 14.856 4.47214076 24 12.512219 18.216 20.5522972 24 17.4731183 14.856"
-                                                                    style="fill: url(&quot;#bv_inline_ratings_star_filled_2_99.99_ci2oHAJXCs&quot;) !important;">
-                                                                </polygon>
-                                                                <path d=""
-                                                                    style="fill: url(&quot;#bv_inline_ratings_star_filled_2_99.99_ci2oHAJXCs&quot;) !important;">
-                                                                </path>
-                                                                <defs>
-                                                                    <linearGradient
-                                                                        id="bv_inline_ratings_star_filled_2_99.99_ci2oHAJXCs"
-                                                                        x1="99.99%" y1="0%" x2="100%" y2="0%">
-                                                                        <stop offset="0%"
-                                                                            style="stop-color: rgb(218, 41, 28); stop-opacity: 1;">
-                                                                        </stop>
-                                                                        <stop offset="1%"
-                                                                            style="stop-color: rgb(227, 227, 227); stop-opacity: 1;">
-                                                                        </stop>
-                                                                    </linearGradient>
-                                                                </defs>
-                                                            </svg>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16px"
-                                                                height="16px" viewBox="0 0 25 25"
-                                                                style="width: 16px !important; height: 16px !important;">
-                                                                <polygon
-                                                                    points="25 9.12 15.5669599 9.12 12.512219 0 9.40860215 9.12 0 9.12 7.55131965 14.856 4.47214076 24 12.512219 18.216 20.5522972 24 17.4731183 14.856"
-                                                                    style="fill: url(&quot;#bv_inline_ratings_star_filled_3_99.99_yQ70B0PlT2&quot;) !important;">
-                                                                </polygon>
-                                                                <path d=""
-                                                                    style="fill: url(&quot;#bv_inline_ratings_star_filled_3_99.99_yQ70B0PlT2&quot;) !important;">
-                                                                </path>
-                                                                <defs>
-                                                                    <linearGradient
-                                                                        id="bv_inline_ratings_star_filled_3_99.99_yQ70B0PlT2"
-                                                                        x1="99.99%" y1="0%" x2="100%" y2="0%">
-                                                                        <stop offset="0%"
-                                                                            style="stop-color: rgb(218, 41, 28); stop-opacity: 1;">
-                                                                        </stop>
-                                                                        <stop offset="1%"
-                                                                            style="stop-color: rgb(227, 227, 227); stop-opacity: 1;">
-                                                                        </stop>
-                                                                    </linearGradient>
-                                                                </defs>
-                                                            </svg>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16px"
-                                                                height="16px" viewBox="0 0 25 25"
-                                                                style="width: 16px !important; height: 16px !important;">
-                                                                <polygon
-                                                                    points="25 9.12 15.5669599 9.12 12.512219 0 9.40860215 9.12 0 9.12 7.55131965 14.856 4.47214076 24 12.512219 18.216 20.5522972 24 17.4731183 14.856"
-                                                                    style="fill: url(&quot;#bv_inline_ratings_star_filled_4_0.00_57T0xaN4ai&quot;) !important;">
-                                                                </polygon>
-                                                                <path d=""
-                                                                    style="fill: url(&quot;#bv_inline_ratings_star_filled_4_0.00_57T0xaN4ai&quot;) !important;">
-                                                                </path>
-                                                                <defs>
-                                                                    <linearGradient
-                                                                        id="bv_inline_ratings_star_filled_4_0.00_57T0xaN4ai"
-                                                                        x1="0.00%" y1="0%" x2="100%" y2="0%">
-                                                                        <stop offset="0%"
-                                                                            style="stop-color: rgb(218, 41, 28); stop-opacity: 1;">
-                                                                        </stop>
-                                                                        <stop offset="1%"
-                                                                            style="stop-color: rgb(227, 227, 227); stop-opacity: 1;">
-                                                                        </stop>
-                                                                    </linearGradient>
-                                                                </defs>
-                                                            </svg>
-                                                        </span>
-                                                    
-                                            </a>
-                    
+
+                                    <a aria-label="4.0 out of 5 stars. 1 review " itemprop="aggregateRating"
+                                        itemscope="">
+                                        <span style="padding-left: 12px;" aria-hidden="true">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px"
+                                                viewBox="0 0 25 25"
+                                                style="width: 16px !important; height: 16px !important;">
+                                                <polygon
+                                                    points="25 9.12 15.5669599 9.12 12.512219 0 9.40860215 9.12 0 9.12 7.55131965 14.856 4.47214076 24 12.512219 18.216 20.5522972 24 17.4731183 14.856"
+                                                    style="fill: url(&quot;#bv_inline_ratings_star_filled_0_99.99_ZRRdu1lA5k&quot;) !important;">
+                                                </polygon>
+                                                <path d=""
+                                                    style="fill: url(&quot;#bv_inline_ratings_star_filled_0_99.99_ZRRdu1lA5k&quot;) !important;">
+                                                </path>
+                                                <defs>
+                                                    <linearGradient
+                                                        id="bv_inline_ratings_star_filled_0_99.99_ZRRdu1lA5k"
+                                                        x1="99.99%" y1="0%" x2="100%" y2="0%">
+                                                        <stop offset="0%"
+                                                            style="stop-color: rgb(218, 41, 28); stop-opacity: 1;">
+                                                        </stop>
+                                                        <stop offset="1%"
+                                                            style="stop-color: rgb(227, 227, 227); stop-opacity: 1;">
+                                                        </stop>
+                                                    </linearGradient>
+                                                </defs>
+                                            </svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px"
+                                                viewBox="0 0 25 25"
+                                                style="width: 16px !important; height: 16px !important;">
+                                                <polygon
+                                                    points="25 9.12 15.5669599 9.12 12.512219 0 9.40860215 9.12 0 9.12 7.55131965 14.856 4.47214076 24 12.512219 18.216 20.5522972 24 17.4731183 14.856"
+                                                    style="fill: url(&quot;#bv_inline_ratings_star_filled_1_99.99_RPqzb6ur3e&quot;) !important;">
+                                                </polygon>
+                                                <path d=""
+                                                    style="fill: url(&quot;#bv_inline_ratings_star_filled_1_99.99_RPqzb6ur3e&quot;) !important;">
+                                                </path>
+                                                <defs>
+                                                    <linearGradient
+                                                        id="bv_inline_ratings_star_filled_1_99.99_RPqzb6ur3e"
+                                                        x1="99.99%" y1="0%" x2="100%" y2="0%">
+                                                        <stop offset="0%"
+                                                            style="stop-color: rgb(218, 41, 28); stop-opacity: 1;">
+                                                        </stop>
+                                                        <stop offset="1%"
+                                                            style="stop-color: rgb(227, 227, 227); stop-opacity: 1;">
+                                                        </stop>
+                                                    </linearGradient>
+                                                </defs>
+                                            </svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px"
+                                                viewBox="0 0 25 25"
+                                                style="width: 16px !important; height: 16px !important;">
+                                                <polygon
+                                                    points="25 9.12 15.5669599 9.12 12.512219 0 9.40860215 9.12 0 9.12 7.55131965 14.856 4.47214076 24 12.512219 18.216 20.5522972 24 17.4731183 14.856"
+                                                    style="fill: url(&quot;#bv_inline_ratings_star_filled_2_99.99_ci2oHAJXCs&quot;) !important;">
+                                                </polygon>
+                                                <path d=""
+                                                    style="fill: url(&quot;#bv_inline_ratings_star_filled_2_99.99_ci2oHAJXCs&quot;) !important;">
+                                                </path>
+                                                <defs>
+                                                    <linearGradient
+                                                        id="bv_inline_ratings_star_filled_2_99.99_ci2oHAJXCs"
+                                                        x1="99.99%" y1="0%" x2="100%" y2="0%">
+                                                        <stop offset="0%"
+                                                            style="stop-color: rgb(218, 41, 28); stop-opacity: 1;">
+                                                        </stop>
+                                                        <stop offset="1%"
+                                                            style="stop-color: rgb(227, 227, 227); stop-opacity: 1;">
+                                                        </stop>
+                                                    </linearGradient>
+                                                </defs>
+                                            </svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px"
+                                                viewBox="0 0 25 25"
+                                                style="width: 16px !important; height: 16px !important;">
+                                                <polygon
+                                                    points="25 9.12 15.5669599 9.12 12.512219 0 9.40860215 9.12 0 9.12 7.55131965 14.856 4.47214076 24 12.512219 18.216 20.5522972 24 17.4731183 14.856"
+                                                    style="fill: url(&quot;#bv_inline_ratings_star_filled_3_99.99_yQ70B0PlT2&quot;) !important;">
+                                                </polygon>
+                                                <path d=""
+                                                    style="fill: url(&quot;#bv_inline_ratings_star_filled_3_99.99_yQ70B0PlT2&quot;) !important;">
+                                                </path>
+                                                <defs>
+                                                    <linearGradient
+                                                        id="bv_inline_ratings_star_filled_3_99.99_yQ70B0PlT2"
+                                                        x1="99.99%" y1="0%" x2="100%" y2="0%">
+                                                        <stop offset="0%"
+                                                            style="stop-color: rgb(218, 41, 28); stop-opacity: 1;">
+                                                        </stop>
+                                                        <stop offset="1%"
+                                                            style="stop-color: rgb(227, 227, 227); stop-opacity: 1;">
+                                                        </stop>
+                                                    </linearGradient>
+                                                </defs>
+                                            </svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px"
+                                                viewBox="0 0 25 25"
+                                                style="width: 16px !important; height: 16px !important;">
+                                                <polygon
+                                                    points="25 9.12 15.5669599 9.12 12.512219 0 9.40860215 9.12 0 9.12 7.55131965 14.856 4.47214076 24 12.512219 18.216 20.5522972 24 17.4731183 14.856"
+                                                    style="fill: url(&quot;#bv_inline_ratings_star_filled_4_0.00_57T0xaN4ai&quot;) !important;">
+                                                </polygon>
+                                                <path d=""
+                                                    style="fill: url(&quot;#bv_inline_ratings_star_filled_4_0.00_57T0xaN4ai&quot;) !important;">
+                                                </path>
+                                                <defs>
+                                                    <linearGradient id="bv_inline_ratings_star_filled_4_0.00_57T0xaN4ai"
+                                                        x1="0.00%" y1="0%" x2="100%" y2="0%">
+                                                        <stop offset="0%"
+                                                            style="stop-color: rgb(218, 41, 28); stop-opacity: 1;">
+                                                        </stop>
+                                                        <stop offset="1%"
+                                                            style="stop-color: rgb(227, 227, 227); stop-opacity: 1;">
+                                                        </stop>
+                                                    </linearGradient>
+                                                </defs>
+                                            </svg>
+                                        </span>
+
+                                    </a>
+
                                 </div>
                             </div>
                         </div>

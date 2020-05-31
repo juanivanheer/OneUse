@@ -1,7 +1,7 @@
 <div fxLayout="column" fxFlexOrder="2" fxLayoutAlign="center center" fxLayout.lt-lg="column" fxFlexFill
     fxLayoutAlign.lt-lg="center center">
     <div ngClass.gt-md="tab-gt-md" ngClass.lt-lg="tab-lt-md">
-        <h2 style="text-align: center;">Estás a punto de cancelar el alquiler!</h2>
+        <h2 style="text-align: center;">¡Estás a punto de cancelar el alquiler!</h2>
         <hr>
         <br>
         <form>
@@ -14,15 +14,17 @@
                     </ng-template>
                     <br>
 
-                                        <mat-form-field>
-                        <textarea matInput style="font-size: 20px" placeholder="Escribe la mayor información posible sobre el motivo de su cancelación " [(ngModel)]="reclamoData.motivo"
-                            name="motivo" cdkTextareaAutosize required></textarea>
+                    <mat-form-field>
+                        <textarea matInput style="font-size: 20px"
+                            placeholder="Escribe la mayor información posible sobre el motivo de su cancelación "
+                            [(ngModel)]="reclamoData.motivo" name="motivo" cdkTextareaAutosize required></textarea>
                     </mat-form-field>
-                    <mat-card-actions> 
+                    <mat-card-actions>
                         <div fxLayoutAlign="center center" styles="padding-bottom: 10px; height: 38px;">
-                            <button mat-raised-button  class="primary-btn banner-btn"  (click)="openDialogCancelar()" >Registrar cancelación</button>
-                    </div></mat-card-actions>
-                   
+                            <button mat-raised-button class="primary-btn banner-btn">Registrar cancelación</button>
+                        </div>
+                    </mat-card-actions>
+
 
 
                 </mat-tab>
@@ -31,5 +33,5 @@
 
         </form>
     </div>
-   
+
 </div>

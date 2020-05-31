@@ -4,6 +4,10 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { routing, appRoutingProviders } from './app.routing';
 import { MaterialModule } from './material/material.module';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
+import { environment } from '../environments/environment'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -177,6 +181,9 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     NgxDropzoneModule,
     SwiperModule,
     FusionChartsModule,
+    AngularFireModule.initializeApp(environment),
+    AngularFirestoreModule,
+    AngularFireAnalyticsModule 
   ],
   providers: [appRoutingProviders, AuthService, SingletonService, { provide: SWIPER_CONFIG, useValue: DEFAULT_SWIPER_CONFIG }],
   bootstrap: [AppComponent],

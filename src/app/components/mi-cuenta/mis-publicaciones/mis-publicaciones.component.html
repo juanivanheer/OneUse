@@ -9,13 +9,13 @@
             </mat-toolbar-row>
 
             <mat-toolbar-row>
-                    <a [routerLink]="['/mi-cuenta/notificaciones']">
-                        <!-- [routerLink]="['/perfil']" -->
-                        <mat-icon>notifications_active</mat-icon><span class="iconitos"
-                            fxHide.lt-lg="true">Notificaciones</span>
-                    </a>
-                </mat-toolbar-row>
-                
+                <a [routerLink]="['/mi-cuenta/notificaciones']">
+                    <!-- [routerLink]="['/perfil']" -->
+                    <mat-icon>notifications_active</mat-icon><span class="iconitos"
+                        fxHide.lt-lg="true">Notificaciones</span>
+                </a>
+            </mat-toolbar-row>
+
             <mat-toolbar-row>
                 <a [routerLink]="['/mi-cuenta/perfil']">
                     <!-- [routerLink]="['/perfil']" -->
@@ -83,8 +83,10 @@
                                 <swiper class="swiper-container" [config]="config">
                                     <div *ngFor="let img of publicacion.multiplefile; let indice2 = index"
                                         style="width: 100% !important">
+                                        <!-- <img class="container-muestra-imagenes"
+                                            src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}"> -->
                                         <img class="container-muestra-imagenes"
-                                            src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}">
+                                            src="{{'https://oneuse-backend.herokuapp.com/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}">
                                     </div>
                                 </swiper>
                                 <mat-card-content style="text-align: left; font-size: 12px">
@@ -98,10 +100,10 @@
                                         *ngIf="publicacion.destacar == 'NO'">Destacar</button>
                                     <button mat-raised-button color="primary"
                                         routerLink="/editar-publicacion/{{publicacion._id}}">Editar</button>
-                                        <button mat-raised-button color="warn"
+                                    <button mat-raised-button color="warn"
                                         (click)="openDialogDeshabilitar(publicacion)">Deshabilitar</button>
                                 </mat-card-actions>
-                            </mat-card> 
+                            </mat-card>
                         </div>
                     </div>
                 </div>
@@ -135,8 +137,10 @@
                                 <swiper class="swiper-container" [config]="config">
                                     <div *ngFor="let img of publicacion.multiplefile; let indice2 = index"
                                         style="width: 100% !important">
+                                        <!-- <img class="container-muestra-imagenes"
+                                            src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}"> -->
                                         <img class="container-muestra-imagenes"
-                                            src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}">
+                                            src="{{'https://oneuse-backend.herokuapp.com/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}">                                       
                                     </div>
                                 </swiper>
                                 <mat-card-content style="text-align: left; font-size: 12px">

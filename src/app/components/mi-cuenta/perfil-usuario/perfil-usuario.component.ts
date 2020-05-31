@@ -269,8 +269,15 @@ export class PerfilUsuarioComponent implements OnInit {
         //console.log(response);
       },
       err => {
-        //console.log(err);
+        /*
+        console.log(err);
         this._uploadService.makeFileRequest("http://localhost:4201/api/upload-image/" + this._id, [], this.filesToUpload, 'removablefile')
+           .then((result: any) => {
+             //console.log(result);
+           });
+        */
+
+        this._uploadService.makeFileRequest("https://oneuse-backend.herokuapp.com/api/upload-image/" + this._id, [], this.filesToUpload, 'removablefile')
           .then((result: any) => {
             //console.log(result);
           });
@@ -334,23 +341,23 @@ export class PerfilUsuarioComponent implements OnInit {
   cambioTab(event: MatTabChangeEvent) {
     this.tabCambiada = true;
   }
-  
+
   obtenerMaxTelefono(evento) {
     this.numCodArea = evento.target.value;
     let cantidad = this.numCodArea.length;
-    if(cantidad == 0){
+    if (cantidad == 0) {
       this.maxTelefono = 10;
     }
-    if(cantidad == 1){
+    if (cantidad == 1) {
       this.maxTelefono = 9;
     }
-    if(cantidad == 2){
+    if (cantidad == 2) {
       this.maxTelefono = 8;
     }
-    if(cantidad == 3){
+    if (cantidad == 3) {
       this.maxTelefono = 7;
     }
-    if(cantidad == 4){
+    if (cantidad == 4) {
       this.maxTelefono = 6;
     }
   }
