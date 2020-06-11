@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -7,7 +7,7 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './pago-mercadopago.component.html',
   styleUrls: ['./pago-mercadopago.component.css']
 })
-export class PagoMercadopagoComponent implements OnInit {
+export class PagoMercadopagoComponent implements OnInit, AfterViewInit {
 
   /*
     Mis claves de mi cuenta (juan)
@@ -25,7 +25,16 @@ export class PagoMercadopagoComponent implements OnInit {
     Claves de usuario de prueba (vendedor)
       email: test_user_52104585@testuser.com
       password: qatest3162
+
+      (PRUEBA)
+      PUBLIC_KEY = 'TEST-61b31f04-75ef-4300-bc1c-005bbd45197a'
+      AUTH_KEY = 'TEST-6154841231917150-052800-34a55d9d7e73a0024e594c6cb7a6b650-575276817'
+
+      (PRODUCCIÓN)
+      PUBLIC_KEY = 'APP_USR-7cb54efe-7724-4fd0-a3e1-4ab5e701c5f1'
+      AUTH_KEY = 'APP_USR-6154841231917150-052800-3cce632f355c757cbf37f535bd70be21-575276817'
   */
+
   PUBLIC_KEY = 'TEST-61b31f04-75ef-4300-bc1c-005bbd45197a'
   AUTH_KEY = 'TEST-6154841231917150-052800-34a55d9d7e73a0024e594c6cb7a6b650-575276817'
 
@@ -49,6 +58,17 @@ export class PagoMercadopagoComponent implements OnInit {
   JSON;
 
   constructor(private _formBuilder: FormBuilder, private _auth: AuthService) { }
+
+  ngAfterViewInit() {
+    var div = (<HTMLFormElement>document.querySelector('#mp'));
+    var card = (<HTMLElement>document.createElement('script'));
+    card.setAttribute('type', "text/javascript");
+    card.setAttribute('src', "https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js");
+    card.setAttribute('data-button-label', 'Alquilar');
+    card.setAttribute('data-elements-color', '#4a70af');
+    card.setAttribute('data-preference-id', '575276817-66e76c50-9264-4062-8e34-19cf8a743de2');
+    div.appendChild(card)
+  }
 
   ngOnInit() {
     Mercadopago.setPublishableKey(this.PUBLIC_KEY);
@@ -241,5 +261,10 @@ export class PagoMercadopagoComponent implements OnInit {
     }
 
     return JSON;
+  }
+
+
+  testMP() {
+
   }
 }
