@@ -71,7 +71,7 @@ export class PagoMercadopagoComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    Mercadopago.setPublishableKey(this.PUBLIC_KEY);
+    //Mercadopago.setPublishableKey(this.PUBLIC_KEY);
 
     //NO ME SIRVE PORQUE NO ME DEJA TRAER LOS DATOS EN EL DATA-CHECKOUT DEL MAT-SELECT
     //Mercadopago.getIdentificationTypes(); 
@@ -107,7 +107,7 @@ export class PagoMercadopagoComponent implements OnInit, AfterViewInit {
     let cardnumber = this.cardNumber;
     if (cardnumber.length >= 6) {
       let bin = cardnumber.substring(0, 6);
-      Mercadopago.getPaymentMethod({ "bin": bin }, this.setPaymentMethod);
+      //Mercadopago.getPaymentMethod({ "bin": bin }, this.setPaymentMethod);
 
       if (cardnumber.length > 7) {
         this.cuotas.length = 0;
@@ -132,13 +132,13 @@ export class PagoMercadopagoComponent implements OnInit, AfterViewInit {
       let paymentMethodId = response[0].id;
       let element = (<HTMLInputElement>document.getElementById('payment_method_id'));
       element.value = paymentMethodId;
-      Mercadopago.getInstallments(
-        /*
+      /*Mercadopago.getInstallments(
+        
         {
           "payment_method_id": (<HTMLInputElement>document.getElementById('payment_method_id')).value,
           "amount": parseFloat((<HTMLInputElement>document.getElementById('transaction_amount')).value)
         },
-        */
+        
         {
           "payment_method_id": (<HTMLInputElement>document.getElementById('payment_method_id')).value,
           "amount": parseFloat((<HTMLInputElement>document.getElementById('transaction_amount_hidden')).value)
@@ -155,7 +155,7 @@ export class PagoMercadopagoComponent implements OnInit, AfterViewInit {
           } else {
             alert(`installments method info error: ${response}`);
           }
-        });
+        });*/
     } else {
       alert(`payment method info error: ${response}`);
     }
@@ -168,7 +168,7 @@ export class PagoMercadopagoComponent implements OnInit, AfterViewInit {
     this.encapsularDatosEnForm();
     event.preventDefault();
     var $form = (<HTMLFormElement>document.querySelector('#pay'));
-    Mercadopago.createToken($form, this.sdkResponseHandler);
+    //Mercadopago.createToken($form, this.sdkResponseHandler);
     return false;
   };
 

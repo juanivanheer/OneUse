@@ -1,3 +1,3 @@
-declare module '*';
+/*declare module '*';
 declare var Mercadopago: any;
-declare var Card: any;
+declare var Card: any;*/

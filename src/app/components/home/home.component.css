@@ -1,3 +1,6 @@
+@import '~video.js/dist/video-js.css';
+@import '~swiper/dist/css/swiper.min.css';
+
 .dropdown {
   position: relative;
 }
@@ -248,6 +251,7 @@ html {
 
 .swiper-container {
   height: 400px !important;
+  z-index: 0 !important;
 }
 
 .img-carrousel {
@@ -288,3 +292,10 @@ mat-video {
   height: 100%;
   width: 100%
 }
+
+/*
+.video-player-dimensions.vjs-fluid{
+  padding-top: 400px;
+  width: 1536px;
+}
+*/

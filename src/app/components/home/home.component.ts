@@ -1,11 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+declare var videojs: any;
+import { Component, OnInit, Input, ViewChild, ElementRef, OnDestroy, ViewEncapsulation, AfterViewInit } from '@angular/core';
 import { NgModule } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SingletonService } from '../singleton.service';
 import { CategoriasComponent } from '../../components/categorias/categorias.component';
 import { SwiperComponent, SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { AuthService } from 'src/app/services/auth.service';
-declare var Mercadopago: any;
 // "src/assets/js/web-tokenize-checkout.js"
 
 @NgModule({
@@ -15,12 +14,15 @@ declare var Mercadopago: any;
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
 
   @ViewChild(SwiperComponent, { static: false }) componentRef?: SwiperComponent;
 
+  player: any;
+  videoLink: string = '../../../assets/images/homeVideo_croppedAndWidth2.mp4';
   inicioSesion: boolean;
   urlActual: string;
   urlRecortada: string;
@@ -36,8 +38,34 @@ export class HomeComponent implements OnInit {
 
   constructor(private singleton: SingletonService, private _auth: AuthService) { }
 
+  ngAfterViewInit(): void {
+    this.player = videojs(document.getElementById('video-player'), {
+      sources: {
+        src: this.videoLink,
+        type: "video/mp4"
+      },
+      responsive: true,
+      controls: false,
+      fluid: true,
+    }, function onPlayerReady() {
+
+      // Here where the magic happens :D 
+
+      this.on('loadedmetadata', () => {
+
+      });
+      this.on('timeupdate', () => {
+
+      });
+      this.on('loadeddata', () => {
+
+      });
+    });
+    this.player.play('muted');
+  }
 
   ngOnInit() {
+
     this._auth.get_publicaciones_destacadas().subscribe(
       res => {
         this.publicacionesDestacadas = res.publicaciones; //ARRAY DE PUBLICACIONES DESTACADAS
@@ -74,6 +102,8 @@ export class HomeComponent implements OnInit {
       }
     )
   }
+
+
 
   checkPagina() {
     if (this.singleton.getInicioSesion()) {
@@ -152,12 +182,13 @@ export class HomeComponent implements OnInit {
     direction: 'horizontal',
     slidesPerView: 1,
     keyboard: true,
-    mousewheel: false,
+    mousewheel: true,
     scrollbar: false,
-    navigation: true,
-    pagination: false,
+    navigation: false,
+    pagination: true,
     autoplay: { delay: 28000 },
-    preventClicks: false
+    preventClicks: false,
+    allowTouchMove: false
   };
 
   //SWIPER
@@ -172,7 +203,7 @@ export class HomeComponent implements OnInit {
     autoplay: { delay: 5500 },
   };
 
-  scroll(element: HTMLElement){
+  scroll(element: HTMLElement) {
     element.scrollIntoView();
   }
 

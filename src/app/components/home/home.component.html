@@ -1,9 +1,10 @@
 <section>
-  <swiper class="swiper-container" [config]="config">
+  <swiper class="swiper-container" [config]="config" oncontextmenu="return false;">
     <div class="swiper-slide">
       <div fxLayout="column" fxLayoutAlign="center center" fxFlexFill>
-        <mat-video [autoplay]="true" [preload]="true" [overlay]="false" [loop]="true" [keyboard]="false"
-          src="../../../assets/images/homeVideo.mp4"></mat-video>
+        <!--         <mat-video id="video_home" [autoplay]="true" [preload]="true" [overlay]="false" [loop]="true" [keyboard]="false"
+          src="../../../assets/images/homeVideo.mp4"></mat-video> -->
+        <video loop id="video-player" class="video-js vjs-default-skin" muted></video>
       </div>
     </div>
     <div class="swiper-slide">
