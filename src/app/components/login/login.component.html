@@ -33,15 +33,19 @@
         </div>
         <br>
         <div class="text-center" ngClass.xs="input-sm">
-            <img id="image-FaceGoogle" src="../../../assets/images/FacebookGoogle.PNG">
+            <div class="g-signin2" id="googleBtn"></div>
+            <!-- <div class="g-signin2" data-onsuccess="onSuccess(googleUser)"></div> -->
+            <!-- <img id="image-FaceGoogle" src="../../../assets/images/FacebookGoogle.PNG"> -->
         </div>
         <div class="text-center" ngClass.xs="input-sm">
             <a [routerLink]="['/register']" tabindex="5" class="active">¿No tienes una cuenta? Registráte</a>
         </div>
         <div class="text-center" ngClass.xs="input-sm">
-            <a [routerLink]="['/lostpassword']" tabindex="5" class="forgot-password active">¿Olvidaste tu contraseña?</a>
+            <a [routerLink]="['/lostpassword']" tabindex="5" class="forgot-password active">¿Olvidaste tu
+                contraseña?</a>
         </div>
     </form>
+
 </section>
 <!-- 
     <div class="container">

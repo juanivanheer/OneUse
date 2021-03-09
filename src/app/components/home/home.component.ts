@@ -62,6 +62,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
       });
     });
     this.player.play('muted');
+    setTimeout(() => {
+      document.getElementsByTagName("video")[0].play();
+    }, 5000);
   }
 
   ngOnInit() {

@@ -35,7 +35,8 @@
               "src/assets/js/jquery.magnific-popup.js",
               "src/assets/js/custom.js",
               "./node_modules/pusher-js/dist/web/pusher.min.js",
-              "./node_modules/video.js/dist/video.min.js"
+              "./node_modules/video.js/dist/video.min.js",
+              "src/assets/js/platform.js"
             ]
           },
           "configurations": {

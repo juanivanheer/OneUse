@@ -289,6 +289,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.suscripcion = this._auth.user_data(localStorage.getItem("email")).subscribe(
       res => {
         var usuario = res;
+        if(usuario == null || usuario == undefined) return;
         this._auth.getAlquilerPublicaciones(usuario.name).subscribe(
           res2 => {
             var alquiler = res2.alquiler;
@@ -314,6 +315,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.suscripcion = this._auth.user_data(localStorage.getItem("email")).subscribe(
       res => {
         var usuario = res;
+        if(usuario == null || usuario == undefined) return;
         this._auth.getAlquilerPublicaciones(usuario.name).subscribe(
           res2 => {
             var alquiler = res2.alquiler;
