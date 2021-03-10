@@ -112,10 +112,15 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   /* INICIO DE SESIÓN ONEUSE */
   iniciarSesion() {
-    if (this.estado) {
-      this.singleton.setInicioSesion(true);
-      window.location.assign('/home');
-    } else this.singleton.setInicioSesion(false);
+    this.singleton.setInicioSesion(true);
+    this._auth.loginUser(this.loginUserData).subscribe(
+      res => {
+        console.log(res);
+        window.localStorage.setItem("email", this.loginUserData.email);
+        window.localStorage.setItem("token", res.token)
+        window.location.assign('/home');
+      }
+    )
   }
 
 
@@ -160,7 +165,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
         this.habilitarInicio();
       },
       'expired-callback': (response) => {
-        if(response == undefined) {}
+        if (response == undefined) { }
         this.recaptcha = false;
         this.habilitarInicio();
       }

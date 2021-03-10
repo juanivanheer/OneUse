@@ -60,17 +60,19 @@
             </mat-menu>
         </div>
 
-        <button mat-button class="spanToolbar" [routerLink]="['/login']"
-            (click)="checkPage('/login');setearInicioSesion()" [fxShow]=!inicioSesion>Iniciar
+        <button mat-button class="spanToolbar" async (click)="checkPage('/login');setearInicioSesion(); navInicioSesion()"
+            [fxShow]=!inicioSesion>Iniciar
             Sesión</button>
 
         <div class="dropdown" #myDropdown=dropdown dropdown>
-            <button mat-button class="spanToolbar" (click)="ngOnInit(); setearInicioSesion(); openNow();obtenerNombreLogueado()"
-                [fxShow]=inicioSesion class="dropdown-toggle" dropdownToggle *ngIf="tieneNombre">
+            <button mat-button class="spanToolbar"
+                (click)="ngOnInit(); setearInicioSesion(); openNow();obtenerNombreLogueado()" [fxShow]=inicioSesion
+                class="dropdown-toggle" dropdownToggle *ngIf="tieneNombre">
                 <mat-icon>account_circle</mat-icon> {{usuarioIniciado.nombre}}
             </button>
-            <button mat-button class="spanToolbar" (click)="ngOnInit(); setearInicioSesion(); openNow();obtenerNombreLogueado()"
-                [fxShow]=inicioSesion class="dropdown-toggle" dropdownToggle *ngIf="!tieneNombre">
+            <button mat-button class="spanToolbar"
+                (click)="ngOnInit(); setearInicioSesion(); openNow();obtenerNombreLogueado()" [fxShow]=inicioSesion
+                class="dropdown-toggle" dropdownToggle *ngIf="!tieneNombre">
                 <mat-icon>account_circle</mat-icon> {{usuarioIniciado.name}}
             </button>
             <ul class="dropdown-menu" dropdownMenu fxLayout="row" fxLayoutAlign="center" [fxHide]=!estadoDropdown>
@@ -85,7 +87,8 @@
                         </div>
                         <div *ngIf="mostrarImagen">
                             <!-- <img class="img-user-logged" src="{{'http://localhost:4201/api/get-image/'+_id}}"> -->
-                            <img class="img-user-logged" src="{{'https://oneuse-backend.herokuapp.com/api/get-image/'+_id}}">
+                            <img class="img-user-logged"
+                                src="{{'https://oneuse-backend.herokuapp.com/api/get-image/'+_id}}">
                         </div>
                     </div>
                     <div *ngIf="tieneNombre">
@@ -95,7 +98,8 @@
                         <p class="bienvenida-mensaje">¡Hola, {{usuarioIniciado.name}}!</p>
                     </div>
                     <div fxFlexAlign="center" class="bienvenida-boton">
-                        <button mat-raised-button color="primary" (click)="checkPage('/mi-cuenta'); myDropdown.close();obtenerNombreLogueado()"
+                        <button mat-raised-button color="primary"
+                            (click)="checkPage('/mi-cuenta'); myDropdown.close();obtenerNombreLogueado()"
                             routerLink="/mi-cuenta">Ir a mi cuenta</button>
                     </div>
                 </div>
@@ -105,7 +109,8 @@
                             routerLink="/mi-cuenta/mis-publicaciones"> Mis publicaciones</a></li>
                     <li><a class="neat" rel="noopener" (click)="checkPage('/mis-alquileres');obtenerNombreLogueado()"
                             routerLink="/mi-cuenta/mis-alquileres"> Mis alquileres</a></li>
-                    <li><a class="neat" rel="noopener" (click)="checkPage('/perfil');obtenerNombreLogueado()" routerLink="/mi-cuenta/perfil"> Mi
+                    <li><a class="neat" rel="noopener" (click)="checkPage('/perfil');obtenerNombreLogueado()"
+                            routerLink="/mi-cuenta/perfil"> Mi
                             Perfil</a></li>
                     <li><a class="neat" rel="noopener" (click)="cerrarSesion()"> Cerrar sesión</a></li>
                 </div>

@@ -82,6 +82,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.singleton.setEstado(this.estadoBuscador);
   }
 
+  navInicioSesion(){
+    window.location.assign("/login");
+  }
+
   @ViewChild('myDropdown', { static: false }) myDropdown: DropdownDirective;
   @ViewChild('notDropdown', { static: false }) notDropdown: DropdownDirective;
 
