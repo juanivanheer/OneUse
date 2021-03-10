@@ -1,126 +1,73 @@
-<section fxFlexFill>
-    <form id="login-form" action="#" method="post" fxLayout="column" fxLayoutAlign="center center"
+<section style="margin-bottom: 30px; margin-top: 30px;">
+    <form id="login-form" action="#" method="post" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="50px"
         fxLayout.lt-lg="column" fxLayoutAlign.lt-lg="center center" fxFlexFill>
-        <div class="panel-heading">
-            <h3>Iniciar Sesión</h3>
-        </div>
-        <hr>
-        <mat-form-field hideRequiredMarker ngClass.xs="input-sm">
-            <input type="email" matInput placeholder="E-mail" [(ngModel)]="loginUserData.email" class="input-login"
-                style="color: black !important" name="email" id="username1" tabindex="1" ngModel>
-            <button mat-button *ngIf="value1" matSuffix mat-icon-button aria-label="Clear" (click)="value1=''">
-                <mat-icon>close</mat-icon>
-            </button>
-        </mat-form-field>
-
-        <mat-form-field hideRequiredMarker ngClass.xs="input-sm">
-            <input type="password" matInput placeholder="Contraseña" [(ngModel)]="loginUserData.password"
-                [type]="hide ? 'password' : 'text'" class="input-login" style="color: black !important" name="password"
-                id="password" tabindex="2" ngModel>
-            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-                [attr.aria-pressed]="hide">
-                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
-        </mat-form-field>
-
-        <mat-checkbox color="primary" tabindex="3" name="remember" id="remember" ngClass.xs="input-sm">Recuérdame
-        </mat-checkbox>
-        <div class="text-center mt_30" ngClass.xs="input-sm">
-            <button mat-raised-button color="primary" (click)="loginUser(); iniciarSesion()">Iniciar sesión</button>
-            <!--
-            <input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Iniciar Sesión">
-            -->
-        </div>
-        <br>
-        <div class="text-center" ngClass.xs="input-sm">
-            <div class="g-signin2" id="googleBtn"></div>
-            <!-- <div class="g-signin2" data-onsuccess="onSuccess(googleUser)"></div> -->
-            <!-- <img id="image-FaceGoogle" src="../../../assets/images/FacebookGoogle.PNG"> -->
-        </div>
-        <div class="text-center" ngClass.xs="input-sm">
-            <a [routerLink]="['/register']" tabindex="5" class="active">¿No tienes una cuenta? Registráte</a>
-        </div>
-        <div class="text-center" ngClass.xs="input-sm">
-            <a [routerLink]="['/lostpassword']" tabindex="5" class="forgot-password active">¿Olvidaste tu
-                contraseña?</a>
-        </div>
-    </form>
-
-</section>
-<!-- 
-    <div class="container">
-        <div class="row ">
-            <div class="mtb_30">
-                <div class="row">
-                    <div class="col-md-6 col-md-offset-3">
-                        <div class="panel-login">
-                            <div class="panel-heading">
-                                <div class="row mb_20">
-                                    <div class="col-xs-6">
-                                        <p class="active" id="login-form-link">Iniciar Sesión</p>
-                                    </div>
-                                </div>
-                                <hr>
-                            </div>
-                            <div class="panel-body" style="line-height: 10px">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <form #frmLogin="ngForm" id="login-form" action="#" method="post" (ngSubmit)="onLogin(frmLogin)">
-                                            <div class="form-group">
-                                                <input type="email" name="email" id="username1" tabindex="1" class="form-control" placeholder="Usuario" value="" ngModel required>
-                                            </div>
-                                            <div class="form-group">
-                                                <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Contraseña" ngModel required>
-                                            </div>
-                                            <div class="form-group text-left">
-                                                <input type="checkbox" tabindex="3" class="" name="remember" id="remember">
-                                                <label for="remember">Recuérdame</label>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="row">
-                                                    <div class="col-sm-6 col-sm-offset-3">
-                                                        <input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Iniciar Sesión">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <div class="text-center">
-                                                            <img id="image-FaceGoogle" src="../../../assets/images/FacebookGoogle.PNG">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <div class="text-center">
-                                                            <a href="#" tabindex="5" class="active">No tienes una cuenta? Registrate</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <div class="text-center">
-                                                            <a href="#" tabindex="5" class="forgot-password active">Olvidaste tu contraseña?</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
+        <div class="mat-elevation-z8" style="width: 580px;">
+            <div style="margin-top: 30px;">
+                <div class="panel-heading">
+                    <h2>Inicia Sesión</h2>
+                    <h5 style="margin-top: 5px;color: gray; font-size: 11px;">con tu red social preferida</h5>
+                </div>
+                <div fxLayout="column" fxLayoutAlign="center center">
+                    <div class="text-center" ngClass.xs="input-sm" style="margin-top: 10px; margin-bottom: 20px;">
+                        <!-- GOOGLE -->
+                        <div class="g-signin2" id="googleBtn" data-width="400" data-height="35" data-longtitle="false"
+                            style="margin-bottom: 10px;">
                         </div>
+                        <!-- FACEBOOK -->
+                        <button class="loginBtn loginBtn--facebook" (click)="loginFacebook()"
+                            style="font-family: 'Poppins', sans-serif;">Iniciar sesión con Facebook</button>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+                    <mat-divider style="width: 190px;"></mat-divider>
+                    <p> O </p>
+                    <mat-divider style="width: 190px;"></mat-divider>
+                </div>
+                <div fxLayout="column" fxLayoutAlign="center center">
+                    <mat-form-field hideRequiredMarker ngClass.xs="input-sm">
+                        <input type="email" matInput placeholder="E-mail" [(ngModel)]="loginUserData.email"
+                            class="input-login" style="color: black !important" name="email" id="username1" tabindex="1"
+                            ngModel (input)="habilitarInicio()" autocomplete="off">
+                        <button mat-button *ngIf="value1" matSuffix mat-icon-button aria-label="Clear"
+                            (click)="value1=''">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <mat-form-field hideRequiredMarker ngClass.xs="input-sm">
+                        <input type="password" matInput placeholder="Contraseña" [(ngModel)]="loginUserData.password"
+                            [type]="hide ? 'password' : 'text'" class="input-login" style="color: black !important"
+                            name="password" id="password" tabindex="2" ngModel (input)="habilitarInicio()"
+                            autocomplete="off">
+                        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                            [attr.aria-pressed]="hide">
+                            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                    </mat-form-field>
+<!--                     <mat-checkbox style="margin-left: 90px;" fxFlexAlign="start" color="primary" tabindex="3"
+                        name="remember" id="remember" ngClass.xs="input-sm">
+                        Recuérdame
+                    </mat-checkbox> -->
+                </div>
+
+                <div class="text-center mt_15" ngClass.xs="input-sm">
+                    <div fxFlexAlign="center" #recaptcha style="display: inline-block; margin-top: 10px;"></div>
+                    <button mat-raised-button color="primary" (click)="iniciarSesion()" style="width: 400px;"
+                        [disabled]="!btn_habilitado">Iniciar sesión</button>
+                </div>
+                <br>
+                <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="15px" style="margin-bottom: 15px;">
+                    <div class="text-center" ngClass.xs="input-sm" style="font-size: 11px;">
+                        <a (click)="register()" tabindex="5" class="active">¿Aún no tienes cuenta?
+                            Regístrate</a>
+                    </div>
+                    <div class="text-center" ngClass.xs="input-sm" style="font-size: 12px;">
+                        <a (click)="lostPassword()" tabindex="5" class="forgot-password active">No recuerdo mi
+                            contraseña</a>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
- -->
+    </form>
 
-<a id="scrollup">Scroll</a>
+</section>

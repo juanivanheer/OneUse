@@ -36,7 +36,8 @@
               "src/assets/js/custom.js",
               "./node_modules/pusher-js/dist/web/pusher.min.js",
               "./node_modules/video.js/dist/video.min.js",
-              "src/assets/js/platform.js"
+              "src/assets/js/platform.js",
+              "src/assets/js/sdk.js"
             ]
           },
           "configurations": {
