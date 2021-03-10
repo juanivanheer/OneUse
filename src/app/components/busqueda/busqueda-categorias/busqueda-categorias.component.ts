@@ -52,7 +52,7 @@ export class BusquedaCategoriasComponent implements OnInit, OnDestroy {
       this.categoria = parametro;
       this.arraySubcategorias = this.obtenerSubcategoria(this.categoria);
     } else {
-      parametro = this.urlActual.slice(33);
+      parametro = this.urlActual.slice(34);
       this.categoria = parametro;
       this.arraySubcategorias = this.obtenerSubcategoria(this.categoria);
     }

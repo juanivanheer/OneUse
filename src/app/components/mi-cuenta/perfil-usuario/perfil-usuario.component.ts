@@ -269,18 +269,17 @@ export class PerfilUsuarioComponent implements OnInit {
         //console.log(response);
       },
       err => {
-        /*
         console.log(err);
         this._uploadService.makeFileRequest("http://localhost:4201/api/upload-image/" + this._id, [], this.filesToUpload, 'removablefile')
-           .then((result: any) => {
-             //console.log(result);
-           });
-        */
-
-        this._uploadService.makeFileRequest("https://oneuse-backend.herokuapp.com/api/upload-image/" + this._id, [], this.filesToUpload, 'removablefile')
           .then((result: any) => {
             //console.log(result);
           });
+
+
+        /*this._uploadService.makeFileRequest("https://oneuse-backend.herokuapp.com/api/upload-image/" + this._id, [], this.filesToUpload, 'removablefile')
+                  .then((result: any) => {
+                    //console.log(result);
+        }); */
       }
     )
     this.openSnackBar("Datos guardados. Actualiza la página para observalos", "Aceptar")

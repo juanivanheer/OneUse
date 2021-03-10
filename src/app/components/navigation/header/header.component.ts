@@ -52,7 +52,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.urlRecortada = this.urlActual.substr(40);
       console.log(this.urlRecortada)
     } else {
-      this.urlRecortada = this.urlActual.substr(21);
+      this.urlRecortada = this.urlActual.substr(22);
       console.log(this.urlRecortada)
     }
     
@@ -63,7 +63,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.checkCaducidadesAlquilerPropietario();
     this.checkCaducidadesAlquilerPropios();
     if (this.urlActual.includes('/p/')) {
-      let url = this.urlActual.slice(33);
+      let url = this.urlActual.slice(34);
       this.inputPalabra.value = url;
     }
   }

@@ -60,8 +60,8 @@
             </mat-menu>
         </div>
 
-        <button mat-button class="spanToolbar" async (click)="checkPage('/login');setearInicioSesion(); navInicioSesion()"
-            [fxShow]=!inicioSesion>Iniciar
+        <button mat-button class="spanToolbar" async
+            (click)="checkPage('/login');setearInicioSesion(); navInicioSesion()" [fxShow]=!inicioSesion>Iniciar
             Sesión</button>
 
         <div class="dropdown" #myDropdown=dropdown dropdown>
@@ -86,9 +86,9 @@
                             <mat-icon class="tamaño-icono">face</mat-icon>
                         </div>
                         <div *ngIf="mostrarImagen">
-                            <!-- <img class="img-user-logged" src="{{'http://localhost:4201/api/get-image/'+_id}}"> -->
-                            <img class="img-user-logged"
-                                src="{{'https://oneuse-backend.herokuapp.com/api/get-image/'+_id}}">
+                            <img class="img-user-logged" src="{{'http://localhost:4201/api/get-image/'+_id}}">
+                            <!-- <img class="img-user-logged"
+                                src="{{'https://oneuse-backend.herokuapp.com/api/get-image/'+_id}}"> -->
                         </div>
                     </div>
                     <div *ngIf="tieneNombre">

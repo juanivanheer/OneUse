@@ -44,7 +44,7 @@ export class BusquedaPublicacionesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.clearURL();
     this.urlActual = document.location.href;
-    let parametro = this.urlActual.slice(33);
+    let parametro = this.urlActual.slice(34);
 
     this.palabra = decodeURI(parametro);
 

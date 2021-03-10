@@ -68,7 +68,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-
     this._auth.get_publicaciones_destacadas().subscribe(
       res => {
         this.publicacionesDestacadas = res.publicaciones; //ARRAY DE PUBLICACIONES DESTACADAS
@@ -83,7 +82,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
           this.arrayJSON = [];
         }
 
-        if (this.publicacionesDestacadas.length > 8) this.cantidad = 100;
+        if (this.publicacionesDestacadas.length >= 8) this.cantidad = 100;
         if (this.publicacionesDestacadas.length > 100) this.cantidad = 1000;
 
 
