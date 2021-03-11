@@ -102,6 +102,8 @@ export class PerfilUsuarioComponent implements OnInit {
   public message: string;
   hayImagen: boolean = false;
   tieneImagen: boolean = false;
+  imagenGoogle: boolean = false;
+  urlImagenGoogle;
 
   constructor(private _auth: AuthService, private singletoon: SingletonService, private _snackBar: MatSnackBar, private _adapter: DateAdapter<any>, private singleton: SingletonService, private _router: Router, private _uploadService: UploadService) { }
 
@@ -120,6 +122,12 @@ export class PerfilUsuarioComponent implements OnInit {
         this._id = res._id;
         this.singleton.setIdLogueado(this._id);
         this.name = res.name;
+
+        if (res.tipo == "google") {
+          if (String(res.removablefile).includes("http")) {
+            this.imagenGoogle = true;
+          } else this.imagenGoogle = false;
+        }
 
         if (res.nombre == undefined) {
           this.nombre = "";
@@ -190,6 +198,10 @@ export class PerfilUsuarioComponent implements OnInit {
 
         if (res.removablefile != undefined) {
           this.tieneImagen = true;
+          if (res.tipo == "google") {
+            this.urlImagenGoogle = res.removablefile;
+          }
+
         }
 
       },

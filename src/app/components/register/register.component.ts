@@ -19,7 +19,7 @@ export class RegisterComponent implements OnInit {
   minPw = 8;
   formGroup: FormGroup;
   appregister: FormGroup;
-  registerUserData = { email: undefined, password: undefined, name: undefined }
+  registerUserData = { email: undefined, password: undefined, name: undefined, tipo: "oneuse" }
   recaptcha: boolean = false;
   habilitado: boolean = false;
 

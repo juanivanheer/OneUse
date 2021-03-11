@@ -86,7 +86,8 @@
                             <mat-icon class="tamaño-icono">face</mat-icon>
                         </div>
                         <div *ngIf="mostrarImagen">
-                            <img class="img-user-logged" src="{{'http://localhost:4201/api/get-image/'+_id}}">
+                            <img class="img-user-logged" *ngIf="!esImagenGoogle" src="{{'http://localhost:4201/api/get-image/'+_id}}">
+                            <img class="img-user-logged" *ngIf="esImagenGoogle" src="{{urlImagenGoogle}}">
                             <!-- <img class="img-user-logged"
                                 src="{{'https://oneuse-backend.herokuapp.com/api/get-image/'+_id}}"> -->
                         </div>

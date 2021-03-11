@@ -16,7 +16,7 @@ declare const FB: any;
 export class LoginComponent implements OnInit, AfterViewInit {
 
   @ViewChild('recaptcha', { static: true }) recaptchaElement: ElementRef;
-  loginUserData = { email: undefined, password: undefined }
+  loginUserData = { email: undefined, password: undefined, tipo: 'oneuse' }
   estado: boolean;
   public auth2: any;
   recaptcha: boolean = false;
@@ -93,16 +93,59 @@ export class LoginComponent implements OnInit, AfterViewInit {
     this.auth2.attachClickHandler(element, {},
       (googleUser) => {
         console.log(googleUser);
-
         let profile = googleUser.getBasicProfile();
-        console.log('Token || ' + googleUser.getAuthResponse().id_token);
+        console.log(profile)
+
+        let token = googleUser.getAuthResponse().id_token;
+        let id = profile.getId();
+        let nombre = profile.getGivenName();
+        let apellido = profile.getFamilyName();
+        let imagen = profile.getImageUrl();
+        let email = profile.getEmail();
+        let name = String(email).slice(0, String(email).indexOf("@")).toUpperCase();
+
+        let objeto = {
+          name: name,
+          nombre: nombre,
+          apellido: apellido,
+          email: email,
+          removablefile: imagen,
+          tipo: "google"
+        }
+
+        /* console.log('Token || ' + googleUser.getAuthResponse().id_token);
         console.log('ID: ' + profile.getId());
         console.log('Name: ' + profile.getName());
         console.log('Image URL: ' + profile.getImageUrl());
         console.log('Email: ' + profile.getEmail());
-        //YOUR CODE HERE
+        */
 
-
+        this._auth.get_all_users().subscribe(
+          res => {
+            let usuarios = res;
+            var existe: boolean = false;
+            for (let i = 0; i < usuarios.length; i++) {
+              const element = usuarios[i];
+              if (element.email == email) {
+                existe = true;
+              }
+            }
+            if (existe) {
+              window.localStorage.setItem("email", email);
+              window.localStorage.setItem("token", token);
+              window.localStorage.setItem("id", id);
+              window.location.assign('/home');
+            } else {
+              this._auth.registerGoogleUser(objeto).subscribe(
+                res => {
+                  window.localStorage.setItem("email", res.email);
+                  window.localStorage.setItem("token", token);
+                  window.localStorage.setItem("id", id);
+                  window.location.assign('/home');
+                })
+            }
+          }
+        )
       }, (error) => {
         console.log(JSON.stringify(error, undefined, 2));
       });
@@ -115,7 +158,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
     this.singleton.setInicioSesion(true);
     this._auth.loginUser(this.loginUserData).subscribe(
       res => {
-        console.log(res);
+        //console.log(res);
         window.localStorage.setItem("email", this.loginUserData.email);
         window.localStorage.setItem("token", res.token)
         window.location.assign('/home');

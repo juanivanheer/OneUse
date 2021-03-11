@@ -18,6 +18,7 @@ export class AuthService {
   //private token: string;
 
   private _registerUrl = this.url + "register"
+  private _registerGoogleUrl = this.url + "registerGoogle"
   private _loginUrl = this.url + "login"
   private _confirmar = this.url + "confirmation"
   private _userData = this.url + "user-data?email="
@@ -78,6 +79,10 @@ export class AuthService {
 
   registerUser(user) {
     return this.http.post<any>(this._registerUrl, user)
+  }
+
+  registerGoogleUser(user){
+    return this.http.post<any>(this._registerGoogleUrl, user)
   }
 
   loginUser(user) {

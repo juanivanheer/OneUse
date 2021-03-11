@@ -43,6 +43,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   tituloPublicacion;
   arrayTitulos = [];
   noHayNotificaciones = false;
+  esImagenGoogle: boolean = false;
+  urlImagenGoogle;
 
   constructor(private singleton: SingletonService, private _auth: AuthService, private _snackBar: MatSnackBar, /* private pusherService: PusherService */) { }
 
@@ -144,6 +146,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.suscripcion = this._auth.user_data(email).subscribe(
         res => {
           this.usuarioIniciado = res;
+          if(res.tipo == "google"){
+            if(String(res.removablefile).includes("http")){
+              this.esImagenGoogle = true;
+              this.urlImagenGoogle = res.removablefile
+            }
+          }
           this.get_notificaciones_nuevas(res.name);
           this.get_notificaciones_todas(res.name);
           if (res.nombre != undefined) {
