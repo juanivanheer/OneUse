@@ -12,4 +12,8 @@ export class ConfirmacionDestacacionComponent implements OnInit {
   ngOnInit() {
   }
 
+  irHome(){
+    window.location.assign("/home")
+  }
+
 }

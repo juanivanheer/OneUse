@@ -29,13 +29,13 @@
             </p>
             <br>
             <p>
-                <b>PRECIO PLATINUM: $200</b>
+                <b>PRECIO PLATINUM: $2000</b>
             </p>
         </mat-card-content>
         <mat-divider></mat-divider>
         <mat-card-actions>
             <div fxLayout fxLayoutAlign="center center">
-                <button mat-fab color="primary" (click)="openMercadoPago();mostrarDatosPlatinium()">ELEGIR</button>
+                <button mat-fab color="primary" (click)="mostrarDatosPlatinium()">ELEGIR</button>
             </div>
         </mat-card-actions>
     </mat-card>
@@ -58,13 +58,13 @@
             </p>
             <br>
             <p>
-                <b>PRECIO GOLD: $300</b>
+                <b>PRECIO GOLD: $2800</b>
             </p>
         </mat-card-content>
         <mat-divider></mat-divider>
         <mat-card-actions>
             <div fxLayout fxLayoutAlign="center center">
-                <button mat-fab color="primary" (click)="openMercadoPago();mostrarDatosGold()">ELEGIR</button>
+                <button mat-fab color="primary" (click)="mostrarDatosGold()">ELEGIR</button>
             </div>
         </mat-card-actions>
     </mat-card>
@@ -88,16 +88,13 @@
         <br>
         <br>
         <br>
-        <h3>Mercado Pago</h3>
-    </div>
-    <div fxLayoutAlign="center center">
-        <br>
-        <br>
-        <br>
-        <img src="../../../assets/images/mercadoPago.jpeg" class="mercadoPago">
-        <button mat-raised-button color="primary" [routerLink]="['/confirmacion-destacacion']">Continuar</button>
+        <!-- <img src="../../../assets/images/mercadoPago.jpeg" class="mercadoPago"> -->
+        <!-- <button mat-raised-button color="primary" [routerLink]="['/confirmacion-destacacion']">Continuar</button> -->
+        <div id="ultimo">
+            <div fxLayout="row" fxLayoutAlign="center center" id="mp0"></div>
+        </div>
     </div>
     <br>
     <br>
-    
+
 </div>

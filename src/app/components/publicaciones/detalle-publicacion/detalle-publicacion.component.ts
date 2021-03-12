@@ -63,7 +63,7 @@ export class DetallePublicacionComponent implements OnInit, OnDestroy {
     if(window.location.hostname != 'localhost'){
       this.id = urlActual.substr(43);
     } else {
-      this.id = urlActual.substr(36);
+      this.id = urlActual.substr(37);
     }
     
 
