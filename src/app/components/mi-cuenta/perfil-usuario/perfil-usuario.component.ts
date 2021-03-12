@@ -104,6 +104,8 @@ export class PerfilUsuarioComponent implements OnInit {
   tieneImagen: boolean = false;
   imagenGoogle: boolean = false;
   urlImagenGoogle;
+  imagenFacebook: boolean = false;
+  urlImagenFacebook;
 
   constructor(private _auth: AuthService, private singletoon: SingletonService, private _snackBar: MatSnackBar, private _adapter: DateAdapter<any>, private singleton: SingletonService, private _router: Router, private _uploadService: UploadService) { }
 
@@ -127,6 +129,12 @@ export class PerfilUsuarioComponent implements OnInit {
           if (String(res.removablefile).includes("http")) {
             this.imagenGoogle = true;
           } else this.imagenGoogle = false;
+        } else {
+          if (res.tipo == "facebook") {
+            if (String(res.removablefile).includes("http")) {
+              this.imagenFacebook = true;
+            } else this.imagenFacebook = false;
+          }
         }
 
         if (res.nombre == undefined) {
@@ -200,6 +208,10 @@ export class PerfilUsuarioComponent implements OnInit {
           this.tieneImagen = true;
           if (res.tipo == "google") {
             this.urlImagenGoogle = res.removablefile;
+          } else {
+            if (res.tipo == "facebook") {
+              this.urlImagenFacebook = res.removablefile;
+            }
           }
 
         }

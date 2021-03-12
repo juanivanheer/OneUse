@@ -200,10 +200,10 @@
                                     <mat-icon *ngIf="!tieneImagen" class="previsualizacion-icon ">face</mat-icon>
                                     <!-- <img *ngIf="tieneImagen" class="previsualizacion"
                                         src="{{'http://localhost:4201/api/get-image/'+_id}}"> -->
-                                    <img *ngIf="tieneImagen && !imagenGoogle" class="previsualizacion"
+                                    <img *ngIf="tieneImagen && !imagenGoogle && !imagenFacebook" class="previsualizacion"
                                         src="{{'http://localhost:4201/api/get-image/'+_id}}">
-                                    <img *ngIf="imagenGoogle" class="previsualizacion"
-                                        src="{{urlImagenGoogle}}">
+                                    <img *ngIf="imagenGoogle" class="previsualizacion" src="{{urlImagenGoogle}}">
+                                    <img *ngIf="imagenFacebook" class="previsualizacion" src="{{urlImagenFacebook}}">
                                 </div>
                                 <div fxLayout="column" fxLayoutAlign="center center" [fxShow]="hayImagen">
                                     <mat-icon>compare_arrows</mat-icon>

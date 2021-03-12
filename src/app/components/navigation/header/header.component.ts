@@ -1,16 +1,17 @@
-import { Component, OnInit, EventEmitter, Output, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { SingletonService } from '../../singleton.service'
 import { DropdownDirective, TOGGLE_STATUS } from 'angular-custom-dropdown';
 import { AuthService } from 'src/app/services/auth.service';
 import { MatSnackBar, MatInput } from '@angular/material';
 import { Subscription } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private suscripcion: Subscription
 
@@ -33,6 +34,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   _id;
   mostrarImagen = false;
   tieneNombre = false;
+  usuarioLogueado;
 
   /* NOTIFICACIONES */
   cantidad;
@@ -45,19 +47,23 @@ export class HeaderComponent implements OnInit, OnDestroy {
   noHayNotificaciones = false;
   esImagenGoogle: boolean = false;
   urlImagenGoogle;
+  esImagenFacebook: boolean = false;
+  urlImagenFacebook;
+  esImagenOneUse: boolean = false;
 
-  constructor(private singleton: SingletonService, private _auth: AuthService, private _snackBar: MatSnackBar, /* private pusherService: PusherService */) { }
+  constructor(private http: HttpClient, private singleton: SingletonService, private _auth: AuthService, private _snackBar: MatSnackBar, /* private pusherService: PusherService */) { }
+
 
   ngOnInit() {
     this.urlActual = window.location.href;
-    if(window.location.hostname != "localhost"){
+    if (window.location.hostname != "localhost") {
       this.urlRecortada = this.urlActual.substr(40);
       console.log(this.urlRecortada)
     } else {
       this.urlRecortada = this.urlActual.substr(22);
       console.log(this.urlRecortada)
     }
-    
+
     this.paginaActual = this.urlRecortada;
     this.checkPage(this.paginaActual);
     this.setearInicioSesion();
@@ -68,6 +74,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
       let url = this.urlActual.slice(34);
       this.inputPalabra.value = url;
     }
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.actualizarTokenFacebook();
+    }, 3000);
+
   }
 
   setearInicioSesion() {
@@ -84,7 +97,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.singleton.setEstado(this.estadoBuscador);
   }
 
-  navInicioSesion(){
+  navInicioSesion() {
     window.location.assign("/login");
   }
 
@@ -146,10 +159,24 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.suscripcion = this._auth.user_data(email).subscribe(
         res => {
           this.usuarioIniciado = res;
-          if(res.tipo == "google"){
-            if(String(res.removablefile).includes("http")){
+          this.usuarioLogueado = res;
+          if (res.tipo == "google") {
+            if (String(res.removablefile).includes("http")) {
               this.esImagenGoogle = true;
+              this.esImagenOneUse = false;
+              this.esImagenFacebook = false;
               this.urlImagenGoogle = res.removablefile
+            }
+          } else {
+            if (res.tipo == "facebook") {
+              this.esImagenFacebook = true;
+              this.esImagenGoogle = false;
+              this.esImagenOneUse = false;
+              this.urlImagenFacebook = res.removablefile;
+            } else {
+              this.esImagenOneUse = true;
+              this.esImagenFacebook = false;
+              this.esImagenGoogle = false;
             }
           }
           this.get_notificaciones_nuevas(res.name);
@@ -301,7 +328,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.suscripcion = this._auth.user_data(localStorage.getItem("email")).subscribe(
       res => {
         var usuario = res;
-        if(usuario == null || usuario == undefined) return;
+        if (usuario == null || usuario == undefined) return;
         this._auth.getAlquilerPublicaciones(usuario.name).subscribe(
           res2 => {
             var alquiler = res2.alquiler;
@@ -327,7 +354,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.suscripcion = this._auth.user_data(localStorage.getItem("email")).subscribe(
       res => {
         var usuario = res;
-        if(usuario == null || usuario == undefined) return;
+        if (usuario == null || usuario == undefined) return;
         this._auth.getAlquilerPublicaciones(usuario.name).subscribe(
           res2 => {
             var alquiler = res2.alquiler;
@@ -353,6 +380,25 @@ export class HeaderComponent implements OnInit, OnDestroy {
   buscarPalabra(inputPalabra) {
     let encode = encodeURI(inputPalabra);
     window.location.assign('/busqueda/p/' + encode)
+  }
+
+  actualizarTokenFacebook() {
+    if (this.esImagenFacebook) {
+      this.http.get<any>('https://graph.facebook.com/oauth/access_token?client_id=235541454927521&client_secret=a0e02d20919f1bdefeff77e3a13f1f71&grant_type=client_credentials').subscribe(
+        res => {
+          this.urlImagenFacebook = String(this.urlImagenFacebook).slice(0, String(this.urlImagenFacebook).indexOf("=")) + "=" + res.access_token + "&width=150&heigth=150";
+          let objeto = {
+            email: this.usuarioLogueado.email,
+            removablefile: this.urlImagenFacebook
+          }
+          this._auth.updateImgFacebook(objeto).subscribe(
+            res => {
+              console.log('OK');
+            }
+          )
+        }
+      )
+    }
   }
 
 }

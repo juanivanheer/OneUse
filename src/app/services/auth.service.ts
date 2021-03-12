@@ -19,6 +19,8 @@ export class AuthService {
 
   private _registerUrl = this.url + "register"
   private _registerGoogleUrl = this.url + "registerGoogle"
+  private _registerFacebookUrl = this.url + "registerFacebook"
+  private _updateFacebookImg = this.url + "updateFacebookImg"
   private _loginUrl = this.url + "login"
   private _confirmar = this.url + "confirmation"
   private _userData = this.url + "user-data?email="
@@ -26,7 +28,7 @@ export class AuthService {
   private _getImgUser = this.url + "get-img-name/"
   private _registerPublicacion = this.url + "register-publicacion?email="
   private _getPublicacion = this.url + "get-publicacion/"
-  private _getPublicacionId = this.url +  "get-one-publicacion/"
+  private _getPublicacionId = this.url + "get-one-publicacion/"
   private _getPublicacionesDestacadas = this.url + "get-publicaciones-destacadas/"
   private _deletePublicacion = this.url + "delete-publicacion/"
   private _updatePublicacion = this.url + "update-publicacion/"
@@ -81,8 +83,16 @@ export class AuthService {
     return this.http.post<any>(this._registerUrl, user)
   }
 
-  registerGoogleUser(user){
+  registerGoogleUser(user) {
     return this.http.post<any>(this._registerGoogleUrl, user)
+  }
+
+  registerFacebookUser(user) {
+    return this.http.post<any>(this._registerFacebookUrl, user)
+  }
+
+  updateImgFacebook(user){
+    return this.http.post<any>(this._updateFacebookImg, user)
   }
 
   loginUser(user) {

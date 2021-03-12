@@ -62,13 +62,53 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   public loginFacebook() {
     window['FB'].login((response) => {
-      console.log('login response', response);
+      //console.log('login response', response);
       if (response.authResponse) {
-        window['FB'].api('/me', {
-          fields: 'last_name, first_name, email'
-        }, (userInfo) => {
-          console.log("user information");
-          console.log(userInfo);
+        window['FB'].api('/me', { fields: 'last_name, first_name, email' }, (userInfo) => {
+          let access_token = response.authResponse.accessToken;
+          let id = response.authResponse.userID;
+          let nombre = userInfo.first_name;
+          let email = userInfo.email;
+          let apellido = userInfo.last_name;
+          let name = String(email).slice(0, String(email).indexOf("@")).toUpperCase();
+          let imagen = 'https://graph.facebook.com/v10.0/' + id + '/picture?access_token=' + access_token + '&heigth=150&width=150';
+
+          let objeto = {
+            name: name,
+            nombre: nombre,
+            apellido: apellido,
+            email: email,
+            removablefile: imagen,
+            tipo: "facebook"
+          }
+
+          this._auth.get_all_users().subscribe(
+            res => {
+              let usuarios = res;
+              var existe: boolean = false;
+              for (let i = 0; i < usuarios.length; i++) {
+                const element = usuarios[i];
+                if (element.email == email) {
+                  existe = true;
+                }
+              }
+              if (existe) {
+                window.localStorage.setItem("email", email);
+                window.localStorage.setItem("access_token", access_token);
+                window.localStorage.setItem("id", id);
+                window.location.assign('/home');
+              } else {
+                this._auth.registerFacebookUser(objeto).subscribe(
+                  res => {
+                    window.localStorage.setItem("email", res.email);
+                    window.localStorage.setItem("access_token", access_token);
+                    window.localStorage.setItem("id", id);
+                    window.location.assign('/home');
+                  })
+              }
+            }
+          )
+          //console.log(objeto);
         });
       } else {
         console.log('User login failed');
@@ -92,9 +132,9 @@ export class LoginComponent implements OnInit, AfterViewInit {
   public attachSignin(element) {
     this.auth2.attachClickHandler(element, {},
       (googleUser) => {
-        console.log(googleUser);
+        //console.log(googleUser);
         let profile = googleUser.getBasicProfile();
-        console.log(profile)
+        //console.log(profile)
 
         let token = googleUser.getAuthResponse().id_token;
         let id = profile.getId();
