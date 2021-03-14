@@ -108,6 +108,10 @@ export class MisAlquileresComponent implements OnInit, OnDestroy {
     )
   }
 
+  continuarPago(alquilerPropio){
+    window.location.assign("pos-alquiler/" + alquilerPropio.id_publicacion)
+  }
+
 
   datosPropietarioDialogRef: MatDialogRef<DatosPropietarioDialogComponent>;
   datosLocatarioDialogRef: MatDialogRef<DatosLocatarioDialogComponent>;

@@ -4,7 +4,8 @@
             <mat-toolbar-row>
                 <a [routerLink]="['/mi-cuenta']">
                     <!-- [routerLink]="['/perfil']" -->
-                    <mat-icon>insert_emoticon</mat-icon><span class="iconitos letritas" fxHide.lt-lg="true">Mi cuenta</span>
+                    <mat-icon>insert_emoticon</mat-icon><span class="iconitos letritas" fxHide.lt-lg="true">Mi
+                        cuenta</span>
                 </a>
             </mat-toolbar-row>
 
@@ -19,21 +20,24 @@
             <mat-toolbar-row>
                 <a [routerLink]="['/mi-cuenta/perfil']">
                     <!-- [routerLink]="['/perfil']" -->
-                    <mat-icon>account_circle</mat-icon><span class="iconitos letritas" fxHide.lt-lg="true">Mi perfil</span>
+                    <mat-icon>account_circle</mat-icon><span class="iconitos letritas" fxHide.lt-lg="true">Mi
+                        perfil</span>
                 </a>
             </mat-toolbar-row>
 
             <mat-toolbar-row>
                 <a [routerLink]="['/mi-cuenta/mis-publicaciones']">
                     <!-- [routerLink]="['/mis-publicaciones']" -->
-                    <mat-icon>book</mat-icon><span class="iconitos letritas" fxHide.lt-lg="true">Mis publicaciones</span>
+                    <mat-icon>book</mat-icon><span class="iconitos letritas" fxHide.lt-lg="true">Mis
+                        publicaciones</span>
                 </a>
             </mat-toolbar-row>
 
             <mat-toolbar-row>
                 <a [routerLink]="['/mi-cuenta/mis-alquileres']">
                     <!-- [routerLink]="['mis-alquileres']"  -->
-                    <mat-icon>assignment</mat-icon> <span class="iconitos letritas" fxHide.lt-lg="true">Mis alquileres</span>
+                    <mat-icon>assignment</mat-icon> <span class="iconitos letritas" fxHide.lt-lg="true">Mis
+                        alquileres</span>
                 </a>
             </mat-toolbar-row>
 
@@ -49,7 +53,7 @@
             <p style="font-size: 25px;margin-bottom: 8px; "> Mis alquileres</p>
             <mat-divider fxFlexFill></mat-divider>
         </div>
-        <mat-tab-group >
+        <mat-tab-group>
             <mat-tab>
                 <div fxHide.lt-lg="true">
                     <ng-template mat-tab-label>
@@ -203,11 +207,16 @@
                                         </div>
                                         <div class="info2" fxLayout="row" fxFlex="400" fxLayoutAlign="center center"
                                             fxLayoutGap="10px">
-
                                             <button *ngIf="alquilerPropio.estado == 'En proceso de entrega'"
                                                 mat-raised-button routerLink="/reclamar-alquiler" color="warn">
                                                 <mat-icon>cancel</mat-icon>
                                                 <span> Reclamar alquiler</span>
+                                            </button>
+                                            <button *ngIf="alquilerPropio.estado == 'En proceso de pago'"
+                                                mat-raised-button (click)="continuarPago(alquilerPropio)"
+                                                color="primary">
+                                                <mat-icon>credit_card</mat-icon>
+                                                <span> Continuar con el pago</span>
                                             </button>
                                             <button *ngIf="alquilerPropio.estado == 'En proceso de pago'"
                                                 mat-raised-button (click)="openDialogCancelar(alquilerPropio)"
