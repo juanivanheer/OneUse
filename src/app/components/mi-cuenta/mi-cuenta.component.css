@@ -3,7 +3,7 @@
     font-size: 6px !important;
 }
 
- .tab-lt-md {
+.tab-lt-md {
     width: 300px;
     height: 500px;
     padding-top: 10px;
@@ -15,11 +15,22 @@
     height: 500px;
     padding-left: 35px;
     padding-top: 10px
-} 
+}
+
+.letritas {
+    font-size: 14px;
+    line-height: 1em;
+    width: 100%;
+    cursor: pointer;
+}
+
 .iconitos {
     display: inline;
     margin-left: 10px;
+    margin-right: 10px;
+    vertical-align: 5px;
 }
+
 a {
     cursor: pointer;
     text-decoration: none;
@@ -43,6 +54,8 @@ a, a:focus, a:active, a:link, img {
     outline: none;
     text-decoration: none;
 }
-mat-toolbar{
-    background: rgb(215,215,215);
+
+mat-toolbar {
+    background: #ffffff;
+    border-right: 1px outset;
 }

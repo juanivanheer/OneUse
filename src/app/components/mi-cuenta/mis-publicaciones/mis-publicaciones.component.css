@@ -43,21 +43,32 @@
     border: 2px black solid;
 }
 
-.container-gt-md{
+.container-gt-md {
     width: 100%;
 }
 
-.container-lt-md{
+.container-lt-md {
     width: 86%;
 }
 
-.mat-tab-labels{
+.mat-tab-labels {
     justify-content: center !important
 }
+
+.letritas {
+    font-size: 14px;
+    line-height: 1em;
+    width: 100%;
+    cursor: pointer;
+}
+
 .iconitos {
     display: inline;
     margin-left: 10px;
+    margin-right: 10px;
+    vertical-align: 5px;
 }
+
 a {
     cursor: pointer;
     text-decoration: none;
@@ -81,13 +92,16 @@ a, a:focus, a:active, a:link, img {
     outline: none;
     text-decoration: none;
 }
-mat-toolbar{
-    background: rgb(215,215,215);
+
+mat-toolbar {
+    background: #ffffff;
+    border-right: 1px outset;
 }
 
 .mat-body, .mat-body-1, .mat-typography {
-    font: 400 14px/20px Roboto,"Helvetica Neue",sans-serif;
+    font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif;
 }
+
 .mat-dialog-container {
     display: block;
     padding: 24px;
@@ -102,28 +116,33 @@ mat-toolbar{
 }
 
 .mat-dialog-container {
-    box-shadow: 0 11px 15px -7px rgba(0,0,0,.2), 0 24px 38px 3px rgba(0,0,0,.14), 0 9px 46px 8px rgba(0,0,0,.12);
+    box-shadow: 0 11px 15px -7px rgba(0, 0, 0, .2), 0 24px 38px 3px rgba(0, 0, 0, .14), 0 9px 46px 8px rgba(0, 0, 0, .12);
     background: #fff;
-    color: rgba(0,0,0,.87);
+    color: rgba(0, 0, 0, .87);
 }
 
 .mat-dialog-title {
     margin: 0 0 20px;
     display: block;
 }
+
 .mat-dialog-title {
-    font: 500 20px/32px Roboto,"Helvetica Neue",sans-serif;
+    font: 500 20px/32px Roboto, "Helvetica Neue", sans-serif;
 }
+
 .mat-dialog-content {
     display: block;
     margin: 0 -24px;
     padding: 0 24px;
     max-height: 65vh;
     overflow: auto;
-    -webkit-overflow-scrolling: touch; }
+    -webkit-overflow-scrolling: touch;
+}
 
-    .cdk-overlay-pane {
-       pointer-events: auto;
-    }
-    .cdk-global-overlay-wrapper, .cdk-overlay-container {
-        pointer-events: none;}
+.cdk-overlay-pane {
+    pointer-events: auto;
+}
+
+.cdk-global-overlay-wrapper, .cdk-overlay-container {
+    pointer-events: none;
+}

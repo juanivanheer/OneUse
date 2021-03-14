@@ -31,6 +31,7 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
   year;
   month;
   dt;
+  hayDatos: boolean = false;
 
   constructor(private singleton: SingletonService, private _auth: AuthService) { }
 
@@ -39,29 +40,35 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
       res1 => {
         this._auth.notificaciones_todas(res1.name).subscribe(
           res2 => {
-            for (let i = 0; i < res2.not.length; i++) {
-              /* PARA OBTENER FECHAS EN FORMATO AR*/
-              this.date = new Date(res2.not[i].createdAt);
-              this.year = this.date.getFullYear();
-              this.month = this.date.getMonth() + 1;
-              this.dt = this.date.getDate();
-              this.arrayFechas.push(this.dt + '-' + this.month + '-' + this.year);
-              this.arrayJSON.push(res2.not[i].imagen);
-              this.arrayTitulos.push(res2.not[i].titulo);
+            if (res2.length > 0) {
+              for (let i = 0; i < res2.not.length; i++) {
+                /* PARA OBTENER FECHAS EN FORMATO AR*/
+                this.date = new Date(res2.not[i].createdAt);
+                this.year = this.date.getFullYear();
+                this.month = this.date.getMonth() + 1;
+                this.dt = this.date.getDate();
+                this.arrayFechas.push(this.dt + '-' + this.month + '-' + this.year);
+                this.arrayJSON.push(res2.not[i].imagen);
+                this.arrayTitulos.push(res2.not[i].titulo);
+              }
+              this.notificaciones = res2.not;
+              this.notificaciones.reverse();
+              this.arrayJSON.reverse();
+              this.arrayTitulos.reverse();
+              this.arrayFechas.reverse();
+              this.dataSource = new DataTableDataSource(this.paginator, this.sort, this.notificaciones, this.arrayJSON, this.arrayTitulos, this.arrayFechas);
+              this.hayDatos = true;
+            } else {
+              this.hayDatos = false;
             }
-            this.notificaciones = res2.not;
-            this.notificaciones.reverse();
-            this.arrayJSON.reverse();
-            this.arrayTitulos.reverse();
-            this.arrayFechas.reverse();
-            this.dataSource = new DataTableDataSource(this.paginator, this.sort, this.notificaciones, this.arrayJSON, this.arrayTitulos, this.arrayFechas);
+
           }
         )
       }
     )
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 

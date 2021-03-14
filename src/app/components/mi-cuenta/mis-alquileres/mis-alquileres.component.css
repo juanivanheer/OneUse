@@ -55,9 +55,18 @@
     justify-content: center !important
 }
 
+.letritas{
+    font-size: 14px;
+    line-height: 1em;
+    width: 100%;
+    cursor: pointer;
+}
+
 .iconitos {
     display: inline;
     margin-left: 10px;
+    margin-right: 10px;
+    vertical-align: 5px;
 }
 
 a {
@@ -85,7 +94,8 @@ a, a:focus, a:active, a:link, img {
 }
 
 mat-toolbar {
-    background: rgb(215, 215, 215);
+    background: #ffffff;
+    border-right: 1px outset;
 }
 
 .mat-body, .mat-body-1, .mat-typography {

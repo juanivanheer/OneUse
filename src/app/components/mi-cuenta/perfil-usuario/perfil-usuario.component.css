@@ -17,14 +17,14 @@
     padding-top: 10px
 }
 
-.previsualizacion{
+.previsualizacion {
     width: 250px;
     height: 250px;
     border: 1px solid gray;
     border-radius: 140px;
 }
 
-.previsualizacion-icon{
+.previsualizacion-icon {
     width: 250px;
     height: 250px;
     border: 1px solid gray;
@@ -33,26 +33,38 @@
     font-size: 250px;
 }
 
-img{
+img {
     height: 100%;
     width: 100%;
     border-radius: 140px;
 }
 
-p{
+p {
     font-size: 24px;
-    
 }
-mat-form-field{
+
+mat-form-field {
     font-size: 20px;
 }
-.contenedorDeDatos{
+
+.contenedorDeDatos {
     margin-bottom: 200px;
 }
+
+.letritas {
+    font-size: 14px;
+    line-height: 1em;
+    width: 100%;
+    cursor: pointer;
+}
+
 .iconitos {
     display: inline;
     margin-left: 10px;
+    margin-right: 10px;
+    vertical-align: 5px;
 }
+
 a {
     cursor: pointer;
     text-decoration: none;
@@ -76,6 +88,8 @@ a, a:focus, a:active, a:link, img {
     outline: none;
     text-decoration: none;
 }
-mat-toolbar{
-    background: rgb(215,215,215);
+
+mat-toolbar {
+    background: #ffffff;
+    border-right: 1px outset;
 }

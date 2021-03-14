@@ -4,14 +4,14 @@
             <mat-toolbar-row>
                 <a [routerLink]="['/mi-cuenta']">
                     <!-- [routerLink]="['/perfil']" -->
-                    <mat-icon>insert_emoticon</mat-icon><span class="iconitos" fxHide.lt-lg="true">Mi Cuenta</span>
+                    <mat-icon>insert_emoticon</mat-icon><span class="iconitos letritas" fxHide.lt-lg="true">Mi cuenta</span>
                 </a>
             </mat-toolbar-row>
 
             <mat-toolbar-row>
                 <a [routerLink]="['/mi-cuenta/notificaciones']">
                     <!-- [routerLink]="['/perfil']" -->
-                    <mat-icon>notifications_active</mat-icon><span class="iconitos"
+                    <mat-icon>notifications_active</mat-icon><span class="iconitos letritas"
                         fxHide.lt-lg="true">Notificaciones</span>
                 </a>
             </mat-toolbar-row>
@@ -19,142 +19,136 @@
             <mat-toolbar-row>
                 <a [routerLink]="['/mi-cuenta/perfil']">
                     <!-- [routerLink]="['/perfil']" -->
-                    <mat-icon>account_circle</mat-icon><span class="iconitos" fxHide.lt-lg="true">Mi Perfil</span>
+                    <mat-icon>account_circle</mat-icon><span class="iconitos letritas" fxHide.lt-lg="true">Mi perfil</span>
                 </a>
             </mat-toolbar-row>
 
             <mat-toolbar-row>
                 <a [routerLink]="['/mi-cuenta/mis-publicaciones']">
                     <!-- [routerLink]="['/mis-publicaciones']" -->
-                    <mat-icon>book</mat-icon><span class="iconitos" fxHide.lt-lg="true">Mis Publicaciones</span>
+                    <mat-icon>book</mat-icon><span class="iconitos letritas" fxHide.lt-lg="true">Mis publicaciones</span>
                 </a>
             </mat-toolbar-row>
 
             <mat-toolbar-row>
                 <a [routerLink]="['/mi-cuenta/mis-alquileres']">
                     <!-- [routerLink]="['mis-alquileres']"  -->
-                    <mat-icon>assignment</mat-icon> <span class="iconitos" fxHide.lt-lg="true">Mis Alquileres</span>
+                    <mat-icon>assignment</mat-icon> <span class="iconitos letritas" fxHide.lt-lg="true">Mis alquileres</span>
                 </a>
             </mat-toolbar-row>
 
             <mat-toolbar-row>
                 <a fxFlexAlign.lt-lg="flex-end" (click)="cerrarSesion()">
-                    <mat-icon>exit_to_app</mat-icon><span class="iconitos" fxHide.lt-lg="true">Salir</span>
+                    <mat-icon>exit_to_app</mat-icon><span class="iconitos letritas" fxHide.lt-lg="true">Salir</span>
                 </a>
             </mat-toolbar-row>
         </mat-toolbar>
-
     </div>
     <div fxLayout="column" fxFlexOrder="2" ngClass.gt-md="container-gt-md" ngClass.lt-md="container-lt-md">
-
         <div fxLayout="column" style="width: 100%; text-align: center; margin-top: 40px" fxLayoutAlign="center center">
-            <p style="font-size: 25px;margin-bottom: 8px; "> Mis Alquileres</p>
+            <p style="font-size: 25px;margin-bottom: 8px; "> Mis alquileres</p>
             <mat-divider fxFlexFill></mat-divider>
         </div>
-
-        <mat-tab-group style="width: 100%;">
+        <mat-tab-group >
             <mat-tab>
                 <div fxHide.lt-lg="true">
                     <ng-template mat-tab-label>
-                        <mat-icon class="iconitos">star</mat-icon>
-                        De Mis Publicaciones
+                        <mat-icon class="iconitos">bookmark_add</mat-icon>
+                        De mis publicaciones
                     </ng-template>
                 </div>
-                <div class=" mat-elevation-z4 contenedor-gral">
+                <div *ngIf="!hayAlquileresPropietario" style="text-align: center; margin-top: 100px;overflow: hidden;">
+                    <h3>No hay alquileres por mostrar</h3>
+                </div>
+                <div class="mat-elevation-z4 contenedor-gral" *ngIf="hayAlquileresPropietario">
                     <br>
-                    <div fxLayout="column" fxFlexFill fxLayoutAlign="center center" *ngIf="!hayAlquileresPropietario">
-                        <h2>No hay alquileres por mostrar</h2>
-                    </div>
-                    <div *ngIf="hayAlquileresPropietario">
-                        <div class="contenedorAlquiler" *ngFor="let datos of arrayDatosPropietario; let indice = index">
-                            <mat-list role="list">
-                                <mat-list-item role="listitem">
-                                    <div fxLayout="row" fxFlexFill>
-                                        <div fxLayoutAlign="center" fxFlex="500">
-                                            <!-- <img class="imagen"
-                                                src="{{'http://localhost:4201/api/get-image-publicacion/'+ datos.imagen}}"> -->
-                                            <img class="imagen"
-                                                src="{{'https://oneuse-backend.herokuapp.com/api/get-image-publicacion/'+ datos.imagen}}">
-                                        </div>
-
-                                        <div class="info" fxLayout="column" fxFlex="300" fxLayoutAlign="center">
-                                            <p mat-line><b>Persona que alquiló: </b>{{datos.name_usuarioLocatario}}</p>
-                                            <p mat-line><b>Fecha de generación: </b>{{datos.createdAt}}</p>
-                                            <p mat-line><b> Cantidad de días alquiler: </b>{{datos.cantidadDias}} </p>
-                                            <p mat-line><b> Estado del Alquiler: </b>{{datos.estado}} </p>
-                                            <p mat-line *ngIf="datos.fuePagado && !datos.codigoPropietarioIngresado"><b>
-                                                    Código entrega propietario: </b>{{datos.codigoEntregaPropietario}}
-                                            </p>
-                                            <p mat-line *ngIf="datos.estado == 'En proceso de devolución'">
-                                                <b>
-                                                    Código devolución propietario:
-                                                </b>{{datos.codigoDevolucionPropietario}}
-                                            </p>
-                                            <p mat-line *ngIf="datos.fuePagado && datos.codigoLocatarioIngresado">
-                                                <b> Fecha de devolución:
-                                                </b>{{datos.fechaCaducidadDevolucion}}
-                                            </p>
-                                        </div>
-                                        <div class="info2" fxLayout="row" fxFlex="400" fxLayoutAlign="center center"
-                                            fxLayoutGap="10px" *ngIf="!datos.fuePagado">
-                                            <p><b>Esperando aceptación del pago</b></p>
-
-                                            <button mat-raised-button (click)="openDialogCancelar(datos)" color="warn">
-                                                <mat-icon>cancel</mat-icon>
-                                                <span> Cancelar alquiler</span>
-                                            </button>
-                                        </div>
-                                        <div class="info2" fxLayout="row" fxFlex="400" fxLayoutAlign="center center"
-                                            fxLayoutGap="10px" *ngIf="datos.fuePagado">
-
-                                            <button *ngIf="datos.estado == 'En proceso de entrega'" mat-raised-button
-                                                routerLink="/reclamar-alquiler" color="warn">
-                                                <mat-icon>cancel</mat-icon>
-                                                <span> Reclamar alquiler</span>
-                                            </button>
-
-                                            <button *ngIf="datos.estado == 'En proceso de devolución'" mat-raised-button
-                                                routerLink="/prereclamo" color="warn">
-                                                <mat-icon>cancel</mat-icon>
-                                                <span> Reclamar alquiler</span>
-                                            </button>
-
-                                            <button mat-icon-button [matMenuTriggerFor]="menu1">
-                                                <mat-icon>more_vert</mat-icon>
-                                            </button>
-                                            <mat-menu #menu1="matMenu">
-
-                                                <button mat-menu-item (click)="openDialogDatosLocatario(datos)">
-                                                    <mat-icon>person</mat-icon>
-                                                    <span>Datos del locatario</span>
-                                                </button>
-
-                                                <button mat-menu-item (click)="openDialogCodigoLocatario(datos)"
-                                                    *ngIf="datos.codigoPropietarioIngresado && !datos.codigoLocatarioIngresado">
-                                                    <mat-icon>format_align_justify</mat-icon>
-                                                    <span>Ingresar código locatario</span>
-                                                </button>
-
-                                                <button mat-menu-item
-                                                    (click)="openDialogCodigoLocatarioDevolucion(datos)"
-                                                    *ngIf="datos.codigoPropietrioDevolucionIngresado && !datos.codigoLocatarioDevolucionIngresado">
-                                                    <mat-icon>format_align_justify</mat-icon>
-                                                    <span>Ingresar código locatario devolución</span>
-                                                </button>
-
-                                                <button mat-menu-item *ngIf="datos.estado == 'Finalizado'">
-                                                    <mat-icon>star</mat-icon>
-                                                    <span>Puntuar al locatario</span>
-                                                </button>
-                                            </mat-menu>
-
-                                        </div>
+                    <div class="contenedorAlquiler" *ngFor="let datos of arrayDatosPropietario; let indice = index">
+                        <mat-list role="list">
+                            <mat-list-item role="listitem">
+                                <div fxLayout="row" fxFlexFill>
+                                    <div fxLayoutAlign="center" fxFlex="500">
+                                        <img class="imagen"
+                                            src="{{'http://localhost:4201/api/get-image-publicacion/'+ datos.imagen}}">
+                                        <!-- <img class="imagen"
+                                                src="{{'https://oneuse-backend.herokuapp.com/api/get-image-publicacion/'+ datos.imagen}}"> -->
                                     </div>
-                                </mat-list-item>
-                                <br>
-                                <mat-divider></mat-divider>
-                            </mat-list>
-                        </div>
+
+                                    <div class="info" fxLayout="column" fxFlex="300" fxLayoutAlign="center">
+                                        <p mat-line><b> Persona que alquiló: </b>{{datos.name_usuarioLocatario}}</p>
+                                        <p mat-line><b> Fecha de generación: </b>{{datos.createdAt}}</p>
+                                        <p mat-line><b> Cantidad de días alquiler: </b>{{datos.cantidadDias}} </p>
+                                        <p mat-line><b> Estado del Alquiler: </b>{{datos.estado}} </p>
+                                        <p mat-line *ngIf="datos.fuePagado && !datos.codigoPropietarioIngresado"><b>
+                                                Código entrega propietario: </b>{{datos.codigoEntregaPropietario}}
+                                        </p>
+                                        <p mat-line *ngIf="datos.estado == 'En proceso de devolución'">
+                                            <b>
+                                                Código devolución propietario:
+                                            </b>{{datos.codigoDevolucionPropietario}}
+                                        </p>
+                                        <p mat-line *ngIf="datos.fuePagado && datos.codigoLocatarioIngresado">
+                                            <b> Fecha de devolución:
+                                            </b>{{datos.fechaCaducidadDevolucion}}
+                                        </p>
+                                    </div>
+                                    <div class="info2" fxLayout="row" fxFlex="400" fxLayoutAlign="center center"
+                                        fxLayoutGap="10px" *ngIf="!datos.fuePagado">
+                                        <p><b>Esperando aceptación del pago</b></p>
+
+                                        <button mat-raised-button (click)="openDialogCancelar(datos)" color="warn">
+                                            <mat-icon>cancel</mat-icon>
+                                            <span> Cancelar alquiler</span>
+                                        </button>
+                                    </div>
+                                    <div class="info2" fxLayout="row" fxFlex="400" fxLayoutAlign="center center"
+                                        fxLayoutGap="10px" *ngIf="datos.fuePagado">
+
+                                        <button *ngIf="datos.estado == 'En proceso de entrega'" mat-raised-button
+                                            routerLink="/reclamar-alquiler" color="warn">
+                                            <mat-icon>cancel</mat-icon>
+                                            <span> Reclamar alquiler</span>
+                                        </button>
+
+                                        <button *ngIf="datos.estado == 'En proceso de devolución'" mat-raised-button
+                                            routerLink="/prereclamo" color="warn">
+                                            <mat-icon>cancel</mat-icon>
+                                            <span> Reclamar alquiler</span>
+                                        </button>
+
+                                        <button mat-icon-button [matMenuTriggerFor]="menu1">
+                                            <mat-icon>more_vert</mat-icon>
+                                        </button>
+                                        <mat-menu #menu1="matMenu">
+
+                                            <button mat-menu-item (click)="openDialogDatosLocatario(datos)">
+                                                <mat-icon>person</mat-icon>
+                                                <span>Datos del locatario</span>
+                                            </button>
+
+                                            <button mat-menu-item (click)="openDialogCodigoLocatario(datos)"
+                                                *ngIf="datos.codigoPropietarioIngresado && !datos.codigoLocatarioIngresado">
+                                                <mat-icon>format_align_justify</mat-icon>
+                                                <span>Ingresar código locatario</span>
+                                            </button>
+
+                                            <button mat-menu-item (click)="openDialogCodigoLocatarioDevolucion(datos)"
+                                                *ngIf="datos.codigoPropietrioDevolucionIngresado && !datos.codigoLocatarioDevolucionIngresado">
+                                                <mat-icon>format_align_justify</mat-icon>
+                                                <span>Ingresar código locatario devolución</span>
+                                            </button>
+
+                                            <button mat-menu-item *ngIf="datos.estado == 'Finalizado'">
+                                                <mat-icon>star</mat-icon>
+                                                <span>Puntuar al locatario</span>
+                                            </button>
+                                        </mat-menu>
+
+                                    </div>
+                                </div>
+                            </mat-list-item>
+                            <br>
+                            <mat-divider></mat-divider>
+                        </mat-list>
                     </div>
                 </div>
             </mat-tab>
@@ -162,7 +156,7 @@
             <mat-tab>
                 <div fxHide.lt-lg="true">
                     <ng-template mat-tab-label>
-                        <mat-icon class="iconitos">star_border</mat-icon>
+                        <mat-icon class="iconitos">add_shopping_cart</mat-icon>
                         Propios
                     </ng-template>
                 </div>
@@ -178,10 +172,10 @@
                                 <mat-list-item role="listitem">
                                     <div fxLayout="row" fxFlexFill>
                                         <div fxLayoutAlign="center" fxFlex="500">
-                                            <!-- <img class="imagen"
-                                                src="{{'http://localhost:4201/api/get-image-publicacion/'+ alquilerPropio.imagen}}"> -->
                                             <img class="imagen"
-                                                src="{{'https://oneuse-backend.herokuapp.com/api/get-image-publicacion/'+ alquilerPropio.imagen}}">
+                                                src="{{'http://localhost:4201/api/get-image-publicacion/'+ alquilerPropio.imagen}}">
+                                            <!-- <img class="imagen"
+                                                src="{{'https://oneuse-backend.herokuapp.com/api/get-image-publicacion/'+ alquilerPropio.imagen}}"> -->
                                         </div>
 
                                         <div class="info" fxLayout="column" fxFlex="300" fxLayoutAlign="center">

@@ -16,7 +16,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   selector: 'app-mis-alquileres',
   templateUrl: './mis-alquileres.component.html',
   styleUrls: ['./mis-alquileres.component.css']
-}) 
+})
 export class MisAlquileresComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription;
@@ -45,14 +45,15 @@ export class MisAlquileresComponent implements OnInit, OnDestroy {
         this._auth.getAlquilerPublicaciones(username).subscribe(
           res1 => {
             this.arrayAlquilerPropietario = res1.alquiler;
-
-            for (let i = 0; i < this.arrayAlquilerPropietario.length; i++) {
-              var date = new Date(res1.alquiler[i].createdAt).toLocaleDateString();
-              this.arrayAlquilerPropietario[i].createdAt = date;
-              if(this.arrayAlquilerPropietario[i].estado != "Cancelado")
-                this.arrayDatosPropietario.push(this.arrayAlquilerPropietario[i])
+            if (this.arrayAlquilerPropietario.length > 0) {
+              for (let i = 0; i < this.arrayAlquilerPropietario.length; i++) {
+                var date = new Date(res1.alquiler[i].createdAt).toLocaleDateString();
+                this.arrayAlquilerPropietario[i].createdAt = date;
+                if (this.arrayAlquilerPropietario[i].estado != "Cancelado")
+                  this.arrayDatosPropietario.push(this.arrayAlquilerPropietario[i])
+              }
+              this.hayAlquileresPropietario = true;
             }
-            this.hayAlquileresPropietario = true;
           })
 
         this._auth.getAlquilerPropios(username).subscribe(
@@ -82,7 +83,7 @@ export class MisAlquileresComponent implements OnInit, OnDestroy {
 
               var date = new Date(res1.alquiler[i].createdAt).toLocaleDateString();
               this.arrayAlquilerPropios[i].createdAt = date;
-              if(this.arrayAlquilerPropios[i].estado != "Cancelado")
+              if (this.arrayAlquilerPropios[i].estado != "Cancelado")
                 this.arrayDatosPropios.push(this.arrayAlquilerPropios[i])
             }
             this.hayAlquileresPropios = true;
@@ -173,18 +174,18 @@ export class MisAlquileresComponent implements OnInit, OnDestroy {
 
 
   openDialogCancelar(alquiler): void {
-    localStorage.setItem('alquiler',JSON.stringify(alquiler))
-     this.cancelarDialogRef = this.dialog.open(CancelarDialogComponent,
+    localStorage.setItem('alquiler', JSON.stringify(alquiler))
+    this.cancelarDialogRef = this.dialog.open(CancelarDialogComponent,
       {
-        data: { 
+        data: {
           alquiler: alquiler
         }
-      }); this.cancelarDialogRef.afterClosed().subscribe(result => {    
-           
+      }); this.cancelarDialogRef.afterClosed().subscribe(result => {
+
         window.location.reload();
-          
-        })
-    
+
+      })
+
   }
 
 
