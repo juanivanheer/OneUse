@@ -11,15 +11,6 @@
                 <br>
                 <h4 style="margin-left:10px;text-align: justify; margin-top: 25px"> De parte de One Use, muchas gracias por usar nuestros servicios</h4>
             </div>
-
-            <!-- <div class="contenedor">
-                <swiper [config]="config">
-                    <div *ngFor="let img of publicacion.multiplefile; let indice2 = index">
-                        <img class="container-muestra-imagenes"
-                            src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}">
-                    </div>
-                </swiper>
-            </div> -->
         </div>
     </div>
     <div fxFlex="780,400" fxFlexFill>
@@ -37,6 +28,7 @@
         <h5>Precio por mes: {{preciomes}}</h5>
         <br>
         <br>
-        <button (click)="registrarAlquiler()" style="width: 300px;" mat-raised-button color="primary">Continuar con el pago</button>
+        <div fxLayout="row" fxLayoutAlign="center center" id="mp"></div>
+        <!-- <button (click)="registrarAlquiler()" style="width: 300px;" mat-raised-button color="primary">Continuar con el pago</button> -->
     </div>
 </div>

@@ -53,6 +53,7 @@ export class DetallePublicacionComponent implements OnInit, OnDestroy {
   cantidades: FormGroup;
   tipoAlquiler;
   suscription: Subscription;
+  montoTotal;
 
   ngOnDestroy() {
     this.suscription.unsubscribe();
@@ -60,12 +61,12 @@ export class DetallePublicacionComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     var urlActual = window.location.href;
-    if(window.location.hostname != 'localhost'){
+    if (window.location.hostname != 'localhost') {
       this.id = urlActual.substr(43);
     } else {
       this.id = urlActual.substr(37);
     }
-    
+
 
     this.cantidades = this._formBuilder.group({
       cantidadDisponibleSeleccionada: ['', Validators.required],
@@ -230,7 +231,15 @@ export class DetallePublicacionComponent implements OnInit, OnDestroy {
     if (this.cantidadDiasSeleccionado != null && this.cantidadDisponibleSeleccionada != null) {
       if (this.cantidadDiasSeleccionado == 0 || this.cantidadDisponibleSeleccionada == 0) {
         this.btnAlquilar = true;
+        this.montoTotal = 0;
       } else {
+        if (this.cantidadDiasSeleccionado < 29) {
+          this.montoTotal = parseInt(this.cantidadDisponibleSeleccionada) * this.calcularPrecio();
+        } else {
+          if (this.cantidadDiasSeleccionado > 28) {
+            this.montoTotal = parseInt(this.cantidadDisponibleSeleccionada) * (parseInt(this.preciomes) + this.calcularPrecio());
+          }
+        }
         this.btnAlquilar = false;
       }
 
@@ -238,11 +247,55 @@ export class DetallePublicacionComponent implements OnInit, OnDestroy {
   }
 
   registrarAlquiler() {
-    this._auth.registrar_EnProcesoPago(this.id, this.usuario.name, this.usuario_logueado.name, this.cantidadDiasSeleccionado, this.cantidadDisponible, this.publicacion.multiplefile[0]).subscribe(
+    this._auth.registrar_EnProcesoPago(this.id, this.usuario.name, this.usuario_logueado.name, this.cantidadDiasSeleccionado, this.cantidadDisponible, this.publicacion.multiplefile[0], this.montoTotal).subscribe(
       res => {
         console.log(res);
+        window.location.assign("pos-alquiler/" + this.publicacion._id)
       }
     )
+  }
+
+  iniciarSesion(){
+    window.location.assign("login")
+  }
+
+  calcularPrecio() {
+    if (this.cantidadDiasSeleccionado < 7) {
+      return this.cantidadDiasSeleccionado * this.preciodia;
+    } else {
+      if (this.preciosemana != undefined && this.preciosemana != null) {
+        if (this.cantidadDiasSeleccionado == 7) {
+          return this.preciosemana;
+        } else {
+          if (this.cantidadDiasSeleccionado > 7 && this.cantidadDiasSeleccionado < 14) {
+            let dias_restantes = this.cantidadDiasSeleccionado - 7
+            return dias_restantes * this.preciodia + parseInt(this.preciosemana)
+          } else {
+            if (this.cantidadDiasSeleccionado == 14) {
+              return this.preciosemana * 2;
+            } else {
+              if (this.cantidadDiasSeleccionado > 14 && this.cantidadDiasSeleccionado < 21) {
+                let dias_restantes = this.cantidadDiasSeleccionado - 14
+                return (dias_restantes * this.preciodia) + (2 * parseInt(this.preciosemana))
+              } else {
+                if (this.cantidadDiasSeleccionado == 21) {
+                  return this.preciosemana * 3;
+                } else {
+                  if (this.cantidadDiasSeleccionado > 21 && this.cantidadDiasSeleccionado < 28) {
+                    let dias_restantes = this.cantidadDiasSeleccionado - 21
+                    return (dias_restantes * this.preciodia) + (3 * parseInt(this.preciosemana))
+                  } else {
+                    if (this.cantidadDiasSeleccionado == 28) {
+                      return parseInt(this.preciomes);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   //SWIPER

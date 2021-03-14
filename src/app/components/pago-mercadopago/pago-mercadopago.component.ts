@@ -27,20 +27,26 @@ export class PagoMercadopagoComponent implements OnInit, AfterViewInit {
         "site_status": "active",
         "email": "test_user_25971562@testuser.com"
       }
+
+      Claves de usuario de prueba 3 (DESTACADOS)
+      {
+        "id": 728081527,
+        "nickname": "TETE209755",
+        "password": "qatest8818",
+        "site_status": "active",
+        "email": "test_user_68217187@testuser.com"
+      }
   
-      ---------------- APP MP OneUse (juanivanheer@gmail.com) -------------------------------
+      ---------------- APP MP OneUse PADRE (juanivanheer@gmail.com) -------------------------------
       PUBLIC_KEY = 'APP_USR-a4673aa0-ad58-4543-8cfa-9295400f68dc'
       AUTH_KEY = 'APP_USR-8165018491705514-031214-50f0f1c6dac2a9e4f1abc7369f552828-321594747'
 
-      ---------------- APP MP OneUse-TEST (test_user_54742029@testuser.com) -----------------
-      ************** CON ESTAS CLAVES HAY QUE ARMAR LAS PREFERENCIAS ************************
+      ---------------- APP MP OneUse-TEST VENDEDOR (test_user_54742029@testuser.com) ------------------
+      ************** CON ESTAS CLAVES HAY QUE ARMAR LAS PREFERENCIAS DE VENTAS ************************
       PUBLIC_KEY = 'APP_USR-8f101a04-f6b9-4e48-acd1-b8ee31e63605'
       AUTH_KEY = 'APP_USR-6441853255268027-031218-1cc601aea99e8a140d8107921e2e7cc7-727650332'
 
   */
-
-  PUBLIC_KEY = 'APP_USR-a4673aa0-ad58-4543-8cfa-9295400f68dc'
-  AUTH_KEY = 'APP_USR-8165018491705514-031214-50f0f1c6dac2a9e4f1abc7369f552828-321594747'
 
   constructor() { }
 

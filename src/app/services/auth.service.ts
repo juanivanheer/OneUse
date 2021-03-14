@@ -264,9 +264,9 @@ export class AuthService {
     return this.http.delete<any>(this._deleteAlquiler + id);
   }
 
-  registrar_EnProcesoPago(id_publicacion, name_propietario, name_locatario, cantidadDias, cantidadAlquiler, imagen) {
+  registrar_EnProcesoPago(id_publicacion, name_propietario, name_locatario, cantidadDias, cantidadAlquiler, imagen, montoTotal) {
     let params = JSON.stringify(id_publicacion);
-    return this.http.post<any>(this._alquilerProcesoPago + id_publicacion + "/" + name_propietario + "/" + name_locatario + "/" + cantidadDias + "/" + cantidadAlquiler + "/" + imagen, params);
+    return this.http.post<any>(this._alquilerProcesoPago + id_publicacion + "/" + name_propietario + "/" + name_locatario + "/" + cantidadDias + "/" + cantidadAlquiler + "/" + imagen + "/" + montoTotal, params);
   }
 
   getAlquilerPublicaciones(name_usuarioPropietario) {
@@ -277,9 +277,9 @@ export class AuthService {
     return this.http.get<any>(this._getAlquilerPropios + name_usuarioLocatario);
   }
 
-  registrar_EnProcesoEntrega(id_publicacion) {
-    let params = JSON.stringify(id_publicacion);
-    return this.http.post<any>(this._registrarEnProcesoEntrega + id_publicacion, params);
+  registrar_EnProcesoEntrega(id_alquiler) {
+    let params = JSON.stringify(id_alquiler);
+    return this.http.post<any>(this._registrarEnProcesoEntrega + id_alquiler, params);
   }
 
   registrar_codigoPropietarioEntrega(codigo) {
