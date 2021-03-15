@@ -92,7 +92,7 @@ export class EditarPublicacionComponent implements OnInit {
 
     /* Redefinir los formGroup */
     let url = window.location.href;
-    this._id = url.substr(41);
+    this._id = url.substr(42);
     this._auth.get_publicacion_id(this._id).subscribe(
       err => {
 

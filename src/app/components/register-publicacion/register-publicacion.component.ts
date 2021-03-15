@@ -198,6 +198,7 @@ export class RegisterPublicacionComponent implements OnInit {
     };
 
   }
+
   resetearDatos() {
     this.categoriaFormGroup.reset()
 
@@ -232,7 +233,6 @@ export class RegisterPublicacionComponent implements OnInit {
   }
 
   onSubmit() {
-
     let email = localStorage.getItem("email");
     this.categoria = this.joinGroup.categoria;
     this.titulo = this.joinGroup.titulo;
