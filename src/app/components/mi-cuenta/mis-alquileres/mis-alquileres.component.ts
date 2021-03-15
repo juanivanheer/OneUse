@@ -11,6 +11,7 @@ import { CodigoDevolucionPropietarioDialogComponent } from './codigo-devolucion-
 import { CancelarDialogComponent } from './cancelar-dialog/cancelar-dialog.component'
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BarraLateralComponent } from '../barra-lateral/barra-lateral.component'
 
 @Component({
   selector: 'app-mis-alquileres',
@@ -108,7 +109,7 @@ export class MisAlquileresComponent implements OnInit, OnDestroy {
     )
   }
 
-  continuarPago(alquilerPropio){
+  continuarPago(alquilerPropio) {
     window.location.assign("pos-alquiler/" + alquilerPropio.id_publicacion)
   }
 
