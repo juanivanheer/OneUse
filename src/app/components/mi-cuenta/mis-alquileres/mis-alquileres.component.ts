@@ -90,12 +90,18 @@ export class MisAlquileresComponent implements OnInit, OnDestroy {
             this.hayAlquileresPropios = true;
           })
       })
+
+      console.log(this.arrayDatosPropietario)
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 
+
+  pre_reclamo(datos){
+    console.log(datos)
+  }
 
   cerrarSesion() {
     this.singleton.cerrarSesion();

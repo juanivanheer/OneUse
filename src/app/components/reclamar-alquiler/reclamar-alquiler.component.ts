@@ -45,7 +45,7 @@ export class ReclamarAlquilerComponent implements OnInit {
     this.crearJSONmotivos();
   }
 
-  reclamoData = { tipo: undefined, motivo: undefined}
+  reclamoData = { tipo: undefined, motivo: undefined, usuario_reclamo: this.emailLogueado}
 
 
   cerrarSesion() {
@@ -62,6 +62,7 @@ export class ReclamarAlquilerComponent implements OnInit {
 
   reclamar() {
     
+    //console.log(this.emailLogueado)
     this._auth.registrar_reclamo(this.reclamoData).subscribe(
       
       res => {
