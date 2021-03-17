@@ -92,7 +92,15 @@ export class MisAlquileresComponent implements OnInit, OnDestroy {
             this.hayAlquileresPropios = true;
           })
       })
+
+      console.log(this.arrayDatosPropietario)
   }
+
+
+  pre_reclamo(datos){
+    console.log(datos)
+  }
+
 
   pagar(alquiler) {
     this._auth.registrar_EnProcesoEntrega(alquiler.id_publicacion).subscribe(

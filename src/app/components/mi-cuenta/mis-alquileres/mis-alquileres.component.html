@@ -62,13 +62,13 @@
                                         fxLayoutGap="10px" *ngIf="datos.fuePagado">
 
                                         <button *ngIf="datos.estado == 'En proceso de entrega'" mat-raised-button
-                                            routerLink="/reclamar-alquiler" color="warn">
+                                        (click)="pre_reclamo(datos)" color="warn">
                                             <mat-icon>cancel</mat-icon>
                                             <span> Reclamar alquiler</span>
                                         </button>
 
                                         <button *ngIf="datos.estado == 'En proceso de devolución'" mat-raised-button
-                                            routerLink="/prereclamo" color="warn">
+                                            (click)="pre_reclamo(datos)" color="warn">
                                             <mat-icon>cancel</mat-icon>
                                             <span> Reclamar alquiler</span>
                                         </button>
