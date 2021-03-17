@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-destacacion-publicacion',
@@ -15,10 +16,31 @@ export class DestacacionPublicacionComponent implements OnInit {
   seleccion: string;
   id_pago;
   cantidad = 0;
+  id_publicacion;
+  hayQueDestacar: boolean = true;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private _auth: AuthService) { }
 
   ngOnInit() {
+    this.id_publicacion = String(window.location.href).slice(47);
+    this._auth.get_publicacion_id(this.id_publicacion).subscribe(
+      res => {
+        let publicacion = res.publicaciones;
+        if (publicacion.pago_destacacion == false) {
+          this.hayQueDestacar = true;
+        } else {
+          this.hayQueDestacar = false;
+        }
+      },
+      err => {
+        this.hayQueDestacar = false;
+        window.location.assign("/404");
+      }
+    )
+  }
+
+  inicio() {
+    window.location.assign("/home")
   }
 
   mostrarDatosPlatinium() {
@@ -56,8 +78,8 @@ export class DestacacionPublicacionComponent implements OnInit {
         }
       ],
       "back_urls": {
-        "success": "https://localhost:4200/confirmacion-destacacion",
-        "failure": "https://localhost:4200"
+        "success": "https://localhost:4200/confirmacion-destacacion" + "/" + this.id_publicacion,
+        "failure": "https://localhost:4200/404"
       },
       "statement_descriptor": "OneUse"
     }
@@ -73,8 +95,8 @@ export class DestacacionPublicacionComponent implements OnInit {
         }
       ],
       "back_urls": {
-        "success": "https://localhost:4200/confirmacion-destacacion",
-        "failure": "https://localhost:4200"
+        "success": "https://localhost:4200/confirmacion-destacacion" + "/" + this.id_publicacion,
+        "failure": "https://localhost:4200/404"
       },
       "statement_descriptor": "OneUse"
     }

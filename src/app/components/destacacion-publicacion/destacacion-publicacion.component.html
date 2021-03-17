@@ -1,100 +1,110 @@
-<div fxLayout fxLayoutAlign="center center">
-    <h3>Seleccioná la opcion para destacar tu producto</h3>
-    <br>
-    <br>
-    <br>
-</div>
-<mat-divider></mat-divider>
-<br>
-<div fxLayout="row" fxLayoutAlign="center center">
-    <mat-card class="tamaño-card">
-        <mat-card-header>
-            <div mat-card-avatar class="plata"></div>
-
-            <mat-card-title>PLATINIUM</mat-card-title>
-            <br>
-            <br>
-
-        </mat-card-header>
-        <mat-divider></mat-divider>
-        <div fxLayoutAlign="center center">
-            <img mat-card-image class="escudos" src="../../../assets/images/silver.png">
-        </div>
-        <mat-card-content>
-            <p>
-                Con tu cuenta <b>PLATINIUM</b> podrás tener tu publicación una semana destacada, lo que permitirá que
-                aparezca
-                en las primeras
-                posiciones en las búsquedas.
-            </p>
-            <br>
-            <p>
-                <b>PRECIO PLATINUM: $2000</b>
-            </p>
-        </mat-card-content>
-        <mat-divider></mat-divider>
-        <mat-card-actions>
-            <div fxLayout fxLayoutAlign="center center">
-                <button mat-fab color="primary" (click)="mostrarDatosPlatinium()">ELEGIR</button>
-            </div>
-        </mat-card-actions>
-    </mat-card>
-    <mat-card class="tamaño-card">
-        <mat-card-header>
-            <div mat-card-avatar class="oro"></div>
-            <mat-card-title>GOLD</mat-card-title>
-            <br>
-            <br>
-        </mat-card-header>
-        <mat-divider></mat-divider>
-        <div fxLayoutAlign="center center">
-            <img class="escudos" mat-card-image src="../../../assets/images/gold.png">
-        </div>
-        <mat-card-content>
-            <p>
-                Con tu cuenta <b>GOLD</b> podrás tener tu publicación una mes destacada, lo que permitirá que aparezca
-                en las primeras
-                posiciones en las búsquedas.
-            </p>
-            <br>
-            <p>
-                <b>PRECIO GOLD: $2800</b>
-            </p>
-        </mat-card-content>
-        <mat-divider></mat-divider>
-        <mat-card-actions>
-            <div fxLayout fxLayoutAlign="center center">
-                <button mat-fab color="primary" (click)="mostrarDatosGold()">ELEGIR</button>
-            </div>
-        </mat-card-actions>
-    </mat-card>
-</div>
-<div *ngIf="destacacion">
+<section *ngIf="hayQueDestacar">
     <div fxLayout fxLayoutAlign="center center">
-        <h3>Pagá tu destacación</h3>
+        <h3>Seleccioná la opcion para destacar tu producto</h3>
         <br>
         <br>
         <br>
     </div>
     <mat-divider></mat-divider>
-    <div fxLayoutAlign="center center">
-        <div class="datosDestacacion">
-            <h5>Tipo Destacación: {{titulo}}</h5>
-            <h5>Precio: {{precio}}</h5>
-            <h5>Descripción: {{descripcion}}</h5>
-        </div>
-    </div>
-    <div fxLayoutAlign="center center">
-        <br>
-        <br>
-        <br>
-        <!-- <img src="../../../assets/images/mercadoPago.jpeg" class="mercadoPago"> -->
-        <!-- <button mat-raised-button color="primary" [routerLink]="['/confirmacion-destacacion']">Continuar</button> -->
-        <div id="ultimo">
-            <div fxLayout="row" fxLayoutAlign="center center" id="mp0"></div>
-        </div>
-    </div>
     <br>
-    <br>
+    <div fxLayout="row" fxLayoutAlign="center center">
+        <mat-card class="tamaño-card">
+            <mat-card-header>
+                <div mat-card-avatar class="plata"></div>
 
-</div>
+                <mat-card-title>PLATINIUM</mat-card-title>
+                <br>
+                <br>
+
+            </mat-card-header>
+            <mat-divider></mat-divider>
+            <div fxLayoutAlign="center center">
+                <img mat-card-image class="escudos" src="../../../assets/images/silver.png">
+            </div>
+            <mat-card-content>
+                <p>
+                    Con tu cuenta <b>PLATINIUM</b> podrás tener tu publicación una semana destacada, lo que permitirá
+                    que
+                    aparezca
+                    en las primeras
+                    posiciones en las búsquedas.
+                </p>
+                <br>
+                <p>
+                    <b>PRECIO PLATINUM: $2000</b>
+                </p>
+            </mat-card-content>
+            <mat-divider></mat-divider>
+            <mat-card-actions>
+                <div fxLayout fxLayoutAlign="center center">
+                    <button mat-fab color="primary" (click)="mostrarDatosPlatinium()">ELEGIR</button>
+                </div>
+            </mat-card-actions>
+        </mat-card>
+        <mat-card class="tamaño-card">
+            <mat-card-header>
+                <div mat-card-avatar class="oro"></div>
+                <mat-card-title>GOLD</mat-card-title>
+                <br>
+                <br>
+            </mat-card-header>
+            <mat-divider></mat-divider>
+            <div fxLayoutAlign="center center">
+                <img class="escudos" mat-card-image src="../../../assets/images/gold.png">
+            </div>
+            <mat-card-content>
+                <p>
+                    Con tu cuenta <b>GOLD</b> podrás tener tu publicación una mes destacada, lo que permitirá que
+                    aparezca
+                    en las primeras
+                    posiciones en las búsquedas.
+                </p>
+                <br>
+                <p>
+                    <b>PRECIO GOLD: $2800</b>
+                </p>
+            </mat-card-content>
+            <mat-divider></mat-divider>
+            <mat-card-actions>
+                <div fxLayout fxLayoutAlign="center center">
+                    <button mat-fab color="primary" (click)="mostrarDatosGold()">ELEGIR</button>
+                </div>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+    <div *ngIf="destacacion">
+        <div fxLayout fxLayoutAlign="center center">
+            <h3>Pagá tu destacación</h3>
+            <br>
+            <br>
+            <br>
+        </div>
+        <mat-divider></mat-divider>
+        <div fxLayoutAlign="center center">
+            <div class="datosDestacacion">
+                <h5>Tipo Destacación: {{titulo}}</h5>
+                <h5>Precio: {{precio}}</h5>
+                <h5>Descripción: {{descripcion}}</h5>
+            </div>
+        </div>
+        <div fxLayoutAlign="center center">
+            <br>
+            <br>
+            <br>
+            <!-- <img src="../../../assets/images/mercadoPago.jpeg" class="mercadoPago"> -->
+            <!-- <button mat-raised-button color="primary" [routerLink]="['/confirmacion-destacacion']">Continuar</button> -->
+            <div id="ultimo">
+                <div fxLayout="row" fxLayoutAlign="center center" id="mp0"></div>
+            </div>
+        </div>
+        <br>
+        <br>
+    </div>
+</section>
+<section *ngIf="!hayQueDestacar" style="margin: 40px">
+    <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="15px">
+        <img src="../../../assets/images/travolta-crunched.gif" style="block-size: 200px;">
+        <h5> Lo sentimos, pero no se pudo encontrar la publicación a destacar </h5>
+        <button mat-raised-button id="btnError" color="primary" (click)="inicio()">Visitar página de inicio</button>
+    </div>
+</section>

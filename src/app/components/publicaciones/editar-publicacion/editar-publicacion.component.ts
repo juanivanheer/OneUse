@@ -305,8 +305,6 @@ export class EditarPublicacionComponent implements OnInit {
             .then((result: any) => {
               window.location.assign("/publicacion-exito");
             });
-          
-
 /*             this._uploadService.makeFileRequest("https://oneuse-backend.herokuapp.com/api/upload-publicacion-img/" + email + "/" + this.titulo + "/" + this.categoria, [], this.image, 'multiplefile')
             .then((result: any) => {
               window.location.assign("/publicacion-exito");

@@ -43,6 +43,7 @@ export class MisAlquileresComponent implements OnInit, OnDestroy {
       res => {
         this.usuarioLogueado = res;
         var username = res.name
+        //Suscripción que obtiene los alquileres realizados por otras personas de las publicaciones que realizó un usuario
         this._auth.getAlquilerPublicaciones(username).subscribe(
           res1 => {
             this.arrayAlquilerPropietario = res1.alquiler;
@@ -56,8 +57,9 @@ export class MisAlquileresComponent implements OnInit, OnDestroy {
               this.hayAlquileresPropietario = true;
             }
           })
-
-        this._auth.getAlquilerPropios(username).subscribe(
+          
+          //Suscripción que obtiene los alquileres realizados por el usuario logueado a publicaciones de otros usuarios
+          this._auth.getAlquilerPropios(username).subscribe(
           res1 => {
             var fechaActual = new Date();
             this.arrayAlquilerPropios = res1.alquiler;
@@ -68,7 +70,7 @@ export class MisAlquileresComponent implements OnInit, OnDestroy {
                   let fechaCaducidad = new Date(res1.alquiler[i].fechaCaducidadEntrega);
                   let fechaCaducidadDev = new Date(res1.alquiler[i].fechaCaducidadDevolucion);
 
-                  /* Ayuda a que se muestren los botones de "Reclamar" */
+                  // Ayuda a que se muestren los botones de "Reclamar"
                   if ((res1.alquiler[i].estado == "En proceso de entrega" && res2.publicaciones.tipoAlquiler == "AlquilerConIntervencion") ||
                     (res1.alquiler[i].estado == "En proceso de devolución" && res2.publicaciones.tipoAlquiler == "AlquilerConIntervencion")) {
                     if (fechaActual > fechaCaducidad || fechaActual > fechaCaducidadDev) {
@@ -92,15 +94,6 @@ export class MisAlquileresComponent implements OnInit, OnDestroy {
       })
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
-
-
-  cerrarSesion() {
-    this.singleton.cerrarSesion();
-  }
-
   pagar(alquiler) {
     this._auth.registrar_EnProcesoEntrega(alquiler.id_publicacion).subscribe(
       res => {
@@ -111,6 +104,14 @@ export class MisAlquileresComponent implements OnInit, OnDestroy {
 
   continuarPago(alquilerPropio) {
     window.location.assign("pos-alquiler/" + alquilerPropio.id_publicacion)
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  cerrarSesion() {
+    this.singleton.cerrarSesion();
   }
 
 
@@ -176,8 +177,6 @@ export class MisAlquileresComponent implements OnInit, OnDestroy {
       });
   }
 
-
-
   openDialogCancelar(alquiler): void {
     localStorage.setItem('alquiler', JSON.stringify(alquiler))
     this.cancelarDialogRef = this.dialog.open(CancelarDialogComponent,
@@ -192,7 +191,6 @@ export class MisAlquileresComponent implements OnInit, OnDestroy {
       })
 
   }
-
 
 }
 

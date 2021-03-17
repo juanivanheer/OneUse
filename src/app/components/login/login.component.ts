@@ -120,7 +120,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   public googleInit() {
     gapi.load('auth2', () => {
       this.auth2 = gapi.auth2.init({
-        client_id: '904494756389-0m8fhtgkaamtom4nho35rht61tod5i6l.apps.googleusercontent.com',
+        client_id: '357971012144-n2br5dhgv836v0iupchdmhd4r6hl52f7.apps.googleusercontent.com',
         cookiepolicy: 'single_host_origin',
         scope: 'profile email'
       });

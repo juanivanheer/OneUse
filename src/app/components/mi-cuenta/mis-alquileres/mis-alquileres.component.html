@@ -118,11 +118,11 @@
                         Propios
                     </ng-template>
                 </div>
+                <div fxLayout="column" fxFlexFill fxLayoutAlign="center center" *ngIf="!hayAlquileresPropios">
+                    <h2>No hay alquileres por mostrar</h2>
+                </div>
                 <div class=" mat-elevation-z4 contenedor-gral">
                     <br>
-                    <div fxLayout="column" fxFlexFill fxLayoutAlign="center center" *ngIf="!hayAlquileresPropios">
-                        <h2>No hay alquileres por mostrar</h2>
-                    </div>
                     <div *ngIf="hayAlquileresPropios">
                         <div class="contenedorAlquiler"
                             *ngFor="let alquilerPropio of arrayDatosPropios; let indice = index">

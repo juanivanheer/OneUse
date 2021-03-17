@@ -9,17 +9,17 @@
 @import url("font-awesome.min.css");
 /* =====  INDEX OF STYLES ===== */
 
-.mat-tab-labels{
+.mat-tab-labels {
     justify-content: center
 }
 
 .mat-toolbar {
-    background:#4a70af; 
+    background: #4a70af;
     background-color: #4a70af;
-    color: rgba(0,0,0,.87);
+    color: rgba(0, 0, 0, .87);
 }
 
-.mat-menu-panel{
+.mat-menu-panel {
     max-width: 1000px !important;
 }
 
@@ -196,7 +196,6 @@ body {
     color: #1a1a1a;
 }
 
-
 ::selection {
     background-color: #3297FD;
     color: #1a1a1a;
@@ -252,10 +251,10 @@ hr {
     color: #fff;
 }
  */
- 
+
 ul {
     /* list-style: none; */
-    padding-left: 0px;
+    /*padding-left: 0px;*/
     margin-bottom: 0;
 }
 

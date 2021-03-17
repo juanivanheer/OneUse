@@ -247,7 +247,7 @@ export class RegisterPublicacionComponent implements OnInit {
           .then((result: any) => {
             console.log(result);
             if (this.seDestaca) {
-              window.location.assign("/destacacion-publicacion");
+              window.location.assign("/destacacion-publicacion/"+ err.res1._id);
             } else {
               window.location.assign("/publicacion-exito");
             }

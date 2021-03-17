@@ -31,6 +31,12 @@ export class PosAlquilerComponent implements OnInit, AfterViewInit {
   montoTotal;
   id_pago_mp;
   id_alquiler;
+  montoUnitario;
+  step = 0;
+
+  setStep(index: number) {
+    this.step = index;
+  }
 
   ngOnInit() {
     var urlActual = window.location.href;
@@ -64,15 +70,12 @@ export class PosAlquilerComponent implements OnInit, AfterViewInit {
             let alquileres = res;
             for (let i = 0; i < alquileres.length; i++) {
               const element = alquileres[i];
-              if (element.id_publicacion == id) {
-                let fecha = new Date(element.createdAt)
-                let hoy = new Date();
-                if (fecha.getDay() == hoy.getDay() && fecha.getFullYear() == hoy.getFullYear() && fecha.getMonth() == hoy.getMonth()) {
-                  this.id_alquiler = element._id;
-                  this.montoTotal = element.montoTotal;
-                  this.cantidadSeleccionada = element.cantidadAlquilar
-                  console.log(this.montoTotal)
-                }
+              if (element.id_publicacion == id && element.estado == "En proceso de pago") {
+                this.id_alquiler = element._id;
+                this.montoTotal = element.montoTotal;
+                console.log(this.montoTotal)
+                this.cantidadSeleccionada = element.cantidadAlquilar
+                this.montoUnitario = parseFloat(this.montoTotal) / parseFloat(this.cantidadSeleccionada)
               }
             }
           }
@@ -99,7 +102,7 @@ export class PosAlquilerComponent implements OnInit, AfterViewInit {
             "description": this.descripcion,
             "quantity": this.cantidadSeleccionada,
             "currency_id": "ARS",
-            "unit_price": parseFloat(this.montoTotal)
+            "unit_price": this.montoUnitario
           }
         ],
         "back_urls": {
@@ -108,6 +111,8 @@ export class PosAlquilerComponent implements OnInit, AfterViewInit {
         },
         "statement_descriptor": "OneUse"
       }
+
+      console.log(objeto)
 
       this.http.post<any>('https://api.mercadopago.com/checkout/preferences', objeto, httpOptions).subscribe(
         res => {
@@ -123,7 +128,6 @@ export class PosAlquilerComponent implements OnInit, AfterViewInit {
         card.setAttribute('type', "text/javascript");
         card.setAttribute('src', "https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js");
         card.setAttribute('data-button-label', 'Continuar con el pago');
-        console.log(this.id_pago_mp)
         card.setAttribute('data-preference-id', this.id_pago_mp);
         div.appendChild(card)
       }, 1000);

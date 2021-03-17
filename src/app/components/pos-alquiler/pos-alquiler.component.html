@@ -1,34 +1,74 @@
-<div fxLayoutAlign="center center" style="margin-top: 30px;">
-    <h2>¡Estás a punto de alquilar "{{titulo}}" !</h2>
-</div>
-
-<div fxLayoutAlign="center center" fxLayout="row" class="datosAlquiler">
-    <div fxFlex="600" fxFlexFill>
+<div fxLayoutAlign="center center" fxLayout="row" class="contenedor-grande" fxLayoutGap="30px">
+    <div fxLayoutAlign="start center" fxLayout="column" class="mat-elevation-z8" style="width: 800px; height: 487px; background:#ffffff;">
+        <div fxLayoutAlign="center center" style="margin-top: 30px;">
+            <img src="../../../assets/images/carro_compras.gif" style="height: 150px;">
+        </div>
         <div fxLayout="column">
             <div style="top: 0; padding-right: 20px;">
-                <h3 style="text-align: center; margin-top: 15px;"> ¡Excelente! ¡Estás a un paso de realizar el alquiler! </h3>
-                <p style="text-align: justify;margin-top: 25px; "> Ten en cuenta de que es un compromiso de tu parte realizar el alquiler. Por eso, deberás ser responsable a la hora de acordar responsablemente los horarios y formas de entrega con el dueño de la publicación. En esta sección, te brindaremos los datos del propietario para que luego puedas comunicarte con el</p>
+                <h3 style="text-align: center; margin-top: 35px;"> ¡Excelente! ¡Estás a un paso de realizar el
+                    alquiler!
+                </h3>
+                <p style="text-align: justify;margin-top: 50px; "> Ten en cuenta de que es un compromiso de tu parte
+                    realizar el alquiler. Por eso, deberás ser responsable a la hora de acordar responsablemente los
+                    horarios y formas de entrega con el dueño de la publicación. En esta sección, te brindaremos los
+                    datos del propietario para que luego puedas comunicarte con el</p>
                 <br>
-                <h4 style="margin-left:10px;text-align: justify; margin-top: 25px"> De parte de One Use, muchas gracias por usar nuestros servicios</h4>
+                <!-- <h4 style="margin-left:10px;text-align: justify; margin-top: 25px"> De parte de One Use, muchas gracias por usar nuestros servicios</h4> -->
             </div>
         </div>
     </div>
-    <div fxFlex="780,400" fxFlexFill>
-        <h5><b>El dueño de tu producto</b></h5>
-        <h5>Nombre y Apellido: {{nombre}} {{apellido}}</h5>
-        <h5>Email: {{email}}</h5>
-        <h5>Teléfono: ({{codArea}}) {{telefono}}</h5>
-        <br>
-        <mat-divider></mat-divider>
-        <br>
-        <h5><b>El producto que vas alquilar</b></h5>
-        <h5>Titulo: {{titulo}}</h5>
-        <h5>Precio por dia: {{preciodia}}</h5>
-        <h5>Precio por semana: {{preciosemana}}</h5>
-        <h5>Precio por mes: {{preciomes}}</h5>
-        <br>
-        <br>
-        <div fxLayout="row" fxLayoutAlign="center center" id="mp"></div>
+    <div fxLayoutAlign="center center" fxLayout="column" fxLayoutGap="30px">
+        <mat-accordion class="example-headers-align">
+            <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>Datos del dueño del producto</mat-panel-title>
+                    <mat-icon>account_circle</mat-icon>
+                </mat-expansion-panel-header>
+                <ul>
+                    <li>
+                        <h5><b>Nombre y Apellido:</b> {{nombre}} {{apellido}}</h5>
+                    </li>
+                    <li>
+                        <h5><b>Email:</b> {{email}}</h5>
+                    </li>
+                    <li>
+                        <h5><b>Teléfono:</b> ({{codArea}}) {{telefono}}</h5>
+                    </li>
+
+                </ul>
+            </mat-expansion-panel>
+            <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>Datos del producto por alquilar</mat-panel-title>
+                    <mat-icon>add_shopping_cart</mat-icon>
+                </mat-expansion-panel-header>
+                <ul>
+                    <li>
+                        <h5><b>Producto:</b> {{titulo}}</h5>
+                    </li>
+                    <li>
+                        <h5><b>Precio por día:</b> {{preciodia}}</h5>
+                    </li>
+                    <li *ngIf="preciosemana != undefined">
+                        <h5><b>Precio por semana:</b> {{preciosemana}}</h5>
+                    </li>
+                    <li *ngIf="preciomes != undefined">
+                        <h5><b>Precio por mes:</b> {{preciomes}}</h5>
+                    </li>
+                    <li>
+                        <h5><b>Precio unitario:</b> {{montoUnitario}} </h5>
+                    </li>
+                    <li>
+                        <h5><b>Cantidad:</b> {{cantidadSeleccionada}} </h5>
+                    </li>
+                    <li>
+                        <h5><b>Monto total:</b> {{montoTotal}} </h5>
+                    </li>
+                </ul>
+            </mat-expansion-panel>
+        </mat-accordion>
         <!-- <button (click)="registrarAlquiler()" style="width: 300px;" mat-raised-button color="primary">Continuar con el pago</button> -->
+        <div fxLayout="row" fxLayoutAlign="center center" id="mp"></div>
     </div>
+
 </div>

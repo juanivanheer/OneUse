@@ -56,6 +56,11 @@ export class MisPublicacionesComponent implements OnInit {
     )
 
   }
+
+  destacarPublicacion(id){
+    window.location.assign("/destacacion-publicacion/"+id)
+  }
+  
   cerrarSesion() {
     this.singleton.cerrarSesion();
   }

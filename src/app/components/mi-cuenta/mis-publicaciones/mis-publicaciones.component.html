@@ -48,13 +48,13 @@
                                 </swiper>
                                 <mat-card-content style="text-align: left; font-size: 12px">
                                     <!-- <p> <b>Descripción:</b> {{publicacion.descripcion}} </p> -->
-                                    <p> <b>Precio por día:</b> ${{publicacion.preciodia}} </p>
-                                    <p> <b>Destacado:</b> {{publicacion.destacar}} </p>
+                                    <!-- <p> <b>Precio por día:</b> ${{publicacion.preciodia}} </p> -->
+                                    <!-- <p> <b>Destacado:</b> {{publicacion.destacar}} </p> -->
                                     <!-- <p> <b>Vigente hasta:</b> implementar fecha </p> -->
                                 </mat-card-content>
                                 <mat-card-actions>
-                                    <button mat-raised-button color="primary" routerLink="/destacacion-publicacion"
-                                        *ngIf="publicacion.destacar == 'NO'">Destacar</button>
+                                    <button mat-raised-button color="primary" (click)="destacarPublicacion(publicacion._id)"
+                                        *ngIf="publicacion.pago_destacacion == false">Destacar</button>
                                     <button mat-raised-button color="primary"
                                         routerLink="/editar-publicacion/{{publicacion._id}}">Editar</button>
                                     <button mat-raised-button color="warn"
