@@ -209,5 +209,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     element.scrollIntoView();
   }
 
+  detalles(id){
+    window.location.assign("/publicaciones/"+id)
+  }
 
 }

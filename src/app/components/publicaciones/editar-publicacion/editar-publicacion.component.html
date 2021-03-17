@@ -296,8 +296,7 @@
                             </div>
                             <div fxLayoutAlign="center" fxFlex style="margin-top: 22px">
                                 <button #btnDropzone mat-raised-button color="accent" (click)="dropzone.reset()">Volver
-                                    a
-                                    cargar</button>
+                                    a cargar</button>
                             </div>
                         </div>
 
@@ -750,8 +749,8 @@
                     <swiper class="swiper-container-sm" [config]="config">
                         <div *ngFor="let img of arrayJSON; let indice2 = index">
                             <div class="swiper-slide" fxLayout="column" fxLayoutAlign="center center">
-                                 <img src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}"
-                                    class="img-carrousel-sm"> 
+                                <img src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}"
+                                    class="img-carrousel-sm">
                                 <!-- <img src="{{'https://oneuse-backend.herokuapp.com/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}"
                                     class="img-carrousel-sm"> -->
                             </div>
@@ -889,7 +888,7 @@
                             <div *ngFor="let img of arrayJSON; let indice2 = index">
                                 <div class="swiper-slide" fxLayout="column" fxLayoutAlign="center center">
                                     <img src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}"
-                                        class="img-carrousel-sm"> 
+                                        class="img-carrousel-sm">
                                     <!-- <img src="{{'https://oneuse-backend.herokuapp.com/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}"
                                         class="img-carrousel-sm"> -->
                                 </div>

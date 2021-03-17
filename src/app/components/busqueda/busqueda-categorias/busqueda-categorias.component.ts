@@ -57,7 +57,6 @@ export class BusquedaCategoriasComponent implements OnInit, OnDestroy {
       this.arraySubcategorias = this.obtenerSubcategoria(this.categoria);
     }
 
-
     if (this.url.search.includes("?s=")) {
       let subcategoria = decodeURI(this.url.search.slice(3));
       this.filtroSeleccionado('s', subcategoria);
@@ -65,18 +64,6 @@ export class BusquedaCategoriasComponent implements OnInit, OnDestroy {
     } else {
       this.filtroSeleccionado('c', parametro);
     }
-
-    this.suscription = this._auth.search_categoria(this.params).subscribe(
-      res => {
-        this.hayPublicaciones = true;
-        this.publicaciones = res.publicaciones;
-        if (res != undefined) {
-          this.dataSource = new DataTableBusquedaCategoria(this.paginator, this.sort, this.publicaciones);
-        } else {
-          this.hayPublicaciones = false;
-        }
-      }
-    )
   }
 
   formatoSlider(value) {
@@ -118,7 +105,15 @@ export class BusquedaCategoriasComponent implements OnInit, OnDestroy {
     this.suscription = this._auth.search_categoria(this.params).subscribe(
       res => {
         this.publicaciones = res.publicaciones;
-        this.dataSource = new DataTableBusquedaCategoria(this.paginator, this.sort, this.publicaciones);
+        if (res != undefined) {
+          this.hayPublicaciones = true;
+          this.dataSource = new DataTableBusquedaCategoria(this.paginator, this.sort, this.publicaciones);
+        } else {
+          this.hayPublicaciones = false;
+        }
+      },
+      err => {
+        console.log(err)
       }
     );
   }

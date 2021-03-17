@@ -5,7 +5,7 @@ export class UploadService {
     public url: string;
 
     constructor() {
-        this.url = "https://localhost:4201/api/";
+        this.url = "http://localhost:4201/api/";
         //this.url = "https://oneuse-backend.herokuapp.com/api/";
     }
 

@@ -4,14 +4,14 @@
         <div class="chips">
             <!-- Sección de Chips -->
             <mat-chip-list #chipList>
-                <mat-chip color="primary">
+                <mat-chip color="primary" style="font-size: 11px;">
                     Categoría : {{categoria}}
                 </mat-chip>
             </mat-chip-list>
 
             <mat-chip-list #chipList>
                 <mat-chip color="primary" *ngFor="let filtro of arrayFiltrosSeleccionados" [selectable]="selectable"
-                    [removable]="removable">
+                    [removable]="removable" style="font-size: 11px;">
                     {{filtro.nombre}} : {{filtro.valor}}
                     <mat-icon matChipRemove (click)="eliminarFiltro(filtro)">cancel</mat-icon>
                 </mat-chip>
@@ -74,10 +74,10 @@
                                 {{mensaje}}
                             </div>
                             <div>
-                                <!-- <img class="container-muestra-imagenes"
-                                    src="{{'http://localhost:4201/api/get-image-publicacion/'+ row.multiplefile}}"> -->
                                 <img class="container-muestra-imagenes"
-                                    src="{{'https://oneuse-backend.herokuapp.com/api/get-image-publicacion/'+ row.multiplefile}}">
+                                    src="{{'http://localhost:4201/api/get-image-publicacion/'+ row.multiplefile}}">
+                                <!--                                 <img class="container-muestra-imagenes"
+                                    src="{{'https://oneuse-backend.herokuapp.com/api/get-image-publicacion/'+ row.multiplefile}}"> -->
                             </div>
                             <div>
                                 <a routerLink="/publicaciones/{{row._id}}">{{row.titulo}} </a>

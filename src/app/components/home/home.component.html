@@ -61,8 +61,7 @@
           <div *ngIf="destacadas == indice">
             <mat-card class="container-card">
               <mat-card-header>
-                <mat-card-title><a (click)="contador(publicacionesDestacadas[destacadas]._id)" style="color:black;"
-                    routerLink="/publicaciones/{{publicacionesDestacadas[destacadas]._id}}">
+                <mat-card-title><a (click)="detalles(publicacionesDestacadas[destacadas]._id)" style="color:black;">
                     {{publicacionesDestacadas[destacadas].titulo}} </a>
                 </mat-card-title>
                 <mat-card-subtitle> {{publicacionesDestacadas[destacadas].categoria}},
@@ -91,15 +90,14 @@
           <div *ngIf="destacadas == indice">
             <mat-card class="container-card-sm">
               <mat-card-header>
-                <mat-card-title><a style="color:black;"
-                    routerLink="/publicaciones/{{publicacionesDestacadas[destacadas]._id}}">
+                <mat-card-title><a style="color:black;" (click)="detalles(publicacionesDestacadas[destacadas]._id)">
                     {{publicacionesDestacadas[destacadas].titulo}} </a>
                 </mat-card-title>
                 <mat-card-subtitle> {{publicacionesDestacadas[destacadas].categoria}},
                   {{publicacionesDestacadas[destacadas].subcategoria}} </mat-card-subtitle>
               </mat-card-header>
 
-              <mat-card-content style="height: 230px;">
+              <mat-card-content style=" height: 230px;">
                 <swiper class="swiper-container" [config]="config2">
                   <div *ngFor="let img of publicacionesDestacadas[destacadas].multiplefile; let indice2 = index">
                     <img class="container-img-card"
