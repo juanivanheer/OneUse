@@ -1,3 +1,4 @@
+import { MisReclamosComponent } from './components/mi-cuenta/mis-reclamos/mis-reclamos.component';
 import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
@@ -63,6 +64,7 @@ const appRoutes: Routes = [
     { path: 'mi-cuenta/perfil', component: PerfilUsuarioComponent },
     { path: 'mi-cuenta/mis-alquileres', component: MisAlquileresComponent },
     { path: 'mi-cuenta/mis-publicaciones', component: MisPublicacionesComponent },
+    { path: 'mi-cuenta/mis-reclamos', component: MisReclamosComponent },
     { path: 'mi-cuenta/notificaciones', component: NotificacionesComponent },
     { path: 'confirmacion-destacacion/:id', component: ConfirmacionDestacacionComponent },
     { path: 'publicaciones/:id', component: DetallePublicacionComponent },
