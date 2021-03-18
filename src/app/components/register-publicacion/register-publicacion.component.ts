@@ -116,7 +116,7 @@ export class RegisterPublicacionComponent implements OnInit {
   }
 
   habilitarMes(dias) {
-    if (dias >= 28)this.datosProductosGroup.get("preciomes").enable()
+    if (dias >= 28) this.datosProductosGroup.get("preciomes").enable()
     else this.datosProductosGroup.get("preciomes").disable()
   }
 
@@ -248,23 +248,19 @@ export class RegisterPublicacionComponent implements OnInit {
     let email = localStorage.getItem("email");
     this.categoria = this.joinGroup.categoria;
     this.titulo = this.joinGroup.titulo;
-    console.log(this.image)
 
     this._auth.registrarPublicacion(email, this.joinGroup).subscribe(
       response => {
-      },
-      err => {
-
         this._uploadService.makeFileRequest("http://localhost:4201/api/upload-publicacion-img/" + email + "/" + this.titulo + "/" + this.categoria, [], this.image, 'multiplefile')
           .then((result: any) => {
-            console.log(result);
             if (this.seDestaca) {
-              window.location.assign("/destacacion-publicacion/" + err.res1._id);
+              window.location.assign("/destacacion-publicacion/" + response._id); 
             } else {
               window.location.assign("/publicacion-exito");
             }
           });
-
+      },
+      err => {
         /* this._uploadService.makeFileRequest("https://oneuse-backend.herokuapp.com/api/upload-publicacion-img/" + email + "/" + this.titulo + "/" + this.categoria, [], this.image, 'multiplefile')
         .then((result: any) => {
           console.log(result);
