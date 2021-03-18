@@ -63,8 +63,8 @@ export class RegisterPublicacionComponent implements OnInit {
       titulo: [{ value: '' }, Validators.required],
       descripcion: [{ value: '' }, Validators.required],
       preciodia: [{ value: '' }, Validators.required],
-      preciosemana: [{ value: '' }],
-      preciomes: [{ value: '' }],
+      preciosemana: [{ value: '', disabled: true }],
+      preciomes: [{ value: '', disabled: true }],
       cantDias: [{ value: '' }, Validators.required],
       cantidadDisponible: [{ value: '' }, Validators.required]
     });
@@ -96,6 +96,7 @@ export class RegisterPublicacionComponent implements OnInit {
   obtenerCategoria(evento) {
     this.categoria = evento._element.nativeElement.title;
   }
+
   obtenerDestacacion(evento) {
     this.destacar = evento.value;
     if (this.destacar == 'SI') {
@@ -104,8 +105,19 @@ export class RegisterPublicacionComponent implements OnInit {
       this.seDestaca = false;
     }
   }
+
   obtenerTipoAlquiler(evento) {
     this.tipoAlquiler = evento.value;
+  }
+
+  habilitarSemana(dias) {
+    if (dias >= 7) this.datosProductosGroup.get("preciosemana").enable()
+    else this.datosProductosGroup.get("preciosemana").disable()
+  }
+
+  habilitarMes(dias) {
+    if (dias >= 28)this.datosProductosGroup.get("preciomes").enable()
+    else this.datosProductosGroup.get("preciomes").disable()
   }
 
   onFilesAdded(files: File[]) {
@@ -247,7 +259,7 @@ export class RegisterPublicacionComponent implements OnInit {
           .then((result: any) => {
             console.log(result);
             if (this.seDestaca) {
-              window.location.assign("/destacacion-publicacion/"+ err.res1._id);
+              window.location.assign("/destacacion-publicacion/" + err.res1._id);
             } else {
               window.location.assign("/publicacion-exito");
             }

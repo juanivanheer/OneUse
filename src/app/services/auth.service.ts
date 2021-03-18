@@ -58,8 +58,8 @@ export class AuthService {
   private _registrarVisitaPublicacion = this.url + "visitas-publicaciones/"
   private _registrarEnProcesoDevolucion = this.url + "registrar-demora-devolucion/"
   private _getVisitas = this.url + "get-visitas-publicacion/"
-  private _registrarCodigoDevolucionPropietario = this.url + "registrar-finalizacion-propietario/"
-  private _registrarCodigoDevolucionLocatario = this.url + "registrar-finalizacion-locatario/"
+  private _registrarCodigoDevolucionPropietario = this.url + "registrar-devolucion-propietario/"
+  private _registrarCodigoDevolucionLocatario = this.url + "registrar-devolucion-locatario/"
   private _getAllUsers = this.url + "get-all-users/"
   private _deleteUser = this.url + "delete-user/"
   private _updateSuperadminUser = this.url + "update-superadmin-user"
@@ -71,9 +71,8 @@ export class AuthService {
   private _updateSuperadminAlquiler = this.url + "update-superadmin-alquiler/"
   private _getEstadisticaPublicacionesCategorias = this.url + "get-publicaciones-x-categoria"
   private _cancelarAlquiler = this.url + "cancelarAlquiler"
-  private _getTiposDniMercadoPago = "https://api.mercadopago.com/v1/identification_types"
-  private _postPagoTarjeta = this.url + "pago-tarjeta-mp"
-
+  private _registrarPuntuacion = this.url + "registrar-puntuacion"
+  private _verificarFinalizacion = this.url + "verificar-finalizacion"
 
   constructor(private http: HttpClient) { }
 
@@ -91,7 +90,7 @@ export class AuthService {
     return this.http.post<any>(this._registerFacebookUrl, user)
   }
 
-  updateImgFacebook(user){
+  updateImgFacebook(user) {
     return this.http.post<any>(this._updateFacebookImg, user)
   }
 
@@ -311,6 +310,16 @@ export class AuthService {
     return this.http.post<any>(this._registrarCodigoDevolucionLocatario + codigo, params);
   }
 
+  registrar_puntuacion(locador_o_locatario, puntuacion, comentario, id_alquiler) {
+    let objeto = { locador_o_locatario: locador_o_locatario, puntuacion: puntuacion, comentario: comentario, id_alquiler: id_alquiler }
+    return this.http.post<any>(this._registrarPuntuacion, objeto);
+  }
+
+  verificar_finalizacion(id_alquiler) {
+    let objeto = { id_alquiler: id_alquiler };
+    return this.http.post<any>(this._verificarFinalizacion, objeto);
+  }
+
   update_superadmin_alquiler(alquiler) {
     return this.http.post<any>(this._updateSuperadminAlquiler, alquiler);
   }
@@ -336,17 +345,6 @@ export class AuthService {
 
   get_estadistica_publicaciones_categorias() {
     return this.http.get<any>(this._getEstadisticaPublicacionesCategorias)
-  }
-
-
-  /* MERCADO PAGO */
-  get_tipos_dni(token) {
-    return this.http.get<any>(this._getTiposDniMercadoPago + '?access_token=' + token)
-  }
-
-  pago_tarjeta(data) {
-    let headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.http.post<any>(this._postPagoTarjeta, data, { headers: headers })
   }
 
 }

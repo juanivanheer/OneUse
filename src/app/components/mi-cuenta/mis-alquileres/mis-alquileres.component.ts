@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { SingletonService } from '../../singleton.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
@@ -8,9 +8,9 @@ import { CodigoPropietarioDialogComponent } from './codigo-propietario-dialog/co
 import { CodigoLocatarioDialogComponent } from './codigo-locatario-dialog/codigo-locatario-dialog.component';
 import { CodigoDevolucionLocatarioDialogComponent } from './codigo-devolucion-locatario-dialog/codigo-devolucion-locatario-dialog.component';
 import { CodigoDevolucionPropietarioDialogComponent } from './codigo-devolucion-propietario-dialog/codigo-devolucion-propietario-dialog.component';
+import { PuntuacionComponent } from './puntuacion-dialog/puntuacion-dialog.component'
 import { CancelarDialogComponent } from './cancelar-dialog/cancelar-dialog.component'
 import { Subscription } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
 import { BarraLateralComponent } from '../barra-lateral/barra-lateral.component'
 
 @Component({
@@ -18,7 +18,7 @@ import { BarraLateralComponent } from '../barra-lateral/barra-lateral.component'
   templateUrl: './mis-alquileres.component.html',
   styleUrls: ['./mis-alquileres.component.css']
 })
-export class MisAlquileresComponent implements OnInit, OnDestroy {
+export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private subscription: Subscription;
 
@@ -34,7 +34,7 @@ export class MisAlquileresComponent implements OnInit, OnDestroy {
   arrayDevolucionLocatario = [];
   arrayDevolucionPropietario = [];
 
-  constructor(private _auth: AuthService, private singleton: SingletonService, public dialog: MatDialog, private _router: Router, private route: ActivatedRoute) { }
+  constructor(private _auth: AuthService, private singleton: SingletonService, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.arrayAlquilerPropietario = []
@@ -57,9 +57,9 @@ export class MisAlquileresComponent implements OnInit, OnDestroy {
               this.hayAlquileresPropietario = true;
             }
           })
-          
-          //Suscripción que obtiene los alquileres realizados por el usuario logueado a publicaciones de otros usuarios
-          this._auth.getAlquilerPropios(username).subscribe(
+
+        //Suscripción que obtiene los alquileres realizados por el usuario logueado a publicaciones de otros usuarios
+        this._auth.getAlquilerPropios(username).subscribe(
           res1 => {
             var fechaActual = new Date();
             this.arrayAlquilerPropios = res1.alquiler;
@@ -92,15 +92,37 @@ export class MisAlquileresComponent implements OnInit, OnDestroy {
             this.hayAlquileresPropios = true;
           })
       })
-
-      console.log(this.arrayDatosPropietario)
   }
 
+  ngAfterViewInit() {
+    setTimeout(() => {
+      for (let i = 0; i < this.arrayAlquilerPropietario.length; i++) {
+        const element = this.arrayAlquilerPropietario[i];
+        if (element.estado == "En proceso de puntuación") {
+          this._auth.verificar_finalizacion(element._id).subscribe(
+            res => {
+              console.log(res);
+            }
+          );
+        }
+      }
 
-  pre_reclamo(datos){
+      for (let i = 0; i < this.arrayAlquilerPropios.length; i++) {
+        const element = this.arrayAlquilerPropios[i];
+        if (element.estado == "En proceso de puntuación") {
+          this._auth.verificar_finalizacion(element._id).subscribe(
+            res => {
+              console.log(res);
+            }
+          );
+        }
+      }
+    }, 2000);
+  }
+
+  pre_reclamo(datos) {
     console.log(datos)
   }
-
 
   pagar(alquiler) {
     this._auth.registrar_EnProcesoEntrega(alquiler.id_publicacion).subscribe(
@@ -125,11 +147,12 @@ export class MisAlquileresComponent implements OnInit, OnDestroy {
 
   datosPropietarioDialogRef: MatDialogRef<DatosPropietarioDialogComponent>;
   datosLocatarioDialogRef: MatDialogRef<DatosLocatarioDialogComponent>;
-  codigoPropietarioDialogRef: MatDialogRef<CodigoPropietarioDialogComponent>
-  codigoLocatarioDialogRef: MatDialogRef<CodigoLocatarioDialogComponent>
-  codigoDevolucionPropietarioDialogRef: MatDialogRef<CodigoDevolucionPropietarioDialogComponent>
-  codigoDevolucionLocatarioDialogRef: MatDialogRef<CodigoDevolucionLocatarioDialogComponent>
+  codigoPropietarioDialogRef: MatDialogRef<CodigoPropietarioDialogComponent>;
+  codigoLocatarioDialogRef: MatDialogRef<CodigoLocatarioDialogComponent>;
+  codigoDevolucionPropietarioDialogRef: MatDialogRef<CodigoDevolucionPropietarioDialogComponent>;
+  codigoDevolucionLocatarioDialogRef: MatDialogRef<CodigoDevolucionLocatarioDialogComponent>;
   cancelarDialogRef: MatDialogRef<CancelarDialogComponent>;
+  puntuacion: MatDialogRef<PuntuacionComponent>;
 
   openDialogDatosPropietario(alquiler): void {
     this.datosPropietarioDialogRef = this.dialog.open(DatosPropietarioDialogComponent,
@@ -198,6 +221,15 @@ export class MisAlquileresComponent implements OnInit, OnDestroy {
 
       })
 
+  }
+
+  openDialogPuntuacion(alquiler, tipo): void {
+    this.puntuacion = this.dialog.open(PuntuacionComponent, { data: { alquiler: alquiler, tipo: tipo }, });
+    this.puntuacion.afterClosed().subscribe(
+      res => {
+        window.location.assign("mi-cuenta/mis-alquileres")
+      }
+    )
   }
 
 }

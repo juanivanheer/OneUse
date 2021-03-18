@@ -1,0 +1,45 @@
+<section fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="15px">
+    <div>
+        <h3 *ngIf="tipo == 'locatario-locador'">Puntuación del locador</h3>
+        <h3 *ngIf="tipo == 'locador-locatario'">Puntuación del locatario</h3>
+    </div>
+    <div>
+        <p *ngIf="tipo == 'locatario-locador'">¡Puntúa tu experiencia con <b>{{alquiler.name_usuarioPropietario}}</b>! </p>
+        <p *ngIf="tipo == 'locador-locatario'">¡Puntúa tu experiencia con <b>{{alquiler.name_usuarioLocatario}}</b>! </p>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center center">
+        <!--Estrellas-->
+        <button mat-icon-button (click)="seleccion(1)">
+            <mat-icon style="color:black" *ngIf="!seleccion1">star</mat-icon>
+            <mat-icon style="color: gold;" *ngIf="seleccion1">star</mat-icon>
+        </button>
+        <button mat-icon-button (click)="seleccion(2)">
+            <mat-icon style="color:black" *ngIf="!seleccion2">star</mat-icon>
+            <mat-icon style="color: gold;" *ngIf="seleccion2">star</mat-icon>
+        </button>
+        <button mat-icon-button (click)="seleccion(3)">
+            <mat-icon style="color:black" *ngIf="!seleccion3">star</mat-icon>
+            <mat-icon style="color: gold;" *ngIf="seleccion3">star</mat-icon>
+        </button>
+        <button mat-icon-button (click)="seleccion(4)">
+            <mat-icon style="color:black" *ngIf="!seleccion4">star</mat-icon>
+            <mat-icon style="color: gold;" *ngIf="seleccion4">star</mat-icon>
+        </button>
+        <button mat-icon-button (click)="seleccion(5)">
+            <mat-icon style="color:black" *ngIf="!seleccion5">star</mat-icon>
+            <mat-icon style="color: gold;" *ngIf="seleccion5">star</mat-icon>
+        </button>
+    </div>
+    <div>
+        <p>También puedes dejar un comentario sobre tu experiencia</p>
+        <br>
+        <mat-form-field>
+            <textarea matInput placeholder="Deja un comentario" maxlength="100" minlength="30" #coment (input)="comentario = $event.target.value"></textarea>
+            <mat-hint align="end">{{coment.value.length}} / 100</mat-hint>
+            <mat-hint align="start"><strong>El comentario debe superar los 30 caracteres</strong> </mat-hint>
+        </mat-form-field>
+    </div>
+    <div>
+        <button mat-raised-button color="primary" (click)="enviar()" [disabled]="habilitarEnviar(coment.value)">Enviar</button>
+    </div>
+</section>

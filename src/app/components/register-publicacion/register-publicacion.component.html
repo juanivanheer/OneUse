@@ -254,23 +254,28 @@
                     <input matInput type="number" placeholder="Precio por día de alquiler" formControlName="preciodia"
                         name="preciodia" required (ngModelChange)="preciodia = $event" soloNumerosDirective>
                 </mat-form-field>
+                <br><br>
                 <mat-form-field>
                     <span matPrefix>$ &nbsp;</span>
-                    <input matInput type="number" placeholder="Precio por semana de alquiler"
+                    <input matInput #precioSemana type="number" placeholder="Precio por semana de alquiler"
                         formControlName="preciosemana" name="preciosemana" (ngModelChange)="preciosemana = $event"
                         soloNumerosDirective>
+                    <mat-hint align="start">Modificable si la cantidad de días disponible supera a 7</mat-hint>
                 </mat-form-field>
+                <br><br>
                 <mat-form-field>
                     <span matPrefix>$ &nbsp;</span>
                     <input matInput type="number" placeholder="Precio por mes de alquiler" formControlName="preciomes"
                         optional name="preciomes" (ngModelChange)="preciomes = $event" soloNumerosDirective>
+                    <mat-hint align="start">Modificable si la cantidad de días disponible supera a 28</mat-hint>
                 </mat-form-field>
+                <br><br>
                 <div fxLayout="row" fxFlexFill>
                     <mat-form-field style="padding-right: 100px; width: 100%; margin-bottom: 40px;">
-                        <input matInput #cantDias1 maxlength="3" placeholder="Cantidad de días disponibles de alquiler"
+                        <input matInput #dias maxlength="3" placeholder="Cantidad de días disponibles de alquiler"
                             formControlName="cantDias" name="cantDias" (ngModelChange)="cantDias = $event" required
-                            soloNumerosDirective>
-                        <mat-hint align="end">{{cantDias1.value.length}} / 3</mat-hint>
+                            soloNumerosDirective (input)="habilitarSemana(dias.value); habilitarMes(dias.value)">
+                        <mat-hint align="end">{{dias.value.length}} / 3</mat-hint>
                         <mat-hint align="start">Cantidad total de días en que se puede alquilar el objeto</mat-hint>
                     </mat-form-field>
                     <mat-form-field style="width: 100%; margin-bottom: 40px;">

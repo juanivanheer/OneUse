@@ -8,6 +8,8 @@
             <mat-divider fxFlexFill></mat-divider>
         </div>
         <mat-tab-group>
+
+            <!-- ALQUILERES DE MIS PUBLICACIONES -->
             <mat-tab>
                 <div fxHide.lt-lg="true">
                     <ng-template mat-tab-label>
@@ -36,17 +38,14 @@
                                         <p mat-line><b> Fecha de generación: </b>{{datos.createdAt}}</p>
                                         <p mat-line><b> Cantidad de días alquiler: </b>{{datos.cantidadDias}} </p>
                                         <p mat-line><b> Estado del Alquiler: </b>{{datos.estado}} </p>
-                                        <p mat-line *ngIf="datos.fuePagado && !datos.codigoPropietarioIngresado"><b>
-                                                Código entrega propietario: </b>{{datos.codigoEntregaPropietario}}
+                                        <p mat-line *ngIf="datos.fuePagado && !datos.codigoPropietarioIngresado">
+                                            <b> Código entrega propietario: </b>{{datos.codigoEntregaPropietario}}
                                         </p>
                                         <p mat-line *ngIf="datos.estado == 'En proceso de devolución'">
-                                            <b>
-                                                Código devolución propietario:
-                                            </b>{{datos.codigoDevolucionPropietario}}
+                                            <b> Código devolución propietario: </b>{{datos.codigoDevolucionPropietario}}
                                         </p>
                                         <p mat-line *ngIf="datos.fuePagado && datos.codigoLocatarioIngresado">
-                                            <b> Fecha de devolución:
-                                            </b>{{datos.fechaCaducidadDevolucion}}
+                                            <b> Fecha de devolución: </b>{{datos.fechaCaducidadDevolucion}}
                                         </p>
                                     </div>
                                     <div class="info2" fxLayout="row" fxFlex="400" fxLayoutAlign="center center"
@@ -62,7 +61,7 @@
                                         fxLayoutGap="10px" *ngIf="datos.fuePagado">
 
                                         <button *ngIf="datos.estado == 'En proceso de entrega'" mat-raised-button
-                                        (click)="pre_reclamo(datos)" color="warn">
+                                            (click)="pre_reclamo(datos)" color="warn">
                                             <mat-icon>cancel</mat-icon>
                                             <span> Reclamar alquiler</span>
                                         </button>
@@ -71,6 +70,13 @@
                                             (click)="pre_reclamo(datos)" color="warn">
                                             <mat-icon>cancel</mat-icon>
                                             <span> Reclamar alquiler</span>
+                                        </button>
+
+                                        <button mat-raised-button color="primary"
+                                            *ngIf="datos.estado == 'En proceso de puntuación' && datos.comentario_propietario_al_locatario == undefined"
+                                            (click)="openDialogPuntuacion(datos, 'locador-locatario')">
+                                            <mat-icon>star</mat-icon>
+                                            <span> Puntuar al locatario</span>
                                         </button>
 
                                         <button mat-icon-button [matMenuTriggerFor]="menu1">
@@ -90,14 +96,9 @@
                                             </button>
 
                                             <button mat-menu-item (click)="openDialogCodigoLocatarioDevolucion(datos)"
-                                                *ngIf="datos.codigoPropietrioDevolucionIngresado && !datos.codigoLocatarioDevolucionIngresado">
+                                                *ngIf="datos.codigoPropietarioDevolucionIngresado && !datos.codigoLocatarioDevolucionIngresado">
                                                 <mat-icon>format_align_justify</mat-icon>
                                                 <span>Ingresar código locatario devolución</span>
-                                            </button>
-
-                                            <button mat-menu-item *ngIf="datos.estado == 'Finalizado'">
-                                                <mat-icon>star</mat-icon>
-                                                <span>Puntuar al locatario</span>
                                             </button>
                                         </mat-menu>
 
@@ -111,6 +112,7 @@
                 </div>
             </mat-tab>
 
+            <!-- ALQUILERES REALIZADOS POR EL USUARIO -->
             <mat-tab>
                 <div fxHide.lt-lg="true">
                     <ng-template mat-tab-label>
@@ -119,7 +121,7 @@
                     </ng-template>
                 </div>
                 <div fxLayout="column" fxFlexFill fxLayoutAlign="center center" *ngIf="!hayAlquileresPropios">
-                    <h2>No hay alquileres por mostrar</h2>
+                    <h3>No hay alquileres por mostrar</h3>
                 </div>
                 <div class=" mat-elevation-z4 contenedor-gral">
                     <br>
@@ -147,11 +149,11 @@
                                             <p mat-line
                                                 *ngIf="alquilerPropio.fuePagado && !alquilerPropio.codigoLocatarioIngresado">
                                                 <b> Código entrega
-                                                    locatario:</b>{{alquilerPropio.codigoEntregaLocatario}}
+                                                    locatario: </b>{{alquilerPropio.codigoEntregaLocatario}}
                                             </p>
                                             <p mat-line *ngIf="alquilerPropio.estado == 'En proceso de devolución'">
                                                 <b> Código devolución
-                                                    locatario:</b>{{alquilerPropio.codigoDevolucionLocatario}}
+                                                    locatario: </b>{{alquilerPropio.codigoDevolucionLocatario}}
                                             </p>
                                             <p mat-line
                                                 *ngIf="alquilerPropio.fuePagado && alquilerPropio.codigoLocatarioIngresado">
@@ -162,6 +164,11 @@
                                         <div class="info2" fxLayout="row" fxFlex="400" fxLayoutAlign="center center"
                                             fxLayoutGap="10px">
                                             <button *ngIf="alquilerPropio.estado == 'En proceso de entrega'"
+                                                mat-raised-button routerLink="/reclamar-alquiler" color="warn">
+                                                <mat-icon>cancel</mat-icon>
+                                                <span> Reclamar alquiler</span>
+                                            </button>
+                                            <button *ngIf="alquilerPropio.estado == 'En proceso de devolución'"
                                                 mat-raised-button routerLink="/reclamar-alquiler" color="warn">
                                                 <mat-icon>cancel</mat-icon>
                                                 <span> Reclamar alquiler</span>
@@ -177,6 +184,12 @@
                                                 color="warn">
                                                 <mat-icon>cancel</mat-icon>
                                                 <span> Cancelar alquiler</span>
+                                            </button>
+                                            <button mat-raised-button color="primary"
+                                                *ngIf="alquilerPropio.estado == 'En proceso de puntuación' && alquilerPropio.comentario_locatario_al_propietario == undefined"
+                                                (click)="openDialogPuntuacion(alquilerPropio, 'locatario-locador')">
+                                                <mat-icon>star</mat-icon>
+                                                <span> Puntuar al locador</span>
                                             </button>
                                             <button mat-icon-button [matMenuTriggerFor]="menu">
                                                 <mat-icon>more_vert</mat-icon>
