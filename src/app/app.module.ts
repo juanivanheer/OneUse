@@ -91,6 +91,7 @@ import { EliminarAlquilerSuperadminDialogComponent } from './components/mi-cuent
 import { PagoMercadopagoComponent } from './components/pago-mercadopago/pago-mercadopago.component';
 import { BarraLateralComponent } from './components/mi-cuenta/barra-lateral/barra-lateral.component';
 import { PuntuacionComponent } from './components/mi-cuenta/mis-alquileres/puntuacion-dialog/puntuacion-dialog.component';
+import { MisReclamosComponent } from './components/mi-cuenta/mis-reclamos/mis-reclamos.component';
 
 FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme);
 
@@ -167,7 +168,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     EliminarAlquilerSuperadminDialogComponent,
     PagoMercadopagoComponent,
     BarraLateralComponent,
-    PuntuacionComponent
+    PuntuacionComponent,
+    MisReclamosComponent
   ],
   imports: [
     BrowserModule,
