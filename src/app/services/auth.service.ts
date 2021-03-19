@@ -61,6 +61,7 @@ export class AuthService {
   private _registrarCodigoDevolucionPropietario = this.url + "registrar-devolucion-propietario/"
   private _registrarCodigoDevolucionLocatario = this.url + "registrar-devolucion-locatario/"
   private _getAllUsers = this.url + "get-all-users/"
+  private _getAllReclamos = this.url + "get-all-reclamos/"
   private _deleteUser = this.url + "delete-user/"
   private _updateSuperadminUser = this.url + "update-superadmin-user"
   private _getAllPublicaciones = this.url + "get-all-publicaciones"
@@ -332,6 +333,10 @@ export class AuthService {
   //Reclamo
   registrar_reclamo(reclamo) {
     return this.http.post<any>(this._registrarReclamo, reclamo);
+  }
+
+  get_all_reclamos() {
+    return this.http.get<any>(this._getAllReclamos);
   }
 
   /* ESTADISTICAS*/
