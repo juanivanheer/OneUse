@@ -92,6 +92,7 @@ import { PagoMercadopagoComponent } from './components/pago-mercadopago/pago-mer
 import { BarraLateralComponent } from './components/mi-cuenta/barra-lateral/barra-lateral.component';
 import { PuntuacionComponent } from './components/mi-cuenta/mis-alquileres/puntuacion-dialog/puntuacion-dialog.component';
 import { MisReclamosComponent } from './components/mi-cuenta/mis-reclamos/mis-reclamos.component';
+import { BarraLateralSaComponent } from './components/mi-cuenta/superadmin/barra-lateral-sa/barra-lateral-sa.component';
 
 FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme);
 
@@ -169,7 +170,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     PagoMercadopagoComponent,
     BarraLateralComponent,
     PuntuacionComponent,
-    MisReclamosComponent
+    MisReclamosComponent,
+    BarraLateralSaComponent
   ],
   imports: [
     BrowserModule,

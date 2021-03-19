@@ -255,38 +255,42 @@ export class DetallePublicacionComponent implements OnInit, OnDestroy {
     )
   }
 
-  iniciarSesion(){
+  iniciarSesion() {
     window.location.assign("login")
   }
 
   calcularPrecio() {
-    if (this.cantidadDiasSeleccionado < 7) {
+    if (this.preciomes == 0 && this.preciosemana == 0) {
       return this.cantidadDiasSeleccionado * this.preciodia;
     } else {
-      if (this.preciosemana != undefined && this.preciosemana != null) {
-        if (this.cantidadDiasSeleccionado == 7) {
-          return this.preciosemana;
-        } else {
-          if (this.cantidadDiasSeleccionado > 7 && this.cantidadDiasSeleccionado < 14) {
-            let dias_restantes = this.cantidadDiasSeleccionado - 7
-            return dias_restantes * this.preciodia + parseInt(this.preciosemana)
+      if (this.cantidadDiasSeleccionado < 7) {
+        return this.cantidadDiasSeleccionado * this.preciodia;
+      } else {
+        if (this.preciosemana > 0) {
+          if (this.cantidadDiasSeleccionado == 7) {
+            return this.preciosemana;
           } else {
-            if (this.cantidadDiasSeleccionado == 14) {
-              return this.preciosemana * 2;
+            if (this.cantidadDiasSeleccionado > 7 && this.cantidadDiasSeleccionado < 14) {
+              let dias_restantes = this.cantidadDiasSeleccionado - 7
+              return dias_restantes * this.preciodia + parseInt(this.preciosemana)
             } else {
-              if (this.cantidadDiasSeleccionado > 14 && this.cantidadDiasSeleccionado < 21) {
-                let dias_restantes = this.cantidadDiasSeleccionado - 14
-                return (dias_restantes * this.preciodia) + (2 * parseInt(this.preciosemana))
+              if (this.cantidadDiasSeleccionado == 14) {
+                return this.preciosemana * 2;
               } else {
-                if (this.cantidadDiasSeleccionado == 21) {
-                  return this.preciosemana * 3;
+                if (this.cantidadDiasSeleccionado > 14 && this.cantidadDiasSeleccionado < 21) {
+                  let dias_restantes = this.cantidadDiasSeleccionado - 14
+                  return (dias_restantes * this.preciodia) + (2 * parseInt(this.preciosemana))
                 } else {
-                  if (this.cantidadDiasSeleccionado > 21 && this.cantidadDiasSeleccionado < 28) {
-                    let dias_restantes = this.cantidadDiasSeleccionado - 21
-                    return (dias_restantes * this.preciodia) + (3 * parseInt(this.preciosemana))
+                  if (this.cantidadDiasSeleccionado == 21) {
+                    return this.preciosemana * 3;
                   } else {
-                    if (this.cantidadDiasSeleccionado == 28) {
-                      return parseInt(this.preciomes);
+                    if (this.cantidadDiasSeleccionado > 21 && this.cantidadDiasSeleccionado < 28) {
+                      let dias_restantes = this.cantidadDiasSeleccionado - 21
+                      return (dias_restantes * this.preciodia) + (3 * parseInt(this.preciosemana))
+                    } else {
+                        if (this.cantidadDiasSeleccionado == 28) {
+                          return parseInt(this.preciomes);
+                        }
                     }
                   }
                 }

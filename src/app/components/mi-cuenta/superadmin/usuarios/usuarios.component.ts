@@ -93,11 +93,11 @@ export class UsuariosComponent implements OnInit, OnDestroy {
         }
       });
 
-      this.dialog.afterAllClosed.subscribe(
-        res => {
-          this.ngOnInit();
-        }
-      );
+    this.dialog.afterAllClosed.subscribe(
+      res => {
+        this.ngOnInit();
+      }
+    );
   }
 
   openDialogModificarUsuario(data): void {
@@ -108,11 +108,11 @@ export class UsuariosComponent implements OnInit, OnDestroy {
         }
       });
 
-      this.dialog.afterAllClosed.subscribe(
-        res => {
-          this.ngOnInit();
-        }
-      );
+    this.dialog.afterAllClosed.subscribe(
+      res => {
+        this.ngOnInit();
+      }
+    );
   }
 
   cerrarSesion() {
