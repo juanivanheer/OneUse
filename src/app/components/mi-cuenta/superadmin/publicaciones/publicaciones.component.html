@@ -6,13 +6,17 @@
     <div fxLayout="column" fxFlexOrder="2" fxLayoutAlign="start center" fxLayout.lt-lg="column"
         fxLayoutAlign.lt-lg="center center" style="width: 100%; margin-top: 20px;margin-bottom: 20px">
         <div class="mat-elevation-z8" style="width: 95%;">
-
-            <div fxLayout="column" style="width: 100%; text-align: center; margin-top: 40px" fxLayoutAlign="center center">
-                <p style="font-size: 25px;margin-bottom: 8px; "> Publicaciones </p>
+            <div fxLayout="column" style="width: 100%; text-align: center; margin-top: 40px"
+                fxLayoutAlign="center center">
+                <p style="font-size: 25px;margin-bottom: 40px; "> Publicaciones </p>
                 <mat-divider fxFlexFill></mat-divider>
             </div>
 
-            <div fxLayout="row" fxLayoutGap="20px" style="margin-left: 30px;margin-top: 20px;">
+            <div fxLayout="column" fxLayoutAlign="center center" *ngIf="!mostrar" style="margin:80px">
+                <mat-spinner diameter="200" ></mat-spinner>
+            </div>
+
+            <div fxLayout="row" fxLayoutGap="20px" style="margin-left: 30px;margin-top: 20px;" *ngIf="mostrar">
                 <mat-form-field style="width: 60%;margin-left: 20px; margin-top: 20px;">
                     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
                 </mat-form-field>
@@ -22,7 +26,7 @@
                 </button>
             </div>
 
-            <table mat-table #table [dataSource]="dataSource" matSort aria-label="Elements">
+            <table mat-table #table [dataSource]="dataSource" matSort aria-label="Elements" *ngIf="mostrar">
 
                 <ng-container matColumnDef="titulo">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Título</th>
@@ -65,7 +69,7 @@
             </table>
 
             <mat-paginator #paginator [length]="dataSource.data.length" [pageIndex]="0" [pageSize]="5"
-                [pageSizeOptions]="[1,5,10,15,20,25,50]">
+                [pageSizeOptions]="[1,5,10,15,20,25,50]" *ngIf="mostrar">
             </mat-paginator>
         </div>
     </div>

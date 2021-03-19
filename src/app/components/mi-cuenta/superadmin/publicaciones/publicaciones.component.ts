@@ -49,17 +49,21 @@ export class PublicacionesComponent implements OnInit, OnDestroy {
   eliminarPublicacionDialogRef: MatDialogRef<EliminarPublicacionDialogComponent>
   modificarPublicacionDialogRef: MatDialogRef<ModificarPublicacionDialogComponent>
 
-  dataSource;
+  dataSource = new MatTableDataSource();
   displayedColumns = ['titulo', 'categoria', 'destacar', 'estado', 'boton'];
   data;
+  mostrar: boolean = false;
 
   ngOnInit() {
     this.subscription = this._auth.get_all_publicaciones().subscribe(
       res => {
-        const ELEMENT_DATA: Publicaciones[] = res.publicaciones;
-        this.dataSource = new MatTableDataSource(ELEMENT_DATA);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
+        if (res != null && res != undefined) {
+          const ELEMENT_DATA: Publicaciones[] = res.publicaciones;
+          this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+          this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
+          this.mostrar = true;
+        }
       }
     )
   }

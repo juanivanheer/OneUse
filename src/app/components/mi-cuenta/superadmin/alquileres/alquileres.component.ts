@@ -52,9 +52,10 @@ export class AlquileresComponent implements OnInit {
   eliminarAlquilerDialogRef: MatDialogRef<EliminarAlquilerSuperadminDialogComponent>
   modificarAlquilerDialogRef: MatDialogRef<ModificarAlquilerDialogComponent>
 
-  dataSource;
+  dataSource = new MatTableDataSource();
   displayedColumns = ['name_usuarioPropietario', 'name_usuarioLocatario', 'estado', 'boton'];
   data;
+  mostrar: boolean = false;
 
   ngOnInit() {
     this.subscription = this._auth.get_all_alquileres().subscribe(
@@ -63,6 +64,7 @@ export class AlquileresComponent implements OnInit {
         this.dataSource = new MatTableDataSource(ELEMENT_DATA);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
+        this.mostrar = true;
       }
     )
   }

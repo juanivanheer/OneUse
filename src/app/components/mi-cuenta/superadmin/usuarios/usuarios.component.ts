@@ -53,17 +53,21 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   nombreUsuario;
   mail;
   fechaCreacion;
-  dataSource;
+  dataSource = new MatTableDataSource();
   displayedColumns = ['nombre', 'email', 'fecha', 'boton'];
   data;
+  mostrar: boolean = false;
 
   ngOnInit() {
     this.subscription = this._auth.get_all_users().subscribe(
       res => {
-        const ELEMENT_DATA: Usuarios[] = res;
-        this.dataSource = new MatTableDataSource(ELEMENT_DATA);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
+        if (res != undefined && res != null) {
+          const ELEMENT_DATA: Usuarios[] = res;
+          this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+          this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
+          this.mostrar = true;
+        }
       }
     )
   }

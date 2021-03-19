@@ -13,12 +13,12 @@ export class ModificarUsuarioDialogComponent implements OnInit {
 
   datos = {
     _id: undefined,
+    tipo: undefined,
     name: undefined,
     email: undefined,
     confirmed: undefined,
     createdAt: undefined,
     updatedAt: undefined,
-    __v: undefined,
     apellido: undefined,
     ciudad: undefined,
     fecha_nacimiento: undefined,
@@ -37,13 +37,13 @@ export class ModificarUsuarioDialogComponent implements OnInit {
   };
 
   public _id: string;
+  public tipo: string;
   public name: string;
   public email: string;
   public password: string;
   public confirmed: number;
   public createdAt: number;
   public updatedAt: Date;
-  public __v: string;
   public apellido: string;
   public barrio: string;
   public calle: string;
@@ -61,13 +61,13 @@ export class ModificarUsuarioDialogComponent implements OnInit {
 
   datosUsuariosGroup = new FormGroup({
     _id: new FormControl({ value: '', disabled: false }),
+    tipo: new FormControl({ value: '', disabled: false }),
     name: new FormControl({ value: '', disabled: false }),
     email: new FormControl({ value: '', disabled: false }),
     password: new FormControl({ value: '', disabled: false }),
     confirmed: new FormControl({ value: '', disabled: false }),
     createdAt: new FormControl({ value: '', disabled: false }),
     updatedAt: new FormControl({ value: '', disabled: false }),
-    __v: new FormControl({ value: '', disabled: false }),
     apellido: new FormControl({ value: '', disabled: false }),
     barrio: new FormControl({ value: '', disabled: false }),
     calle: new FormControl({ value: '', disabled: false }),
@@ -93,6 +93,10 @@ export class ModificarUsuarioDialogComponent implements OnInit {
       this.datos._id = 'Sin cargar';
     } else this._id = this.datos._id;
 
+    if (this.datos.tipo == undefined) {
+      this.datos.tipo = 'Sin cargar';
+    } else this.tipo = this.datos.tipo;
+
     if (this.datos.password == undefined) {
       this.datos.password = 'Sin cargar';
     } else this.password = this.datos.password;
@@ -113,9 +117,9 @@ export class ModificarUsuarioDialogComponent implements OnInit {
       this.datos.updatedAt = 'Sin cargar';
     } else this.updatedAt = this.datos.updatedAt;
 
-    if (this.datos.__v == undefined) {
-      this.datos.__v = 'Sin cargar';
-    } else this.__v = this.datos.__v;
+    if (this.datos.tipo == undefined) {
+      this.datos.tipo = 'Sin cargar';
+    } else this.tipo = this.datos.tipo;
 
     if (this.datos.email == undefined) {
       this.datos.email = 'Sin cargar';
@@ -211,7 +215,7 @@ export class ModificarUsuarioDialogComponent implements OnInit {
       _id: this._id,
       password: this.password,
       confirmed: this.confirmed,
-      __v: this.__v,
+      tipo: this.tipo,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
       name: this.name,
