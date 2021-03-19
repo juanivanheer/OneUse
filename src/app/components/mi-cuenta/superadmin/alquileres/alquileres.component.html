@@ -48,7 +48,13 @@
     <div fxLayout="column" fxFlexOrder="2" fxLayoutAlign="start center" fxLayout.lt-lg="column"
         fxLayoutAlign.lt-lg="center center" style="width: 100%; margin-top: 20px; margin-bottom: 20px;">
         <div class="mat-elevation-z8" style="width: 95%;">
-            <div fxLayout="row" fxLayoutGap="20px" style="margin-left: 30px;">
+           
+            <div fxLayout="column" style="width: 100%; text-align: center; margin-top: 40px" fxLayoutAlign="center center">
+                <p style="font-size: 25px;margin-bottom: 8px; "> Alquileres </p>
+                <mat-divider fxFlexFill></mat-divider>
+            </div>
+            
+            <div fxLayout="row" fxLayoutGap="20px" style="margin-left: 30px;margin-top: 20px;">
                 <mat-form-field style="width: 60%;margin-left: 20px; margin-top: 20px;">
                     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
                 </mat-form-field>
