@@ -10291,6 +10291,7 @@ var AuthService = /** @class */ (function () {
         this._registrarCodigoDevolucionPropietario = "https://oneuse-backend.herokuapp.com/api/registrar-finalizacion-propietario/";
         this._registrarCodigoDevolucionLocatario = "https://oneuse-backend.herokuapp.com/api/registrar-finalizacion-locatario/";
         this._getAllUsers = "https://oneuse-backend.herokuapp.com/api/get-all-users/";
+        this._getAllReclamos = "https://oneuse-backend.herokuapp.com/api/get-all-reclamos/";
         this._deleteUser = "https://oneuse-backend.herokuapp.com/api/delete-user/";
         this._updateSuperadminUser = "https://oneuse-backend.herokuapp.com/api/update-superadmin-user";
         this._getAllPublicaciones = "https://oneuse-backend.herokuapp.com/api/get-all-publicaciones";
