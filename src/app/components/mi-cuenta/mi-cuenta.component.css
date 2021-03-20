@@ -24,6 +24,19 @@
     cursor: pointer;
 }
 
+.contenedorDeDatos {
+    margin-bottom: 40px;
+}
+
+.container-gt-md {
+    width: 100%;
+    margin: 30px;
+}
+
+.container-lt-md {
+    width: 86%;
+}
+
 .iconitos {
     display: inline;
     margin-left: 10px;

@@ -3,57 +3,56 @@
     <app-barra-lateral></app-barra-lateral>
   </div>
 
-  <div fxLayout="column" fxFlexOrder="2" fxLayoutAlign="start center" fxLayout.lt-lg="column"
-    fxLayoutAlign.lt-lg="center center" style="width: 100%; margin-top: 20px;">
-    <div fxFlexFill>
-      <div style="text-align: center;">
-        <p style="font-size: 25px; margin-bottom: 8px;">Mis estadísticas</p>
-        <mat-divider fxFlexFill></mat-divider>
-      </div>
-      <mat-tab-group (selectedTabChange)="cambioTab($event)">
-        <mat-tab>
-          <div fxHide.lt-lg="true">
-            <ng-template mat-tab-label>
-              <mat-icon class="iconitos">check_circle</mat-icon>
-              Cantidad de visitas a tus publicaciones
-            </ng-template>
-          </div>
-          <div fxLayout="column" fxLayoutAlign="center center" id="prueba">
-            <div style="width: 300px; margin-top: 15px;" *ngIf="publicaciones.length > 0">
-              <mat-form-field>
-                <!-- -->
-                <mat-label>Publicación</mat-label>
-                <mat-select>
-                  <mat-option #dropdown *ngFor="let p of publicaciones"
-                    (onSelectionChange)="CargarDatos(p._id, p.titulo)">
-                    {{ p.titulo }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-
-            <div style="width: 300px; margin-top: 30px;" *ngIf="publicaciones.length == 0">
-              <!-- <img src="assets\images\Validacion Estadistica\sinPublicacionesAnuncio.png" /> -->
-
-              <b>
-                <h4></h4>
-              </b>
-            </div>
-          </div>
-          <div fxLayout="column" fxLayoutAlign="center center" style="margin-bottom: 30px;" *ngIf="hayPublicaciones">
-            <fusioncharts width="700" height="400" type="Column2d" [dataSource]="dataSource"></fusioncharts>
-          </div>
-        </mat-tab>
-
-        <mat-tab>
-          <div fxHide.lt-lg="true">
-            <ng-template mat-tab-label>
-              <mat-icon class="iconitos">cancel</mat-icon>
-              Otras Estadísticas
-            </ng-template>
-          </div>
-        </mat-tab>
-      </mat-tab-group>
+  <div fxLayout="column" style="width:100%" fxFlexOrder="2" fxLayoutAlign="center center" fxLayout.lt-lg="column"
+    fxLayoutAlign.lt-lg="center center" ngClass.gt-md="container-gt-md mat-elevation-z8"
+    ngClass.lt-md="container-lt-md mat-elevation-z8">
+    <div fxLayout="column" style="width: 100%; text-align: center; margin-top: 40px;" fxLayoutAlign="center center">
+      <p style="font-size: 25px;margin-bottom: 25px;">Mis estadísticas</p>
+      <mat-divider style="width:100%;"></mat-divider>
     </div>
+    <mat-tab-group class="contenedorDeDatos" (selectedTabChange)="cambioTab($event)" style="height: 100%;width: 100%;">
+      <mat-tab>
+        <div fxHide.lt-lg="true">
+          <ng-template mat-tab-label>
+            <mat-icon class="iconitos">check_circle</mat-icon>
+            Cantidad de visitas a tus publicaciones
+          </ng-template>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="center center" id="prueba">
+          <div style="width: 300px; margin-top: 15px;" *ngIf="publicaciones.length > 0">
+            <mat-form-field>
+              <!-- -->
+              <mat-label>Publicación</mat-label>
+              <mat-select>
+                <mat-option #dropdown *ngFor="let p of publicaciones"
+                  (onSelectionChange)="CargarDatos(p._id, p.titulo)">
+                  {{ p.titulo }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div style="width: 300px; margin-top: 30px;" *ngIf="publicaciones.length == 0">
+            <!-- <img src="assets\images\Validacion Estadistica\sinPublicacionesAnuncio.png" /> -->
+
+            <b>
+              <h4></h4>
+            </b>
+          </div>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="center center" style="margin-bottom: 30px;" *ngIf="hayPublicaciones">
+          <fusioncharts width="700" height="400" type="Column2d" [dataSource]="dataSource"></fusioncharts>
+        </div>
+      </mat-tab>
+
+      <mat-tab>
+        <div fxHide.lt-lg="true">
+          <ng-template mat-tab-label>
+            <mat-icon class="iconitos">cancel</mat-icon>
+            Otras Estadísticas
+          </ng-template>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
   </div>
 </div>
