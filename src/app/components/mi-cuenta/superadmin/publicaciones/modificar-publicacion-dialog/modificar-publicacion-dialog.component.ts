@@ -160,7 +160,7 @@ export class ModificarPublicacionDialogComponent implements OnInit {
 
 
     if (this.datos.contadorDeVisita == undefined) {
-      this.datos.contadorDeVisita = '';
+      this.datos.contadorDeVisita = 'Sin cargar';
     } else this.contadorDeVisita = this.datos.contadorDeVisita;
   }
 

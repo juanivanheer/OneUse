@@ -1,4 +1,4 @@
-<h2 mat-dialog-title style="text-align: center">Modificar usuario</h2>
+<h2 mat-dialog-title style="text-align: center">Modificar publicación</h2>
 <mat-dialog-content class="mat-typography">
     <mat-dialog-content class="mat-typography">
         <form [formGroup]="datosUsuariosGroup">
@@ -42,6 +42,11 @@
                         <span matPrefix>$ </span>
                         <input [value]="preciomes" formControlName="preciomes" name="preciomes" matInput
                             (ngModelChange)="preciomes = $event" placeholder="Precio por mes">
+                    </mat-form-field>
+                    
+                    <mat-form-field>
+                        <input [value]="contadorDeVisita" formControlName="contadorDeVisita" name="contadorDeVisita"
+                            matInput (ngModelChange)="contadorDeVisita = $event" placeholder="Contador de visitas">
                     </mat-form-field>
                 </div>
 
@@ -90,11 +95,6 @@
                         <input [value]="cantidadDisponible" formControlName="cantidadDisponible"
                             name="cantidadDisponible" matInput (ngModelChange)="cantidadDisponible = $event"
                             placeholder="Cantidad disponible">
-                    </mat-form-field>
-
-                    <mat-form-field>
-                        <input [value]="contadorDeVisita" formControlName="contadorDeVisita" name="contadorDeVisita"
-                            matInput (ngModelChange)="contadorDeVisita = $event" placeholder="Contador de visitas">
                     </mat-form-field>
                 </div>
             </div>

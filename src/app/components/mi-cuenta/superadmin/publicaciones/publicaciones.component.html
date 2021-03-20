@@ -70,7 +70,7 @@
             </table>
 
             <mat-paginator #paginator [length]="dataSource.data.length" [pageIndex]="0" [pageSize]="5"
-                [pageSizeOptions]="[1,5,10,15,20,25,50]" *ngIf="mostrar">
+                [pageSizeOptions]="[1,5,10,15,20,25,50]" [fxShow]="mostrar">
             </mat-paginator>
         </div>
     </div>
