@@ -116,6 +116,8 @@ export class SingletonService {
   cerrarSesion() {
     localStorage.removeItem("email");
     localStorage.removeItem("token");
+    localStorage.removeItem("id");
+    localStorage.removeItem("tipo");
     localStorage.clear();
     this.setInicioSesion(false);
     window.location.assign('/home');

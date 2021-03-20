@@ -96,6 +96,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
                 window.localStorage.setItem("email", email);
                 window.localStorage.setItem("access_token", access_token);
                 window.localStorage.setItem("id", id);
+                window.localStorage.setItem("tipo", objeto.tipo);
                 window.location.assign('/home');
               } else {
                 this._auth.registerFacebookUser(objeto).subscribe(
@@ -103,6 +104,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
                     window.localStorage.setItem("email", res.email);
                     window.localStorage.setItem("access_token", access_token);
                     window.localStorage.setItem("id", id);
+                    window.localStorage.setItem("id", objeto.tipo);
                     window.location.assign('/home');
                   })
               }
@@ -174,6 +176,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
               window.localStorage.setItem("email", email);
               window.localStorage.setItem("token", token);
               window.localStorage.setItem("id", id);
+              window.localStorage.setItem("tipo", objeto.tipo);
               window.location.assign('/home');
             } else {
               this._auth.registerGoogleUser(objeto).subscribe(
@@ -181,6 +184,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
                   window.localStorage.setItem("email", res.email);
                   window.localStorage.setItem("token", token);
                   window.localStorage.setItem("id", id);
+                  window.localStorage.setItem("tipo", objeto.tipo);
                   window.location.assign('/home');
                 })
             }
@@ -201,6 +205,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
         //console.log(res);
         window.localStorage.setItem("email", this.loginUserData.email);
         window.localStorage.setItem("token", res.token)
+        window.localStorage.setItem("tipo", 'oneuse')
         window.location.assign('/home');
       }
     )

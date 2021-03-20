@@ -1,4 +1,4 @@
-<div fxLayout="row" fxFlexFill>
+<div fxLayout="row" fxFlexFill style="overflow: hidden;">
     <div fxLayout fxFlexOrder="1" ngClass.lt-lg="toolbar-div-lt-md">
         <app-barra-lateral></app-barra-lateral>
     </div>
@@ -14,7 +14,7 @@
             <p>Cargando...</p>
         </div>
         <div class="contenedorDeDatos" ngClass.gt-md="tab-gt-md" ngClass.lt-lg="tab-lt-md" *ngIf="mostrar">
-            <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+            <form [formGroup]="formulario">
                 <!-- #udpdateForm="ngForm" -->
                 <mat-tab-group (selectedTabChange)="cambioTab($event)">
                     <mat-tab>
@@ -33,7 +33,7 @@
                         <br>
                         <mat-form-field>
                             <input [value]="name" formControlName="name" name="name" matInput
-                                (ngModelChange)="name = $event" placeholder="Nombre Usuario" disabled="true">
+                                (ngModelChange)="name = $event" placeholder="Nombre de usuario" disabled="true">
                         </mat-form-field>
 
                         <mat-form-field>
@@ -72,10 +72,10 @@
                                     <mat-icon matSuffix>phone</mat-icon>
                                 </mat-form-field>
                             </div>
+
                             <mat-form-field fxFlex="50%">
                                 <input matInput placeholder="Fecha de nacimiento" [matDatepicker]="picker"
-                                    [max]="maxDate" (ngModelChange)="fechaNacimiento = $event" ngModel
-                                    formControlName="fecha_nacimiento" name="date" [formControl]="date">
+                                    [max]="maxDate" formControlName="fecha_nacimiento" name="fecha_nacimiento"> <!--[formControl]="date"-->
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-datepicker touchUi #picker disabled="false"></mat-datepicker>
                                 <mat-hint>Debes ser mayor de 18 años</mat-hint>
@@ -101,7 +101,7 @@
                                 </mat-form-field>
 
                                 <mat-form-field fxFlex="50%">
-                                    <mat-select placeholder="Ciudad" [formControl]="ciudadControl"
+                                    <mat-select placeholder="Ciudad" formControlName="ciudad"
                                         (ngModelChange)="ciudad = $event" name="ciudad">
                                         <mat-option *ngFor="let ciudad of ciudadesFiltradas" [value]="ciudad.value">
                                             {{ciudad.viewValue}} </mat-option>
@@ -149,7 +149,7 @@
                             </div>
                         </div>
                     </mat-tab>
-                    <mat-tab>
+                    <mat-tab *ngIf="!perfilSocial">
                         <ng-template mat-tab-label>
                             <mat-icon class="iconitos">image</mat-icon>
                             Imágen personal
@@ -179,8 +179,6 @@
                                         src="{{'http://localhost:4201/api/get-image/'+_id}}"> -->
                                     <img *ngIf="tieneImagen && !imagenGoogle && !imagenFacebook"
                                         class="previsualizacion" src="{{'http://localhost:4201/api/get-image/'+_id}}">
-                                    <img *ngIf="imagenGoogle" class="previsualizacion" src="{{urlImagenGoogle}}">
-                                    <img *ngIf="imagenFacebook" class="previsualizacion" src="{{urlImagenFacebook}}">
                                 </div>
                                 <div fxLayout="column" fxLayoutAlign="center center" [fxShow]="hayImagen">
                                     <mat-icon>compare_arrows</mat-icon>

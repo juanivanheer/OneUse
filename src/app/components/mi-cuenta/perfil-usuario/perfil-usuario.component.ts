@@ -32,9 +32,8 @@ export class PerfilUsuarioComponent implements OnInit {
   public email: string;
   public codArea: number;
   public telefono: number;
-  public fechaNacimiento: Date;
+  public fecha_nacimiento: Date;
   public provinciaActual: string;
-  public direccion: string;
   public imagen: string;
   public ciudad: string;
   public calle: string;
@@ -58,9 +57,8 @@ export class PerfilUsuarioComponent implements OnInit {
     email: new FormControl({ value: '', disabled: true }),
     codArea: new FormControl({ value: '', disabled: false }),
     telefono: new FormControl({ value: '', disabled: false }),
-    fecha_nacimiento: new FormControl({ value: '', disabled: false }),
+    fecha_nacimiento: new FormControl({ value: '', disabled: true }),
     provincia: new FormControl({ value: '', disabled: false }),
-    direccion: new FormControl({ value: '', disabled: false }),
     removableFile: new FormControl({ value: '', disabled: false }),
     ciudad: new FormControl({ value: '', disabled: false }),
     barrio: new FormControl({ value: '', disabled: false }),
@@ -75,6 +73,7 @@ export class PerfilUsuarioComponent implements OnInit {
   //Para traer los datos de la BD en el form
   public user = {};
   emailLogueado = localStorage.getItem("email");
+  perfilSocial: boolean = this.esSocial();
 
   //Para armar los JSON de provincias y ciudades
   datosCiudades = [];
@@ -157,21 +156,20 @@ export class PerfilUsuarioComponent implements OnInit {
         } else this.telefono = res.telefono;
 
         if (res.fecha_nacimiento == undefined) {
-          this.fechaNacimiento = undefined;
-          this.date = new FormControl({ value: '', disabled: true }, [Validators.required])
+          this.fecha_nacimiento = undefined;
+          this.formulario.controls.fecha_nacimiento.patchValue('');
         } else {
           let fecha = new Date(res.fecha_nacimiento);
-          this.fechaNacimiento = fecha;
-          this.date = new FormControl({ value: fecha, disabled: true }, [Validators.required]);
-
+          this.fecha_nacimiento = fecha;
+          this.formulario.controls.fecha_nacimiento.patchValue(fecha);
         }
 
         if (res.ciudad == undefined) {
-          this.ciudadControl = new FormControl({ value: '', disabled: true }, [Validators.required]);
+          this.formulario.controls.ciudad.patchValue('')
         } else {
           let ciudad = res.ciudad;
           this.ciudad = ciudad;
-          this.ciudadControl = new FormControl({ value: ciudad, disabled: false }, [Validators.required]);
+          this.formulario.controls.ciudad.patchValue(res.ciudad)
         }
 
         if (res.provincia == undefined) {
@@ -179,6 +177,7 @@ export class PerfilUsuarioComponent implements OnInit {
         } else {
           this.provinciaActual = res.provincia;
           this.filtrarCiudades(this.provinciaActual);
+          this.formulario.controls.provincia.patchValue(res.provincia)
         }
         if (res.barrio == undefined) {
           this.barrio = "";
@@ -232,6 +231,7 @@ export class PerfilUsuarioComponent implements OnInit {
       panelClass: ['color-snackbar']
     });
   }
+
   cerrarSesion() {
     this.singletoon.cerrarSesion();
   }
@@ -287,26 +287,35 @@ export class PerfilUsuarioComponent implements OnInit {
 
   onSubmit() {
     this.updateFormularioControl();
-    console.log(this.formulario.value);
-    this._auth.update_user(this.formulario.value, this._id).subscribe(
+    let objeto = {
+      nombre: this.formulario.controls.nombre.value,
+      apellido: this.formulario.controls.apellido.value,
+      codArea: this.formulario.controls.codArea.value,
+      telefono: this.formulario.controls.telefono.value,
+      fecha_nacimiento: this.formulario.controls.fecha_nacimiento.value,
+      provincia: this.formulario.controls.provincia.value,
+      ciudad: this.formulario.controls.ciudad.value,
+      barrio: this.formulario.controls.barrio.value,
+      calle: this.formulario.controls.calle.value,
+      numero: this.formulario.controls.numero.value,
+      piso: this.formulario.controls.piso.value,
+      departamento: this.formulario.controls.departamento.value,
+      codigoPostal: this.formulario.controls.codigoPostal.value,
+    }
+
+    this._auth.update_user(objeto, this._id).subscribe(
       response => {
-        //console.log(response);
+        if (window.localStorage.getItem("tipo") == "facebook" || window.localStorage.getItem("tipo") == "google") {
+          window.location.assign("mi-cuenta/perfil")
+        } else {
+          this._uploadService.makeFileRequest("http://localhost:4201/api/upload-image/" + this._id, [], this.filesToUpload, 'removablefile')
+            .then((result: any) => {
+              window.location.assign("mi-cuenta/perfil")
+            });
+        }
       },
-      err => {
-        console.log(err);
-        this._uploadService.makeFileRequest("http://localhost:4201/api/upload-image/" + this._id, [], this.filesToUpload, 'removablefile')
-          .then((result: any) => {
-            //console.log(result);
-          });
-
-
-        /*this._uploadService.makeFileRequest("https://oneuse-backend.herokuapp.com/api/upload-image/" + this._id, [], this.filesToUpload, 'removablefile')
-                  .then((result: any) => {
-                    //console.log(result);
-        }); */
-      }
+      err => { }
     )
-    this.openSnackBar("Datos guardados. Actualiza la página para observalos", "Aceptar")
   }
 
   fileChangeEvent(fileInput: any) {
@@ -331,9 +340,8 @@ export class PerfilUsuarioComponent implements OnInit {
       email: this.email,
       codArea: this.codArea,
       telefono: this.telefono,
-      fecha_nacimiento: this.fechaNacimiento,
+      fecha_nacimiento: this.formulario.controls.fecha_nacimiento.value,
       provincia: this.provinciaActual,
-      direccion: this.direccion,
       barrio: this.barrio,
       ciudad: this.ciudad,
       removableFile: null,
@@ -404,6 +412,12 @@ export class PerfilUsuarioComponent implements OnInit {
       this.hayImagen = true;
     }
 
+  }
+
+  esSocial() {
+    if (window.localStorage.getItem("tipo") == "facebook" || window.localStorage.getItem("tipo") == "google") {
+      return true;
+    } else return false
   }
 }
 

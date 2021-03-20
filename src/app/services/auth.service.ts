@@ -116,10 +116,9 @@ export class AuthService {
   }
 
   update_user(user, _id) {
-    let params = JSON.stringify(user);
     let headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    return this.http.post<any>(this._updateUser + _id, params, { headers: headers });
+    return this.http.post<any>(this._updateUser + _id, user, { headers: headers });
   }
 
   update_superadmin_user(user) {
