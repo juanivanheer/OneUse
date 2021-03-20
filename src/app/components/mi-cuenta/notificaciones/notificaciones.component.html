@@ -2,11 +2,21 @@
     <div fxLayout ngClass.lt-lg="toolbar-div-lt-md">
         <app-barra-lateral></app-barra-lateral>
     </div>
-    <section class="container-notificaciones" fxLayout="column" fxLayoutGap="15px">
-        <div *ngIf="!hayDatos" fxFlexAlign="center">
-            <h3> No hay notificaciones por mostrar </h3>
+    <section ngClass.gt-md="container-gt-md mat-elevation-z8" ngClass.lt-md="container-lt-md mat-elevation-z8"
+        fxLayout="column" fxLayoutGap="5px" fxLayoutAlign="start center">
+        <div style="width: 100%; text-align: center; margin-top: 30px;">
+            <p style="font-size: 25px;margin-bottom: 25px;margin-top: 25px;">Notificaciones</p>
+            <mat-divider style="width:100%;"></mat-divider>
         </div>
-        <div *ngIf="    hayDatos" class="mat-elevation-z8">
+        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px" *ngIf="!mostrar" style="height: 100%; margin:50px">
+            <mat-spinner diameter="200"></mat-spinner>
+            <p>Cargando...</p>
+        </div>
+        <div *ngIf="!hayDatos && mostrar" style="height: 100%;width: 100%;">
+            <h3 style="height: 100%; align-items: center;place-content: center center; display: flex;"> No hay
+                notificaciones por mostrar </h3>
+        </div>
+        <div *ngIf="hayDatos && mostrar" class="mat-elevation-z8">
             <mat-table #table [dataSource]="dataSource" matSort aria-label="Elements">
                 <ng-container matColumnDef="id">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>

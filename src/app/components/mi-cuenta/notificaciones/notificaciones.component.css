@@ -78,3 +78,12 @@ mat-toolbar {
     width: 100px;
     height: 100px;
 }
+
+.container-gt-md {
+    width: 100%;
+    margin: 30px;
+}
+
+.container-lt-md {
+    width: 86%;
+}

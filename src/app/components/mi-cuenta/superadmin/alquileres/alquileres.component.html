@@ -12,8 +12,9 @@
                 <mat-divider fxFlexFill></mat-divider>
             </div>
 
-            <div fxLayout="column" fxLayoutAlign="center center" *ngIf="!mostrar" style="margin:80px">
+            <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px" *ngIf="!mostrar" style="margin:50px">
                 <mat-spinner diameter="200" ></mat-spinner>
+                <p>Cargando...</p>
             </div>
             
             <div fxLayout="row" fxLayoutGap="20px" style="margin-left: 30px;margin-top: 20px;" *ngIf="mostrar">

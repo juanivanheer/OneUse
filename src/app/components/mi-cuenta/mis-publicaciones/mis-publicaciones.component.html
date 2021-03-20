@@ -2,16 +2,17 @@
     <div fxLayout ngClass.lt-lg="toolbar-div-lt-md">
         <app-barra-lateral></app-barra-lateral>
     </div>
-
-    <div fxLayout="column" ngClass.gt-md="container-gt-md" ngClass.lt-md="container-lt-md">
-
+    <div fxLayout="column" ngClass.gt-md="container-gt-md mat-elevation-z8" ngClass.lt-md="container-lt-md mat-elevation-z8">
         <div fxLayout="column" style="width: 100%; text-align: center; margin-top: 40px" fxLayoutAlign="center center">
-            <p style="font-size: 25px;margin-bottom: 8px; "> Mis publicaciones <button mat-mini-fab color="primary"
-                    (click)="verificarUsuario()">+</button> </p>
-            <mat-divider fxFlexFill></mat-divider>
+            <p style="font-size: 25px;margin-bottom: 25px; "> Mis publicaciones <button mat-mini-fab color="primary"
+                    (click)="verificarUsuario()" *ngIf="mostrar">+</button> </p>
+            <mat-divider style="width: 100%;"></mat-divider>
         </div>
-
-        <mat-tab-group style="width: 100%;" (selectedTabChange)="cambioTab($event)">
+        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px"  *ngIf="!mostrar" style="margin:50px">
+            <mat-spinner diameter="200" ></mat-spinner>
+            <p>Cargando...</p>
+        </div>
+        <mat-tab-group style="width: 100%;" (selectedTabChange)="cambioTab($event)" *ngIf="mostrar">
             <mat-tab>
                 <div fxHide.lt-lg="true">
                     <ng-template mat-tab-label>

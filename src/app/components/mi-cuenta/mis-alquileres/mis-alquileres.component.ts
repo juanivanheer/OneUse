@@ -33,6 +33,7 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
   arrayEstados = [];
   arrayDevolucionLocatario = [];
   arrayDevolucionPropietario = [];
+  mostrar: boolean = false;
 
   constructor(private _auth: AuthService, private singleton: SingletonService, public dialog: MatDialog) { }
 
@@ -91,6 +92,8 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
             }
             this.hayAlquileresPropios = true;
           })
+
+          this.mostrar = true;
       })
   }
 

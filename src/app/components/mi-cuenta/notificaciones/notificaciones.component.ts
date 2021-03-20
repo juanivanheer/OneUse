@@ -32,6 +32,7 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
   month;
   dt;
   hayDatos: boolean = false;
+  mostrar: boolean = false;
 
   constructor(private singleton: SingletonService, private _auth: AuthService) { }
 
@@ -58,8 +59,10 @@ export class NotificacionesComponent implements OnInit, OnDestroy {
               this.arrayFechas.reverse();
               this.dataSource = new DataTableDataSource(this.paginator, this.sort, this.notificaciones, this.arrayJSON, this.arrayTitulos, this.arrayFechas);
               this.hayDatos = true;
+              this.mostrar = true;
             } else {
               this.hayDatos = false;
+              this.mostrar = true;
             }
 
           }

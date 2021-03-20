@@ -48,6 +48,7 @@ export class PerfilUsuarioComponent implements OnInit {
   public numCodArea: String;
   public maxTelefono: number = 10;
 
+  mostrar: boolean = false;
 
   //Datos del form
   formulario = new FormGroup({
@@ -213,9 +214,8 @@ export class PerfilUsuarioComponent implements OnInit {
               this.urlImagenFacebook = res.removablefile;
             }
           }
-
         }
-
+        this.mostrar = true;
       },
       error => {
         this.openSnackBar(error.error, "Aceptar")

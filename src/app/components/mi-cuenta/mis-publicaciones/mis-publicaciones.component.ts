@@ -24,7 +24,8 @@ export class MisPublicacionesComponent implements OnInit {
   imagenJSON;
   arrayJSON = [];
   arrayImagen = [];
-
+  mostrar: boolean = false;
+  
   ngOnInit() {
 
     /* PARA OBTENER FECHAS EN FORMATO AR
@@ -46,12 +47,13 @@ export class MisPublicacionesComponent implements OnInit {
           this.publicaciones[i].multiplefile = this.arrayJSON;
           this.arrayJSON = [];
         }
-
+        this.mostrar = true;
       },
       res => {
         //console.log(res);
         this.titulo = "No hay publicaciones para mostrar"
         this.hayPublicaciones = false;
+        this.mostrar = false;
       }
     )
 

@@ -2,13 +2,17 @@
     <div fxLayout fxFlexOrder="1" ngClass.lt-lg="toolbar-div-lt-md">
         <app-barra-lateral></app-barra-lateral>
     </div>
-    <div fxLayout="column" fxFlexOrder="2" ngClass.gt-md="container-gt-md" ngClass.lt-md="container-lt-md">
-        <div fxLayout="column" style="width: 100%; text-align: center; margin-top: 40px" fxLayoutAlign="center center">
-            <p style="font-size: 25px;margin-bottom: 8px; "> Mis alquileres</p>
-            <mat-divider fxFlexFill></mat-divider>
+    <div fxLayout="column" fxFlexOrder="2" ngClass.gt-md="container-gt-md mat-elevation-z8"
+        ngClass.lt-md="container-lt-md mat-elevation-z8">
+        <div fxLayout="column" style="width: 100%; text-align: center; margin-top: 40px;" fxLayoutAlign="center center">
+            <p style="font-size: 25px;margin-bottom: 25px;"> Mis alquileres</p>
+            <mat-divider style="width:100%;"></mat-divider>
         </div>
-        <mat-tab-group>
-
+        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px" *ngIf="!mostrar" style="margin:50px">
+            <mat-spinner diameter="200"></mat-spinner>
+            <p>Cargando...</p>
+        </div>
+        <mat-tab-group *ngIf="mostrar">
             <!-- ALQUILERES DE MIS PUBLICACIONES -->
             <mat-tab>
                 <div fxHide.lt-lg="true">
@@ -83,7 +87,6 @@
                                             <mat-icon>more_vert</mat-icon>
                                         </button>
                                         <mat-menu #menu1="matMenu">
-
                                             <button mat-menu-item (click)="openDialogDatosLocatario(datos)">
                                                 <mat-icon>person</mat-icon>
                                                 <span>Datos del locatario</span>
@@ -211,10 +214,6 @@
                                                     *ngIf="!alquilerPropio.codigoPropietarioDevolucionIngresado && alquilerPropio.estado == 'En proceso de devolución'">
                                                     <mat-icon>format_align_justify</mat-icon>
                                                     <span>Ingresar código propietario devolución</span>
-                                                </button>
-                                                <button mat-menu-item *ngIf="alquilerPropio.estado == 'Finalizado'">
-                                                    <mat-icon>star</mat-icon>
-                                                    <span>Puntuar al propietario</span>
                                                 </button>
                                             </mat-menu>
 

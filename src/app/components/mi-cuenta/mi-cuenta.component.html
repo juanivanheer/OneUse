@@ -1,48 +1,6 @@
 <div fxLayout="row" fxFlexFill>
   <div fxLayout fxFlexOrder="1" ngClass.lt-lg="toolbar-div-lt-md">
-    <mat-toolbar>
-      <mat-toolbar-row>
-        <a [routerLink]="['/mi-cuenta']">
-          <!-- [routerLink]="['/perfil']" -->
-          <mat-icon>insert_emoticon</mat-icon><span class="iconitos letritas" fxHide.lt-lg="true">Mi cuenta</span>
-        </a>
-      </mat-toolbar-row>
-
-      <mat-toolbar-row>
-        <a [routerLink]="['/mi-cuenta/notificaciones']">
-          <!-- [routerLink]="['/perfil']" -->
-          <mat-icon>notifications_active</mat-icon><span class="iconitos letritas"
-            fxHide.lt-lg="true">Notificaciones</span>
-        </a>
-      </mat-toolbar-row>
-
-      <mat-toolbar-row>
-        <a [routerLink]="['/mi-cuenta/perfil']">
-          <!-- [routerLink]="['/perfil']" -->
-          <mat-icon>account_circle</mat-icon><span class="iconitos letritas" fxHide.lt-lg="true">Mi perfil</span>
-        </a>
-      </mat-toolbar-row>
-
-      <mat-toolbar-row>
-        <a [routerLink]="['/mi-cuenta/mis-publicaciones']">
-          <!-- [routerLink]="['/mis-publicaciones']" -->
-          <mat-icon>book</mat-icon><span class="iconitos letritas" fxHide.lt-lg="true">Mis publicaciones</span>
-        </a>
-      </mat-toolbar-row>
-
-      <mat-toolbar-row>
-        <a [routerLink]="['/mi-cuenta/mis-alquileres']">
-          <!-- [routerLink]="['mis-alquileres']"  -->
-          <mat-icon>assignment</mat-icon> <span class="iconitos letritas" fxHide.lt-lg="true">Mis alquileres</span>
-        </a>
-      </mat-toolbar-row>
-
-      <mat-toolbar-row>
-        <a fxFlexAlign.lt-lg="flex-end" (click)="cerrarSesion()">
-          <mat-icon>exit_to_app</mat-icon><span class="iconitos letritas" fxHide.lt-lg="true">Salir</span>
-        </a>
-      </mat-toolbar-row>
-    </mat-toolbar>
+    <app-barra-lateral></app-barra-lateral>
   </div>
 
   <div fxLayout="column" fxFlexOrder="2" fxLayoutAlign="start center" fxLayout.lt-lg="column"

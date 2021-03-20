@@ -2,12 +2,18 @@
     <div fxLayout fxFlexOrder="1" ngClass.lt-lg="toolbar-div-lt-md">
         <app-barra-lateral></app-barra-lateral>
     </div>
-    <div fxLayout="column" style="width:100%" fxFlexOrder="2" fxLayoutAlign="center start" fxLayout.lt-lg="column"
-        fxLayoutAlign.lt-lg="center center">
-        <div class="contenedorDeDatos" ngClass.gt-md="tab-gt-md" ngClass.lt-lg="tab-lt-md">
-            <h3>Datos de tu cuenta</h3>
-            <hr>
-            <br>
+    <div fxLayout="column" style="width:100%" fxFlexOrder="2" fxLayoutAlign="center center" fxLayout.lt-lg="column"
+        fxLayoutAlign.lt-lg="center center" ngClass.gt-md="container-gt-md mat-elevation-z8"
+        ngClass.lt-md="container-lt-md mat-elevation-z8">
+        <div fxLayout="column" style="width: 100%; text-align: center; margin-top: 40px;" fxLayoutAlign="center center">
+            <p style="font-size: 25px;margin-bottom: 25px;">Datos de tu cuenta</p>
+            <mat-divider style="width:100%;"></mat-divider>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px" *ngIf="!mostrar" style="margin:40px">
+            <mat-spinner diameter="200"></mat-spinner>
+            <p>Cargando...</p>
+        </div>
+        <div class="contenedorDeDatos" ngClass.gt-md="tab-gt-md" ngClass.lt-lg="tab-lt-md" *ngIf="mostrar">
             <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
                 <!-- #udpdateForm="ngForm" -->
                 <mat-tab-group (selectedTabChange)="cambioTab($event)">
@@ -31,102 +37,116 @@
                         </mat-form-field>
 
                         <mat-form-field>
-                            <input [value]="nombre" formControlName="nombre" name="nombre" matInput
-                                (ngModelChange)="nombre = $event" placeholder="Nombre" soloLetrasDirective>
-                        </mat-form-field>
-
-                        <mat-form-field>
-                            <input [value]="apellido" formControlName="apellido" name="apellido" matInput
-                                (ngModelChange)="apellido = $event" placeholder="Apellido" soloLetrasDirective>
-                        </mat-form-field>
-
-                        <mat-form-field>
                             <input [value]="email" formControlName="email" name="email" matInput placeholder="Email"
                                 (ngModelChange)="email = $event" email disabled="true">
                         </mat-form-field>
-                        <div fxLayout="row" fxLayoutGap="10px">
 
-                            <mat-form-field>
-                                <span matPrefix>+549 &nbsp;</span>
-                                <input matInput #codAreaa maxlength="4" [value]="codArea" soloNumerosDirective
-                                    formControlName="codArea" name="codArea" (ngModelChange)="codArea = $event"
-                                    placeholder="CodArea" style="width: 70px !important;"
-                                    (keyup)="obtenerMaxTelefono($event)">
-                                <mat-hint align="end">{{codAreaa.value.length}} / 4</mat-hint>
+                        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+                            <mat-form-field fxFlex="50%">
+                                <input [value]="nombre" formControlName="nombre" name="nombre" matInput
+                                    (ngModelChange)="nombre = $event" placeholder="Nombre" soloLetrasDirective>
                             </mat-form-field>
 
-                            <mat-form-field>
-                                <input [value]="telefono" formControlName="telefono" name="telefono" matInput
-                                    soloNumerosDirective (ngModelChange)="telefono = $event" placeholder="Teléfono"
-                                    #telefonoo [maxlength]=maxTelefono style="width: 100px !important;">
-                                <mat-hint align="end">{{telefonoo.value.length}} / {{maxTelefono}}</mat-hint>
-                                <mat-icon matSuffix>phone</mat-icon>
+                            <mat-form-field fxFlex="50%">
+                                <input [value]="apellido" formControlName="apellido" name="apellido" matInput
+                                    (ngModelChange)="apellido = $event" placeholder="Apellido" soloLetrasDirective>
                             </mat-form-field>
                         </div>
-                        <mat-form-field>
-                            <input matInput placeholder="Fecha de nacimiento" [matDatepicker]="picker" [max]="maxDate"
-                                (ngModelChange)="fechaNacimiento = $event" ngModel formControlName="fecha_nacimiento"
-                                name="date" [formControl]="date">
-                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-datepicker touchUi #picker disabled="false"></mat-datepicker>
-                            <mat-hint>Debes ser mayor de 18 años</mat-hint>
-                        </mat-form-field>
+
+                        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" fxFlex="50%">
+                                <mat-form-field>
+                                    <span matPrefix>+549 &nbsp;</span>
+                                    <input matInput #codAreaa maxlength="4" [value]="codArea" soloNumerosDirective
+                                        formControlName="codArea" name="codArea" (ngModelChange)="codArea = $event"
+                                        placeholder="CodArea" style="width: 70px !important;"
+                                        (keyup)="obtenerMaxTelefono($event)">
+                                    <mat-hint align="end">{{codAreaa.value.length}} / 4</mat-hint>
+                                </mat-form-field>
+
+                                <mat-form-field style="width: 100%;">
+                                    <input [value]="telefono" formControlName="telefono" name="telefono" matInput
+                                        soloNumerosDirective (ngModelChange)="telefono = $event" placeholder="Teléfono"
+                                        #telefonoo [maxlength]=maxTelefono style="width: 100px !important;">
+                                    <mat-hint align="end">{{telefonoo.value.length}} / {{maxTelefono}}</mat-hint>
+                                    <mat-icon matSuffix>phone</mat-icon>
+                                </mat-form-field>
+                            </div>
+                            <mat-form-field fxFlex="50%">
+                                <input matInput placeholder="Fecha de nacimiento" [matDatepicker]="picker"
+                                    [max]="maxDate" (ngModelChange)="fechaNacimiento = $event" ngModel
+                                    formControlName="fecha_nacimiento" name="date" [formControl]="date">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker touchUi #picker disabled="false"></mat-datepicker>
+                                <mat-hint>Debes ser mayor de 18 años</mat-hint>
+                            </mat-form-field>
+                        </div>
+
                     </mat-tab>
                     <mat-tab>
                         <ng-template mat-tab-label>
                             <mat-icon class="iconitos">home</mat-icon>
-                            Datos de Dirección
+                            Datos de dirección
                         </ng-template>
                         <br>
+                        <div fxLayout="column" fxLayoutGap="60px">
+                            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px" style="width: 100%;">
+                                <mat-form-field fxFlex="50%">
+                                    <mat-select placeholder="Provincia" [value]="provinciaActual"
+                                        (selectionChange)="onSelectionChanged($event)" formControlName="provincia"
+                                        name="provincia">
+                                        <mat-option *ngFor="let provincia of datosProvincias" [value]="provincia.value">
+                                            {{provincia.viewValue}} </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
 
-                        <mat-form-field>
-                            <mat-select placeholder="Provincia" [value]="provinciaActual"
-                                (selectionChange)="onSelectionChanged($event)" formControlName="provincia"
-                                name="provincia">
-                                <mat-option *ngFor="let provincia of datosProvincias" [value]="provincia.value">
-                                    {{provincia.viewValue}} </mat-option>
-                            </mat-select>
-                        </mat-form-field>
+                                <mat-form-field fxFlex="50%">
+                                    <mat-select placeholder="Ciudad" [formControl]="ciudadControl"
+                                        (ngModelChange)="ciudad = $event" name="ciudad">
+                                        <mat-option *ngFor="let ciudad of ciudadesFiltradas" [value]="ciudad.value">
+                                            {{ciudad.viewValue}} </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
 
-                        <mat-form-field>
-                            <mat-select placeholder="Ciudad" [formControl]="ciudadControl"
-                                (ngModelChange)="ciudad = $event" name="ciudad">
-                                <mat-option *ngFor="let ciudad of ciudadesFiltradas" [value]="ciudad.value">
-                                    {{ciudad.viewValue}} </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                        <mat-form-field>
-                            <input matInput placeholder="Barrio" [value]="barrio" formControlName="barrio"
-                                (ngModelChange)="barrio = $event" name="barrio" required soloLetrasDirective>
-                        </mat-form-field>
-                        <div fxLayout="row" fxLayoutGap="40px">
-                            <mat-form-field>
-                                <input matInput placeholder="Calle" [value]="calle" formControlName="calle"
-                                    (ngModelChange)="calle = $event" name="calle" required soloLetrasDirective>
-                            </mat-form-field>
-                            <mat-form-field>
-                                <input matInput type="number" placeholder="Número" [value]="numero"
-                                    formControlName="numero" (ngModelChange)="numero = $event" name="numero" required
-                                    soloNumerosDirective>
-                            </mat-form-field>
-                        </div>
-                        <div fxLayout="row" fxLayoutGap="40px">
-                            <mat-form-field>
-                                <input matInput type="number" placeholder="Piso" [value]="piso" formControlName="piso"
-                                    (ngModelChange)="piso = $event" name="piso" soloNumerosDirective>
-                            </mat-form-field>
-                            <mat-form-field>
-                                <input matInput placeholder="Departamento" [value]="departamento"
-                                    formControlName="departamento" (ngModelChange)="departamento = $event"
-                                    name="departamento" soloLetrasDirective>
-                            </mat-form-field>
-                        </div>
-                        <div fxLayout="row" fxLayoutGap="40px">
-                            <mat-form-field>
-                                <input matInput type="number" placeholder="Código Postal" [value]="codigoPostal"
-                                    formControlName="codigoPostal" (ngModelChange)="codigoPostal = $event"
-                                    name="codigoPostal" required soloNumerosDirective>
-                            </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="40px">
+                                <mat-form-field fxFlex="33%">
+                                    <input matInput placeholder="Barrio" [value]="barrio" formControlName="barrio"
+                                        (ngModelChange)="barrio = $event" name="barrio" required soloLetrasDirective>
+                                </mat-form-field>
+
+                                <mat-form-field fxFlex="33%">
+                                    <input matInput placeholder="Calle" [value]="calle" formControlName="calle"
+                                        (ngModelChange)="calle = $event" name="calle" required soloLetrasDirective>
+                                </mat-form-field>
+
+                                <mat-form-field fxFlex="33%">
+                                    <input matInput type="number" placeholder="Número" [value]="numero"
+                                        formControlName="numero" (ngModelChange)="numero = $event" name="numero"
+                                        required soloNumerosDirective>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="40px">
+                                <mat-form-field fxFlex="33%">
+                                    <input matInput type="number" placeholder="Piso" [value]="piso"
+                                        formControlName="piso" (ngModelChange)="piso = $event" name="piso"
+                                        soloNumerosDirective>
+                                </mat-form-field>
+
+                                <mat-form-field fxFlex="33%">
+                                    <input matInput placeholder="Departamento" [value]="departamento"
+                                        formControlName="departamento" (ngModelChange)="departamento = $event"
+                                        name="departamento" soloLetrasDirective>
+                                </mat-form-field>
+
+                                <mat-form-field fxFlex="33%">
+                                    <input matInput type="number" placeholder="Código Postal" [value]="codigoPostal"
+                                        formControlName="codigoPostal" (ngModelChange)="codigoPostal = $event"
+                                        name="codigoPostal" required soloNumerosDirective>
+                                </mat-form-field>
+                            </div>
                         </div>
                     </mat-tab>
                     <mat-tab>
@@ -135,7 +155,7 @@
                             Imágen personal
                         </ng-template>
                         <br>
-                        <div fxLayout="column">
+                        <div fxLayout="column" fxLayoutAlign="center center">
                             <div fxFlexFill>
                                 <mat-form-field>
                                     <ngx-mat-file-input type="file" #removableInput formControlName="removableFile"
@@ -157,8 +177,8 @@
                                     <mat-icon *ngIf="!tieneImagen" class="previsualizacion-icon ">face</mat-icon>
                                     <!-- <img *ngIf="tieneImagen" class="previsualizacion"
                                         src="{{'http://localhost:4201/api/get-image/'+_id}}"> -->
-                                    <img *ngIf="tieneImagen && !imagenGoogle && !imagenFacebook" class="previsualizacion"
-                                        src="{{'http://localhost:4201/api/get-image/'+_id}}">
+                                    <img *ngIf="tieneImagen && !imagenGoogle && !imagenFacebook"
+                                        class="previsualizacion" src="{{'http://localhost:4201/api/get-image/'+_id}}">
                                     <img *ngIf="imagenGoogle" class="previsualizacion" src="{{urlImagenGoogle}}">
                                     <img *ngIf="imagenFacebook" class="previsualizacion" src="{{urlImagenFacebook}}">
                                 </div>
@@ -177,19 +197,20 @@
                 </mat-tab-group>
             </form>
         </div>
-        <div fxLayout="row" fxFlexOrder="3" style="width:100%" fxLayoutAlign="center start" fxShow.lt-lg="true"
-            fxHide.gt-md="true">
+        <div fxLayout="row" fxFlexOrder="3" style="width:100%" fxLayoutAlign="center center" fxShow.lt-lg="true"
+            fxHide.gt-md="true" *ngIf="mostrar">
             <div style="padding-bottom: 15px; padding-top: 20px;">
+                <button (click)="onSubmit()" mat-raised-button color="primary">Guardar datos</button>
+            </div>
+        </div>
+        <div fxLayout="column" style="width:100%; margin-left: 35px" fxFlexOrder="3" fxLayoutAlign="center center"
+            fxShow.gt-md="true" fxHide.lt-lg="true" *ngIf="mostrar">
+            <div style="padding-left: 35px; padding-bottom: 15px">
                 <button (click)="onSubmit()" mat-raised-button color="primary">Guardar datos</button>
             </div>
         </div>
     </div>
 
-    <div fxLayout="column" style="width:100%; margin-left: 35px" fxFlexOrder="3" fxLayoutAlign="end start"
-        fxShow.gt-md="true" fxHide.lt-lg="true">
-        <div style="padding-left: 35px; padding-bottom: 15px">
-            <button (click)="onSubmit()" mat-raised-button color="primary">Guardar datos</button>
-        </div>
-    </div>
+
 
 </div>
