@@ -1,0 +1,40 @@
+<section fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="15px">
+    <div>
+        <h3 *ngIf="data.tipo == 'locatario-locador'">Puntuación del locatario</h3>
+        <h3 *ngIf="data.tipo == 'locador-locatario'">Puntuación del propietario</h3>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center center">
+        <!--Estrellas-->
+        <button mat-icon-button>
+            <mat-icon style="color:black" *ngIf="!seleccion1">star</mat-icon>
+            <mat-icon style="color: gold;" *ngIf="seleccion1">star</mat-icon>
+        </button>
+        <button mat-icon-button>
+            <mat-icon style="color:black" *ngIf="!seleccion2">star</mat-icon>
+            <mat-icon style="color: gold;" *ngIf="seleccion2">star</mat-icon>
+        </button>
+        <button mat-icon-button>
+            <mat-icon style="color:black" *ngIf="!seleccion3">star</mat-icon>
+            <mat-icon style="color: gold;" *ngIf="seleccion3">star</mat-icon>
+        </button>
+        <button mat-icon-button>
+            <mat-icon style="color:black" *ngIf="!seleccion4">star</mat-icon>
+            <mat-icon style="color: gold;" *ngIf="seleccion4">star</mat-icon>
+        </button>
+        <button mat-icon-button>
+            <mat-icon style="color:black" *ngIf="!seleccion5">star</mat-icon>
+            <mat-icon style="color: gold;" *ngIf="seleccion5">star</mat-icon>
+        </button>
+    </div>
+    <div>
+        <p *ngIf="data.tipo == 'locador-locatario'">El comentario que estableció el propietario es el siguiente: </p>
+        <p *ngIf="data.tipo == 'locatario-locador'">El comentario que estableció el locatario es el siguiente: </p>
+        <br>
+        <mat-form-field>
+            <textarea matInput placeholder="Comentario" [value]="comentario" disabled></textarea>
+        </mat-form-field>
+    </div>
+    <div>
+        <button mat-raised-button color="primary" (click)="close()">Aceptar</button>
+    </div>
+</section>

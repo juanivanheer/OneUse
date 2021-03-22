@@ -17,26 +17,6 @@
     padding-top: 10px
 }
 
-.example-card {
-    max-width: 400px;
-    margin-bottom: 15px
-}
-
-.contenedor-imagenes {
-    width: 100%;
-}
-
-.contenedor-imagen-final {
-    list-style: none;
-    display: block;
-    float: left;
-    width: 30%;
-    text-align: center;
-    margin-left: 15px;
-    margin-right: 15px;
-    margin-top: 10px;
-}
-
 .container-muestra-imagenes {
     width: 248px;
     height: 250px;
@@ -54,13 +34,6 @@
 
 .mat-tab-labels {
     justify-content: center !important
-}
-
-.letritas{
-    font-size: 14px;
-    line-height: 1em;
-    width: 100%;
-    cursor: pointer;
 }
 
 .iconitos {
@@ -153,10 +126,6 @@ mat-toolbar {
     width: 150px;
 }
 
-.contenedorAlquiler {
-    margin-bottom: 25px;
-}
-
 .info {
     margin-left: 15px;
 }
@@ -165,17 +134,35 @@ mat-toolbar {
     margin-left: 150px;
 }
 
-.boton {
-    margin-left: 15px;
-    margin-top: 10px;
-}
-
 p {
     font-size: 18px;
 }
 
-.contenedor-gral {
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-top: 10px;
+::ng-deep .mat-horizontal-stepper-header {
+    pointer-events: none !important;
+}
+
+.contenedor-individual {
+    background: #ffffff;
+    margin: 20px;
+    height: 350px;
+}
+
+.items {
+    padding-left: 0;
+    list-style: none;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.item{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.titulo_alquiler {
+    cursor: pointer;
+    color: #3f51b5;
+    font-weight: 405;
+    text-transform: uppercase;
 }

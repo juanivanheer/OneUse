@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
 import { SingletonService } from '../../singleton.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
@@ -12,6 +12,9 @@ import { PuntuacionComponent } from './puntuacion-dialog/puntuacion-dialog.compo
 import { CancelarDialogComponent } from './cancelar-dialog/cancelar-dialog.component'
 import { Subscription } from 'rxjs';
 import { BarraLateralComponent } from '../barra-lateral/barra-lateral.component'
+import { MatStepper } from '@angular/material/stepper';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { PuntuacionObtenidaDialogComponent } from './puntuacion-obtenida-dialog/puntuacion-obtenida-dialog.component';
 
 @Component({
   selector: 'app-mis-alquileres',
@@ -26,6 +29,8 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
   arrayAlquilerPropietario = [];
   arrayDatosPropietario = [];
   arrayAlquilerPropios = [];
+  arrayPublicacionesAlquileresPropios = [];
+  arrayPublicacionesAlquileresPropietarios = []
   arrayDatosPropios = [];
   hayAlquileresPropietario = false;
   hayAlquileresPropios = false;
@@ -34,8 +39,16 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
   arrayDevolucionLocatario = [];
   arrayDevolucionPropietario = [];
   mostrar: boolean = false;
+  array_estados = [];
+  arrayTitulosPublicacionesPropios = [];
+  arrayTitulosPublicacionesPropietario = []
 
-  constructor(private _auth: AuthService, private singleton: SingletonService, public dialog: MatDialog) { }
+  array_propietario_lleno: boolean = false;
+  array_propio_lleno: boolean = false;
+
+  constructor(private _auth: AuthService, private singleton: SingletonService, public dialog: MatDialog, private _snackBar: MatSnackBar) { }
+
+  @ViewChild("stepper", { static: false }) stepper: MatStepper;
 
   ngOnInit() {
     this.arrayAlquilerPropietario = []
@@ -52,11 +65,18 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
               for (let i = 0; i < this.arrayAlquilerPropietario.length; i++) {
                 var date = new Date(res1.alquiler[i].createdAt).toLocaleDateString();
                 this.arrayAlquilerPropietario[i].createdAt = date;
-                if (this.arrayAlquilerPropietario[i].estado != "Cancelado")
+                if (this.arrayAlquilerPropietario[i].estado != "Cancelado") {
                   this.arrayDatosPropietario.push(this.arrayAlquilerPropietario[i])
+                }
+                this._auth.get_publicacion_id(res1.alquiler[i].id_publicacion).subscribe(
+                  res2 => {
+                    this.arrayPublicacionesAlquileresPropietarios.push(res2.publicaciones);
+                  }
+                )
               }
               this.hayAlquileresPropietario = true;
-            }
+            } else this.hayAlquileresPropietario = false; this.array_propietario_lleno = true;
+            this.array_propietario_lleno = true;
           })
 
         //Suscripción que obtiene los alquileres realizados por el usuario logueado a publicaciones de otros usuarios
@@ -65,36 +85,48 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
             var fechaActual = new Date();
             this.arrayAlquilerPropios = res1.alquiler;
 
-            for (let i = 0; i < this.arrayAlquilerPropios.length; i++) {
-              this._auth.get_publicacion_id(res1.alquiler[i].id_publicacion).subscribe(
-                res2 => {
-                  let fechaCaducidad = new Date(res1.alquiler[i].fechaCaducidadEntrega);
-                  let fechaCaducidadDev = new Date(res1.alquiler[i].fechaCaducidadDevolucion);
+            if (res1.alquiler.length > 0) {
+              for (let i = 0; i < this.arrayAlquilerPropios.length; i++) {
+                this._auth.get_publicacion_id(res1.alquiler[i].id_publicacion).subscribe(
+                  res2 => {
+                    let fechaCaducidad = new Date(res1.alquiler[i].fechaCaducidadEntrega);
+                    let fechaCaducidadDev = new Date(res1.alquiler[i].fechaCaducidadDevolucion);
 
-                  // Ayuda a que se muestren los botones de "Reclamar"
-                  if ((res1.alquiler[i].estado == "En proceso de entrega" && res2.publicaciones.tipoAlquiler == "AlquilerConIntervencion") ||
-                    (res1.alquiler[i].estado == "En proceso de devolución" && res2.publicaciones.tipoAlquiler == "AlquilerConIntervencion")) {
-                    if (fechaActual > fechaCaducidad || fechaActual > fechaCaducidadDev) {
-                      this.arrayEstados.push(true);
+                    this.arrayPublicacionesAlquileresPropios.push(res2.publicaciones);
+
+                    // Ayuda a que se muestren los botones de "Reclamar"
+                    if ((res1.alquiler[i].estado == "En proceso de entrega" && res2.publicaciones.tipoAlquiler == "AlquilerConIntervencion") ||
+                      (res1.alquiler[i].estado == "En proceso de devolución" && res2.publicaciones.tipoAlquiler == "AlquilerConIntervencion")) {
+                      if (fechaActual > fechaCaducidad || fechaActual > fechaCaducidadDev) {
+                        this.arrayEstados.push(true);
+                      } else {
+                        this.arrayEstados.push(false);
+                      }
                     } else {
                       this.arrayEstados.push(false);
                     }
-                  } else {
-                    this.arrayEstados.push(false);
-                  }
+                    this.hayAlquileresPropios = true;
+                  })
 
-                })
-
-              var date = new Date(res1.alquiler[i].createdAt).toLocaleDateString();
-              this.arrayAlquilerPropios[i].createdAt = date;
-              if (this.arrayAlquilerPropios[i].estado != "Cancelado")
-                this.arrayDatosPropios.push(this.arrayAlquilerPropios[i])
-            }
-            this.hayAlquileresPropios = true;
+                var date = new Date(res1.alquiler[i].createdAt).toLocaleDateString();
+                this.arrayAlquilerPropios[i].createdAt = date;
+                if (this.arrayAlquilerPropios[i].estado != "Cancelado") this.arrayDatosPropios.push(this.arrayAlquilerPropios[i])
+              }
+            } else this.hayAlquileresPropios = false; this.array_propio_lleno = true;
           })
+      });
 
-          this.mostrar = true;
-      })
+    setInterval(() => {
+      if (this.hayAlquileresPropios == true && this.arrayPublicacionesAlquileresPropios[(this.arrayAlquilerPropios.length - 1)] != undefined) this.array_propio_lleno = true;
+      else if (this.hayAlquileresPropios = false && this.arrayPublicacionesAlquileresPropios[(this.arrayAlquilerPropios.length - 1)] == undefined) this.mostrar = true;
+      //if (this.hayAlquileresPropietario == true && this.arrayPublicacionesAlquileresPropietarios[(this.arrayAlquilerPropietario.length - 1)] != undefined) this.array_propietario_lleno = true;
+      
+      if (this.array_propio_lleno != false && this.array_propietario_lleno != false) {
+        this.checkTitulosPublicacionesPropios();
+        this.checkTitulosPublicacionesPropietarios();
+        this.mostrar = true;
+      } else this.mostrar = false;
+    }, 500)
   }
 
   ngAfterViewInit() {
@@ -121,6 +153,94 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
         }
       }
     }, 2000);
+  }
+
+
+  checkTitulosPublicacionesPropios() {
+    if (this.arrayTitulosPublicacionesPropios.length == 0) {
+      if (this.arrayAlquilerPropios.length > 0) {
+        for (let i = 0; i < this.arrayAlquilerPropios.length; i++) {
+          const alquiler = this.arrayAlquilerPropios[i];
+          for (let j = 0; j < this.arrayPublicacionesAlquileresPropios.length; j++) {
+            const publicacion = this.arrayPublicacionesAlquileresPropios[j];
+            if (alquiler.id_publicacion == publicacion._id) {
+              this.arrayTitulosPublicacionesPropios.push(publicacion);
+              j = this.arrayPublicacionesAlquileresPropios.length + 1
+            }
+          }
+        }
+      }
+    }
+  }
+
+  checkTitulosPublicacionesPropietarios() {
+    if (this.arrayTitulosPublicacionesPropietario.length == 0) {
+      if (this.arrayAlquilerPropietario.length > 0) {
+        for (let i = 0; i < this.arrayAlquilerPropietario.length; i++) {
+          const alquiler = this.arrayAlquilerPropietario[i];
+          for (let j = 0; j < this.arrayPublicacionesAlquileresPropios.length; j++) {
+            const publicacion = this.arrayPublicacionesAlquileresPropios[j];
+            if (alquiler.id_publicacion == publicacion._id) {
+              this.arrayTitulosPublicacionesPropietario.push(publicacion);
+              j = this.arrayPublicacionesAlquileresPropios.length + 1
+            }
+          }
+        }
+      }
+    }
+  }
+
+  estaCompleto(alquiler, n_step, stepper) {
+    if (alquiler.estado == "En proceso de pago") {
+      if (stepper != undefined) {
+        stepper.selectedIndex = 0;
+      }
+      if (n_step == 0) return true;
+      if (n_step == 1) return false;
+      if (n_step == 2) return false;
+      if (n_step == 3) return false;
+      if (n_step == 4) return false;
+    }
+    if (alquiler.estado == "En proceso de entrega") {
+      if (stepper != undefined) {
+        stepper.selectedIndex = 1;
+      }
+      if (n_step == 0) return true;
+      if (n_step == 1) return true;
+      if (n_step == 2) return false;
+      if (n_step == 3) return false;
+      if (n_step == 4) return false;
+    }
+    if (alquiler.estado == "En proceso de devolución") {
+      if (stepper != undefined) {
+        stepper.selectedIndex = 2;
+      }
+      if (n_step == 0) return true;
+      if (n_step == 1) return true;
+      if (n_step == 2) return true;
+      if (n_step == 3) return false;
+      if (n_step == 4) return false;
+    }
+    if (alquiler.estado == "En proceso de puntuación") {
+      if (stepper != undefined) {
+        stepper.selectedIndex = 3;
+      }
+      if (n_step == 0) return true;
+      if (n_step == 1) return true;
+      if (n_step == 2) return true;
+      if (n_step == 3) return true;
+      if (n_step == 4) return false;
+    }
+    if (alquiler.estado == "Finalizado") {
+      if (stepper != undefined) {
+        stepper.selectedIndex = 4;
+      }
+      if (n_step == 0) return true;
+      if (n_step == 1) return true;
+      if (n_step == 2) return true;
+      if (n_step == 3) return true;
+      if (n_step == 4) return true;
+    }
   }
 
   pre_reclamo(datos) {
@@ -156,6 +276,7 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
   codigoDevolucionLocatarioDialogRef: MatDialogRef<CodigoDevolucionLocatarioDialogComponent>;
   cancelarDialogRef: MatDialogRef<CancelarDialogComponent>;
   puntuacion: MatDialogRef<PuntuacionComponent>;
+  puntuacionObtenida: MatDialogRef<PuntuacionObtenidaDialogComponent>;
 
   openDialogDatosPropietario(alquiler): void {
     this.datosPropietarioDialogRef = this.dialog.open(DatosPropietarioDialogComponent,
@@ -200,6 +321,10 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
           alquiler: alquiler
         }
       });
+
+    this.codigoDevolucionPropietarioDialogRef.afterClosed().subscribe(() => {
+      window.location.assign("/mi-cuenta/mis-alquileres")
+    });
   }
 
   openDialogCodigoLocatarioDevolucion(alquiler): void {
@@ -233,6 +358,32 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
         window.location.assign("mi-cuenta/mis-alquileres")
       }
     )
+  }
+
+  openDialogPuntuacionObtenida(alquiler, tipo): void {
+    this.puntuacionObtenida = this.dialog.open(PuntuacionObtenidaDialogComponent, { data: { alquiler: alquiler, tipo: tipo }, });
+  }
+
+  copiar(val) {
+    const selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = val;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+    this.openSnackBar("¡Código copiado al portapapeles!", "OK")
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 8000,
+      panelClass: ['color-snackbar']
+    });
   }
 
 }

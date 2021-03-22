@@ -1,11 +1,16 @@
 <div fxLayout="row" fxFlexFill>
-    <div fxLayout fxFlexOrder="1" ngClass.lt-lg="toolbar-div-lt-md">
+    <div fxLayout fxFlexOrder="1" ngClass.lt-lg="container-muestra-imagenes">
         <app-barra-lateral></app-barra-lateral>
     </div>
     <div fxLayout="column" fxFlexOrder="2" ngClass.gt-md="container-gt-md mat-elevation-z8"
         ngClass.lt-md="container-lt-md mat-elevation-z8">
         <div fxLayout="column" style="width: 100%; text-align: center; margin-top: 40px;" fxLayoutAlign="center center">
-            <p style="font-size: 25px;margin-bottom: 25px;"> Mis alquileres</p>
+            <div fxLayout="row" fxLayoutAlign="center center" style="margin-bottom: 25px;">
+                <p style="font-size: 25px"> Mis alquileres</p>
+                <button mat-button (click)="ngOnInit()">
+                    <mat-icon>update</mat-icon>
+                </button>
+            </div>
             <mat-divider style="width:100%;"></mat-divider>
         </div>
         <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px" *ngIf="!mostrar" style="margin:50px">
@@ -18,99 +23,321 @@
                 <div fxHide.lt-lg="true">
                     <ng-template mat-tab-label>
                         <mat-icon class="iconitos">bookmark_add</mat-icon>
-                        De mis publicaciones
+                        Publicados
                     </ng-template>
                 </div>
-                <div *ngIf="!hayAlquileresPropietario" style="text-align: center; margin-top: 100px;overflow: hidden;">
+                <div style="text-align: center; margin-top: 100px;overflow: hidden;" *ngIf="!hayAlquileresPropietario">
                     <h3>No hay alquileres por mostrar</h3>
                 </div>
-                <div class="mat-elevation-z4 contenedor-gral" *ngIf="hayAlquileresPropietario">
-                    <br>
-                    <div class="contenedorAlquiler" *ngFor="let datos of arrayDatosPropietario; let indice = index">
-                        <mat-list role="list">
-                            <mat-list-item role="listitem">
-                                <div fxLayout="row" fxFlexFill>
-                                    <div fxLayoutAlign="center" fxFlex="500">
-                                        <img class="imagen"
-                                            src="{{'http://localhost:4201/api/get-image-publicacion/'+ datos.imagen}}">
-                                        <!-- <img class="imagen"
-                                                src="{{'https://oneuse-backend.herokuapp.com/api/get-image-publicacion/'+ datos.imagen}}"> -->
-                                    </div>
+                <div *ngFor="let alquilerPropietario of arrayDatosPropietario; let indice = index">
+                    <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px"
+                        class="mat-elevation-z8 contenedor-individual" *ngIf="hayAlquileresPropietario">
+                        <div *ngIf="
+                        array_propio_lleno != false && array_propietario_lleno != false">
+                            <a routerLink="/publicaciones/{{arrayPublicacionesAlquileresPropietarios[indice]._id}}"
+                                class="titulo_alquiler" target="_blank">
+                                {{arrayPublicacionesAlquileresPropietarios[indice].titulo}} </a>
+                        </div>
+                        <mat-divider style="width: 100%;"></mat-divider>
+                        <div fxLayout="column" fxLayoutAlign="center center">
+                            <div fxLayout="row" fxLayoutAlign="center center">
+                                <a id="titulo" fxLayout="column" fxLayoutAlign="center center"
+                                    routerLink="/publicaciones/{{arrayPublicacionesAlquileresPropietarios[indice]._id}}"
+                                    style="cursor: pointer;" matTooltip="Ir a la publicación" matTooltipPosition="after"
+                                    target="_blank">
+                                    <img class="imagen"
+                                        src="{{'http://localhost:4201/api/get-image-publicacion/'+ alquilerPropietario.imagen}}">
+                                </a>
+                                <div>
+                                    <mat-horizontal-stepper #stepper [disableRipple]="true" labelPosition="bottom">
 
-                                    <div class="info" fxLayout="column" fxFlex="300" fxLayoutAlign="center">
-                                        <p mat-line><b> Persona que alquiló: </b>{{datos.name_usuarioLocatario}}</p>
-                                        <p mat-line><b> Fecha de generación: </b>{{datos.createdAt}}</p>
-                                        <p mat-line><b> Cantidad de días alquiler: </b>{{datos.cantidadDias}} </p>
-                                        <p mat-line><b> Estado del Alquiler: </b>{{datos.estado}} </p>
-                                        <p mat-line *ngIf="datos.fuePagado && !datos.codigoPropietarioIngresado">
-                                            <b> Código entrega propietario: </b>{{datos.codigoEntregaPropietario}}
-                                        </p>
-                                        <p mat-line *ngIf="datos.estado == 'En proceso de devolución'">
-                                            <b> Código devolución propietario: </b>{{datos.codigoDevolucionPropietario}}
-                                        </p>
-                                        <p mat-line *ngIf="datos.fuePagado && datos.codigoLocatarioIngresado">
-                                            <b> Fecha de devolución: </b>{{datos.fechaCaducidadDevolucion}}
-                                        </p>
-                                    </div>
-                                    <div class="info2" fxLayout="row" fxFlex="400" fxLayoutAlign="center center"
-                                        fxLayoutGap="10px" *ngIf="!datos.fuePagado">
-                                        <p><b>Esperando aceptación del pago</b></p>
+                                        <!-- EN PROCESO DE PAGO -->
+                                        <mat-step [editable]="false"
+                                            [completed]="estaCompleto(alquilerPropietario,0,stepper)">
+                                            <ng-template matStepLabel>En proceso de pago</ng-template>
+                                            <ul class="items">
+                                                <li>
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon style="margin-right: 10px !important;">query_builder
+                                                        </mat-icon>
+                                                        <span style="margin-right: 5px !important;">Debes esperar a que
+                                                            el locatario termine de realizar el pago del alquiler</span>
+                                                    </p>
+                                                </li>
+                                            </ul>
+                                        </mat-step>
 
-                                        <button mat-raised-button (click)="openDialogCancelar(datos)" color="warn">
+                                        <!-- EN PROCESO DE ENTREGA -->
+                                        <mat-step [editable]="false" [completed]="estaCompleto(alquilerPropietario,1)">
+                                            <ng-template matStepLabel>En proceso de entrega</ng-template>
+                                            <ul class="items">
+                                                <li class="item">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon style="color:green;">
+                                                            verified</mat-icon>
+                                                        <span style="margin-right: 5px !important;">¡El pago del
+                                                            alquiler fue aprobado!</span>
+                                                    </p>
+                                                </li>
+                                                <li class="item"
+                                                    *ngIf="!alquilerPropietario.codigoPropietarioIngresado">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon>query_builder
+                                                        </mat-icon>
+                                                        <span style="margin-right: 5px !important;">Entrega tu código de
+                                                            propietario al locatario del producto:<b>
+                                                                {{alquilerPropietario.codigoEntregaPropietario}}</b></span>
+                                                        <a matTooltip="Copiar al portapapeles"
+                                                            matTooltipPosition="right">
+                                                            <mat-icon style="cursor: pointer; font-size: 18px;"
+                                                                (click)="copiar(alquilerPropietario.codigoEntregaPropietario)">
+                                                                content_copy</mat-icon>
+                                                        </a>
+                                                    </p>
+                                                </li>
+                                                <li class="item"
+                                                    *ngIf="!alquilerPropietario.codigoPropietarioIngresado">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon style="color: red;">
+                                                            warning</mat-icon>
+                                                        <span style="margin-right: 5px !important;">Entrega este código
+                                                            solamente si te encuentras en contacto con el
+                                                            locatario.</span>
+                                                    </p>
+                                                </li>
+                                                <li class=" item"
+                                                    *ngIf="alquilerPropietario.codigoPropietarioIngresado">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon style="color:green;">verified </mat-icon>
+                                                        <span style="margin-right: 5px !important;">¡El código
+                                                            del
+                                                            propietario fue ingresado
+                                                            correctamente!</span>
+                                                    </p>
+                                                </li>
+                                                <li class="item"
+                                                    *ngIf="!alquilerPropietario.codigoLocatarioIngresado && alquilerPropietario.codigoPropietarioIngresado">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon>query_builder
+                                                        </mat-icon>
+                                                        <span style="margin-right: 5px !important;">Ingresa el código
+                                                            del locatario con la opción "Ingresar código entrega
+                                                            locatario" ubicada en el menú Acción</span>
+                                                    </p>
+                                                </li>
+
+                                            </ul>
+                                        </mat-step>
+
+                                        <!-- EN PROCESO DE DEVOLUCIÓN -->
+                                        <mat-step [editable]="false" [completed]="estaCompleto(alquilerPropietario,2)">
+                                            <ng-template matStepLabel>En proceso de devolución</ng-template>
+                                            <ul class="items">
+                                                <li class="item">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon> calendar_today</mat-icon>
+                                                        <span style="margin-right: 5px !important;">La fecha de
+                                                            devolución del objeto es:
+                                                            {{alquilerPropietario.fechaCaducidadEntrega}}. El locatario
+                                                            puede devolverlo antes de la fecha estipulada, pero debe
+                                                            estar en contacto contigo.</span>
+                                                    </p>
+                                                </li>
+                                                <li class="item">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon style="color:green;">
+                                                            verified</mat-icon>
+                                                        <span style="margin-right: 5px !important;">¡Los códigos de
+                                                            entrega fueron ingresados correctamente!</span>
+                                                    </p>
+                                                </li>
+                                                <li class="item"
+                                                    *ngIf="!alquilerPropietario.codigoPropietarioDevolucionIngresado">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon>
+                                                            query_builder</mat-icon>
+                                                        <span style="margin-right: 5px !important;">Entrega tu código de
+                                                            propietario al locatario:
+                                                            {{alquilerPropietario.codigoDevolucionPropietario}} </span>
+                                                        <a matTooltip="Copiar al portapapeles"
+                                                            matTooltipPosition="right">
+                                                            <mat-icon style="cursor: pointer; font-size: 18px;"
+                                                                (click)="copiar(alquilerPropietario.codigoDevolucionLocatario)">
+                                                                content_copy</mat-icon>
+                                                        </a>
+                                                    </p>
+                                                </li>
+                                                <li class="item"
+                                                    *ngIf="!alquilerPropietario.codigoPropietarioDevolucionIngresado">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon style="color: red;">
+                                                            warning</mat-icon>
+                                                        <span style="margin-right: 5px !important;">Entrega este código
+                                                            solamente si te encuentras en contacto con el
+                                                            propietario.</span>
+                                                    </p>
+                                                </li>
+                                                <li class="item"
+                                                    *ngIf="alquilerPropietario.codigoPropietarioDevolucionIngresado && !alquilerPropietario.codigoLocatarioDevolucionIngresado">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon style="color:green;">
+                                                            verified</mat-icon>
+                                                        <span style="margin-right: 5px !important;">¡El código del
+                                                            propietario fue ingresado correctamente!</span>
+                                                    </p>
+                                                </li>
+                                                <li class="item"
+                                                    *ngIf="alquilerPropietario.codigoPropietarioDevolucionIngresado && !alquilerPropietario.codigoLocatarioDevolucionIngresado">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon> query_builder</mat-icon>
+                                                        <span style="margin-right: 5px !important;">Ingresa el código
+                                                            del locatario con la opción "Ingresar código locatario
+                                                            devolución" en el menú Acción</span>
+                                                    </p>
+                                                </li>
+
+                                            </ul>
+                                        </mat-step>
+
+                                        <!-- EN PROCESO DE PUNTUACIÓN -->
+                                        <mat-step [editable]="false" [completed]="estaCompleto(alquilerPropietario,3)">
+                                            <ng-template matStepLabel>En proceso de puntuación</ng-template>
+                                            <ul class="items">
+                                                <li class="item">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon style="color:green;">
+                                                            verified</mat-icon>
+                                                        <span style="margin-right: 5px !important;">¡Los códigos de
+                                                            devolución fueron ingresados correctamente!</span>
+                                                    </p>
+                                                </li>
+                                                <li class="item"
+                                                    *ngIf="!alquilerPropietario.puntuacion_propietario_al_locatario_ingresada">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon> calendar_today</mat-icon>
+                                                        <span style="margin-right: 5px !important;">¡Es momento de
+                                                            puntuar al dueño del objeto! Ve al menú Acción y expresa tu
+                                                            experiencia obtenida en el transcurso del alquiler.</span>
+                                                    </p>
+                                                </li>
+                                                <li class="item"
+                                                    *ngIf="alquilerPropietario.estado == 'En proceso de puntuación' && alquilerPropietario.puntuacion_propietario_al_locatario_ingresada">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon style="color:green;">
+                                                            verified</mat-icon>
+                                                        <span style="margin-right: 5px !important;">¡Tu puntuación y
+                                                            comentario fueron correctamente ingresados! ¡Muchas
+                                                            gracias!</span>
+                                                    </p>
+                                                </li>
+                                                <li class="item"
+                                                    *ngIf="alquilerPropietario.estado == 'En proceso de puntuación' && alquilerPropietario.puntuacion_propietario_al_locatario_ingresada && !alquilerPropietario.puntuacion_locatario_al_propietario_ingresada">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon>calendar_today</mat-icon>
+                                                        <span style="margin-right: 5px !important;">Esperando a que el
+                                                            locatario realice la puntuación del alquiler.</span>
+                                                    </p>
+                                                </li>
+                                            </ul>
+                                        </mat-step>
+
+                                        <!-- FINALIZADO -->
+                                        <mat-step [editable]="false" [completed]="estaCompleto(alquilerPropietario,4)">
+                                            <ng-template matStepLabel>Finalizado</ng-template>
+                                            <ul class="items">
+                                                <li class="item">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon style="color:green;">
+                                                            verified</mat-icon>
+                                                        <span style="margin-right: 5px !important;">¡El proceso de
+                                                            alquiler ha finalizado! ¡Muchas gracias por utilizar
+                                                            nuestros servicios!</span>
+                                                    </p>
+                                                </li>
+                                                <li class="item">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon>
+                                                            question_answer</mat-icon>
+                                                        <span style="margin-right: 5px !important;">Puedes conocer la
+                                                            puntuación y comentario del locatario en el menú
+                                                            Acción.</span>
+                                                    </p>
+                                                </li>
+                                            </ul>
+                                        </mat-step>
+                                    </mat-horizontal-stepper>
+                                </div>
+
+                                <div>
+                                    <button style="background: gainsboro" fxLayout="row" fxLayoutAlign="center center"
+                                        mat-raised-button [matMenuTriggerFor]="menu" matTooltip="Menú del alquiler"
+                                        matTooltipPosition="below">
+                                        <mat-icon>settings</mat-icon> Acción
+                                    </button>
+                                    <mat-menu #menu="matMenu">
+                                        <button mat-menu-item (click)="openDialogDatosPropietario(alquilerPropietario)">
+                                            <mat-icon>person</mat-icon>
+                                            <span> Datos del propietario</span>
+                                        </button>
+                                        <button *ngIf="alquilerPropietario.estado == 'En proceso de entrega'"
+                                            mat-menu-item routerLink="/reclamar-alquiler">
+                                            <mat-icon>cancel</mat-icon>
+                                            <span> Reclamar alquiler</span>
+                                        </button>
+                                        <button *ngIf="alquilerPropietario.estado == 'En proceso de devolución'"
+                                            mat-menu-item routerLink="/reclamar-alquiler">
+                                            <mat-icon>cancel</mat-icon>
+                                            <span> Reclamar alquiler</span>
+                                        </button>
+                                        <button mat-menu-item (click)="openDialogCodigoLocatario(alquilerPropietario)"
+                                            *ngIf="alquilerPropietario.codigoPropietarioIngresado && !alquilerPropietario.codigoLocatarioIngresado">
+                                            <mat-icon>format_align_justify</mat-icon>
+                                            <span> Ingresar código locatario</span>
+                                        </button>
+                                        <button mat-menu-item
+                                            (click)="openDialogCodigoLocatarioDevolucion(alquilerPropietario)"
+                                            *ngIf="alquilerPropietario.codigoPropietarioDevolucionIngresado && !alquilerPropietario.codigoLocatarioDevolucionIngresado">
+                                            <mat-icon>format_align_justify</mat-icon>
+                                            <span> Ingresar código locatario devolución</span>
+                                        </button>
+                                        <button *ngIf="alquilerPropietario.estado == 'En proceso de pago'" mat-menu-item
+                                            (click)="openDialogCancelar(alquilerPropietario)">
                                             <mat-icon>cancel</mat-icon>
                                             <span> Cancelar alquiler</span>
                                         </button>
-                                    </div>
-                                    <div class="info2" fxLayout="row" fxFlex="400" fxLayoutAlign="center center"
-                                        fxLayoutGap="10px" *ngIf="datos.fuePagado">
-
-                                        <button *ngIf="datos.estado == 'En proceso de entrega'" mat-raised-button
-                                            (click)="pre_reclamo(datos)" color="warn">
-                                            <mat-icon>cancel</mat-icon>
-                                            <span> Reclamar alquiler</span>
-                                        </button>
-
-                                        <button *ngIf="datos.estado == 'En proceso de devolución'" mat-raised-button
-                                            (click)="pre_reclamo(datos)" color="warn">
-                                            <mat-icon>cancel</mat-icon>
-                                            <span> Reclamar alquiler</span>
-                                        </button>
-
-                                        <button mat-raised-button color="primary"
-                                            *ngIf="datos.estado == 'En proceso de puntuación' && datos.comentario_propietario_al_locatario == undefined"
-                                            (click)="openDialogPuntuacion(datos, 'locador-locatario')">
+                                        <button mat-menu-item
+                                            *ngIf="alquilerPropietario.estado == 'En proceso de puntuación' && !alquilerPropietario.puntuacion_propietario_al_locatario_ingresada"
+                                            (click)="openDialogPuntuacion(alquilerPropietario, 'locador-locatario')">
                                             <mat-icon>star</mat-icon>
                                             <span> Puntuar al locatario</span>
                                         </button>
-
-                                        <button mat-icon-button [matMenuTriggerFor]="menu1">
-                                            <mat-icon>more_vert</mat-icon>
+                                        <button mat-menu-item *ngIf="alquilerPropietario.estado == 'Finalizado'"
+                                            (click)="openDialogPuntuacionObtenida(alquilerPropietario, 'locatario-locador')">
+                                            <mat-icon>star</mat-icon>
+                                            <span> Puntuación del locatario </span>
                                         </button>
-                                        <mat-menu #menu1="matMenu">
-                                            <button mat-menu-item (click)="openDialogDatosLocatario(datos)">
-                                                <mat-icon>person</mat-icon>
-                                                <span>Datos del locatario</span>
-                                            </button>
-
-                                            <button mat-menu-item (click)="openDialogCodigoLocatario(datos)"
-                                                *ngIf="datos.codigoPropietarioIngresado && !datos.codigoLocatarioIngresado">
-                                                <mat-icon>format_align_justify</mat-icon>
-                                                <span>Ingresar código locatario</span>
-                                            </button>
-
-                                            <button mat-menu-item (click)="openDialogCodigoLocatarioDevolucion(datos)"
-                                                *ngIf="datos.codigoPropietarioDevolucionIngresado && !datos.codigoLocatarioDevolucionIngresado">
-                                                <mat-icon>format_align_justify</mat-icon>
-                                                <span>Ingresar código locatario devolución</span>
-                                            </button>
-                                        </mat-menu>
-
-                                    </div>
+                                    </mat-menu>
                                 </div>
-                            </mat-list-item>
-                            <br>
-                            <mat-divider></mat-divider>
-                        </mat-list>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </mat-tab>
@@ -123,106 +350,319 @@
                         Propios
                     </ng-template>
                 </div>
-                <div fxLayout="column" fxFlexFill fxLayoutAlign="center center" *ngIf="!hayAlquileresPropios">
+                <div style="text-align: center; margin-top: 100px;overflow: hidden;" *ngIf="!hayAlquileresPropios">
                     <h3>No hay alquileres por mostrar</h3>
                 </div>
-                <div class=" mat-elevation-z4 contenedor-gral">
-                    <br>
-                    <div *ngIf="hayAlquileresPropios">
-                        <div class="contenedorAlquiler"
-                            *ngFor="let alquilerPropio of arrayDatosPropios; let indice = index">
-                            <mat-list role="list">
-                                <mat-list-item role="listitem">
-                                    <div fxLayout="row" fxFlexFill>
-                                        <div fxLayoutAlign="center" fxFlex="500">
-                                            <img class="imagen"
-                                                src="{{'http://localhost:4201/api/get-image-publicacion/'+ alquilerPropio.imagen}}">
-                                            <!-- <img class="imagen"
-                                                src="{{'https://oneuse-backend.herokuapp.com/api/get-image-publicacion/'+ alquilerPropio.imagen}}"> -->
-                                        </div>
+                <div *ngFor="let alquilerPropio of arrayDatosPropios; let indice = index">
+                    <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px"
+                        class="mat-elevation-z8 contenedor-individual" *ngIf="hayAlquileresPropios">
+                        <div *ngIf="
+                        array_propio_lleno !=false && array_propietario_lleno !=false">
+                            <a routerLink="/publicaciones/{{arrayTitulosPublicacionesPropios[indice]._id}}"
+                                class="titulo_alquiler" target="_blank">
+                                {{arrayTitulosPublicacionesPropios[indice].titulo}} </a>
+                        </div>
+                        <mat-divider style="width: 100%;"></mat-divider>
+                        <div fxLayout="column" fxLayoutAlign="center center">
+                            <div fxLayout="row" fxLayoutAlign="center center">
+                                <a id="titulo" fxLayout="column" fxLayoutAlign="center center"
+                                    routerLink="/publicaciones/{{arrayTitulosPublicacionesPropios[indice]._id}}"
+                                    style="cursor: pointer;" matTooltip="Ir a la publicación" matTooltipPosition="after"
+                                    target="_blank">
+                                    <img class="imagen"
+                                        src="{{'http://localhost:4201/api/get-image-publicacion/'+ alquilerPropio.imagen}}">
+                                </a>
+                                <div>
+                                    <mat-horizontal-stepper #stepper [disableRipple]="true" labelPosition="bottom">
 
-                                        <div class="info" fxLayout="column" fxFlex="300" fxLayoutAlign="center">
-                                            <p mat-line><b>Persona a quien alquilaste:
-                                                </b>{{alquilerPropio.name_usuarioPropietario}}</p>
-                                            <p mat-line><b>Fecha de generación: </b>{{alquilerPropio.createdAt}}</p>
-                                            <p mat-line><b>Cantidad de dias alquiler:
-                                                </b>{{alquilerPropio.cantidadDias}}
-                                            </p>
-                                            <p mat-line><b>Estado del Alquiler: </b>{{alquilerPropio.estado}} </p>
-                                            <p mat-line
-                                                *ngIf="alquilerPropio.fuePagado && !alquilerPropio.codigoLocatarioIngresado">
-                                                <b> Código entrega
-                                                    locatario: </b>{{alquilerPropio.codigoEntregaLocatario}}
-                                            </p>
-                                            <p mat-line *ngIf="alquilerPropio.estado == 'En proceso de devolución'">
-                                                <b> Código devolución
-                                                    locatario: </b>{{alquilerPropio.codigoDevolucionLocatario}}
-                                            </p>
-                                            <p mat-line
-                                                *ngIf="alquilerPropio.fuePagado && alquilerPropio.codigoLocatarioIngresado">
-                                                <b> Fecha de devolución:
-                                                </b>{{alquilerPropio.fechaCaducidadDevolucion}}
-                                            </p>
-                                        </div>
-                                        <div class="info2" fxLayout="row" fxFlex="400" fxLayoutAlign="center center"
-                                            fxLayoutGap="10px">
-                                            <button *ngIf="alquilerPropio.estado == 'En proceso de entrega'"
-                                                mat-raised-button routerLink="/reclamar-alquiler" color="warn">
-                                                <mat-icon>cancel</mat-icon>
-                                                <span> Reclamar alquiler</span>
-                                            </button>
-                                            <button *ngIf="alquilerPropio.estado == 'En proceso de devolución'"
-                                                mat-raised-button routerLink="/reclamar-alquiler" color="warn">
-                                                <mat-icon>cancel</mat-icon>
-                                                <span> Reclamar alquiler</span>
-                                            </button>
-                                            <button *ngIf="alquilerPropio.estado == 'En proceso de pago'"
-                                                mat-raised-button (click)="continuarPago(alquilerPropio)"
-                                                color="primary">
-                                                <mat-icon>credit_card</mat-icon>
-                                                <span> Continuar con el pago</span>
-                                            </button>
-                                            <button *ngIf="alquilerPropio.estado == 'En proceso de pago'"
-                                                mat-raised-button (click)="openDialogCancelar(alquilerPropio)"
-                                                color="warn">
-                                                <mat-icon>cancel</mat-icon>
-                                                <span> Cancelar alquiler</span>
-                                            </button>
-                                            <button mat-raised-button color="primary"
-                                                *ngIf="alquilerPropio.estado == 'En proceso de puntuación' && alquilerPropio.comentario_locatario_al_propietario == undefined"
-                                                (click)="openDialogPuntuacion(alquilerPropio, 'locatario-locador')">
-                                                <mat-icon>star</mat-icon>
-                                                <span> Puntuar al locador</span>
-                                            </button>
-                                            <button mat-icon-button [matMenuTriggerFor]="menu">
-                                                <mat-icon>more_vert</mat-icon>
-                                            </button>
-                                            <mat-menu #menu="matMenu">
-                                                <button mat-menu-item
-                                                    (click)="openDialogDatosPropietario(alquilerPropio)">
-                                                    <mat-icon>person</mat-icon>
-                                                    <span>Datos del propietario</span>
-                                                </button>
-                                                <button mat-menu-item
-                                                    (click)="openDialogCodigoPropietario(alquilerPropio)"
-                                                    *ngIf="alquilerPropio.fuePagado && !alquilerPropio.codigoPropietarioIngresado">
-                                                    <mat-icon>format_align_justify</mat-icon>
-                                                    <span>Ingresar código propietario</span>
-                                                </button>
-                                                <button mat-menu-item
-                                                    (click)="openDialogCodigoPropietarioDevolucion(alquilerPropio)"
-                                                    *ngIf="!alquilerPropio.codigoPropietarioDevolucionIngresado && alquilerPropio.estado == 'En proceso de devolución'">
-                                                    <mat-icon>format_align_justify</mat-icon>
-                                                    <span>Ingresar código propietario devolución</span>
-                                                </button>
-                                            </mat-menu>
+                                        <!-- EN PROCESO DE PAGO -->
+                                        <mat-step [editable]="false"
+                                            [completed]="estaCompleto(alquilerPropio,0,stepper)">
+                                            <ng-template matStepLabel>En proceso de pago</ng-template>
+                                            <ul class="items">
+                                                <li>
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon style="margin-right: 10px !important;">query_builder
+                                                        </mat-icon>
+                                                        <span style="margin-right: 5px !important;">Debes realizar el
+                                                            pago del alquiler ingresando a la opción
+                                                            "Continuar con el pago" en menú Acción.</span>
 
-                                        </div>
-                                    </div>
-                                </mat-list-item>
-                                <br>
-                                <mat-divider></mat-divider>
-                            </mat-list>
+                                                    </p>
+                                                </li>
+                                            </ul>
+                                        </mat-step>
+
+                                        <!-- EN PROCESO DE ENTREGA -->
+                                        <mat-step [editable]="false" [completed]="estaCompleto(alquilerPropio,1)">
+                                            <ng-template matStepLabel>En proceso de entrega</ng-template>
+                                            <ul class="items">
+                                                <li class="item">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon style="color:green;">
+                                                            verified</mat-icon>
+                                                        <span style="margin-right: 5px !important;">¡El pago del
+                                                            alquiler fue aprobado!</span>
+                                                    </p>
+                                                </li>
+                                                <li class="item" *ngIf="!alquilerPropio.codigoPropietarioIngresado">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon>query_builder
+                                                        </mat-icon>
+                                                        <span style="margin-right: 5px !important;">Consulta el código
+                                                            al propietario del objeto e ingrese a la
+                                                            opción "Ingresar código propietario" del menú Acción</span>
+                                                    </p>
+                                                </li>
+                                                <li class="item" *ngIf="alquilerPropio.codigoPropietarioIngresado">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon style="color:green;">verified </mat-icon>
+                                                        <span style="margin-right: 5px !important;">¡El código del
+                                                            propietario fue ingresado
+                                                            correctamente!</span>
+                                                    </p>
+                                                </li>
+                                                <li class="item"
+                                                    *ngIf="!alquilerPropio.codigoLocatarioIngresado && alquilerPropio.codigoPropietarioIngresado">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon>query_builder
+                                                        </mat-icon>
+                                                        <span style="margin-right: 5px !important;">Entrega tu código de
+                                                            locatario al propietario del producto:<b>
+                                                                {{alquilerPropio.codigoEntregaLocatario}}</b></span>
+                                                        <a matTooltip="Copiar al portapapeles"
+                                                            matTooltipPosition="right">
+                                                            <mat-icon style="cursor: pointer; font-size: 18px;"
+                                                                (click)="copiar(alquilerPropio.codigoEntregaLocatario)">
+                                                                content_copy</mat-icon>
+                                                        </a>
+                                                    </p>
+                                                </li>
+                                                <li class="item"
+                                                    *ngIf="!alquilerPropio.codigoLocatarioIngresado && alquilerPropio.codigoPropietarioIngresado">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon style="color: red;">
+                                                            warning</mat-icon>
+                                                        <span style="margin-right: 5px !important;">Entrega este código
+                                                            solamente si te encuentras en contacto con el
+                                                            propietario.</span>
+                                                    </p>
+                                                </li>
+                                            </ul>
+                                        </mat-step>
+
+                                        <!-- EN PROCESO DE DEVOLUCIÓN -->
+                                        <mat-step [editable]="false" [completed]="estaCompleto(alquilerPropio,2)">
+                                            <ng-template matStepLabel>En proceso de devolución</ng-template>
+                                            <ul class="items">
+                                                <li class="item">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon> calendar_today</mat-icon>
+                                                        <span style="margin-right: 5px !important;">La fecha de
+                                                            devolución del objeto es:
+                                                            {{alquilerPropio.fechaCaducidadEntrega}}. Puedes devolverlo
+                                                            antes de la fecha pactada, pero debes contactarte con el
+                                                            propietario.</span>
+                                                    </p>
+                                                </li>
+                                                <li class="item">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon style="color:green;">
+                                                            verified</mat-icon>
+                                                        <span style="margin-right: 5px !important;">¡Los códigos de
+                                                            entrega fueron ingresados correctamente!</span>
+                                                    </p>
+                                                </li>
+                                                <li class="item"
+                                                    *ngIf="!alquilerPropio.codigoPropietarioDevolucionIngresado">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon>
+                                                            query_builder</mat-icon>
+                                                        <span style="margin-right: 5px !important;">Ingresa el código
+                                                            del propietario en la opción "Ingresar código propietario
+                                                            devolución" del menú Acción</span>
+                                                    </p>
+                                                </li>
+                                                <li class="item"
+                                                    *ngIf="alquilerPropio.codigoPropietarioDevolucionIngresado && !alquilerPropio.codigoLocatarioDevolucionIngresado">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon style="color:green;">
+                                                            verified</mat-icon>
+                                                        <span style="margin-right: 5px !important;">¡El código del
+                                                            propietario fue ingresado correctamente!</span>
+                                                    </p>
+                                                </li>
+                                                <li class="item"
+                                                    *ngIf="alquilerPropio.codigoPropietarioDevolucionIngresado && !alquilerPropio.codigoLocatarioDevolucionIngresado">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon> query_builder</mat-icon>
+                                                        <span style="margin-right: 5px !important;">Entrega tu código al
+                                                            propietario: <b>
+                                                                {{alquilerPropio.codigoDevolucionLocatario}} </b></span>
+                                                        <a matTooltip="Copiar al portapapeles"
+                                                            matTooltipPosition="right">
+                                                            <mat-icon style="cursor: pointer; font-size: 18px;"
+                                                                (click)="copiar(alquilerPropio.codigoDevolucionLocatario)">
+                                                                content_copy</mat-icon>
+                                                        </a>
+                                                    </p>
+                                                </li>
+                                                <li class="item"
+                                                    *ngIf="alquilerPropio.codigoPropietarioDevolucionIngresado && !alquilerPropio.codigoLocatarioDevolucionIngresado">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon style="color: red;">
+                                                            warning</mat-icon>
+                                                        <span style="margin-right: 5px !important;">Entrega este código
+                                                            solamente si te encuentras en contacto con el
+                                                            propietario.</span>
+                                                    </p>
+                                                </li>
+                                            </ul>
+                                        </mat-step>
+
+                                        <!-- EN PROCESO DE PUNTUACIÓN -->
+                                        <mat-step [editable]="false" [completed]="estaCompleto(alquilerPropio,3)">
+                                            <ng-template matStepLabel>En proceso de puntuación</ng-template>
+                                            <ul class="items">
+                                                <li class="item">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon style="color:green;">
+                                                            verified</mat-icon>
+                                                        <span style="margin-right: 5px !important;">¡Los códigos de
+                                                            devolución fueron ingresados correctamente!</span>
+                                                    </p>
+                                                </li>
+                                                <li class="item"
+                                                    *ngIf="!alquilerPropio.puntuacion_locatario_al_propietario_ingresada">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon>calendar_today</mat-icon>
+                                                        <span style="margin-right: 5px !important;">¡Es momento de
+                                                            puntuar al dueño del objeto! Ve al menú Acción y expresa tu
+                                                            experiencia obtenida en el transcurso del alquiler.</span>
+                                                    </p>
+                                                </li>
+                                                <li class="item"
+                                                    *ngIf="alquilerPropio.estado == 'En proceso de puntuación' && alquilerPropio.puntuacion_locatario_al_propietario_ingresada">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon style="color:green;">
+                                                            verified</mat-icon>
+                                                        <span style="margin-right: 5px !important;">¡Tu puntuación y
+                                                            comentario fueron correctamente ingresados! ¡Muchas
+                                                            gracias!</span>
+                                                    </p>
+                                                </li>
+                                                <li class="item"
+                                                    *ngIf="alquilerPropio.estado == 'En proceso de puntuación' && alquilerPropio.puntuacion_locatario_al_propietario_ingresada && !alquilerPropio.puntuacion_propietario_al_locatario_ingresada">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon>calendar_today</mat-icon>
+                                                        <span style="margin-right: 5px !important;">Esperando a que el
+                                                            locador realice la puntuación del alquiler.</span>
+                                                    </p>
+                                                </li>
+                                            </ul>
+                                        </mat-step>
+
+                                        <!-- FINALIZADO -->
+                                        <mat-step [editable]="false" [completed]="estaCompleto(alquilerPropio,4)">
+                                            <ng-template matStepLabel>Finalizado</ng-template>
+                                            <ul class="items">
+                                                <li class="item">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon style="color:green;">
+                                                            verified</mat-icon>
+                                                        <span style="margin-right: 5px !important;">¡El proceso de
+                                                            alquiler ha finalizado! ¡Muchas gracias por utilizar
+                                                            nuestros servicios!</span>
+                                                    </p>
+                                                </li>
+                                                <li class="item">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon>
+                                                            question_answer</mat-icon>
+                                                        <span style="margin-right: 5px !important;">Puedes conocer la
+                                                            puntuación y comentario del propietario en el menú
+                                                            Acción.</span>
+                                                    </p>
+                                                </li>
+                                            </ul>
+                                        </mat-step>
+                                    </mat-horizontal-stepper>
+                                </div>
+
+                                <div>
+                                    <button style="background: gainsboro" fxLayout="row" fxLayoutAlign="center center"
+                                        mat-raised-button [matMenuTriggerFor]="menu" matTooltip="Menú del alquiler"
+                                        matTooltipPosition="below">
+                                        <mat-icon>settings</mat-icon> Acción
+                                    </button>
+                                    <mat-menu #menu="matMenu">
+                                        <button mat-menu-item (click)="openDialogDatosPropietario(alquilerPropio)">
+                                            <mat-icon>person</mat-icon>
+                                            <span> Datos del propietario</span>
+                                        </button>
+                                        <button *ngIf="alquilerPropio.estado == 'En proceso de entrega'" mat-menu-item
+                                            routerLink="/reclamar-alquiler">
+                                            <mat-icon>cancel</mat-icon>
+                                            <span> Reclamar alquiler</span>
+                                        </button>
+                                        <button *ngIf="alquilerPropio.estado == 'En proceso de devolución'"
+                                            mat-menu-item routerLink="/reclamar-alquiler">
+                                            <mat-icon>cancel</mat-icon>
+                                            <span> Reclamar alquiler</span>
+                                        </button>
+                                        <button mat-menu-item (click)="openDialogCodigoPropietario(alquilerPropio)"
+                                            *ngIf="alquilerPropio.fuePagado && !alquilerPropio.codigoPropietarioIngresado">
+                                            <mat-icon>format_align_justify</mat-icon>
+                                            <span> Ingresar código propietario</span>
+                                        </button>
+                                        <button mat-menu-item
+                                            (click)="openDialogCodigoPropietarioDevolucion(alquilerPropio)"
+                                            *ngIf="!alquilerPropio.codigoPropietarioDevolucionIngresado && alquilerPropio.estado == 'En proceso de devolución'">
+                                            <mat-icon>format_align_justify</mat-icon>
+                                            <span> Ingresar código propietario devolución</span>
+                                        </button>
+                                        <button *ngIf="alquilerPropio.estado == 'En proceso de pago'" mat-menu-item
+                                            (click)="continuarPago(alquilerPropio)">
+                                            <mat-icon>credit_card</mat-icon>
+                                            <span> Continuar con el pago</span>
+                                        </button>
+                                        <button *ngIf="alquilerPropio.estado == 'En proceso de pago'" mat-menu-item
+                                            (click)="openDialogCancelar(alquilerPropio)">
+                                            <mat-icon>cancel</mat-icon>
+                                            <span> Cancelar alquiler</span>
+                                        </button>
+                                        <button mat-menu-item
+                                            *ngIf="alquilerPropio.estado == 'En proceso de puntuación' && alquilerPropio.comentario_locatario_al_propietario == undefined"
+                                            (click)="openDialogPuntuacion(alquilerPropio, 'locatario-locador')">
+                                            <mat-icon>star</mat-icon>
+                                            <span> Puntuar al locador</span>
+                                        </button>
+                                        <button mat-menu-item *ngIf="alquilerPropio.estado == 'Finalizado'"
+                                            (click)="openDialogPuntuacionObtenida(alquilerPropio, 'locador-locatario')">
+                                            <mat-icon>star</mat-icon>
+                                            <span> Puntuación del propietario</span>
+                                        </button>
+                                    </mat-menu>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

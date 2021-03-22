@@ -23,13 +23,12 @@ export class CodigoDevolucionPropietarioDialogComponent implements OnInit {
   codigoIngresado(codigo) {
     this._auth.registrar_codigoLocatarioDevolucion(codigo).subscribe(
       res => {
-        console.log(res);
         if (res.alquiler == null) {
           this.codigoIncorrecto = true;
         } else {
           this.codigoIncorrecto = false;
           this.dialogRef.close();
-          window.location.reload()
+          //window.location.reload()
         }
 
       },
