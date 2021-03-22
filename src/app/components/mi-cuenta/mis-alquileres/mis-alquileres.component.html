@@ -23,7 +23,7 @@
                 <div fxHide.lt-lg="true">
                     <ng-template mat-tab-label>
                         <mat-icon class="iconitos">bookmark_add</mat-icon>
-                        Publicados
+                        De mis publicaciones
                     </ng-template>
                 </div>
                 <div style="text-align: center; margin-top: 100px;overflow: hidden;" *ngIf="!hayAlquileresPropietario">
@@ -32,11 +32,10 @@
                 <div *ngFor="let alquilerPropietario of arrayDatosPropietario; let indice = index">
                     <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px"
                         class="mat-elevation-z8 contenedor-individual" *ngIf="hayAlquileresPropietario">
-                        <div *ngIf="
-                        array_propio_lleno != false && array_propietario_lleno != false">
+                        <div *ngIf="array_propio_lleno != false && array_propietario_lleno != false">
                             <a routerLink="/publicaciones/{{alquilerPropietario.id_publicacion}}"
                                 class="titulo_alquiler" target="_blank">
-                                {{arrayPublicacionesAlquileresPropietarios[indice].titulo}} </a>
+                                {{alquilerPropietario.titulo_publicacion}} </a>
                         </div>
                         <mat-divider style="width: 100%;"></mat-divider>
                         <div fxLayout="column" fxLayoutAlign="center center">
@@ -171,7 +170,7 @@
                                                         <a matTooltip="Copiar al portapapeles"
                                                             matTooltipPosition="right">
                                                             <mat-icon style="cursor: pointer; font-size: 18px;"
-                                                                (click)="copiar(alquilerPropietario.codigoDevolucionLocatario)">
+                                                                (click)="copiar(alquilerPropietario.codigoDevolucionPropietario)">
                                                                 content_copy</mat-icon>
                                                         </a>
                                                     </p>
@@ -293,9 +292,9 @@
                                         <mat-icon>settings</mat-icon> Acción
                                     </button>
                                     <mat-menu #menu="matMenu">
-                                        <button mat-menu-item (click)="openDialogDatosPropietario(alquilerPropietario)">
+                                        <button mat-menu-item (click)="openDialogDatosLocatario(alquilerPropietario)">
                                             <mat-icon>person</mat-icon>
-                                            <span> Datos del propietario</span>
+                                            <span> Datos del locatario </span>
                                         </button>
                                         <button *ngIf="alquilerPropietario.estado == 'En proceso de entrega'"
                                             mat-menu-item routerLink="/reclamar-alquiler">
@@ -360,7 +359,7 @@
                         array_propio_lleno !=false && array_propietario_lleno !=false">
                             <a routerLink="/publicaciones/{{alquilerPropio.id_publicacion}}" class="titulo_alquiler"
                                 target="_blank">
-                                {{arrayTitulosPublicacionesPropios[indice].titulo}} </a>
+                                {{alquilerPropio.titulo_publicacion}} </a>
                         </div>
                         <mat-divider style="width: 100%;"></mat-divider>
                         <div fxLayout="column" fxLayoutAlign="center center">

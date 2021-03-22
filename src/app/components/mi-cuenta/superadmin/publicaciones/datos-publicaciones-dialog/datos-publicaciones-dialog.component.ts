@@ -36,7 +36,7 @@ export class DatosPublicacionesDialogComponent implements OnInit {
   ngOnInit() {
     this._auth.get_publicacion_id(this.data.data._id).subscribe(
       res => {
-        this.datos = res.publicaciones;
+        this.datos = res;
 
         if (this.datos._id == undefined) {
           this.datos._id = 'Sin cargar';

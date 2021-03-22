@@ -32,7 +32,9 @@ export class PosAlquilerComponent implements OnInit, AfterViewInit {
   id_pago_mp;
   id_alquiler;
   montoUnitario;
+  montoReembolso;
   step = 0;
+  mostrar: boolean = false;
 
   setStep(index: number) {
     this.step = index;
@@ -43,26 +45,23 @@ export class PosAlquilerComponent implements OnInit, AfterViewInit {
     var id = urlActual.substr(36);
 
     this._auth.get_publicacion_id(id).subscribe(
-      err => {
-        this.publicacion = err.publicaciones;
+      res => {
+        this.publicacion = res;
 
-        this.titulo = err.publicaciones.titulo;
-        this.preciodia = err.publicaciones.preciodia;
-        this.preciomes = err.publicaciones.preciomes;
-        this.preciosemana = err.publicaciones.preciosemana;
-        this.descripcion = err.publicaciones.descripcion;
-        this.cantidad = err.publicaciones.cantidadAlquilar;
-        this.montoTotal = err.publicaciones.montoTotal;
+        this.titulo = res.titulo;
+        this.preciodia = res.preciodia;
+        this.preciomes = res.preciomes;
+        this.preciosemana = res.preciosemana;
+        this.descripcion = res.descripcion;
 
         this._auth.user_data(this.publicacion.email).subscribe(
-          res => {
-            this.nombre = res.nombre;
-            this.email = res.email;
-            this.telefono = res.telefono;
-            this.apellido = res.apellido;
-            this.codArea = res.codArea;
-          },
-          err => { }
+          res2 => {
+            this.nombre = res2.nombre;
+            this.email = res2.email;
+            this.telefono = res2.telefono;
+            this.apellido = res2.apellido;
+            this.codArea = res2.codArea;
+          }
         );
 
         this._auth.get_all_alquileres().subscribe(
@@ -72,8 +71,8 @@ export class PosAlquilerComponent implements OnInit, AfterViewInit {
               const element = alquileres[i];
               if (element.id_publicacion == id && element.estado == "En proceso de pago") {
                 this.id_alquiler = element._id;
-                this.montoTotal = element.montoTotal;
-                console.log(this.montoTotal)
+                this.montoTotal = element.montoAlquiler;
+                this.montoReembolso = element.montoReembolso;
                 this.cantidadSeleccionada = element.cantidadAlquilar
                 this.montoUnitario = parseFloat(this.montoTotal) / parseFloat(this.cantidadSeleccionada)
               }
@@ -81,8 +80,7 @@ export class PosAlquilerComponent implements OnInit, AfterViewInit {
           }
         )
       },
-      res => {
-      })
+    )
   }
 
 
@@ -103,6 +101,13 @@ export class PosAlquilerComponent implements OnInit, AfterViewInit {
             "quantity": this.cantidadSeleccionada,
             "currency_id": "ARS",
             "unit_price": this.montoUnitario
+          },
+          {
+            "title": "Reembolso del objeto",
+            "description": "Se toma el 40% del monto total del alquiler como parte del reembolso. Este monto será devuelto una vez que se devuelva el objeto y se compruebe que no haya sido dañado",
+            "quantity": 1,
+            "currency_id": "ARS",
+            "unit_price": parseInt(this.montoReembolso)
           }
         ],
         "back_urls": {
@@ -112,8 +117,6 @@ export class PosAlquilerComponent implements OnInit, AfterViewInit {
         "statement_descriptor": "OneUse"
       }
 
-      console.log(objeto)
-
       this.http.post<any>('https://api.mercadopago.com/checkout/preferences', objeto, httpOptions).subscribe(
         res => {
           this.id_pago_mp = res.id;
@@ -122,6 +125,9 @@ export class PosAlquilerComponent implements OnInit, AfterViewInit {
           console.log("ERROR: ", err)
         }
       )
+
+      this.mostrar = true;
+      
       setTimeout(() => {
         var div = (<HTMLFormElement>document.querySelector('#mp'));
         var card = (<HTMLElement>document.createElement('script'));
@@ -130,8 +136,8 @@ export class PosAlquilerComponent implements OnInit, AfterViewInit {
         card.setAttribute('data-button-label', 'Continuar con el pago');
         card.setAttribute('data-preference-id', this.id_pago_mp);
         div.appendChild(card)
-      }, 1000);
-    }, 1500);
+      }, 5000);
+    }, 3000);
 
   }
 }

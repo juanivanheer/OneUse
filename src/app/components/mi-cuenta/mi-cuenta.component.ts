@@ -18,14 +18,12 @@ export class MiCuentaComponent implements OnInit {
   constructor(
     private singleton: SingletonService,
     private _auth: AuthService
-  ) {}
+  ) { }
 
   ngOnInit() {
-    this._auth
-      .get_publicacion(localStorage.getItem("email"))
-      .subscribe((res) => {
-        this.publicaciones = res.publicaciones;
-      });
+    this._auth.get_publicacion(localStorage.getItem("email")).subscribe((res) => {
+      this.publicaciones = res.publicaciones;
+    });
   }
 
   cerrarSesion() {

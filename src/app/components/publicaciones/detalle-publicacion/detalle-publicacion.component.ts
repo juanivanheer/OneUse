@@ -80,18 +80,18 @@ export class DetallePublicacionComponent implements OnInit, OnDestroy {
     )
 
     this._auth.get_publicacion_id(this.id).subscribe(
-      err => {
+      res => {
 
-        this.titulo = err.publicaciones.titulo;
-        this.preciodia = err.publicaciones.preciodia;
-        this.preciomes = err.publicaciones.preciomes;
-        this.preciosemana = err.publicaciones.preciosemana;
-        this.descripcion = err.publicaciones.descripcion;
-        this.categoria = err.publicaciones.categoria;
-        this.subcategoria = err.publicaciones.subcategoria;
-        this.cantidadDisponible = err.publicaciones.cantidadDisponible;
-        this.cantidadDias = err.publicaciones.cantDias;
-        this.tipoAlquiler = err.publicaciones.tipoAlquiler;
+        this.titulo = res.titulo;
+        this.preciodia = res.preciodia;
+        this.preciomes = res.preciomes;
+        this.preciosemana = res.preciosemana;
+        this.descripcion = res.descripcion;
+        this.categoria = res.categoria;
+        this.subcategoria = res.subcategoria;
+        this.cantidadDisponible = res.cantidadDisponible;
+        this.cantidadDias = res.cantDias;
+        this.tipoAlquiler = res.tipoAlquiler;
 
         if (this.tipoAlquiler == 'AlquilerConIntervencion') {
           this.esConIntervencion = true;
@@ -108,8 +108,8 @@ export class DetallePublicacionComponent implements OnInit, OnDestroy {
         }
 
         //Para mostrar las imagenes
-        this.publicacion = err.publicaciones;
-        this.JSON = err.publicaciones.multiplefile;
+        this.publicacion = res;
+        this.JSON = res.multiplefile;
         this.JSONfinal = JSON.parse(this.JSON); //CREA JSON CONVERTIDO DE STRING
         for (let j in this.JSONfinal) {
           this.arrayJSON.push(this.JSONfinal[j]);
@@ -189,7 +189,7 @@ export class DetallePublicacionComponent implements OnInit, OnDestroy {
               let usuario_publicacion = res1.name;
               this._auth.notificacion_pregunta_publicacion(usuario_pregunta.name, usuario_publicacion, this.publicacion.titulo, this.publicacion.multiplefile[0], this.publicacion._id).subscribe(
                 res2 => {
-                  console.log(res2);
+                  //console.log(res2);
                 }
               )
             }
@@ -247,9 +247,9 @@ export class DetallePublicacionComponent implements OnInit, OnDestroy {
   }
 
   registrarAlquiler() {
-    this._auth.registrar_EnProcesoPago(this.id, this.usuario.name, this.usuario_logueado.name, this.cantidadDiasSeleccionado, this.cantidadDisponible, this.publicacion.multiplefile[0], this.montoTotal).subscribe(
+    let reembolso = this.montoTotal * 0.40;
+    this._auth.registrar_EnProcesoPago(this.id, this.usuario.name, this.usuario_logueado.name, this.cantidadDiasSeleccionado, this.cantidadDisponible, this.publicacion.multiplefile[0], this.montoTotal, reembolso, this.publicacion.titulo).subscribe(
       res => {
-        console.log(res);
         window.location.assign("pos-alquiler/" + this.publicacion._id)
       }
     )

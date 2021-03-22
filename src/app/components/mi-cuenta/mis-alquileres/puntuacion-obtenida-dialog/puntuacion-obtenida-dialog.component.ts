@@ -21,7 +21,6 @@ export class PuntuacionObtenidaDialogComponent implements OnInit {
   seleccion5;
 
   ngOnInit() {
-    console.log(this.data)
     if(this.data.tipo == "locador-locatario"){
       //ES EL LOCATARIO QUE VE LO QUE PUSO EL PROPIETARIO
       this.puntuacion = this.data.alquiler.puntuacion_propietario_al_locatario;

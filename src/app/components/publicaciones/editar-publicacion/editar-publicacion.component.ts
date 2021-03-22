@@ -94,20 +94,19 @@ export class EditarPublicacionComponent implements OnInit {
     let url = window.location.href;
     this._id = url.substr(42);
     this._auth.get_publicacion_id(this._id).subscribe(
-      err => {
+      res => {
 
-        this.publicacion = err.publicaciones;
+        this.publicacion = res;
 
-        this.categoria = err.publicaciones.categoria
-
-        this.subcategoria = err.publicaciones.subcategoria
-        this.titulo = err.publicaciones.titulo
-        this.descripcion = err.publicaciones.descripcion
-        this.preciodia = err.publicaciones.preciodia
-        this.preciosemana = err.publicaciones.preciosemana
-        this.preciomes = err.publicaciones.preciomes
-        this.imagenBD = err.publicaciones.multiplefile
-        this.tipoAlquiler = err.publicaciones.tipoAlquiler
+        this.categoria = res.categoria
+        this.subcategoria = res.subcategoria
+        this.titulo = res.titulo
+        this.descripcion = res.descripcion
+        this.preciodia = res.preciodia
+        this.preciosemana = res.preciosemana
+        this.preciomes = res.preciomes
+        this.imagenBD = res.multiplefile
+        this.tipoAlquiler = res.tipoAlquiler
 
         if (this.tipoAlquiler == "AlquilerSinIntervencion") {
           this.AlquilerSinIntervencion = true;
@@ -143,7 +142,7 @@ export class EditarPublicacionComponent implements OnInit {
           ...this.tipoAlquilerGroup.value
         };
 
-        this.imagenJSON = JSON.parse(err.publicaciones.multiplefile); //CREA JSON CONVERTIDO DE STRING
+        this.imagenJSON = JSON.parse(res.multiplefile); //CREA JSON CONVERTIDO DE STRING
         for (let j in this.imagenJSON) {
           this.arrayJSON.push(this.imagenJSON[j]);
         }
@@ -151,9 +150,6 @@ export class EditarPublicacionComponent implements OnInit {
 
 
       },
-      res => {
-
-      }
     )
 
   }

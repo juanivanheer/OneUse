@@ -71,15 +71,9 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
                 if (this.arrayAlquilerPropietario[i].estado != "Cancelado") {
                   this.arrayDatosPropietario.push(this.arrayAlquilerPropietario[i])
                 }
-                this._auth.get_publicacion_id(res1.alquiler[i].id_publicacion).subscribe(
-                  res2 => {
-                    this.arrayPublicacionesAlquileresPropietarios.push(res2.publicaciones);
-                  }
-                )
               }
               this.hayAlquileresPropietario = true;
             } else this.hayAlquileresPropietario = false; this.array_propietario_lleno = true;
-            this.array_propietario_lleno = true;
           })
 
         //Suscripción que obtiene los alquileres realizados por el usuario logueado a publicaciones de otros usuarios
@@ -95,11 +89,9 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
                     let fechaCaducidad = new Date(res1.alquiler[i].fechaCaducidadEntrega);
                     let fechaCaducidadDev = new Date(res1.alquiler[i].fechaCaducidadDevolucion);
 
-                    this.arrayPublicacionesAlquileresPropios.push(res2.publicaciones);
-
                     // Ayuda a que se muestren los botones de "Reclamar"
-                    if ((res1.alquiler[i].estado == "En proceso de entrega" && res2.publicaciones.tipoAlquiler == "AlquilerConIntervencion") ||
-                      (res1.alquiler[i].estado == "En proceso de devolución" && res2.publicaciones.tipoAlquiler == "AlquilerConIntervencion")) {
+                    if ((res1.alquiler[i].estado == "En proceso de entrega" && res2.tipoAlquiler == "AlquilerConIntervencion") ||
+                      (res1.alquiler[i].estado == "En proceso de devolución" && res2.tipoAlquiler == "AlquilerConIntervencion")) {
                       if (fechaActual > fechaCaducidad || fechaActual > fechaCaducidadDev) {
                         this.arrayEstados.push(true);
                       } else {
@@ -120,12 +112,7 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
       });
 
     setInterval(() => {
-      if (this.hayAlquileresPropios == true && this.arrayPublicacionesAlquileresPropios[(this.arrayAlquilerPropios.length - 1)] != undefined) this.array_propio_lleno = true;
-      else if (this.hayAlquileresPropios = false && this.arrayPublicacionesAlquileresPropios[(this.arrayAlquilerPropios.length - 1)] == undefined) this.mostrar = true;
-
       if (this.array_propio_lleno != false && this.array_propietario_lleno != false) {
-        this.checkTitulosPublicacionesPropios();
-        this.checkTitulosPublicacionesPropietarios();
         this.mostrar = true;
       } else this.mostrar = false;
     }, 500)
@@ -155,41 +142,6 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
         }
       }
     }, 2000);
-  }
-
-
-  checkTitulosPublicacionesPropios() {
-    if (this.arrayTitulosPublicacionesPropios.length == 0) {
-      if (this.arrayAlquilerPropios.length > 0) {
-        for (let i = 0; i < this.arrayAlquilerPropios.length; i++) {
-          const alquiler = this.arrayAlquilerPropios[i];
-          for (let j = 0; j < this.arrayPublicacionesAlquileresPropios.length; j++) {
-            const publicacion = this.arrayPublicacionesAlquileresPropios[j];
-            if (alquiler.id_publicacion == publicacion._id) {
-              this.arrayTitulosPublicacionesPropios.push(publicacion);
-              j = this.arrayPublicacionesAlquileresPropios.length + 1
-            }
-          }
-        }
-      }
-    }
-  }
-
-  checkTitulosPublicacionesPropietarios() {
-    if (this.arrayTitulosPublicacionesPropietario.length == 0) {
-      if (this.arrayAlquilerPropietario.length > 0) {
-        for (let i = 0; i < this.arrayAlquilerPropietario.length; i++) {
-          const alquiler = this.arrayAlquilerPropietario[i];
-          for (let j = 0; j < this.arrayPublicacionesAlquileresPropios.length; j++) {
-            const publicacion = this.arrayPublicacionesAlquileresPropios[j];
-            if (alquiler.id_publicacion == publicacion._id) {
-              this.arrayTitulosPublicacionesPropietario.push(publicacion);
-              j = this.arrayPublicacionesAlquileresPropios.length + 1
-            }
-          }
-        }
-      }
-    }
   }
 
   estaCompleto(alquiler, n_step, stepper) {

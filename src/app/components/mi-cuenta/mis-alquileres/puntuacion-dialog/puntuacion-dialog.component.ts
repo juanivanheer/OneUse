@@ -23,8 +23,6 @@ export class PuntuacionComponent implements OnInit {
   ngOnInit() {
     this.alquiler = this.data.alquiler;
     this.tipo = this.data.tipo;
-    console.log(this.data.alquiler);
-    console.log(this.data.tipo)
   }
 
   seleccion(estrella) {

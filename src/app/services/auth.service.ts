@@ -12,7 +12,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 export class AuthService {
 
   private url = "http://localhost:4201/api/"
-  
+
   private alquiler = new BehaviorSubject<any>({});
   public datosAlquiler = this.alquiler.asObservable();
   //private url = this.url + ""
@@ -268,9 +268,10 @@ export class AuthService {
     return this.http.delete<any>(this._deleteAlquiler + id);
   }
 
-  registrar_EnProcesoPago(id_publicacion, name_propietario, name_locatario, cantidadDias, cantidadAlquiler, imagen, montoTotal) {
-    let params = JSON.stringify(id_publicacion);
-    return this.http.post<any>(this._alquilerProcesoPago + id_publicacion + "/" + name_propietario + "/" + name_locatario + "/" + cantidadDias + "/" + cantidadAlquiler + "/" + imagen + "/" + montoTotal, params);
+  registrar_EnProcesoPago(id_publicacion, name_propietario, name_locatario, cantidadDias, cantidadAlquiler, imagen, montoTotal, reembolso, titulo) {
+    var objeto = { titulo: titulo }
+    let headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.http.post<any>(this._alquilerProcesoPago + id_publicacion + "/" + name_propietario + "/" + name_locatario + "/" + cantidadDias + "/" + cantidadAlquiler + "/" + imagen + "/" + montoTotal + "/" + reembolso, objeto, { headers: headers });
   }
 
   getAlquilerPublicaciones(name_usuarioPropietario) {
@@ -351,7 +352,7 @@ export class AuthService {
     return this.http.delete<any>(this._deleteReclamos + id)
   }
 
-  registraDatosPreReclamo(datos){
+  registraDatosPreReclamo(datos) {
     this.alquiler.next(datos);
   }
 

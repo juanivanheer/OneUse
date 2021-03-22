@@ -25,7 +25,7 @@ export class DestacacionPublicacionComponent implements OnInit {
     this.id_publicacion = String(window.location.href).slice(47);
     this._auth.get_publicacion_id(this.id_publicacion).subscribe(
       res => {
-        let publicacion = res.publicaciones;
+        let publicacion = res;
         if (publicacion.pago_destacacion == false) {
           this.hayQueDestacar = true;
         } else {

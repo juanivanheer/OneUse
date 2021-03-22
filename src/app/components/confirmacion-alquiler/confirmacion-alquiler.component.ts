@@ -17,7 +17,7 @@ export class ConfirmacionAlquilerComponent implements OnInit {
     console.log(this.id_alquiler)
     this._auth.registrar_EnProcesoEntrega(this.id_alquiler).subscribe(
       res => {
-        console.log(res);
+        //console.log(res);
       }
     )
   }

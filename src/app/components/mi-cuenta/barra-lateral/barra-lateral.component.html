@@ -1,9 +1,9 @@
 <mat-toolbar style="height: 100%;">
     <mat-toolbar-row>
-        <a [routerLink]="['/mi-cuenta']">
+        <a [routerLink]="['/mi-cuenta/perfil']">
             <!-- [routerLink]="['/perfil']" -->
-            <mat-icon>insert_emoticon</mat-icon><span class="iconitos letritas" fxHide.lt-lg="true">Mi
-                cuenta</span>
+            <mat-icon>account_circle</mat-icon><span class="iconitos letritas" fxHide.lt-lg="true">Mi
+                perfil</span>
         </a>
     </mat-toolbar-row>
 
@@ -15,13 +15,7 @@
         </a>
     </mat-toolbar-row>
 
-    <mat-toolbar-row>
-        <a [routerLink]="['/mi-cuenta/perfil']">
-            <!-- [routerLink]="['/perfil']" -->
-            <mat-icon>account_circle</mat-icon><span class="iconitos letritas" fxHide.lt-lg="true">Mi
-                perfil</span>
-        </a>
-    </mat-toolbar-row>
+
 
     <mat-toolbar-row>
         <a [routerLink]="['/mi-cuenta/mis-publicaciones']">
@@ -46,6 +40,15 @@
                 reclamos</span>
         </a>
     </mat-toolbar-row>
+
+    <mat-toolbar-row>
+        <a [routerLink]="['/mi-cuenta']">
+            <!-- [routerLink]="['/perfil']" -->
+            <mat-icon>analytics</mat-icon><span class="iconitos letritas" fxHide.lt-lg="true">Mis
+                estadísticas</span>
+        </a>
+    </mat-toolbar-row>
+
 
     <mat-toolbar-row>
         <a fxFlexAlign.lt-lg="flex-end" (click)="cerrarSesion()">

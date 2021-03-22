@@ -18,26 +18,21 @@
             Cantidad de visitas a tus publicaciones
           </ng-template>
         </div>
-        <div fxLayout="column" fxLayoutAlign="center center" id="prueba">
+        <div fxLayout="column" fxLayoutAlign="center center">
           <div style="width: 300px; margin-top: 15px;" *ngIf="publicaciones.length > 0">
             <mat-form-field>
-              <!-- -->
               <mat-label>Publicación</mat-label>
               <mat-select>
                 <mat-option #dropdown *ngFor="let p of publicaciones"
-                  (onSelectionChange)="CargarDatos(p._id, p.titulo)">
+                  (onSelectionChange)="cargarDatos(p._id, p.titulo)">
                   {{ p.titulo }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
           </div>
 
-          <div style="width: 300px; margin-top: 30px;" *ngIf="publicaciones.length == 0">
-            <!-- <img src="assets\images\Validacion Estadistica\sinPublicacionesAnuncio.png" /> -->
-
-            <b>
-              <h4></h4>
-            </b>
+          <div fxFlexFill fxFlexAlign="center" *ngIf="!hayPublicaciones">
+            <h3>No hay estadísticas correspondientes a la publicación seleccionada</h3>
           </div>
         </div>
         <div fxLayout="column" fxLayoutAlign="center center" style="margin-bottom: 30px;" *ngIf="hayPublicaciones">
