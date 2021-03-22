@@ -12,6 +12,9 @@ import { Observable, BehaviorSubject } from 'rxjs';
 export class AuthService {
 
   private url = "http://localhost:4201/api/"
+  
+  private alquiler = new BehaviorSubject<any>({});
+  public datosAlquiler = this.alquiler.asObservable();
   //private url = this.url + ""
 
   //authSubject = new BehaviorSubject(false); 
@@ -62,6 +65,8 @@ export class AuthService {
   private _registrarCodigoDevolucionLocatario = this.url + "registrar-devolucion-locatario/"
   private _getAllUsers = this.url + "get-all-users/"
   private _getAllReclamos = this.url + "get-all-reclamos/"
+  private _getReclamosUser = this.url + "get-reclamos-user/"
+  private _deleteReclamos = this.url + "delete-reclamos/"
   private _deleteUser = this.url + "delete-user/"
   private _updateSuperadminUser = this.url + "update-superadmin-user"
   private _getAllPublicaciones = this.url + "get-all-publicaciones"
@@ -336,6 +341,18 @@ export class AuthService {
 
   get_all_reclamos() {
     return this.http.get<any>(this._getAllReclamos);
+  }
+
+  get_reclamos_user(user) {
+    return this.http.get<any>(this._getReclamosUser + user);
+  }
+
+  delete_reclamos(id) {
+    return this.http.delete<any>(this._deleteReclamos + id)
+  }
+
+  registraDatosPreReclamo(datos){
+    this.alquiler.next(datos);
   }
 
   /* ESTADISTICAS*/

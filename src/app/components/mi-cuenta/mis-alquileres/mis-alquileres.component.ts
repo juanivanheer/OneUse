@@ -15,6 +15,8 @@ import { BarraLateralComponent } from '../barra-lateral/barra-lateral.component'
 import { MatStepper } from '@angular/material/stepper';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PuntuacionObtenidaDialogComponent } from './puntuacion-obtenida-dialog/puntuacion-obtenida-dialog.component';
+import { take } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mis-alquileres',
@@ -46,7 +48,7 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
   array_propietario_lleno: boolean = false;
   array_propio_lleno: boolean = false;
 
-  constructor(private _auth: AuthService, private singleton: SingletonService, public dialog: MatDialog, private _snackBar: MatSnackBar) { }
+  constructor(private _auth: AuthService, private singleton: SingletonService, public dialog: MatDialog, private _snackBar: MatSnackBar, private _router: Router) { }
 
   @ViewChild("stepper", { static: false }) stepper: MatStepper;
 
@@ -120,7 +122,7 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
       if (this.hayAlquileresPropios == true && this.arrayPublicacionesAlquileresPropios[(this.arrayAlquilerPropios.length - 1)] != undefined) this.array_propio_lleno = true;
       else if (this.hayAlquileresPropios = false && this.arrayPublicacionesAlquileresPropios[(this.arrayAlquilerPropios.length - 1)] == undefined) this.mostrar = true;
       //if (this.hayAlquileresPropietario == true && this.arrayPublicacionesAlquileresPropietarios[(this.arrayAlquilerPropietario.length - 1)] != undefined) this.array_propietario_lleno = true;
-      
+
       if (this.array_propio_lleno != false && this.array_propietario_lleno != false) {
         this.checkTitulosPublicacionesPropios();
         this.checkTitulosPublicacionesPropietarios();
@@ -244,7 +246,8 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   pre_reclamo(datos) {
-    console.log(datos)
+    this._auth.registraDatosPreReclamo(datos);
+    this._router.navigate(['/prereclamo']);
   }
 
   pagar(alquiler) {
