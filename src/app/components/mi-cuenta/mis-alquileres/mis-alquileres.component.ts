@@ -12,6 +12,8 @@ import { PuntuacionComponent } from './puntuacion-dialog/puntuacion-dialog.compo
 import { CancelarDialogComponent } from './cancelar-dialog/cancelar-dialog.component'
 import { Subscription } from 'rxjs';
 import { BarraLateralComponent } from '../barra-lateral/barra-lateral.component'
+import { take } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mis-alquileres',
@@ -35,7 +37,7 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
   arrayDevolucionPropietario = [];
   mostrar: boolean = false;
 
-  constructor(private _auth: AuthService, private singleton: SingletonService, public dialog: MatDialog) { }
+  constructor(private _auth: AuthService, private singleton: SingletonService, public dialog: MatDialog,private _router: Router) { }
 
   ngOnInit() {
     this.arrayAlquilerPropietario = []
@@ -123,9 +125,12 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
     }, 2000);
   }
 
-  pre_reclamo(datos) {
-    console.log(datos)
-  }
+  
+
+ pre_reclamo(datos) {
+  this._auth.registraDatosPreReclamo(datos);
+  this._router.navigate(['/prereclamo']);
+}
 
   pagar(alquiler) {
     this._auth.registrar_EnProcesoEntrega(alquiler.id_publicacion).subscribe(
