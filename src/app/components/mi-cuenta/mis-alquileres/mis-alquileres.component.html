@@ -7,7 +7,7 @@
         <div fxLayout="column" style="width: 100%; text-align: center; margin-top: 40px;" fxLayoutAlign="center center">
             <div fxLayout="row" fxLayoutAlign="center center" style="margin-bottom: 25px;">
                 <p style="font-size: 25px"> Mis alquileres</p>
-                <button mat-button (click)="ngOnInit()">
+                <button mat-button (click)="actualizar()" matTooltip="Actualizar alquileres" matTooltipPosition="after">
                     <mat-icon>update</mat-icon>
                 </button>
             </div>
@@ -34,7 +34,7 @@
                         class="mat-elevation-z8 contenedor-individual" *ngIf="hayAlquileresPropietario">
                         <div *ngIf="
                         array_propio_lleno != false && array_propietario_lleno != false">
-                            <a routerLink="/publicaciones/{{arrayPublicacionesAlquileresPropietarios[indice]._id}}"
+                            <a routerLink="/publicaciones/{{alquilerPropietario.id_publicacion}}"
                                 class="titulo_alquiler" target="_blank">
                                 {{arrayPublicacionesAlquileresPropietarios[indice].titulo}} </a>
                         </div>
@@ -42,7 +42,7 @@
                         <div fxLayout="column" fxLayoutAlign="center center">
                             <div fxLayout="row" fxLayoutAlign="center center">
                                 <a id="titulo" fxLayout="column" fxLayoutAlign="center center"
-                                    routerLink="/publicaciones/{{arrayPublicacionesAlquileresPropietarios[indice]._id}}"
+                                    routerLink="/publicaciones/{{alquilerPropietario.id_publicacion}}"
                                     style="cursor: pointer;" matTooltip="Ir a la publicación" matTooltipPosition="after"
                                     target="_blank">
                                     <img class="imagen"
@@ -358,15 +358,15 @@
                         class="mat-elevation-z8 contenedor-individual" *ngIf="hayAlquileresPropios">
                         <div *ngIf="
                         array_propio_lleno !=false && array_propietario_lleno !=false">
-                            <a routerLink="/publicaciones/{{arrayTitulosPublicacionesPropios[indice]._id}}"
-                                class="titulo_alquiler" target="_blank">
+                            <a routerLink="/publicaciones/{{alquilerPropio.id_publicacion}}" class="titulo_alquiler"
+                                target="_blank">
                                 {{arrayTitulosPublicacionesPropios[indice].titulo}} </a>
                         </div>
                         <mat-divider style="width: 100%;"></mat-divider>
                         <div fxLayout="column" fxLayoutAlign="center center">
                             <div fxLayout="row" fxLayoutAlign="center center">
                                 <a id="titulo" fxLayout="column" fxLayoutAlign="center center"
-                                    routerLink="/publicaciones/{{arrayTitulosPublicacionesPropios[indice]._id}}"
+                                    routerLink="/publicaciones/{{alquilerPropio.id_publicacion}}"
                                     style="cursor: pointer;" matTooltip="Ir a la publicación" matTooltipPosition="after"
                                     target="_blank">
                                     <img class="imagen"

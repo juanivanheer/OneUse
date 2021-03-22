@@ -55,6 +55,7 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
   ngOnInit() {
     this.arrayAlquilerPropietario = []
     this.arrayAlquilerPropios = []
+
     this.subscription = this._auth.user_data(localStorage.getItem("email")).subscribe(
       res => {
         this.usuarioLogueado = res;
@@ -121,7 +122,6 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
     setInterval(() => {
       if (this.hayAlquileresPropios == true && this.arrayPublicacionesAlquileresPropios[(this.arrayAlquilerPropios.length - 1)] != undefined) this.array_propio_lleno = true;
       else if (this.hayAlquileresPropios = false && this.arrayPublicacionesAlquileresPropios[(this.arrayAlquilerPropios.length - 1)] == undefined) this.mostrar = true;
-      //if (this.hayAlquileresPropietario == true && this.arrayPublicacionesAlquileresPropietarios[(this.arrayAlquilerPropietario.length - 1)] != undefined) this.array_propietario_lleno = true;
 
       if (this.array_propio_lleno != false && this.array_propietario_lleno != false) {
         this.checkTitulosPublicacionesPropios();
@@ -389,6 +389,32 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
     });
   }
 
+  actualizar() {
+    this.reiniciarVariables()
+    this.ngOnInit();
+  }
+
+  reiniciarVariables() {
+    this.usuarioLogueado = {};
+    this.arrayAlquilerPropietario = [];
+    this.arrayDatosPropietario = [];
+    this.arrayAlquilerPropios = [];
+    this.arrayPublicacionesAlquileresPropios = [];
+    this.arrayPublicacionesAlquileresPropietarios = []
+    this.arrayDatosPropios = [];
+    this.hayAlquileresPropietario = false;
+    this.hayAlquileresPropios = false;
+    this.reclamado = false;
+    this.arrayEstados = [];
+    this.arrayDevolucionLocatario = [];
+    this.arrayDevolucionPropietario = [];
+    this.mostrar = false;
+    this.array_estados = [];
+    this.arrayTitulosPublicacionesPropios = [];
+    this.arrayTitulosPublicacionesPropietario = []
+    this.array_propietario_lleno = false;
+    this.array_propio_lleno = false;
+  }
 }
 
 
