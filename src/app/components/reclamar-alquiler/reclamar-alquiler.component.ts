@@ -67,6 +67,8 @@ export class ReclamarAlquilerComponent implements OnInit {
   }
 
   reclamar() {
+
+    
     this._auth.datosAlquiler.pipe(take(1))
     .subscribe(mensaje => this.datosAlquiler = mensaje);
     this.reclamoData = { tipo: undefined, motivo: undefined, usuario_reclamo: this.emailLogueado, 
@@ -86,6 +88,18 @@ export class ReclamarAlquilerComponent implements OnInit {
         console.log(err)
         
       }
+    )
+
+    this._auth.registrar_reclamado(this.datosAlquiler._id).subscribe(
+      res => {
+        
+      },
+      err => {
+        console.log(err)
+        
+      }
+
+
     )
     this._router.navigate(['/reclamo-exito']);
   }

@@ -6,7 +6,7 @@ import { MatSnackBar } from '@angular/material';
 import { MatPaginator, MatSort, MatTableDataSource, MatDialogRef, MatDialog } from '@angular/material';
 
 
-
+ 
 @Component({
   selector: 'app-mis-reclamos',
   templateUrl: './mis-reclamos.component.html',

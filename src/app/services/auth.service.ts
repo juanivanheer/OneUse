@@ -57,6 +57,7 @@ export class AuthService {
   private _getPropietarioAlquiler = this.url + "get-propietario-alquiler/"
   private _registrarCodigoPropietarioEntrega = this.url + "registrar-entrega-locatario/"
   private _registrarCodigoLocatarioEntrega = this.url + "registrar-entrega-propietario/"
+  private _registrarReclamado = this.url + "registrar-reclamo-alquiler/"
   private _registrarReclamo = this.url + "cancelar-alquiler/"
   private _registrarVisitaPublicacion = this.url + "visitas-publicaciones/"
   private _registrarEnProcesoDevolucion = this.url + "registrar-demora-devolucion/"
@@ -305,6 +306,12 @@ export class AuthService {
     let objeto = {}
     return this.http.post<any>(this._registrarEnProcesoDevolucion + name_propietario, objeto);
   }
+
+  registrar_reclamado(id_alquiler) {
+    let params = JSON.stringify(id_alquiler);
+    return this.http.post<any>(this._registrarReclamado + id_alquiler , params);
+  }
+
 
   registrar_codigoPropietarioDevolucion(codigo) {
     let params = JSON.stringify(codigo);

@@ -297,12 +297,12 @@
                                             <span> Datos del locatario </span>
                                         </button>
                                         <button *ngIf="alquilerPropietario.estado == 'En proceso de entrega'"
-                                            mat-menu-item routerLink="/reclamar-alquiler">
+                                            mat-menu-item (click)="pre_reclamo(alquilerPropietario)">
                                             <mat-icon>cancel</mat-icon>
                                             <span> Reclamar alquiler</span>
                                         </button>
                                         <button *ngIf="alquilerPropietario.estado == 'En proceso de devolución'"
-                                            mat-menu-item routerLink="/reclamar-alquiler">
+                                            mat-menu-item (click)="pre_reclamo(alquilerPropietario)">
                                             <mat-icon>cancel</mat-icon>
                                             <span> Reclamar alquiler</span>
                                         </button>
@@ -618,12 +618,12 @@
                                             <span> Datos del propietario</span>
                                         </button>
                                         <button *ngIf="alquilerPropio.estado == 'En proceso de entrega'" mat-menu-item
-                                            routerLink="/reclamar-alquiler">
+                                            (click)="pre_reclamo(alquilerPropio)">
                                             <mat-icon>cancel</mat-icon>
                                             <span> Reclamar alquiler</span>
                                         </button>
                                         <button *ngIf="alquilerPropio.estado == 'En proceso de devolución'"
-                                            mat-menu-item routerLink="/reclamar-alquiler">
+                                            mat-menu-item (click)="pre_reclamo(alquilerPropio)">
                                             <mat-icon>cancel</mat-icon>
                                             <span> Reclamar alquiler</span>
                                         </button>
