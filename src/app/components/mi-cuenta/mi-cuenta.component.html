@@ -10,7 +10,7 @@
       <p style="font-size: 25px;margin-bottom: 25px;">Mis estadísticas</p>
       <mat-divider style="width:100%;"></mat-divider>
     </div>
-    <mat-tab-group class="contenedorDeDatos" (selectedTabChange)="cambioTab($event)" style="height: 100%;width: 100%;">
+    <mat-tab-group dynamicHeight class="contenedorDeDatos" (selectedTabChange)="cambioTab($event)" style="height: 100%;width: 100%;">
       <mat-tab>
         <div fxHide.lt-lg="true">
           <ng-template mat-tab-label>

@@ -16,7 +16,7 @@
         <div class="contenedorDeDatos" ngClass.gt-md="tab-gt-md" ngClass.lt-lg="tab-lt-md" *ngIf="mostrar">
             <form [formGroup]="formulario">
                 <!-- #udpdateForm="ngForm" -->
-                <mat-tab-group (selectedTabChange)="cambioTab($event)">
+                <mat-tab-group dynamicHeight (selectedTabChange)="cambioTab($event)">
                     <mat-tab>
                         <div fxHide.lt-lg="true">
                             <ng-template mat-tab-label>

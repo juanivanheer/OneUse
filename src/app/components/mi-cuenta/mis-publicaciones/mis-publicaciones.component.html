@@ -12,7 +12,7 @@
             <mat-spinner diameter="200" ></mat-spinner>
             <p>Cargando...</p>
         </div>
-        <mat-tab-group style="width: 100%;" (selectedTabChange)="cambioTab($event)" *ngIf="mostrar">
+        <mat-tab-group dynamicHeight style="width: 100%;" (selectedTabChange)="cambioTab($event)" *ngIf="mostrar">
             <mat-tab>
                 <div fxHide.lt-lg="true">
                     <ng-template mat-tab-label>
