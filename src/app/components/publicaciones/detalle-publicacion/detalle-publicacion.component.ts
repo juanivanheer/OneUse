@@ -38,6 +38,7 @@ export class DetallePublicacionComponent implements OnInit, OnDestroy {
   email;
   logueado;
   usuario = { name: '' };
+  usuario_publicador;
   usuario_logueado = { name: '' };
   estadoBtnPreguntar = false;
   valorPregunta;
@@ -138,6 +139,7 @@ export class DetallePublicacionComponent implements OnInit, OnDestroy {
         this._auth.user_data(this.email).subscribe(
           res => {
             this.usuario = res;
+            this.usuario_publicador = res;
           }
         )
 
@@ -303,7 +305,7 @@ export class DetallePublicacionComponent implements OnInit, OnDestroy {
   }
 
   irUsuario(){
-    window.location.assign("/users/" + this.logueado._id)
+    window.location.assign("/users/" + this.usuario_publicador._id)
   }
 
   //SWIPER
