@@ -1,0 +1,248 @@
+<section fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px" style="margin: 40px">
+    <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px" *ngIf="!mostrar" style="margin:50px">
+        <mat-spinner diameter="200"></mat-spinner>
+        <p>Cargando...</p>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center start" *ngIf="mostrar && hayUsuario" fxLayoutGap="50px">
+        <div fxLayout="column" fxLayoutAlign="center center" class="mat-elevation-z8" style="padding: 40px;">
+            <div style="margin-top: 15px; margin-bottom: 10px;">
+                <img *ngIf="usuario.tipo == 'oneuse'" class="previsualizacion"
+                    src="{{'http://localhost:4201/api/get-image/'+id}}">
+                <img *ngIf="usuario.tipo == 'gmail' || usuario.tipo == 'facebook'" class="previsualizacion"
+                    [src]="usuario.removablefile">
+            </div>
+            <div fxLayout="column" fxLayoutGap="10px">
+                <h3 style="text-align: center;"> {{usuario.name}} </h3>
+                <p> {{tiempo}} </p>
+                <br>
+                <h4>Reputación</h4>
+                <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="4px" style="font-size: 11px;">
+                    <mat-icon style="color: green;">check_circle</mat-icon>
+                    <span> {{titulo_cantidad}} </span>
+                </div>
+                <p>Calificación promedio como propietario:</p>
+                <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+                    <button mat-icon-button>
+                        <mat-icon style="color:black" *ngIf="!seleccion1_propietario">star</mat-icon>
+                        <mat-icon style="color: gold;" *ngIf="seleccion1_propietario">star</mat-icon>
+                    </button>
+                    <button mat-icon-button>
+                        <mat-icon style="color:black" *ngIf="!seleccion2_propietario">star</mat-icon>
+                        <mat-icon style="color: gold;" *ngIf="seleccion2_propietario">star</mat-icon>
+                    </button>
+                    <button mat-icon-button>
+                        <mat-icon style="color:black" *ngIf="!seleccion3_propietario">star</mat-icon>
+                        <mat-icon style="color: gold;" *ngIf="seleccion3_propietario">star</mat-icon>
+                    </button>
+                    <button mat-icon-button>
+                        <mat-icon style="color:black" *ngIf="!seleccion4_propietario">star</mat-icon>
+                        <mat-icon style="color: gold;" *ngIf="seleccion4_propietario">star</mat-icon>
+                    </button>
+                    <button mat-icon-button>
+                        <mat-icon style="color:black" *ngIf="!seleccion5_propietario">star</mat-icon>
+                        <mat-icon style="color: gold;" *ngIf="seleccion5_propietario">star</mat-icon>
+                    </button>
+                </div>
+                <p>Calificación promedio como locatario:</p>
+                <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+                    <button mat-icon-button>
+                        <mat-icon style="color:black" *ngIf="!seleccion1_locatario">star</mat-icon>
+                        <mat-icon style="color: gold;" *ngIf="seleccion1_locatario">star</mat-icon>
+                    </button>
+                    <button mat-icon-button>
+                        <mat-icon style="color:black" *ngIf="!seleccion2_locatario">star</mat-icon>
+                        <mat-icon style="color: gold;" *ngIf="seleccion2_locatario">star</mat-icon>
+                    </button>
+                    <button mat-icon-button>
+                        <mat-icon style="color:black" *ngIf="!seleccion3_locatario">star</mat-icon>
+                        <mat-icon style="color: gold;" *ngIf="seleccion3_locatario">star</mat-icon>
+                    </button>
+                    <button mat-icon-button>
+                        <mat-icon style="color:black" *ngIf="!seleccion4_locatario">star</mat-icon>
+                        <mat-icon style="color: gold;" *ngIf="seleccion4_locatario">star</mat-icon>
+                    </button>
+                    <button mat-icon-button>
+                        <mat-icon style="color:black" *ngIf="!seleccion5_locatario">star</mat-icon>
+                        <mat-icon style="color: gold;" *ngIf="seleccion5_locatario">star</mat-icon>
+                    </button>
+                </div>
+                <br>
+                <div fxLayout="column" fxLayoutGap="8px">
+                    <h4 style="margin-top: 15px;">Ubicación</h4>
+                    <p style="margin-top: 10px;">{{usuario.ciudad}}, {{usuario.provincia}}</p>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="center center">
+            <div class="mat-elevation-z8" style="padding: 30px;">
+                <mat-tab-group [dynamicHeight]=false>
+                    <mat-tab>
+                        <ng-template mat-tab-label>Opiniones de locatarios</ng-template>
+                        <!--CONTENIDO-->
+                        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px" style="margin-top: 20px;">
+                            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="30px">
+                                <div>
+                                    <h1> {{sumatoria_opiniones_locatarios}} </h1>
+                                </div>
+                                <div fxLayout="column" fxLayoutAlign="center">
+                                    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px">
+                                        <mat-progress-bar mode="determinate" color="primary"
+                                            [value]=progress_buena_locatario style="width: 100px;"></mat-progress-bar>
+                                        <span> Buena ({{sumatoria_buena_locatarios}}) </span>
+                                    </div>
+                                    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px">
+                                        <mat-progress-bar mode="determinate" color="primary"
+                                            [value]=progress_regular_locatario style="width: 100px;"></mat-progress-bar>
+                                        <span> Regular ({{sumatoria_regular_locatarios}}) </span>
+                                    </div>
+                                    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px">
+                                        <mat-progress-bar mode="determinate" color="primary"
+                                            [value]=progress_mala_locatario style="width: 100px;"></mat-progress-bar>
+                                        <span> Mala ({{sumatoria_mala_locatarios}}) </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <mat-divider style="width: 90%;"></mat-divider>
+                            <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="20px"
+                                *ngFor="let puntuacion of arrayPuntuacionesComentariosLocatarios; let indice of index"
+                                style="width: 100%;">
+                                <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="5px"
+                                    style="width: 100%;">
+                                    <!--Estrellas-->
+                                    <div fxLayout="row" fxLayoutAlign="start center" style="width: 100%;">
+                                        <p>
+                                            <mat-icon style="color:black" *ngIf="!puntuacion.seleccion1">star
+                                            </mat-icon>
+                                            <mat-icon style="color: gold;" *ngIf="puntuacion.seleccion1">star
+                                            </mat-icon>
+                                        </p>
+                                        <p>
+                                            <mat-icon style="color:black" *ngIf="!puntuacion.seleccion2">star
+                                            </mat-icon>
+                                            <mat-icon style="color: gold;" *ngIf="puntuacion.seleccion2">star
+                                            </mat-icon>
+                                        </p>
+                                        <p>
+                                            <mat-icon style="color:black" *ngIf="!puntuacion.seleccion3">star
+                                            </mat-icon>
+                                            <mat-icon style="color: gold;" *ngIf="puntuacion.seleccion3">star
+                                            </mat-icon>
+                                        </p>
+                                        <p>
+                                            <mat-icon style="color:black" *ngIf="!puntuacion.seleccion4">star
+                                            </mat-icon>
+                                            <mat-icon style="color: gold;" *ngIf="puntuacion.seleccion4">star
+                                            </mat-icon>
+                                        </p>
+                                        <p>
+                                            <mat-icon style="color:black" *ngIf="!puntuacion.seleccion5">star
+                                            </mat-icon>
+                                            <mat-icon style="color: gold;" *ngIf="puntuacion.seleccion5">star
+                                            </mat-icon>
+                                        </p>
+                                    </div>
+                                    <div style="width: 100%;">
+                                        <p style="font-size: 11px;color: gray;font-weight: 200;">
+                                            {{puntuacion.comentario}}</p>
+                                    </div>
+                                    <div style="width: 100%;">
+                                        <p style="font-size: 11px;color: gray;font-weight: 200;">{{puntuacion.usuario}} - {{puntuacion.fecha}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab>
+                        <ng-template mat-tab-label>Opiniones de propietarios</ng-template>
+                        <!--CONTENIDO-->
+                        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px" style="margin-top: 20px;">
+                            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="30px">
+                                <div>
+                                    <h1> {{sumatoria_opiniones_propietarios}} </h1>
+                                </div>
+                                <div fxLayout="column" fxLayoutAlign="center">
+                                    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px">
+                                        <mat-progress-bar mode="determinate" color="primary"
+                                            [value]=progress_buena_locatario style="width: 100px;"></mat-progress-bar>
+                                        <span> Buena ({{sumatoria_buena_propietarios}}) </span>
+                                    </div>
+                                    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px">
+                                        <mat-progress-bar mode="determinate" color="primary"
+                                            [value]=progress_regular_locatario style="width: 100px;"></mat-progress-bar>
+                                        <span> Regular ({{sumatoria_regular_propietarios}}) </span>
+                                    </div>
+                                    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px">
+                                        <mat-progress-bar mode="determinate" color="primary"
+                                            [value]=progress_mala_locatario style="width: 100px;"></mat-progress-bar>
+                                        <span> Mala ({{sumatoria_mala_propietarios}}) </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <mat-divider style="width: 90%;"></mat-divider>
+                            <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="20px"
+                                *ngFor="let puntuacion of arrayPuntuacionesComentariosPropietarios; let indice of index"
+                                style="width: 100%;">
+                                <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="5px"
+                                    style="width: 100%;">
+                                    <!--Estrellas-->
+                                    <div fxLayout="row" fxLayoutAlign="start center" style="width: 100%;">
+                                        <p>
+                                            <mat-icon style="color:black" *ngIf="!puntuacion.seleccion1">star
+                                            </mat-icon>
+                                            <mat-icon style="color: gold;" *ngIf="puntuacion.seleccion1">star
+                                            </mat-icon>
+                                        </p>
+                                        <p>
+                                            <mat-icon style="color:black" *ngIf="!puntuacion.seleccion2">star
+                                            </mat-icon>
+                                            <mat-icon style="color: gold;" *ngIf="puntuacion.seleccion2">star
+                                            </mat-icon>
+                                        </p>
+                                        <p>
+                                            <mat-icon style="color:black" *ngIf="!puntuacion.seleccion3">star
+                                            </mat-icon>
+                                            <mat-icon style="color: gold;" *ngIf="puntuacion.seleccion3">star
+                                            </mat-icon>
+                                        </p>
+                                        <p>
+                                            <mat-icon style="color:black" *ngIf="!puntuacion.seleccion4">star
+                                            </mat-icon>
+                                            <mat-icon style="color: gold;" *ngIf="puntuacion.seleccion4">star
+                                            </mat-icon>
+                                        </p>
+                                        <p>
+                                            <mat-icon style="color:black" *ngIf="!puntuacion.seleccion5">star
+                                            </mat-icon>
+                                            <mat-icon style="color: gold;" *ngIf="puntuacion.seleccion5">star
+                                            </mat-icon>
+                                        </p>
+                                    </div>
+                                    <div style="width: 100%;">
+                                        <p style="font-size: 11px;color: gray;font-weight: 200;">
+                                            {{puntuacion.comentario}}</p>
+                                    </div>
+                                    <div style="width: 100%;">
+                                        <p style="font-size: 11px;color: gray;font-weight: 200;">{{puntuacion.usuario}} - {{puntuacion.fecha}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+
+            <div>
+
+            </div>
+        </div>
+    </div>
+    <div fxLayout="column" fxLayoutAlign="center center" *ngIf="mostrar && !hayUsuario">
+        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="15px">
+            <img src="../../../assets/images/travolta-crunched.gif" style="block-size: 200px;">
+            <h5> Lo sentimos, pero no encontramos al usuario consultado </h5>
+            <button mat-raised-button color="primary" (click)="inicio()">Ir al inicio</button>
+        </div>
+    </div>
+</section>

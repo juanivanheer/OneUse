@@ -302,6 +302,10 @@ export class DetallePublicacionComponent implements OnInit, OnDestroy {
     }
   }
 
+  irUsuario(){
+    window.location.assign("/users/" + this.logueado._id)
+  }
+
   //SWIPER
   public config: SwiperConfigInterface = {
     a11y: true,

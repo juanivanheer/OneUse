@@ -27,6 +27,7 @@ export class AuthService {
   private _loginUrl = this.url + "login"
   private _confirmar = this.url + "confirmation"
   private _userData = this.url + "user-data?email="
+  private _userId = this.url + "user-id/"
   private _updateUser = this.url + "update-user?id="
   private _getImgUser = this.url + "get-img-name/"
   private _registerPublicacion = this.url + "register-publicacion?email="
@@ -118,6 +119,10 @@ export class AuthService {
 
   user_data(email) {
     return this.http.get<any>(this._userData + email)
+  }
+
+  user_id(id){
+    return this.http.get<any>(this._userId + id);
   }
 
   update_user(user, _id) {

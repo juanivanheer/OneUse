@@ -116,7 +116,10 @@
                     <br>
                     <p fxFlexAlign="start" *ngIf="preciosemana > 0"><b>Precio por semana: </b> ${{preciosemana}} </p>
                     <p fxFlexAlign="start" *ngIf="preciomes > 0"><b>Precio por mes: </b> ${{preciomes}} </p>
-                    <p fxFlexAlign="start"><b>Publicado por: </b> {{usuario.name}} </p>
+                    <p fxFlexAlign="start" (click)="irUsuario()" style="cursor: pointer;">
+                        <b>Publicado por </b>
+                        <span style="color: #3483fa">{{usuario.name}}</span>
+                    </p>
                     <br>
                     <form [formGroup]="cantidades">
                         <div fxLayout="row" fxFlexFill fxLayoutGap="20px" *ngIf="estaLogueado && !es_publicador">
@@ -144,13 +147,14 @@
                         </div>
                     </form>
                     <div class="btnAlquilar">
-                        <p *ngIf="montoTotal > 0" style="text-align: left;font-size: 12px;color: orangered; margin-bottom: 10px;">Monto total a abonar: ${{montoTotal}} </p>
+                        <p *ngIf="montoTotal > 0"
+                            style="text-align: left;font-size: 12px;color: orangered; margin-bottom: 10px;">Monto total
+                            a abonar: ${{montoTotal}} </p>
                         <button (click)="iniciarSesion()" style="width: 300px;" mat-raised-button color="primary"
                             *ngIf="!estaLogueado">Iniciar sesión para poder alquilar</button>
                         <button routerLink='/editar-publicacion/{{id}}' style="width: 300px;" mat-raised-button
                             color="primary" *ngIf="estaLogueado && es_publicador">Editar</button>
-                        <button (click)="registrarAlquiler()"
-                            style="width: 300px;" mat-raised-button color="primary"
+                        <button (click)="registrarAlquiler()" style="width: 300px;" mat-raised-button color="primary"
                             *ngIf="estaLogueado && !es_publicador" [disabled]="btnAlquilar">Alquilar</button>
                     </div>
                 </div>

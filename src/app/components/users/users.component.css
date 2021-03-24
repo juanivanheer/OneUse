@@ -1,0 +1,10 @@
+.previsualizacion {
+    width: 250px;
+    height: 250px;
+    border: 2px solid gray;
+    border-radius: 140px;
+}
+
+p {
+    font-size: 12px;
+}
