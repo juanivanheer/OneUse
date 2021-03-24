@@ -94,6 +94,7 @@ import { PuntuacionComponent } from './components/mi-cuenta/mis-alquileres/puntu
 import { MisReclamosComponent } from './components/mi-cuenta/mis-reclamos/mis-reclamos.component';
 import { BarraLateralSaComponent } from './components/mi-cuenta/superadmin/barra-lateral-sa/barra-lateral-sa.component';
 import { PuntuacionObtenidaDialogComponent } from './components/mi-cuenta/mis-alquileres/puntuacion-obtenida-dialog/puntuacion-obtenida-dialog.component';
+import { ReclamoDialogComponent } from './components/mi-cuenta/mis-reclamos/reclamo-dialog/reclamo-dialog.component';
 
 FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme);
 
@@ -173,7 +174,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     PuntuacionComponent,
     MisReclamosComponent,
     BarraLateralSaComponent,
-    PuntuacionObtenidaDialogComponent
+    PuntuacionObtenidaDialogComponent,
+    ReclamoDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -200,6 +202,6 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   entryComponents: [DeshabilitarDialogComponent, EliminarDialogComponent, DatosPropietarioDialogComponent, EliminarAlquilerDialogComponent,
     DatosLocatarioDialogComponent, CodigoPropietarioDialogComponent, CodigoLocatarioDialogComponent, CodigoDevolucionLocatarioDialogComponent,
     CodigoDevolucionPropietarioDialogComponent, EliminarUsuarioDialogComponent, DatosUsuariosDialogComponent, ModificarUsuarioDialogComponent, DatosPublicacionesDialogComponent, EliminarPublicacionDialogComponent, ModificarPublicacionDialogComponent,
-    DatosAlquileresDialogComponent, ModificarAlquilerDialogComponent, EliminarAlquilerSuperadminDialogComponent, CancelarDialogComponent, PuntuacionComponent, PuntuacionObtenidaDialogComponent]
+    DatosAlquileresDialogComponent, ModificarAlquilerDialogComponent, EliminarAlquilerSuperadminDialogComponent, CancelarDialogComponent, PuntuacionComponent, PuntuacionObtenidaDialogComponent, ReclamoDialogComponent]
 })
 export class AppModule { }
