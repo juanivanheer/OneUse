@@ -1,0 +1,20 @@
+<h2 mat-dialog-title style="text-align: center">Detalle de reclamo</h2>
+<mat-dialog-content class="mat-typography">
+    <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="20px">
+        <div>
+            <h3><b>Reclamo</b></h3>
+            <p *ngFor="let respuesta of respuestas"><b>{{respuesta.emisor_respuesta}}: </b> {{respuesta.respuesta}} </p>
+            <textarea matInput style="font-size: 20px"
+                            placeholder="Responda su reclamo"
+                            [(ngModel)]="respuesta" name="respuesta_persona" cdkTextareaAutosize required>
+            </textarea>
+        </div>
+    
+    </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" mat-dialog-close (click)="enviar_respuesta()">Enviar Respuesta</button>
+    <button mat-raised-button color="primary" mat-dialog-close (click)="close()">Salir</button>
+</mat-dialog-actions>

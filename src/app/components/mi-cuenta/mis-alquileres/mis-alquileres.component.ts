@@ -68,7 +68,7 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
               for (let i = 0; i < this.arrayAlquilerPropietario.length; i++) {
                 var date = new Date(res1.alquiler[i].createdAt).toLocaleDateString();
                 this.arrayAlquilerPropietario[i].createdAt = date;
-                if (this.arrayAlquilerPropietario[i].estado != "Cancelado") {
+                if (this.arrayAlquilerPropietario[i].estado != "Cancelado" && this.arrayAlquilerPropietario[i].estado != "En proceso de reclamo" ) {
                   this.arrayDatosPropietario.push(this.arrayAlquilerPropietario[i])
                 }
               }
@@ -105,7 +105,7 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
 
                 var date = new Date(res1.alquiler[i].createdAt).toLocaleDateString();
                 this.arrayAlquilerPropios[i].createdAt = date;
-                if (this.arrayAlquilerPropios[i].estado != "Cancelado") this.arrayDatosPropios.push(this.arrayAlquilerPropios[i])
+                if (this.arrayAlquilerPropios[i].estado != "Cancelado" && this.arrayAlquilerPropios[i].estado != "En proceso de reclamo" ) this.arrayDatosPropios.push(this.arrayAlquilerPropios[i])
               }
             } else this.hayAlquileresPropios = false; this.array_propio_lleno = true;
           })
@@ -198,8 +198,12 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   pre_reclamo(datos) {
+    console.log('datos')
     this._auth.registraDatosPreReclamo(datos);
+    
     this._router.navigate(['/prereclamo']);
+
+    
   }
 
   pagar(alquiler) {

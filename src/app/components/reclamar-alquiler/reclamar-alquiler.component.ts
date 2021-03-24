@@ -39,7 +39,11 @@ export class ReclamarAlquilerComponent implements OnInit {
     codigoPropietarioDevolucionIngresado: undefined,
     codigoPropietarioIngresado: undefined,
     id_publicacion:undefined,
-    imagen: undefined } 
+    estado_reclamo: undefined,
+    imagen: undefined,
+    respuestas: 
+    [] 
+  } 
   datosAlquiler: any;
 
   constructor(private _auth: AuthService, private singletoon: SingletonService, private _snackBar: MatSnackBar, private _adapter: DateAdapter<any>, private singleton: SingletonService, private _router: Router) { }
@@ -67,15 +71,29 @@ export class ReclamarAlquilerComponent implements OnInit {
   }
 
   reclamar() {
+
+    
     this._auth.datosAlquiler.pipe(take(1))
     .subscribe(mensaje => this.datosAlquiler = mensaje);
-    this.reclamoData = { tipo: undefined, motivo: undefined, usuario_reclamo: this.emailLogueado, 
+    let motivo = this.reclamoData.motivo
+    let tipo = this.reclamoData.tipo
+
+    this.reclamoData = { tipo: tipo, motivo: motivo, usuario_reclamo: this.emailLogueado, 
       codigoLocatarioDevolucionIngresado: this.datosAlquiler.codigoLocatarioDevolucionIngresado,
       codigoLocatarioIngresado: this.datosAlquiler.codigoLocatarioIngresado,
       codigoPropietarioDevolucionIngresado: this.datosAlquiler.codigoPropietarioDevolucionIngresado,
       codigoPropietarioIngresado: this.datosAlquiler.codigoPropietarioIngresado,
       id_publicacion:this.datosAlquiler.id_publicacion,
-      imagen: this.datosAlquiler.imagen} 
+      estado_reclamo: 'Esperando respuesta del sitio',
+      imagen: this.datosAlquiler.imagen,
+      respuestas: [{
+        emisor_respuesta: this.emailLogueado,
+        respuesta: motivo,
+        nro_rta: 1
+    
+        }] 
+    }
+    console.log(this.reclamoData) 
 
     this._auth.registrar_reclamo(this.reclamoData).subscribe(
       
@@ -86,6 +104,18 @@ export class ReclamarAlquilerComponent implements OnInit {
         console.log(err)
         
       }
+    )
+
+    this._auth.registrar_reclamado(this.datosAlquiler._id).subscribe(
+      res => {
+        
+      },
+      err => {
+        console.log(err)
+        
+      }
+
+
     )
     this._router.navigate(['/reclamo-exito']);
   }
