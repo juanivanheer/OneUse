@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/add/observable/zip";
+import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 
 @Component({
   selector: 'app-users',
@@ -51,9 +52,10 @@ export class UsersComponent implements OnInit {
   progress_buena_locatario = 0;
   progress_regular_locatario = 0;
   progress_mala_locatario = 0;
-  progress4 = 0;
-  progress5 = 0;
-  progress6 = 0;
+
+  progress_buena_propietario = 0;
+  progress_regular_propietario = 0;
+  progress_mala_propietario = 0;
 
   timer;
   timer1;
@@ -62,7 +64,6 @@ export class UsersComponent implements OnInit {
   timer4;
   timer5;
   timer6;
-
 
   ngOnInit() {
     this.id = String(window.location.href).slice(29)
@@ -134,7 +135,7 @@ export class UsersComponent implements OnInit {
         this.cantidad_alquilada++;
       }
     }
-    if(this.cantidad_alquilada == 1){
+    if (this.cantidad_alquilada == 1) {
       this.titulo_cantidad = "1 alquiler realizado en los últimos 90 días."
     } else {
       this.titulo_cantidad = this.cantidad_alquilada + " alquileres realizados en los últimos 90 días."
@@ -271,7 +272,7 @@ export class UsersComponent implements OnInit {
         this.timer1 = setInterval(() => {
           if (this.sumatoria_buena_locatarios == 0) clearInterval(this.timer1);
           this.progress_buena_locatario = this.progress_buena_locatario + 1;
-          if (this.progress_buena_locatario >= (100 - this.sumatoria_buena_locatarios)) {
+          if (this.progress_buena_locatario >= Math.floor(this.sumatoria_buena_locatarios * 100 / this.sumatoria_opiniones_locatarios)) {
             clearInterval(this.timer1);
           }
         }, 10)
@@ -280,7 +281,7 @@ export class UsersComponent implements OnInit {
         this.timer2 = setInterval(() => {
           if (this.sumatoria_regular_locatarios == 0) clearInterval(this.timer2);
           this.progress_regular_locatario = this.progress_regular_locatario + 1;
-          if (this.progress_regular_locatario >= (100 - this.sumatoria_regular_locatarios)) {
+          if (this.progress_regular_locatario >= Math.floor(this.sumatoria_regular_locatarios * 100 / this.sumatoria_opiniones_locatarios)) {
             clearInterval(this.timer2);
           }
         }, 10)
@@ -289,31 +290,34 @@ export class UsersComponent implements OnInit {
         this.timer3 = setInterval(() => {
           if (this.sumatoria_mala_locatarios == 0) clearInterval(this.timer3);
           this.progress_mala_locatario = this.progress_mala_locatario + 1;
-          if (this.progress_mala_locatario >= (100 - this.sumatoria_mala_locatarios)) {
+          if (this.progress_mala_locatario >= Math.floor(this.sumatoria_mala_locatarios * 100 / this.sumatoria_opiniones_locatarios)) {
             clearInterval(this.timer3);
           }
         }, 10)
 
         /* 4° BARRA Responsabilidad Social */
         this.timer4 = setInterval(() => {
-          this.progress4 = this.progress4 + 0.8;
-          if (this.progress4 >= 100) {
+          if (this.sumatoria_buena_propietarios == 0) clearInterval(this.timer4);
+          this.progress_buena_propietario = this.progress_buena_propietario + 0.5;
+          if (this.progress_buena_propietario >= Math.floor(this.sumatoria_buena_propietarios * 100 / this.sumatoria_opiniones_propietarios)) {
             clearInterval(this.timer4);
           }
         }, 10)
 
         /* 5° BARRA Excelencia */
         this.timer5 = setInterval(() => {
-          this.progress5 = this.progress5 + 0.8;
-          if (this.progress5 >= 100) {
+          if (this.sumatoria_regular_propietarios == 0) clearInterval(this.timer5);
+          this.progress_regular_propietario = this.progress_regular_propietario + 0.5;
+          if (this.progress_regular_propietario >= Math.floor(this.sumatoria_regular_propietarios * 100 / this.sumatoria_opiniones_propietarios)) {
             clearInterval(this.timer5);
           }
         }, 10)
 
         /* 6° BARRA Pasión */
         this.timer6 = setInterval(() => {
-          this.progress6 = this.progress6 + 0.8;
-          if (this.progress6 >= 100) {
+          if (this.sumatoria_mala_propietarios == 0) clearInterval(this.timer6);
+          this.progress_mala_propietario = this.progress_mala_propietario + 0.5;
+          if (this.progress_mala_propietario >= Math.floor(this.sumatoria_mala_propietarios * 100 / this.sumatoria_opiniones_propietarios)) {
             clearInterval(this.timer6);
           }
         }, 10)
@@ -339,7 +343,6 @@ export class UsersComponent implements OnInit {
         }
       }
     }
-    console.log(this.arrayPuntuacionesComentariosLocatarios)
   }
 
   obtenerComentariosPuntuacionesPropietarios() {
@@ -356,7 +359,6 @@ export class UsersComponent implements OnInit {
         }
       }
     }
-    console.log(this.arrayPuntuacionesComentariosPropietarios)
   }
 
   obtenerObjetoEstrellas(estrella, comentario, usuario, fecha) {
@@ -377,9 +379,19 @@ export class UsersComponent implements OnInit {
     }
   }
 
+  public config: SwiperConfigInterface = {
+    direction: 'horizontal',
+    slidesPerView: 3,
+    keyboard: true,
+    mousewheel: true,
+    scrollbar: false,
+    navigation: true,
+    pagination: true,
+    preventClicks: false,
+    allowTouchMove: false
+  };
+
 }
-
-
 
 class MyDate {
   dates: Date[];

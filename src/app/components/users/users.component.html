@@ -11,7 +11,7 @@
                 <img *ngIf="usuario.tipo == 'gmail' || usuario.tipo == 'facebook'" class="previsualizacion"
                     [src]="usuario.removablefile">
             </div>
-            <div fxLayout="column" fxLayoutGap="10px">
+            <div fxLayout="column" fxLayoutGap="17px">
                 <h3 style="text-align: center;"> {{usuario.name}} </h3>
                 <p> {{tiempo}} </p>
                 <br>
@@ -79,7 +79,8 @@
                     <mat-tab>
                         <ng-template mat-tab-label>Opiniones de locatarios</ng-template>
                         <!--CONTENIDO-->
-                        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px" style="margin-top: 20px;">
+                        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px"
+                            style="margin-top: 20px;">
                             <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="30px">
                                 <div>
                                     <h1> {{sumatoria_opiniones_locatarios}} </h1>
@@ -146,7 +147,8 @@
                                             {{puntuacion.comentario}}</p>
                                     </div>
                                     <div style="width: 100%;">
-                                        <p style="font-size: 11px;color: gray;font-weight: 200;">{{puntuacion.usuario}} - {{puntuacion.fecha}}
+                                        <p style="font-size: 11px;color: gray;font-weight: 200;">{{puntuacion.usuario}}
+                                            - {{puntuacion.fecha}}
                                         </p>
                                     </div>
                                 </div>
@@ -156,7 +158,8 @@
                     <mat-tab>
                         <ng-template mat-tab-label>Opiniones de propietarios</ng-template>
                         <!--CONTENIDO-->
-                        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px" style="margin-top: 20px;">
+                        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px"
+                            style="margin-top: 20px;">
                             <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="30px">
                                 <div>
                                     <h1> {{sumatoria_opiniones_propietarios}} </h1>
@@ -164,17 +167,18 @@
                                 <div fxLayout="column" fxLayoutAlign="center">
                                     <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px">
                                         <mat-progress-bar mode="determinate" color="primary"
-                                            [value]=progress_buena_locatario style="width: 100px;"></mat-progress-bar>
+                                            [value]=progress_buena_propietario style="width: 100px;"></mat-progress-bar>
                                         <span> Buena ({{sumatoria_buena_propietarios}}) </span>
                                     </div>
                                     <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px">
                                         <mat-progress-bar mode="determinate" color="primary"
-                                            [value]=progress_regular_locatario style="width: 100px;"></mat-progress-bar>
+                                            [value]=progress_regular_propietario style="width: 100px;">
+                                        </mat-progress-bar>
                                         <span> Regular ({{sumatoria_regular_propietarios}}) </span>
                                     </div>
                                     <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px">
                                         <mat-progress-bar mode="determinate" color="primary"
-                                            [value]=progress_mala_locatario style="width: 100px;"></mat-progress-bar>
+                                            [value]=progress_mala_propietario style="width: 100px;"></mat-progress-bar>
                                         <span> Mala ({{sumatoria_mala_propietarios}}) </span>
                                     </div>
                                 </div>
@@ -223,7 +227,8 @@
                                             {{puntuacion.comentario}}</p>
                                     </div>
                                     <div style="width: 100%;">
-                                        <p style="font-size: 11px;color: gray;font-weight: 200;">{{puntuacion.usuario}} - {{puntuacion.fecha}}
+                                        <p style="font-size: 11px;color: gray;font-weight: 200;">{{puntuacion.usuario}}
+                                            - {{puntuacion.fecha}}
                                         </p>
                                     </div>
                                 </div>
