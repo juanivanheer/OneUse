@@ -4,7 +4,8 @@
         <p>Cargando...</p>
     </div>
     <div fxLayout="row" fxLayoutAlign="center start" *ngIf="mostrar && hayUsuario" fxLayoutGap="50px">
-        <div fxLayout="column" fxLayoutAlign="center center" class="mat-elevation-z8" style="padding: 40px;">
+        <div fxLayout="column" fxLayoutAlign="center center" class="mat-elevation-z8"
+            style="padding: 40px; background: #ffffff;">
             <div style="margin-top: 15px; margin-bottom: 10px;">
                 <img *ngIf="usuario.tipo == 'oneuse'" class="previsualizacion"
                     src="{{'http://localhost:4201/api/get-image/'+id}}">
@@ -73,13 +74,13 @@
                 </div>
             </div>
         </div>
-        <div fxLayout="column" fxLayoutAlign="center center">
-            <div class="mat-elevation-z8" style="padding: 30px;">
+        <div fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-elevation-z8" style="padding: 30px;background: #ffffff;">
                 <mat-tab-group dynamicHeight>
                     <mat-tab>
                         <ng-template mat-tab-label>Opiniones de locatarios</ng-template>
                         <!--CONTENIDO-->
-                        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px"
+                        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="{{!mostrarMasLocatarios && arrayPuntuacionesLocatariosRestante.length > 0 ? '22px' : '30px'}}"
                             style="margin-top: 20px;">
                             <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="30px">
                                 <div>
@@ -103,9 +104,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <mat-divider style="width: 90%;"></mat-divider>
+                            <mat-divider style="width: 100%;"></mat-divider>
                             <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="20px"
-                                *ngFor="let puntuacion of arrayPuntuacionesComentariosLocatarios; let indice of index"
+                                *ngFor="let puntuacion of arrayPuntuacionesComentariosLocatarios; let indice = index"
                                 style="width: 100%;">
                                 <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="5px"
                                     style="width: 100%;">
@@ -153,13 +154,19 @@
                                     </div>
                                 </div>
                             </div>
+                            <div (click)="habilitarOpinionesLocatarios()" *ngIf="!mostrarMasLocatarios && arrayPuntuacionesLocatariosRestante.length > 0">
+                                <span style="color: #4a70af; cursor: pointer;">Mostrar más opiniones</span>
+                            </div>
+                            <div (click)="deshabilitarOpinionesLocatarios()" *ngIf="mostrarMasLocatarios">
+                                <span style="color: #4a70af; cursor: pointer;">Mostrar menos opiniones</span>
+                            </div>
                         </div>
                     </mat-tab>
                     <mat-tab>
                         <ng-template mat-tab-label>Opiniones de propietarios</ng-template>
                         <!--CONTENIDO-->
-                        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px"
-                            style="margin-top: 20px;">
+                        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="{{!mostrarMasPropietarios && arrayPuntuacionesPropietariosRestante.length > 0 ? '22px' : '30px'}}" 
+                            style="margin-top: 20px;"> <!--fxLayoutGap="22px"-->
                             <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="30px">
                                 <div>
                                     <h1> {{sumatoria_opiniones_propietarios}} </h1>
@@ -183,9 +190,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <mat-divider style="width: 90%;"></mat-divider>
+                            <mat-divider style="width: 100%;"></mat-divider>
                             <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="20px"
-                                *ngFor="let puntuacion of arrayPuntuacionesComentariosPropietarios; let indice of index"
+                                *ngFor="let puntuacion of arrayPuntuacionesComentariosPropietarios; let indice = index"
                                 style="width: 100%;">
                                 <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="5px"
                                     style="width: 100%;">
@@ -233,12 +240,48 @@
                                     </div>
                                 </div>
                             </div>
+                            <div (click)="habilitarOpinionesPropietarios()" *ngIf="!mostrarMasPropietarios && arrayPuntuacionesPropietariosRestante.length > 0">
+                                <span style="color: #4a70af; cursor: pointer;">Mostrar más opiniones</span>
+                            </div>
+                            <div (click)="deshabilitarOpinionesPropietarios()" *ngIf="mostrarMasPropietarios">
+                                <span style="color: #4a70af; cursor: pointer;">Mostrar menos opiniones</span>
+                            </div>
                         </div>
                     </mat-tab>
                 </mat-tab-group>
             </div>
 
-            <div>
+            <div style="margin-top: 30px;">
+                <h4 style="margin-bottom: 10px;">Publicaciones del usuario</h4>
+                <carousel [cellsToShow]="3" [width]="750" [height]="385" [arrows]="true" [arrowsOutside]="true"
+                    [cellsToScroll]="3">
+                    <div class="carousel-cell" *ngFor="let publicacion of publicacionesUsuario; let indice of index">
+                        <div fxLayout="column" fxLayoutAlign="start" class="mat-elevation-z6"
+                            style="height: 365px;margin: 10px;background: #ffffff;"
+                            (click)="irPublicacion('/publicaciones/'+publicacion._id)">
+                            <div style="text-align: center; margin: 5px;padding: 10px;">
+                                <img class="imgPublicacion"
+                                    src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[0]}}">
+                            </div>
+                            <div>
+                                <mat-divider style="width: 100%;"></mat-divider>
+                            </div>
+                            <div fxLayout="column" fxLayoutGap="5px" class="info">
+                                <span class="preciodia"> ${{publicacion.preciodia}} por día</span>
+                                <span style="font-size: 9px; color: green;;"
+                                    *ngIf="publicacion.preciomes > 0 || publicacion.preciosemana > 0">¡Promociones si lo
+                                    llevas por más
+                                    días!</span>
+                                <div>
+                                    <p *ngIf="publicacion.preciomes > 0 || publicacion.preciosemana > 0"
+                                        style="font-size: 11px; margin-top: 11px;"> {{publicacion.titulo}} </p>
+                                    <p *ngIf="publicacion.preciomes == 0 || publicacion.preciosemana == 0"
+                                        style="font-size: 11px; margin-top: 42px;"> {{publicacion.titulo}} </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </carousel>
 
             </div>
         </div>

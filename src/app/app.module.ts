@@ -96,7 +96,7 @@ import { BarraLateralSaComponent } from './components/mi-cuenta/superadmin/barra
 import { PuntuacionObtenidaDialogComponent } from './components/mi-cuenta/mis-alquileres/puntuacion-obtenida-dialog/puntuacion-obtenida-dialog.component';
 import { UsersComponent } from './components/users/users.component';
 import { ReclamoDialogComponent } from './components/mi-cuenta/mis-reclamos/reclamo-dialog/reclamo-dialog.component';
-
+import {IvyCarouselModule} from 'angular-responsive-carousel';
 FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme);
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
@@ -197,7 +197,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     FusionChartsModule,
     AngularFireModule.initializeApp(environment),
     AngularFirestoreModule,
-    AngularFireAnalyticsModule 
+    AngularFireAnalyticsModule,
+    IvyCarouselModule 
   ],
   providers: [appRoutingProviders, AuthService, SingletonService, { provide: SWIPER_CONFIG, useValue: DEFAULT_SWIPER_CONFIG }],
   bootstrap: [AppComponent],

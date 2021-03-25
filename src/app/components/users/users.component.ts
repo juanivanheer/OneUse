@@ -16,15 +16,21 @@ export class UsersComponent implements OnInit {
   id;
   hayUsuario: boolean = false;
   mostrar: boolean = false;
+  publicacionesTotal;
+  publicacionesUsuario = [];
   alquileresTotal;
   alquileresUsuario = [];
   arrayPuntuacionesComentariosLocatarios = [];
-  arrayPuntuacionesComentariosPropietarios = []
+  arrayPuntuacionesComentariosPropietarios = [];
+  arrayPuntuacionesLocatariosRestante = [];
+  arrayPuntuacionesPropietariosRestante = []
   usuario;
   imagen;
   tiempo;
   cantidad_alquilada = 0;
   titulo_cantidad;
+  mostrarMasLocatarios: boolean = false;
+  mostrarMasPropietarios: boolean = false
 
   seleccion1_propietario: boolean = false;
   seleccion2_propietario: boolean = false;
@@ -69,13 +75,15 @@ export class UsersComponent implements OnInit {
     this.id = String(window.location.href).slice(29)
     var obsA = this._auth.user_id(this.id);
     var obsB = this._auth.get_all_alquileres();
-    const obsvArray = [obsA, obsB];
+    var obsC = this._auth.get_all_publicaciones();
+    const obsvArray = [obsA, obsB, obsC];
     const zip = Observable.zip(...obsvArray)
     zip.subscribe(
       res => {
         this.hayUsuario = true;
         this.usuario = res[0];
         this.alquileresTotal = res[1];
+        this.publicacionesTotal = res[2].publicaciones;
         this.calcularTiempoUsuario();
         this.obtenerAlquileresUsuario();
         this.calcularCantidadAlquileres();
@@ -84,6 +92,7 @@ export class UsersComponent implements OnInit {
         this.llenarPuntuaciones();
         this.obtenerComentariosPuntuacionesLocatarios();
         this.obtenerComentariosPuntuacionesPropietarios();
+        this.obtenerPublicacionesUsuario();
         //Colocarlo al final, cuando se termine de traer todo
         this.mostrar = true;
       }
@@ -330,6 +339,7 @@ export class UsersComponent implements OnInit {
   }
 
   obtenerComentariosPuntuacionesLocatarios() {
+    let contador = 0;
     if (this.alquileresUsuario.length > 0) {
       for (let i = 0; i < this.alquileresUsuario.length; i++) {
         const element = this.alquileresUsuario[i];
@@ -339,13 +349,16 @@ export class UsersComponent implements OnInit {
           let usuario = element.name_usuarioLocatario;
           let fecha = new Date(element.updatedAt);
           let fecha_completa = fecha.getDate() + "/" + fecha.getMonth() + "/" + fecha.getFullYear()
-          this.arrayPuntuacionesComentariosLocatarios.push(this.obtenerObjetoEstrellas(puntuacion, comentario, usuario, fecha_completa));
+          if (contador <= 4) this.arrayPuntuacionesComentariosLocatarios.push(this.obtenerObjetoEstrellas(puntuacion, comentario, usuario, fecha_completa));
+          else this.arrayPuntuacionesLocatariosRestante.push(this.obtenerObjetoEstrellas(puntuacion, comentario, usuario, fecha_completa));
+          contador++;
         }
       }
     }
   }
 
   obtenerComentariosPuntuacionesPropietarios() {
+    let contador = 0;
     if (this.alquileresUsuario.length > 0) {
       for (let i = 0; i < this.alquileresUsuario.length; i++) {
         const element = this.alquileresUsuario[i];
@@ -355,7 +368,9 @@ export class UsersComponent implements OnInit {
           let usuario = element.name_usuarioPropietario;
           let fecha = new Date(element.updatedAt);
           let fecha_completa = fecha.getDate() + "/" + fecha.getMonth() + "/" + fecha.getFullYear()
-          this.arrayPuntuacionesComentariosPropietarios.push(this.obtenerObjetoEstrellas(puntuacion, comentario, usuario, fecha_completa));
+          if (contador <= 4) this.arrayPuntuacionesComentariosPropietarios.push(this.obtenerObjetoEstrellas(puntuacion, comentario, usuario, fecha_completa));
+          else this.arrayPuntuacionesPropietariosRestante.push(this.obtenerObjetoEstrellas(puntuacion, comentario, usuario, fecha_completa));
+          contador++
         }
       }
     }
@@ -379,19 +394,69 @@ export class UsersComponent implements OnInit {
     }
   }
 
-  public config: SwiperConfigInterface = {
-    direction: 'horizontal',
-    slidesPerView: 3,
-    keyboard: true,
-    mousewheel: true,
-    scrollbar: false,
-    navigation: true,
-    pagination: true,
-    preventClicks: false,
-    allowTouchMove: false
-  };
+  obtenerPublicacionesUsuario() {
+    let JJSON, JSONfinal, arrayJSON = [], contador = 0;
+    for (let i = 0; i < this.publicacionesTotal.length; i++) {
+      arrayJSON = [];
+      const element = this.publicacionesTotal[i];
+      if (element.email == this.usuario.email) {
+        if (element.multiplefile == undefined) continue;
+        if (contador > 9) continue;
+        this.publicacionesUsuario.push(element);
 
+        JJSON = this.publicacionesUsuario[contador].multiplefile;
+        JSONfinal = JSON.parse(JJSON); //CREA JSON CONVERTIDO DE STRING
+        for (let j in JSONfinal) {
+          arrayJSON.push(JSONfinal[j]);
+        }
+        this.publicacionesUsuario[contador].multiplefile = arrayJSON;
+        contador++;
+      }
+    }
+  }
+
+  irPublicacion(pub) {
+    window.location.assign(pub)
+  }
+
+  habilitarOpinionesLocatarios() {
+    this.mostrar = false;
+    for (let i = 0; i < this.arrayPuntuacionesLocatariosRestante.length; i++) {
+      this.arrayPuntuacionesComentariosLocatarios.push(this.arrayPuntuacionesLocatariosRestante[i]);
+    }
+    this.mostrarMasLocatarios = true;
+    this.mostrar = true;
+  }
+
+  deshabilitarOpinionesLocatarios() {
+    this.mostrar = false;
+    this.arrayPuntuacionesComentariosLocatarios = this.arrayPuntuacionesComentariosLocatarios.splice(0, 5);
+    this.mostrarMasLocatarios = false;
+    this.mostrar = true;
+  }
+
+  habilitarOpinionesPropietarios() {
+    this.mostrar = false;
+    if (this.arrayPuntuacionesPropietariosRestante.length > 0) {
+      for (let i = 0; i < this.arrayPuntuacionesPropietariosRestante.length; i++) {
+        this.arrayPuntuacionesComentariosPropietarios.push(this.arrayPuntuacionesPropietariosRestante[i]);
+      }
+    }
+    this.mostrarMasPropietarios = true;
+    this.mostrar = true;
+  }
+
+  deshabilitarOpinionesPropietarios() {
+    this.mostrar = false;
+    if (this.arrayPuntuacionesPropietariosRestante.length > 0) {
+      this.arrayPuntuacionesComentariosPropietarios = this.arrayPuntuacionesComentariosPropietarios.splice(0, 5);
+    }
+    this.mostrarMasPropietarios = false;
+    this.mostrar = true;
+  }
 }
+
+
 
 class MyDate {
   dates: Date[];
