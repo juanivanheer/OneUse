@@ -44,7 +44,8 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
   array_estados = [];
   arrayTitulosPublicacionesPropios = [];
   arrayTitulosPublicacionesPropietario = []
-
+  arrayTipoAlquilerPropios = [];
+  arrayTipoAlquilerPropietarios = []
   array_propietario_lleno: boolean = false;
   array_propio_lleno: boolean = false;
 
@@ -68,10 +69,17 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
               for (let i = 0; i < this.arrayAlquilerPropietario.length; i++) {
                 var date = new Date(res1.alquiler[i].createdAt).toLocaleDateString();
                 this.arrayAlquilerPropietario[i].createdAt = date;
-                if (this.arrayAlquilerPropietario[i].estado != "Cancelado" && this.arrayAlquilerPropietario[i].estado != "En proceso de reclamo" ) {
-                  this.arrayDatosPropietario.push(this.arrayAlquilerPropietario[i])
+                if (this.arrayAlquilerPropietario[i].estado != "Cancelado" && this.arrayAlquilerPropietario[i].estado != "En proceso de reclamo") {
+                  this.arrayDatosPropietario.push(this.arrayAlquilerPropietario[i]);
                 }
+                this._auth.get_publicacion_id(res1.alquiler[i].id_publicacion).subscribe(
+                  res2 => {
+                    this.arrayTipoAlquilerPropietarios.push(res2.tipoAlquiler);
+                    this.array_propietario_lleno = true
+                  }
+                )
               }
+              
               this.hayAlquileresPropietario = true;
             } else this.hayAlquileresPropietario = false; this.array_propietario_lleno = true;
           })
@@ -100,12 +108,15 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
                     } else {
                       this.arrayEstados.push(false);
                     }
+                    this.arrayTipoAlquilerPropios.push(res2.tipoAlquiler)
                     this.hayAlquileresPropios = true;
                   })
 
                 var date = new Date(res1.alquiler[i].createdAt).toLocaleDateString();
                 this.arrayAlquilerPropios[i].createdAt = date;
-                if (this.arrayAlquilerPropios[i].estado != "Cancelado" && this.arrayAlquilerPropios[i].estado != "En proceso de reclamo" ) this.arrayDatosPropios.push(this.arrayAlquilerPropios[i])
+                if (this.arrayAlquilerPropios[i].estado != "Cancelado" && this.arrayAlquilerPropios[i].estado != "En proceso de reclamo") {
+                  this.arrayDatosPropios.push(this.arrayAlquilerPropios[i])
+                }
               }
             } else this.hayAlquileresPropios = false; this.array_propio_lleno = true;
           })
@@ -200,10 +211,10 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
   pre_reclamo(datos) {
     console.log('datos')
     this._auth.registraDatosPreReclamo(datos);
-    
+
     this._router.navigate(['/prereclamo']);
 
-    
+
   }
 
   pagar(alquiler) {

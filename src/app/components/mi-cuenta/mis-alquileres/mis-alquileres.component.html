@@ -38,7 +38,45 @@
                                 {{alquilerPropietario.titulo_publicacion}} </a>
                         </div>
                         <mat-divider style="width: 100%;"></mat-divider>
-                        <div fxLayout="column" fxLayoutAlign="center center">
+
+                        <div *ngIf="arrayTipoAlquilerPropietarios[indice] == 'AlquilerSinIntervencion'"
+                            style="padding: 20px;">
+                            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+                                <div>
+                                    <a id="titulo" fxLayout="column" fxLayoutAlign="center center"
+                                        routerLink="/publicaciones/{{alquilerPropietario.id_publicacion}}"
+                                        style="cursor: pointer;" matTooltip="Ir a la publicación"
+                                        matTooltipPosition="after" target="_blank">
+                                        <img class="imagen"
+                                            src="{{'http://localhost:4201/api/get-image-publicacion/'+ alquilerPropietario.imagen}}">
+                                    </a>
+                                </div>
+                                <mat-icon style="color: cornflowerblue;">info</mat-icon>
+                                <div>
+                                    <h5>Has indicado que el tipo de alquiler establecido es
+                                        <b>sin intervención</b>, por lo tanto, OneUse no formará parte del proceso de
+                                        Alquiler. Ante esto, deberás contactarte con el locatario y
+                                        coordinar la entrega y devolución del objeto.
+                                    </h5>
+                                </div>
+                                <div>
+                                    <button style="background: gainsboro" fxLayout="row" fxLayoutAlign="center center"
+                                        mat-raised-button [matMenuTriggerFor]="menu" matTooltip="Menú del alquiler"
+                                        matTooltipPosition="below">
+                                        <mat-icon>settings</mat-icon> Acción
+                                    </button>
+                                    <mat-menu #menu="matMenu">
+                                        <button mat-menu-item (click)="openDialogDatosLocatario(alquilerPropietario)">
+                                            <mat-icon>person</mat-icon>
+                                            <span> Datos del locatario</span>
+                                        </button>
+                                    </mat-menu>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div fxLayout="column" fxLayoutAlign="center center"
+                            *ngIf="arrayTipoAlquilerPropietarios[indice] == 'AlquilerConIntervencion'">
                             <div fxLayout="row" fxLayoutAlign="center center">
                                 <a id="titulo" fxLayout="column" fxLayoutAlign="center center"
                                     routerLink="/publicaciones/{{alquilerPropietario.id_publicacion}}"
@@ -229,7 +267,8 @@
                                                         style="font-size: 12px;">
                                                         <mat-icon> calendar_today</mat-icon>
                                                         <span style="margin-right: 5px !important;">¡Es momento de
-                                                            puntuar a quien te alquiló el objeto! Ve al menú Acción y expresa tu
+                                                            puntuar a quien te alquiló el objeto! Ve al menú Acción y
+                                                            expresa tu
                                                             experiencia obtenida en el transcurso del alquiler.</span>
                                                     </p>
                                                 </li>
@@ -362,7 +401,45 @@
                                 {{alquilerPropio.titulo_publicacion}} </a>
                         </div>
                         <mat-divider style="width: 100%;"></mat-divider>
-                        <div fxLayout="column" fxLayoutAlign="center center">
+                        <!-- ALQUILER SIN INTERVENCIÓN -->
+                        <div *ngIf="arrayTipoAlquilerPropios[indice] == 'AlquilerSinIntervencion'"
+                            style="padding: 20px;">
+                            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+                                <div>
+                                    <a id="titulo" fxLayout="column" fxLayoutAlign="center center"
+                                        routerLink="/publicaciones/{{alquilerPropio.id_publicacion}}"
+                                        style="cursor: pointer;" matTooltip="Ir a la publicación"
+                                        matTooltipPosition="after" target="_blank">
+                                        <img class="imagen"
+                                            src="{{'http://localhost:4201/api/get-image-publicacion/'+ alquilerPropio.imagen}}">
+                                    </a>
+                                </div>
+                                <mat-icon style="color: cornflowerblue;">info</mat-icon>
+                                <div>
+                                    <h5>El propietario del objeto nos indicó que el tipo de alquiler establecido es
+                                        <b>sin intervención</b>, por lo tanto, OneUse no formará parte del proceso de
+                                        Alquiler. Ante esto, deberás contactarte con el propietario del producto y
+                                        coordinar la entrega y devolución del objeto
+                                    </h5>
+                                </div>
+                                <div>
+                                    <button style="background: gainsboro" fxLayout="row" fxLayoutAlign="center center"
+                                        mat-raised-button [matMenuTriggerFor]="menu" matTooltip="Menú del alquiler"
+                                        matTooltipPosition="below">
+                                        <mat-icon>settings</mat-icon> Acción
+                                    </button>
+                                    <mat-menu #menu="matMenu">
+                                        <button mat-menu-item (click)="openDialogDatosPropietario(alquilerPropio)">
+                                            <mat-icon>person</mat-icon>
+                                            <span> Datos del propietario</span>
+                                        </button>
+                                    </mat-menu>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ALQUILER CON INTERVENCIÓN -->
+                        <div fxLayout="column" fxLayoutAlign="center center"
+                            *ngIf="arrayTipoAlquilerPropios[indice] == 'AlquilerConIntervencion'">
                             <div fxLayout="row" fxLayoutAlign="center center">
                                 <a id="titulo" fxLayout="column" fxLayoutAlign="center center"
                                     routerLink="/publicaciones/{{alquilerPropio.id_publicacion}}"

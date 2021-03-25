@@ -16,7 +16,7 @@ export class DetallePublicacionComponent implements OnInit, OnDestroy {
 
   constructor(private _auth: AuthService, private _singleton: SingletonService, private _snackBar: MatSnackBar, private _formBuilder: FormBuilder) { }
 
-  position: TooltipPosition = 'below';
+  position: TooltipPosition = 'right';
 
 
   id;

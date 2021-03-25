@@ -164,8 +164,11 @@
                     <h3>Tipo de alquiler</h3>
                     <br>
                     <div *ngIf=esConIntervencion>
-                        <p style="text-align: justify; margin-left: 23px">Este producto se encuentra asegurado ante
-                            incidentes.</p>
+                        <div fxLayout="roe" fxLayoutAlign="center center" fxLayoutGap="10px">
+                            <mat-icon style="color: green;">check</mat-icon>
+                            <span style="text-align: justify; margin-left: 23px">Este producto se encuentra asegurado ante
+                                incidentes.</span>
+                        </div>
                         <br>
                         <a [matTooltipPosition]="position" matTooltip="Se basa en la obtención de un seguro contra reembolso con el objetivo de proteger
                         al objeto alquilado de algún daño que pueda surgir durante la ejecución del alquiler.
@@ -173,12 +176,15 @@
                         depende del tipo de objeto que el interesado en alquilar ha pagado por el mismo y
                         será devuelto luego de que el propietario verifique el estado del objeto, no pudiendo
                         pasar más de 24 hs de lo contrario se considera que el objeto fue entregado en
-                        buenas condiciones, finalizando la transacción." style="color: cornflowerblue">Más información
+                        buenas condiciones, finalizando la transacción." style="color: #3483fa">Más información
                         </a>
                     </div>
                     <div *ngIf=!esConIntervencion>
-                        <p style="text-align: justify; margin-left: 23px">Este producto no se encuentra asegurado ante
-                            incidentes.</p>
+                        <div fxLayout="roe" fxLayoutAlign="center center" fxLayoutGap="10px">
+                            <mat-icon style="color: red;">cancel</mat-icon>
+                            <span style="text-align: justify; margin-left: 23px">Este producto no se encuentra asegurado ante
+                                incidentes.</span>
+                        </div>
                     </div>
                 </div>
                 <mat-divider></mat-divider>
@@ -190,8 +196,4 @@
             </div>
         </div>
     </div>
-
-
-
-
 </section>

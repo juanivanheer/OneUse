@@ -28,6 +28,7 @@ export class PosAlquilerComponent implements OnInit, AfterViewInit {
   codArea;
   cantidad;
   cantidadSeleccionada;
+  tipoAlquiler;
   montoTotal;
   id_pago_mp;
   id_alquiler;
@@ -53,6 +54,7 @@ export class PosAlquilerComponent implements OnInit, AfterViewInit {
         this.preciomes = res.preciomes;
         this.preciosemana = res.preciosemana;
         this.descripcion = res.descripcion;
+        this.tipoAlquiler = res.tipoAlquiler;
 
         this._auth.user_data(this.publicacion.email).subscribe(
           res2 => {
@@ -93,7 +95,7 @@ export class PosAlquilerComponent implements OnInit, AfterViewInit {
         })
       };
 
-      let objeto = {
+      let objeto_conIntervencion = {
         "items": [
           {
             "title": this.titulo,
@@ -117,17 +119,45 @@ export class PosAlquilerComponent implements OnInit, AfterViewInit {
         "statement_descriptor": "OneUse"
       }
 
-      this.http.post<any>('https://api.mercadopago.com/checkout/preferences', objeto, httpOptions).subscribe(
-        res => {
-          this.id_pago_mp = res.id;
+      let objeto_sinIntervencion = {
+        "items": [
+          {
+            "title": this.titulo,
+            "description": this.descripcion,
+            "quantity": this.cantidadSeleccionada,
+            "currency_id": "ARS",
+            "unit_price": this.montoUnitario
+          },
+        ],
+        "back_urls": {
+          "success": "https://localhost:4200/confirmacion-alquiler/" + this.id_alquiler,
+          "failure": "https://localhost:4200"
         },
-        err => {
-          console.log("ERROR: ", err)
-        }
-      )
+        "statement_descriptor": "OneUse"
+      }
 
-      this.mostrar = true;
+      if (this.tipoAlquiler == "AlquilerConIntervencion") {
+        this.http.post<any>('https://api.mercadopago.com/checkout/preferences', objeto_conIntervencion, httpOptions).subscribe(
+          res => {
+            this.id_pago_mp = res.id;
+          },
+          err => {
+            console.log("ERROR: ", err)
+          }
+        )
+      } else {
+        this.http.post<any>('https://api.mercadopago.com/checkout/preferences', objeto_sinIntervencion, httpOptions).subscribe(
+          res => {
+            this.id_pago_mp = res.id;
+          },
+          err => {
+            console.log("ERROR: ", err)
+          }
+        )
+      }
       
+      this.mostrar = true;
+
       setTimeout(() => {
         var div = (<HTMLFormElement>document.querySelector('#mp'));
         var card = (<HTMLElement>document.createElement('script'));
@@ -138,7 +168,6 @@ export class PosAlquilerComponent implements OnInit, AfterViewInit {
         div.appendChild(card)
       }, 5000);
     }, 3000);
-
   }
 }
 
