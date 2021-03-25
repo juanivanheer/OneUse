@@ -12,6 +12,7 @@ export interface Reclamos {
   createdAt: string,
   motivo: string,
   tipo: string,
+  id_publicacion: string,
   __v: string,
   estado_reclamo: string,
   usuario_reclamo: string,
@@ -38,7 +39,7 @@ export class MisReclamosComponent implements OnInit {
   private subscription: Subscription;
 
   dataSource;
-  displayedColumns = ['_id', 'motivo', 'usuario_reclamo', 'estado_reclamo' ];
+  displayedColumns = [ 'id_publicacion','titulo', 'tipo', 'estado_reclamo' ];
   data;
 
   mostrar: boolean = false;
@@ -58,6 +59,7 @@ export class MisReclamosComponent implements OnInit {
     }
     )   
   }
+
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();

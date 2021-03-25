@@ -96,6 +96,7 @@ import { BarraLateralSaComponent } from './components/mi-cuenta/superadmin/barra
 import { PuntuacionObtenidaDialogComponent } from './components/mi-cuenta/mis-alquileres/puntuacion-obtenida-dialog/puntuacion-obtenida-dialog.component';
 import { UsersComponent } from './components/users/users.component';
 import { ReclamoDialogComponent } from './components/mi-cuenta/mis-reclamos/reclamo-dialog/reclamo-dialog.component';
+import { EliminarReclamoDialogComponent } from './components/mi-cuenta/superadmin/reclamos/eliminar-reclamo-dialog/eliminar-reclamo-dialog.component';
 
 FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme);
 
@@ -177,7 +178,9 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     BarraLateralSaComponent,
     PuntuacionObtenidaDialogComponent,
     UsersComponent,
-    ReclamoDialogComponent
+    ReclamoDialogComponent,
+    EliminarReclamoDialogComponent,
+    EliminarReclamoDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -204,6 +207,6 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   entryComponents: [DeshabilitarDialogComponent, EliminarDialogComponent, DatosPropietarioDialogComponent, EliminarAlquilerDialogComponent,
     DatosLocatarioDialogComponent, CodigoPropietarioDialogComponent, CodigoLocatarioDialogComponent, CodigoDevolucionLocatarioDialogComponent,
     CodigoDevolucionPropietarioDialogComponent, EliminarUsuarioDialogComponent, DatosUsuariosDialogComponent, ModificarUsuarioDialogComponent, DatosPublicacionesDialogComponent, EliminarPublicacionDialogComponent, ModificarPublicacionDialogComponent,
-    DatosAlquileresDialogComponent, ModificarAlquilerDialogComponent, EliminarAlquilerSuperadminDialogComponent, CancelarDialogComponent, PuntuacionComponent, PuntuacionObtenidaDialogComponent, ReclamoDialogComponent]
+    DatosAlquileresDialogComponent, ModificarAlquilerDialogComponent, EliminarAlquilerSuperadminDialogComponent, CancelarDialogComponent, PuntuacionComponent, PuntuacionObtenidaDialogComponent, ReclamoDialogComponent, EliminarReclamoDialogComponent]
 })
 export class AppModule { }
