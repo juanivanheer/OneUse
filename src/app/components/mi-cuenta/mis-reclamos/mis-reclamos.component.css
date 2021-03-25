@@ -17,9 +17,30 @@
     padding-top: 10px
 }
 
+.container-muestra-imagenes {
+    width: 248px;
+    height: 250px;
+    border: 2px black solid;
+}
+
+.container-gt-md {
+    width: 100%;
+    margin: 30px;
+}
+
+.container-lt-md {
+    width: 86%;
+}
+
+.mat-tab-labels {
+    justify-content: center !important
+}
+
 .iconitos {
     display: inline;
     margin-left: 10px;
+    margin-right: 10px;
+    vertical-align: 5px;
 }
 
 a {
@@ -47,22 +68,101 @@ a, a:focus, a:active, a:link, img {
 }
 
 mat-toolbar {
-    background: rgb(215, 215, 215);
+    background: #ffffff;
+    border-right: 1px outset;
 }
 
-.container {
-    margin-left: 20px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-right: 20px;
+.mat-body, .mat-body-1, .mat-typography {
+    font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mat-dialog-container {
+    display: block;
+    padding: 24px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    overflow: auto;
+    outline: 0;
     width: 100%;
     height: 100%;
+    min-height: inherit;
+    max-height: inherit;
 }
 
-table {
-    width: 100%;
+.mat-dialog-container {
+    box-shadow: 0 11px 15px -7px rgba(0, 0, 0, .2), 0 24px 38px 3px rgba(0, 0, 0, .14), 0 9px 46px 8px rgba(0, 0, 0, .12);
+    background: #fff;
+    color: rgba(0, 0, 0, .87);
 }
 
-th.mat-sort-header-sorted {
-    color: black;
+.mat-dialog-title {
+    margin: 0 0 20px;
+    display: block;
+}
+
+.mat-dialog-title {
+    font: 500 20px/32px Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mat-dialog-content {
+    display: block;
+    margin: 0 -24px;
+    padding: 0 24px;
+    max-height: 65vh;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.cdk-overlay-pane {
+    pointer-events: auto;
+}
+
+.cdk-global-overlay-wrapper, .cdk-overlay-container {
+    pointer-events: none;
+}
+
+.imagen {
+    height: 150px;
+    width: 150px;
+}
+
+.info {
+    margin-left: 15px;
+}
+
+.info2 {
+    margin-left: 150px;
+}
+
+p {
+    font-size: 18px;
+}
+
+::ng-deep .mat-horizontal-stepper-header {
+    pointer-events: none !important;
+}
+
+.contenedor-individual {
+    background: #ffffff;
+    margin: 20px;
+    height: 350px;
+}
+
+.items {
+    padding-left: 0;
+    list-style: none;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.item{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.titulo_alquiler {
+    cursor: pointer;
+    color: #3f51b5;
+    font-weight: 405;
+    text-transform: uppercase;
 }

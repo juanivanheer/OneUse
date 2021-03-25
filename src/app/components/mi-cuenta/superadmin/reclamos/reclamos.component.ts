@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { SingletonService } from 'src/app/components/singleton.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { EliminarReclamoDialogComponent } from './eliminar-reclamo-dialog/eliminar-reclamo-dialog.component'
 import { MatPaginator, MatSort, MatTableDataSource, MatDialogRef, MatDialog } from '@angular/material';
 
 export interface Reclamos {
@@ -25,12 +26,14 @@ export class ReclamosComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  constructor(private singleton: SingletonService, private _auth: AuthService,) { }
+  constructor(private singleton: SingletonService,public dialog: MatDialog, private _auth: AuthService,) { }
   
   private subscription: Subscription;
+
+  eliminarReclamoDialogRef: MatDialogRef<EliminarReclamoDialogComponent>
   
   dataSource;
-  displayedColumns = ['_id', 'motivo', 'usuario_reclamo' ];
+  displayedColumns = ['_id', 'motivo', 'usuario_reclamo', 'boton' ];
   data;
 
   ngOnInit() {
@@ -43,6 +46,21 @@ export class ReclamosComponent implements OnInit {
         this.dataSource.paginator = this.paginator;
       }
       )
+  }
+
+  openDialogEliminarReclamo(data): void {
+    this.eliminarReclamoDialogRef = this.dialog.open(EliminarReclamoDialogComponent,
+      {
+        data: {
+          data: data
+        }
+      });
+
+    this.dialog.afterAllClosed.subscribe(
+      res => {
+        this.ngOnInit();
+      }
+    );
   }
 
   applyFilter(filterValue: string) {

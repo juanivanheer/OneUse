@@ -17,7 +17,7 @@
                     <mat-form-field>
                         <mat-select placeholder="Motivos de cancelación" [(ngModel)]="reclamoData.tipo" name="motivo"
                             required>
-                            <mat-option *ngFor="let motivo of motivosCancelacion" [value]="motivo.value">
+                            <mat-option *ngFor="let motivo of motivosCancelacion" [value]="motivo.viewValue">
                                 {{motivo.viewValue}} </mat-option>
                         </mat-select>
                     </mat-form-field>

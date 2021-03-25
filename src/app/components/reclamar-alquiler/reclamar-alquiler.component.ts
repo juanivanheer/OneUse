@@ -16,7 +16,7 @@ var sortJsonArray = require('sort-json-array');
 export interface Motivos {
   value: string;
   viewValue: string;
-}
+  }
 
 @Component({
   selector: 'app-confirmacion',
@@ -41,6 +41,7 @@ export class ReclamarAlquilerComponent implements OnInit {
     id_publicacion:undefined,
     estado_reclamo: undefined,
     imagen: undefined,
+    titulo: undefined,
     respuestas: 
     [] 
   } 
@@ -86,6 +87,7 @@ export class ReclamarAlquilerComponent implements OnInit {
       id_publicacion:this.datosAlquiler.id_publicacion,
       estado_reclamo: 'Esperando respuesta del sitio',
       imagen: this.datosAlquiler.imagen,
+      titulo: this.datosAlquiler.titulo_publicacion,
       respuestas: [{
         emisor_respuesta: this.emailLogueado,
         respuesta: motivo,

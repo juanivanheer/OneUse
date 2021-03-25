@@ -3,7 +3,8 @@
         <app-barra-lateral></app-barra-lateral>
     </div>
 
-    <div fxLayout="column" ngClass.gt-md="container-gt-md" ngClass.lt-md="container-lt-md">
+    <div fxLayout="column" fxFlexOrder="2" ngClass.gt-md="container-gt-md mat-elevation-z8"
+    ngClass.lt-md="container-lt-md mat-elevation-z8">
 
         <div fxLayout="column" style="width: 100%; text-align: center; margin-top: 40px" fxLayoutAlign="center center">
             <p style="font-size: 25px;margin-bottom: 8px; "> Mis Reclamos </p>
@@ -22,19 +23,21 @@
 
         <table mat-table #table [dataSource]="dataSource" matSort aria-label="Elements" style="cursor:pointer">
 
-            <ng-container matColumnDef="_id">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Id Reclamo</th>
-                <td mat-cell *matCellDef="let row" (click)="openDialogDatosAlquiler(row)"> {{row._id}}</td>
+            <ng-container matColumnDef="id_publicacion">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Publicación</th>
+                <td mat-cell *matCellDef="let row" routerLink="/publicaciones/{{row.id_publicacion}}" > 
+                    <img class="imagen"
+                    src="{{'http://localhost:4201/api/get-image-publicacion/'+ row.imagen}}"></td>
             </ng-container>
 
-            <ng-container matColumnDef="motivo">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripción</th>
-                <td mat-cell *matCellDef="let row" (click)="openDialogDatosAlquiler(row)"> {{row.motivo}}</td>
+            <ng-container matColumnDef="titulo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Título</th>
+                <td mat-cell *matCellDef="let row" (click)="openDialogDatosAlquiler(row)"> {{row.titulo}}</td>
             </ng-container>
 
-            <ng-container matColumnDef="usuario_reclamo">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Mail Usuario</th>
-                <td mat-cell *matCellDef="let row"  (click)="openDialogDatosAlquiler(row)"> {{row.usuario_reclamo}}</td>
+            <ng-container matColumnDef="tipo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Motivo</th>
+                <td mat-cell *matCellDef="let row" (click)="openDialogDatosAlquiler(row)"> {{row.tipo}}</td>
             </ng-container>
 
             <ng-container matColumnDef="estado_reclamo">
