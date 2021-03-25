@@ -95,6 +95,10 @@ export class UsersComponent implements OnInit {
         this.obtenerPublicacionesUsuario();
         //Colocarlo al final, cuando se termine de traer todo
         this.mostrar = true;
+      },
+      err => {
+        this.hayUsuario = false;
+        this.mostrar = true;
       }
     );
   }
