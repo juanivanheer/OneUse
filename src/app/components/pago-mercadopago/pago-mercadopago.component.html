@@ -1,1 +1,13 @@
 <div fxLayout="row" fxLayoutAlign="center center" id="mp"></div>
+
+<div *ngIf="!finalizado">
+    <mat-spinner style="text-align: center;"></mat-spinner>
+    <p style="text-align: center;">Estamos analizando la imágen seleccionada</p>
+</div>
+
+<div class="contenedor-imagenes" [fxShow]=finalizado>
+    <ngx-dropzone [accept]="'image/png,image/jpeg,image/gif'"
+        [label]="'Clickea aquí para subir tu imágen o arrastrala'" [multiple]="true"
+        (filesAdded)="onFilesAdded($event)" [showPreviews]="true" [preserveFiles]="false"
+        #dropzone></ngx-dropzone>
+</div>

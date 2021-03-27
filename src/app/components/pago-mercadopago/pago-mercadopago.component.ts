@@ -1,11 +1,14 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from 'src/app/services/auth.service';
+declare const nsfwjs: any;
 
 @Component({
   selector: 'app-pago-mercadopago',
   templateUrl: './pago-mercadopago.component.html',
   styleUrls: ['./pago-mercadopago.component.css']
 })
-export class PagoMercadopagoComponent implements OnInit, AfterViewInit {
+export class PagoMercadopagoComponent implements AfterViewInit {
 
   /*
       URL de la app OneUse en MercadoPago: https://www.mercadopago.com.ar/developers/panel/credentials?id=8165018491705514&code=IdWclSDkYknng0jTradj9kEDgTmvYM9p
@@ -48,7 +51,12 @@ export class PagoMercadopagoComponent implements OnInit, AfterViewInit {
 
   */
 
-  constructor() { }
+  constructor(private _auth: AuthService, private _snackBar: MatSnackBar) { }
+
+  finalizado: boolean = true;
+  predicciones = [];
+  arrayImagenes = [];
+  image = [];
 
   ngAfterViewInit() {
     var div = (<HTMLFormElement>document.querySelector('#mp'));
@@ -62,8 +70,72 @@ export class PagoMercadopagoComponent implements OnInit, AfterViewInit {
     div.appendChild(card)
   }
 
-  ngOnInit() {
-    console.log("xd")
+  async onFilesAdded(files: File[]) {
+    this.finalizado = false;
+    this.predicciones = [];
+    this.image = [];
+    this.arrayImagenes = [];
+    if (files.length > 5) {
+      this._snackBar.open("No se pueden ingresar más de 5 imágenes", "Aceptar")
+      this.image = [];
+      this.arrayImagenes = [];
+    }
+    else {
+      this.image = files;
+      this.arrayImagenes = [];
+      this.arrayImagenes.length = 0;
+      await files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e: ProgressEvent) => {
+          const content = (e.target as FileReader).result;
+          this.arrayImagenes.push(content);
+          if (this.arrayImagenes.length == files.length) {
+            this.detectarImagenes(this.arrayImagenes)
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+
+    }
   }
+
+  async detectarImagenes(array) {
+    for (let index = 0; index < array.length; index++) {
+      const element = array[index];
+      var img = document.createElement("img");
+      img.setAttribute("src", element);
+      const model = await nsfwjs.load()
+      const predictions = await model.classify(img)
+      console.log('Predictions: ', predictions)
+      this.predicciones.push(predictions)
+    }
+    this.procesarPredicciones();
+  }
+
+  procesarPredicciones() {
+    for (let i = 0; i < this.predicciones.length; i++) {
+      const imagen = this.predicciones[i];
+      for (let j = 0; j < imagen.length; j++) {
+        const prediccion = imagen[j];
+        if ((prediccion.className == "Porn" && prediccion.probability > 0.35) || (prediccion.className == "Hentai" && prediccion.probability > 0.35) || (prediccion.className == "Sexy" && prediccion.probability > 0.35)) {
+          this._snackBar.open("Una o varias de las imágenes cargadas no aceptan nuestros términos y condiciones", "Aceptar")
+          //this.image = [];
+          //this.arrayImagenes = [];
+          this.finalizado = true;
+          return;
+        } else {
+          continue;
+        }
+      }
+    }
+    this.finalizado = true;
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 6000,
+    });
+  }
+
 
 }

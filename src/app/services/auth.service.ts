@@ -81,6 +81,7 @@ export class AuthService {
   private _cancelarAlquiler = this.url + "cancelarAlquiler"
   private _registrarPuntuacion = this.url + "registrar-puntuacion"
   private _verificarFinalizacion = this.url + "verificar-finalizacion"
+  private _getAllImagenesUsuarios = this.url + "get-all-imagenes-usuarios"
 
   constructor(private http: HttpClient) { }
 
@@ -149,6 +150,10 @@ export class AuthService {
 
   delete_user(mail) {
     return this.http.delete<any>(this._deleteUser + mail)
+  }
+
+  get_all_images_user(){
+    return this.http.get<any>(this._getAllImagenesUsuarios);
   }
 
 
