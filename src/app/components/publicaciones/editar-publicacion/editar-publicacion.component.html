@@ -4,6 +4,10 @@
     <br>
 </div>
 
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="large" color="#fff" type="timer" [fullScreen]="true">
+    <p style="color: white"> Verificando... </p>
+</ngx-spinner>
+
 <!--VERSIÓN XL-->
 <section fxLayout="column" fxLayoutAlign="center center" fxShow.gt-md="true" fxHide.lt-md="true"
     style="margin-bottom: 20px; margin-left: 100px; margin-right: 100px">
@@ -291,7 +295,7 @@
                             <div class="contenedor-imagenes">
                                 <ngx-dropzone [accept]="'image/png,image/jpeg,image/gif'"
                                     [label]="'Clickea aquí para subir tu imágen o arrastrala'" [multiple]="true"
-                                    (filesAdded)="onFilesAdded($event)" [showPreviews]="true" [preserveFiles]="false"
+                                    (filesAdded)="onFilesAdded($event, dropzone)" [showPreviews]="true" [preserveFiles]="false"
                                     #dropzone></ngx-dropzone>
                             </div>
                             <div fxLayoutAlign="center" fxFlex style="margin-top: 22px">
@@ -470,7 +474,7 @@
                         style="margin-right: 10px;">Volver
                         a comenzar</button>
 
-                    <button mat-raised-button color="primary" (click)="onSubmit()">Editar</button>
+                    <button mat-raised-button color="primary" (click)="onSubmit()">Finalizar edición</button>
                 </div>
             </div>
         </mat-step>

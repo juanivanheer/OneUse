@@ -8,6 +8,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
 import { SingletonService } from '../../singleton.service';
 import { UploadService } from '../../../services/upload.service';
+declare const nsfwjs: any;
+import { NgxSpinnerService } from "ngx-spinner";
 
 declare var require: any;
 var sortJsonArray = require('sort-json-array');
@@ -107,7 +109,7 @@ export class PerfilUsuarioComponent implements OnInit {
   imagenFacebook: boolean = false;
   urlImagenFacebook;
 
-  constructor(private _auth: AuthService, private singletoon: SingletonService, private _snackBar: MatSnackBar, private _adapter: DateAdapter<any>, private singleton: SingletonService, private _router: Router, private _uploadService: UploadService) { }
+  constructor(private spinner: NgxSpinnerService, private _auth: AuthService, private singletoon: SingletonService, private _snackBar: MatSnackBar, private _adapter: DateAdapter<any>, private singleton: SingletonService, private _router: Router, private _uploadService: UploadService) { }
 
   ngOnInit() {
 
@@ -410,8 +412,41 @@ export class PerfilUsuarioComponent implements OnInit {
     reader.onload = (_event) => {
       this.imgURL = reader.result;
       this.hayImagen = true;
+      this.detectarImagenes(this.imagen[0])
     }
+  }
 
+  predicciones = [];
+
+  async detectarImagenes(array) {
+    for (let index = 0; index < array.length; index++) {
+      const element = array[index];
+      var img = document.createElement("img");
+      img.setAttribute("src", element);
+      const model = await nsfwjs.load()
+      const predictions = await model.classify(img)
+      console.log('Predictions: ', predictions)
+      this.predicciones.push(predictions)
+    }
+    this.procesarPredicciones();
+  }
+
+  procesarPredicciones() {
+    for (let i = 0; i < this.predicciones.length; i++) {
+      const imagen = this.predicciones[i];
+      for (let j = 0; j < imagen.length; j++) {
+        const prediccion = imagen[j];
+        if ((prediccion.className == "Porn" && prediccion.probability > 0.30) || (prediccion.className == "Hentai" && prediccion.probability > 0.30) || (prediccion.className == "Sexy" && prediccion.probability > 0.30)) {
+          this._snackBar.open("Una o varias de las imágenes cargadas no aceptan nuestros términos y condiciones", "Aceptar")
+          this.spinner.hide();
+          this.imagePath = undefined;
+          return;
+        } else {
+          continue;
+        }
+      }
+    }
+    this.spinner.hide();
   }
 
   esSocial() {

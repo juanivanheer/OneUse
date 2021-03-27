@@ -4,6 +4,11 @@
     <br>
 </div>
 
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="large" color="#fff" type="timer" [fullScreen]="true">
+    <p style="color: white"> Verificando... </p>
+</ngx-spinner>
+
+
 <!--VERSIÓN XL-->
 <section fxLayout="column" fxLayoutAlign="center center" fxShow.gt-md="true" fxHide.lt-md="true"
     style="margin-bottom: 20px; margin-left: 100px; margin-right: 100px">
@@ -237,37 +242,18 @@
         <mat-step [stepControl]="datosProductosGroup" errorMessage="Los datos de tu productos son necesarios.">
             <form [formGroup]="datosProductosGroup">
                 <ng-template matStepLabel>Datos del producto</ng-template>
-                <h3>Completá los datos de tu producto</h3>
+                <h4>Completa los datos de tu producto</h4>
                 <br>
                 <mat-form-field>
                     <input matInput #titulo1 maxlength="35" placeholder="Título de la Publicación"
                         formControlName="titulo" name="titulo" (ngModelChange)="titulo = $event" required>
                     <mat-hint align="start">{{titulo1.value.length}} / 35</mat-hint>
                 </mat-form-field>
+                <br><br>
                 <mat-form-field style="margin-top: 20px">
                     <textarea matInput placeholder="Descrpción del producto" cdkTextareaAutosize
                         formControlName="descripcion" name="descripcion" required
                         (ngModelChange)="descripcion = $event"></textarea>
-                </mat-form-field>
-                <mat-form-field>
-                    <span matPrefix>$ &nbsp;</span>
-                    <input matInput type="number" placeholder="Precio por día de alquiler" formControlName="preciodia"
-                        name="preciodia" required (ngModelChange)="preciodia = $event" soloNumerosDirective>
-                </mat-form-field>
-                <br><br>
-                <mat-form-field>
-                    <span matPrefix>$ &nbsp;</span>
-                    <input matInput #precioSemana type="number" placeholder="Precio por semana de alquiler"
-                        formControlName="preciosemana" name="preciosemana" (ngModelChange)="preciosemana = $event"
-                        soloNumerosDirective>
-                    <mat-hint align="start">Modificable si la cantidad de días disponible supera a 7</mat-hint>
-                </mat-form-field>
-                <br><br>
-                <mat-form-field>
-                    <span matPrefix>$ &nbsp;</span>
-                    <input matInput type="number" placeholder="Precio por mes de alquiler" formControlName="preciomes"
-                        optional name="preciomes" (ngModelChange)="preciomes = $event" soloNumerosDirective>
-                    <mat-hint align="start">Modificable si la cantidad de días disponible supera a 28</mat-hint>
                 </mat-form-field>
                 <br><br>
                 <div fxLayout="row" fxFlexFill>
@@ -287,6 +273,31 @@
                         <mat-hint align="start">Cantidad total de objetos identicos a alquilar</mat-hint>
                     </mat-form-field>
                 </div>
+                <br><br>
+                <div fxLayout="row" fxFlexFill>
+                    <mat-form-field fxFlex="33%" style="padding-right: 40px;">
+                        <span matPrefix>$ &nbsp;</span>
+                        <input matInput type="number" placeholder="Precio por día de alquiler"
+                            formControlName="preciodia" name="preciodia" required (ngModelChange)="preciodia = $event"
+                            soloNumerosDirective>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="33%" style="padding-right: 40px;">
+                        <span matPrefix>$ &nbsp;</span>
+                        <input matInput #precioSemana type="number" placeholder="Precio por semana de alquiler"
+                            formControlName="preciosemana" name="preciosemana" (ngModelChange)="preciosemana = $event"
+                            soloNumerosDirective>
+                        <mat-hint align="start">Modificable si la cantidad de días disponible supera a 7</mat-hint>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="30%">
+                        <span matPrefix>$ &nbsp;</span>
+                        <input matInput type="number" placeholder="Precio por mes de alquiler"
+                            formControlName="preciomes" optional name="preciomes" (ngModelChange)="preciomes = $event"
+                            soloNumerosDirective>
+                        <mat-hint align="start">Modificable si la cantidad de días disponible supera a 28</mat-hint>
+                    </mat-form-field>
+                </div>
+
+                <br><br>
                 <div fxLayout="row" fxFlexFill>
                     <div fxFlex>
                         <button mat-raised-button matStepperPrevious color="primary">Volver</button>
@@ -332,8 +343,8 @@
         <!--TIPO DE ALQUILER-->
         <mat-step [stepControl]="tipoAlquilerGroup" errorMessage="Debes seleccionar el tipo de alquiler">
             <form [formGroup]="tipoAlquilerGroup">
-                <ng-template matStepLabel>Tipo de alquiler del producto</ng-template>
-                <h3>Seleccioná el tipo de alquiler de tu producto</h3>
+                <ng-template matStepLabel>Tipo de alquiler</ng-template>
+                <h3>Selecciona el tipo de alquiler de tu producto</h3>
                 <br>
                 <div fxLayout="column">
                     <div class="contenedor-imagenes">
@@ -355,15 +366,15 @@
                             buenas condiciones, finalizando la transacción.
                         </p>
                         <mat-radio-group formControlName="tipoAlquiler" (change)="obtenerTipoAlquiler($event)">
-                            <div fxLayout="column" fxLayoutAlign="center start">
+                            <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px">
                                 <mat-selection-list fxFlexOffset="20px">
                                     <mat-radio-button class="radioButton" color="primary"
                                         value="AlquilerSinIntervencion">
-                                        Alquiler sin Intervención
+                                        Alquiler sin intervención
                                     </mat-radio-button>
                                     <mat-radio-button class="radioButton" color="primary"
                                         value="AlquilerConIntervencion">
-                                        Alquiler con Intervención
+                                        Alquiler con intervención
                                     </mat-radio-button>
                                 </mat-selection-list>
                             </div>
@@ -387,7 +398,7 @@
                 <ng-template matStepLabel>Destacar producto</ng-template>
                 <div fxLayout="column">
                     <div>
-                        <h3>Destacá tu producto</h3>
+                        <h3>Destaca tu producto</h3>
                         <br>
                         <div class="contenedor-imagenes">
                             <p id="formatoLetra">Destacar tu producto te permite que este aparezca en las primeras
@@ -398,7 +409,7 @@
                                 producto
                             </p>
                             <mat-radio-group formControlName="destacar" (change)="obtenerDestacacion($event)">
-                                <div fxLayout="column" fxLayoutAlign="center start">
+                                <div fxLayout="column" fxLayoutAlign="center center">
                                     <mat-selection-list fxFlexOffset="20px">
                                         <mat-radio-button class="radioButton" color="primary" value="SI">
                                             SI

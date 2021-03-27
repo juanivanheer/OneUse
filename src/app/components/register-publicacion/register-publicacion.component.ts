@@ -5,6 +5,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { UploadService } from 'src/app/services/upload.service';
 import { SwiperComponent, SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { MatSnackBar } from '@angular/material';
+declare const nsfwjs: any;
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-register-publicacion ',
@@ -49,9 +51,10 @@ export class RegisterPublicacionComponent implements OnInit {
   public filesToUpload: Array<File>;
   hayImagen: boolean = false;
   arrayImagenes = null;
+  predicciones = [];
 
 
-  constructor(private _formBuilder: FormBuilder, private _auth: AuthService, private _uploadService: UploadService, private _snackBar: MatSnackBar) { }
+  constructor(private _formBuilder: FormBuilder, private _auth: AuthService, private _uploadService: UploadService, private _snackBar: MatSnackBar, private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
     this.categoriaFormGroup = this._formBuilder.group({
@@ -120,7 +123,11 @@ export class RegisterPublicacionComponent implements OnInit {
     else this.datosProductosGroup.get("preciomes").disable()
   }
 
-  onFilesAdded(files: File[]) {
+  async onFilesAdded(files: File[]) {
+    this.spinner.show();
+    this.predicciones = [];
+    this.image = [];
+    this.arrayImagenes = [];
     if (files.length > 5) {
       this._snackBar.open("No se pueden ingresar más de 5 imágenes", "Aceptar")
       this.image = [];
@@ -133,17 +140,18 @@ export class RegisterPublicacionComponent implements OnInit {
       this.image = files;
       this.arrayImagenes = [];
       this.arrayImagenes.length = 0;
-      files.forEach(file => {
+      await files.forEach(file => {
         const reader = new FileReader();
         reader.onload = (e: ProgressEvent) => {
           const content = (e.target as FileReader).result;
           this.arrayImagenes.push(content);
+          if (this.arrayImagenes.length == files.length) {
+            this.detectarImagenes(this.arrayImagenes)
+          }
         };
         reader.readAsDataURL(file);
       });
-      this.fotoProductoGroup.patchValue({
-        multiplefile: [{ value: this.arrayImagenes }, Validators.required]
-      })
+
     }
   }
 
@@ -188,8 +196,6 @@ export class RegisterPublicacionComponent implements OnInit {
 
     this.fotoProductoGroup.patchValue({
       multiplefile: this.image
-
-
     })
 
     this.tipoAlquilerGroup.patchValue({
@@ -254,7 +260,7 @@ export class RegisterPublicacionComponent implements OnInit {
         this._uploadService.makeFileRequest("http://localhost:4201/api/upload-publicacion-img/" + email + "/" + this.titulo + "/" + this.categoria, [], this.image, 'multiplefile')
           .then((result: any) => {
             if (this.seDestaca) {
-              window.location.assign("/destacacion-publicacion/" + response._id); 
+              window.location.assign("/destacacion-publicacion/" + response._id);
             } else {
               window.location.assign("/publicacion-exito");
             }
@@ -304,6 +310,45 @@ export class RegisterPublicacionComponent implements OnInit {
       duration: 2000,
       panelClass: ['color-snackbar']
     });
+  }
+
+
+
+  async detectarImagenes(array) {
+    for (let index = 0; index < array.length; index++) {
+      const element = array[index];
+      var img = document.createElement("img");
+      img.setAttribute("src", element);
+      const model = await nsfwjs.load()
+      const predictions = await model.classify(img)
+      this.predicciones.push(predictions)
+    }
+    this.procesarPredicciones();
+  }
+
+  procesarPredicciones() {
+    for (let i = 0; i < this.predicciones.length; i++) {
+      const imagen = this.predicciones[i];
+      for (let j = 0; j < imagen.length; j++) {
+        const prediccion = imagen[j];
+        if ((prediccion.className == "Porn" && prediccion.probability > 0.30) || (prediccion.className == "Hentai" && prediccion.probability > 0.30) || (prediccion.className == "Sexy" && prediccion.probability > 0.30)) {
+          this._snackBar.open("Una o varias de las imágenes cargadas no aceptan nuestros términos y condiciones", "Aceptar")
+          this.spinner.hide();
+          this.image = undefined;
+          this.fotoProductoGroup.patchValue({
+            multiplefile: [{ value: '' }, Validators.required]
+          })
+          this.actualizarDatos()
+          return;
+        } else {
+          continue;
+        }
+      }
+    }
+    this.fotoProductoGroup.patchValue({
+      multiplefile: [{ value: this.arrayImagenes }, Validators.required]
+    })
+    this.spinner.hide();
   }
 
 }

@@ -1,13 +1,12 @@
 <div fxLayout="row" fxLayoutAlign="center center" id="mp"></div>
 
-<div *ngIf="!finalizado">
-    <mat-spinner style="text-align: center;"></mat-spinner>
-    <p style="text-align: center;">Estamos analizando la imágen seleccionada</p>
-</div>
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="large" color="#fff" type="timer" [fullScreen]="true">
+    <p style="color: white"> Verificando... </p>
+</ngx-spinner>
 
-<div class="contenedor-imagenes" [fxShow]=finalizado>
-    <ngx-dropzone [accept]="'image/png,image/jpeg,image/gif'"
-        [label]="'Clickea aquí para subir tu imágen o arrastrala'" [multiple]="true"
-        (filesAdded)="onFilesAdded($event)" [showPreviews]="true" [preserveFiles]="false"
-        #dropzone></ngx-dropzone>
+
+<div class="contenedor-imagenes">
+    <ngx-dropzone [accept]="'image/png,image/jpeg,image/gif'" [label]="'Clickea aquí para subir tu imágen o arrastrala'"
+        [multiple]="true" (filesAdded)="onFilesAdded($event)" [showPreviews]="true" [preserveFiles]="false" #dropzone>
+    </ngx-dropzone>
 </div>

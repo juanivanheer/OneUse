@@ -48,7 +48,7 @@
 }
 
 .radioButton {
-    margin-left: 20px;
+    margin-left: 50px;
 }
 
 /* SWIPPER */
@@ -80,10 +80,13 @@ form, .mt-30{
 .center{
     text-align: center;
 }
+
 mat-form-field{
     font-size: 20px;
 }
+
 #formatoLetra{
-    font-size: 17px;
+    font-size: 13px;
     text-align: justify;
+    color: gray;
 }

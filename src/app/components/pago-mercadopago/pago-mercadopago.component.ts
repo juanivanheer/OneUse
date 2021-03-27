@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth.service';
 declare const nsfwjs: any;
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-pago-mercadopago',
@@ -51,7 +52,7 @@ export class PagoMercadopagoComponent implements AfterViewInit {
 
   */
 
-  constructor(private _auth: AuthService, private _snackBar: MatSnackBar) { }
+  constructor(private _auth: AuthService, private _snackBar: MatSnackBar, private spinner: NgxSpinnerService) { }
 
   finalizado: boolean = true;
   predicciones = [];
@@ -71,6 +72,7 @@ export class PagoMercadopagoComponent implements AfterViewInit {
   }
 
   async onFilesAdded(files: File[]) {
+    this.spinner.show();
     this.finalizado = false;
     this.predicciones = [];
     this.image = [];
@@ -117,18 +119,17 @@ export class PagoMercadopagoComponent implements AfterViewInit {
       const imagen = this.predicciones[i];
       for (let j = 0; j < imagen.length; j++) {
         const prediccion = imagen[j];
-        if ((prediccion.className == "Porn" && prediccion.probability > 0.35) || (prediccion.className == "Hentai" && prediccion.probability > 0.35) || (prediccion.className == "Sexy" && prediccion.probability > 0.35)) {
+        if ((prediccion.className == "Porn" && prediccion.probability > 0.30) || (prediccion.className == "Hentai" && prediccion.probability > 0.30) || (prediccion.className == "Sexy" && prediccion.probability > 0.30)) {
           this._snackBar.open("Una o varias de las imágenes cargadas no aceptan nuestros términos y condiciones", "Aceptar")
-          //this.image = [];
-          //this.arrayImagenes = [];
-          this.finalizado = true;
+          this.spinner.hide();
+          this.image = undefined;
           return;
         } else {
           continue;
         }
       }
     }
-    this.finalizado = true;
+    this.spinner.hide();
   }
 
   openSnackBar(message: string, action: string) {

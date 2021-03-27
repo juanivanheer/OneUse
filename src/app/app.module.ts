@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { routing, appRoutingProviders } from './app.routing';
@@ -98,7 +98,7 @@ import { UsersComponent } from './components/users/users.component';
 import { ReclamoDialogComponent } from './components/mi-cuenta/mis-reclamos/reclamo-dialog/reclamo-dialog.component';
 import { IvyCarouselModule } from 'angular-responsive-carousel';
 import { EliminarReclamoDialogComponent } from './components/mi-cuenta/superadmin/reclamos/eliminar-reclamo-dialog/eliminar-reclamo-dialog.component';
-
+import { NgxSpinnerModule } from "ngx-spinner";
 FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme);
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
@@ -201,8 +201,10 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     AngularFireModule.initializeApp(environment),
     AngularFirestoreModule,
     AngularFireAnalyticsModule,
-    IvyCarouselModule
+    IvyCarouselModule,
+    NgxSpinnerModule
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [appRoutingProviders, AuthService, SingletonService, { provide: SWIPER_CONFIG, useValue: DEFAULT_SWIPER_CONFIG }],
   bootstrap: [AppComponent],
   entryComponents: [DeshabilitarDialogComponent, EliminarDialogComponent, DatosPropietarioDialogComponent, EliminarAlquilerDialogComponent,

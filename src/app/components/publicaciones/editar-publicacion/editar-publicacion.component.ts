@@ -4,6 +4,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { UploadService } from 'src/app/services/upload.service';
 import { MatSnackBar } from '@angular/material';
+declare const nsfwjs: any;
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-editar-publicacion',
@@ -56,8 +58,9 @@ export class EditarPublicacionComponent implements OnInit {
   mantenerImg: boolean = false;
   nuevasImagenes: boolean = false;
   imagenBD;
+  predicciones = []
 
-  constructor(private _formBuilder: FormBuilder, private _auth: AuthService, private _uploadService: UploadService, private _snackBar: MatSnackBar) { }
+  constructor(private spinner: NgxSpinnerService, private _formBuilder: FormBuilder, private _auth: AuthService, private _uploadService: UploadService, private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
 
@@ -166,7 +169,11 @@ export class EditarPublicacionComponent implements OnInit {
     this.tipoAlquiler = evento.value;
   }
 
-  onFilesAdded(files: File[]) {
+  async onFilesAdded(files: File[], dropzone) {
+    this.spinner.show();
+    this.predicciones = [];
+    this.image = [];
+    this.arrayImagenes = [];
     if (files.length > 5) {
       this._snackBar.open("No se pueden ingresar más de 5 imágenes", "Aceptar")
       this.image = [];
@@ -179,18 +186,58 @@ export class EditarPublicacionComponent implements OnInit {
       this.image = files;
       this.arrayImagenes = [];
       this.arrayImagenes.length = 0;
-      files.forEach(file => {
+      await files.forEach(file => {
         const reader = new FileReader();
         reader.onload = (e: ProgressEvent) => {
           const content = (e.target as FileReader).result;
           this.arrayImagenes.push(content);
+          if (this.arrayImagenes.length == files.length) {
+            this.detectarImagenes(this.arrayImagenes, dropzone)
+          }
         };
         reader.readAsDataURL(file);
       });
-      this.fotoProductoGroup.patchValue({
-        multiplefile: [{ value: this.arrayImagenes }, Validators.required]
-      })
     }
+  }
+
+
+  async detectarImagenes(array, dropzone) {
+    for (let index = 0; index < array.length; index++) {
+      const element = array[index];
+      var img = document.createElement("img");
+      img.setAttribute("src", element);
+      const model = await nsfwjs.load()
+      const predictions = await model.classify(img)
+      this.predicciones.push(predictions)
+    }
+    this.procesarPredicciones(dropzone);
+  }
+
+  procesarPredicciones(dropzone) {
+    for (let i = 0; i < this.predicciones.length; i++) {
+      const imagen = this.predicciones[i];
+      for (let j = 0; j < imagen.length; j++) {
+        const prediccion = imagen[j];
+        if ((prediccion.className == "Porn" && prediccion.probability > 0.30) || (prediccion.className == "Hentai" && prediccion.probability > 0.30) || (prediccion.className == "Sexy" && prediccion.probability > 0.30)) {
+          this._snackBar.open("Una o varias de las imágenes cargadas no aceptan nuestros términos y condiciones", "Aceptar")
+          this.spinner.hide();
+          this.image = [];
+          this.arrayImagenes = [];
+          this.fotoProductoGroup.patchValue({
+            multiplefile: [{ value: '' }, Validators.required]
+          })
+          this.actualizarDatos();
+          dropzone.reset();
+          return;
+        } else {
+          continue;
+        }
+      }
+    }
+    this.fotoProductoGroup.patchValue({
+      multiplefile: [{ value: this.arrayImagenes }, Validators.required]
+    })
+    this.spinner.hide();
   }
 
   actualizarDatos() {
@@ -268,6 +315,7 @@ export class EditarPublicacionComponent implements OnInit {
       this.image = this.arrayJSON;
       this.mantenerImg = true;
       dropzone.disabled = true;
+      dropzone.reset();
       btnDropzone.disabled = true;
 
       this.fotoProductoGroup.patchValue({
@@ -282,9 +330,20 @@ export class EditarPublicacionComponent implements OnInit {
       };
 
     } else {
+      this.image = undefined;
       this.mantenerImg = false;
       dropzone.disabled = false;
       btnDropzone.disabled = false;
+      this.fotoProductoGroup.patchValue({
+        multiplefile: this.image
+      })
+
+      this.joinGroup = {
+        ...this.categoriaFormGroup.value,
+        ...this.datosProductosGroup.value,
+        ...this.fotoProductoGroup.value,
+        ...this.tipoAlquilerGroup.value
+      };
     }
   }
 
