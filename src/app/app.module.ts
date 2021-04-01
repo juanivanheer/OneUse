@@ -69,6 +69,7 @@ import { ReclamoExitoComponent } from './components/reclamo-exito/reclamo-exito.
 
 import { FusionChartsModule } from 'angular-fusioncharts';
 import * as FusionCharts from 'fusioncharts';
+import * as TimeSeries from 'fusioncharts/fusioncharts.timeseries'
 import * as Charts from 'fusioncharts/fusioncharts.charts';
 import * as FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
 import { CodigoDevolucionLocatarioDialogComponent } from './components/mi-cuenta/mis-alquileres/codigo-devolucion-locatario-dialog/codigo-devolucion-locatario-dialog.component';
@@ -99,7 +100,7 @@ import { ReclamoDialogComponent } from './components/mi-cuenta/mis-reclamos/recl
 import { IvyCarouselModule } from 'angular-responsive-carousel';
 import { EliminarReclamoDialogComponent } from './components/mi-cuenta/superadmin/reclamos/eliminar-reclamo-dialog/eliminar-reclamo-dialog.component';
 import { NgxSpinnerModule } from "ngx-spinner";
-FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme);
+FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme, TimeSeries);
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: 'horizontal',

@@ -1,46 +1,83 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="large" color="#fff" type="timer" [fullScreen]="true">
+    <p style="color: white"> Armando estadística </p>
+</ngx-spinner>
+
 <div fxLayout="row" fxFlexFill>
     <div fxLayout fxFlexOrder="1" ngClass.lt-lg="toolbar-div-lt-md">
         <app-barra-lateral-sa></app-barra-lateral-sa>
     </div>
 
     <div fxLayout="column" fxFlexOrder="2" fxLayoutAlign="start center" fxLayout.lt-lg="column"
-        fxLayoutAlign.lt-lg="center center" style="width: 100%; margin-top: 20px; margin-bottom: 20px;">
-        
-        <div fxLayout="column" style="width: 100%; text-align: center; margin-top: 40px" fxLayoutAlign="center center">
-            <p style="font-size: 25px;margin-bottom: 40px; "> Estadísticas </p>
-            <mat-divider fxFlexFill></mat-divider>
-        </div>
+        fxLayoutAlign.lt-lg="center center" style="width: 100%; margin-top: 20px;margin-bottom: 20px">
+        <div class="mat-elevation-z8" style="width: 95%;">
+            <div fxLayout="column" style="width: 100%; text-align: center; margin-top: 40px"
+                fxLayoutAlign="center center">
+                <div fxLayout="row" fxLayoutAlign="center center" style="font-size: 25px;margin-bottom: 40px;">
+                    <p> Estadísticas </p>
+                    <button mat-button (click)="ngOnInit();">
+                        <mat-icon>update</mat-icon>
+                    </button>
+                </div>
 
-        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
-            <mat-form-field class="selector">
-                <mat-label>Tipo de estadística</mat-label>
-                <mat-select [(value)]="selected">
-                    <mat-option (click)="deshabilitarEncuestas()">
-                        -Elegir encuesta-
-                    </mat-option>
-                    <mat-option *ngFor="let e of estadisticas" [value]="e" (click)="clickSelectEncuesta()">
-                        {{e}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
+                <mat-divider fxFlexFill></mat-divider>
+            </div>
 
-            <mat-form-field class="selector" *ngIf="publicacionesCategoriasSeleccionada">
-                <mat-label>Estadística</mat-label>
-                <mat-select [(value)]="categoriaSeleccionada">
-                    <mat-option (click)="deshabilitarPublicacionesCategorias()">
-                        -Elegir subcategoria-
-                    </mat-option>
-                    <mat-option *ngFor="let s of seleccionada" [value]="s" (click)="clickSelectSubEncuesta()">
-                        {{s}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
+            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px" *ngIf="mostrar" style="padding: 20px;">
+                <mat-form-field class="selector">
+                    <mat-label>Estadística</mat-label>
+                    <mat-select>
+                        <mat-option (click)="mostrarGrafico = false; estadisticaGeneralSeleccionada = false;">- Elegir
+                            estadística -</mat-option>
+                        <mat-optgroup *ngFor="let estGroup of estadisticas" [label]="estGroup.name">
+                            <mat-option
+                                (click)="estadisticaSeleccionada(estIndiv.viewValue); estadisticaGeneralSeleccionada = true;categoriaSeleccionada = undefined"
+                                *ngFor="let estIndiv of estGroup.estadistica" [value]="estIndiv.value">
+                                {{estIndiv.viewValue}}
+                            </mat-option>
+                        </mat-optgroup>
+                    </mat-select>
+                </mat-form-field>
 
-        <div>
-            <fusioncharts [width]="width" [height]="height" [type]="type" [dataFormat]="dataFormat"
-                [dataSource]="dataSource" *ngIf="mostrarGrafico">
-            </fusioncharts>
+                <mat-form-field class="selector"
+                    *ngIf="publicacionesSubcategoriaSeleccionada || alquileresSubcategoriaSeleccionada">
+                    <mat-label>Subcategoría</mat-label>
+
+                    <mat-select [(value)]="categoriaSeleccionada" *ngIf="publicacionesSubcategoriaSeleccionada" #select2>
+                        <mat-option (click)="mostrarGrafico = false; fechasDeshabilitadas = true" [value]="none"> - Elegir categoria -
+                        </mat-option>
+                        <mat-option *ngFor="let s of subcategorias" [value]="s"
+                            (click)="subcategoriaSeleccionada('publicaciones', s); fechasDeshabilitadas = false">
+                            {{s}}
+                        </mat-option>
+                    </mat-select>
+
+                    <mat-select [(value)]="categoriaSeleccionada" *ngIf="alquileresSubcategoriaSeleccionada" #select3>
+                        <mat-option (click)="mostrarGrafico = false; fechasDeshabilitadas = true" [value]="none"> - Elegir categoria -
+                        </mat-option>
+                        <mat-option *ngFor="let s of subcategorias" [value]="s"
+                            (click)="subcategoriaSeleccionada('alquileres', s); fechasDeshabilitadas = false">
+                            {{s}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="selector" *ngIf="estadisticaGeneralSeleccionada">
+                    <mat-label>Período de búsqueda</mat-label>
+
+                    <mat-select [disabled]="fechasDeshabilitadas">
+                        <mat-option (click)="mostrarGrafico = false"> - Elegir período - </mat-option>
+                        <mat-option (click)="calcularPorPeriodo(p)" *ngFor="let p of periodo" [value]="p">
+                            {{p}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div fxLayoutAlign="center center">
+                <fusioncharts [width]="width" [height]="height" [type]="type" [dataFormat]="dataFormat"
+                    [dataSource]="dataSource" *ngIf="mostrarGrafico">
+                </fusioncharts>
+            </div>
         </div>
     </div>
 </div>
