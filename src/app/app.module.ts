@@ -99,6 +99,7 @@ import { UsersComponent } from './components/users/users.component';
 import { ReclamoDialogComponent } from './components/mi-cuenta/mis-reclamos/reclamo-dialog/reclamo-dialog.component';
 import { IvyCarouselModule } from 'angular-responsive-carousel';
 import { EliminarReclamoDialogComponent } from './components/mi-cuenta/superadmin/reclamos/eliminar-reclamo-dialog/eliminar-reclamo-dialog.component';
+import { RespuestaReclamoDialogComponent } from './components/mi-cuenta/superadmin/reclamos/respuesta-reclamo-dialog/respuesta-reclamo-dialog.component';
 import { NgxSpinnerModule } from "ngx-spinner";
 FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme, TimeSeries);
 
@@ -182,6 +183,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     UsersComponent,
     ReclamoDialogComponent,
     EliminarReclamoDialogComponent,
+    RespuestaReclamoDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -211,6 +213,6 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   entryComponents: [DeshabilitarDialogComponent, EliminarDialogComponent, DatosPropietarioDialogComponent, EliminarAlquilerDialogComponent,
     DatosLocatarioDialogComponent, CodigoPropietarioDialogComponent, CodigoLocatarioDialogComponent, CodigoDevolucionLocatarioDialogComponent,
     CodigoDevolucionPropietarioDialogComponent, EliminarUsuarioDialogComponent, DatosUsuariosDialogComponent, ModificarUsuarioDialogComponent, DatosPublicacionesDialogComponent, EliminarPublicacionDialogComponent, ModificarPublicacionDialogComponent,
-    DatosAlquileresDialogComponent, ModificarAlquilerDialogComponent, EliminarAlquilerSuperadminDialogComponent, CancelarDialogComponent, PuntuacionComponent, PuntuacionObtenidaDialogComponent, ReclamoDialogComponent, EliminarReclamoDialogComponent]
+    DatosAlquileresDialogComponent, ModificarAlquilerDialogComponent, EliminarAlquilerSuperadminDialogComponent, CancelarDialogComponent, PuntuacionComponent, PuntuacionObtenidaDialogComponent, ReclamoDialogComponent, EliminarReclamoDialogComponent, RespuestaReclamoDialogComponent]
 })
 export class AppModule { }

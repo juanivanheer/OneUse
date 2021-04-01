@@ -2,8 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { SingletonService } from 'src/app/components/singleton.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { EliminarReclamoDialogComponent } from './eliminar-reclamo-dialog/eliminar-reclamo-dialog.component'
 import { MatPaginator, MatSort, MatTableDataSource, MatDialogRef, MatDialog } from '@angular/material';
+import { EliminarReclamoDialogComponent } from './eliminar-reclamo-dialog/eliminar-reclamo-dialog.component'
+import { RespuestaReclamoDialogComponent } from './respuesta-reclamo-dialog/respuesta-reclamo-dialog.component';
 
 export interface Reclamos {
 updatedAt: string
@@ -31,6 +32,7 @@ export class ReclamosComponent implements OnInit {
   private subscription: Subscription;
 
   eliminarReclamoDialogRef: MatDialogRef<EliminarReclamoDialogComponent>
+  respuestaReclamoDialogRef: MatDialogRef<RespuestaReclamoDialogComponent>
   
   dataSource;
   displayedColumns = ['_id', 'motivo', 'usuario_reclamo', 'boton' ];
@@ -69,6 +71,15 @@ export class ReclamosComponent implements OnInit {
 
   cerrarSesion() {
     this.singleton.cerrarSesion();
+  }
+
+  openDialogRespuestaReclamo(data): void {
+    this.respuestaReclamoDialogRef = this.dialog.open(RespuestaReclamoDialogComponent,
+      {
+        data: {
+          data: data
+        }
+      });
   }
 
 }

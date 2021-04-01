@@ -69,6 +69,7 @@ export class AuthService {
   private _getAllReclamos = this.url + "get-all-reclamos/"
   private _getReclamosUser = this.url + "get-reclamos-user/"
   private _deleteReclamos = this.url + "delete-reclamos/"
+  private _responderReclamo = this.url + "responder-reclamo/"
   private _deleteUser = this.url + "delete-user/"
   private _updateSuperadminUser = this.url + "update-superadmin-user"
   private _getAllPublicaciones = this.url + "get-all-publicaciones"
@@ -353,6 +354,11 @@ export class AuthService {
 
 
   //Reclamo
+
+  responder_reclamo(reclamo) {
+    return this.http.post<any>(this._responderReclamo, reclamo);
+  }
+  
   registrar_reclamo(reclamo) {
     return this.http.post<any>(this._registrarReclamo, reclamo);
   }
