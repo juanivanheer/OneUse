@@ -179,7 +179,7 @@ export class EstadisticasComponent implements OnInit {
       this.spinner.show();
       this.seleccionadoPublicacionesCategorias();
       this.publicacionesCategoriasSeleccionada = true;
-      this.fechasDeshabilitadas = true;
+      this.fechasDeshabilitadas = false;
     }
 
     if (estadistica == 'Cantidad total de publicaciones según subcategorías') {
@@ -769,10 +769,10 @@ export class EstadisticasComponent implements OnInit {
       this.dataSource = {
         chart: { theme: "fusion", bgColor: "#fafafa" },
         caption: {
-          text: "Alquileres creados por día"
+          text: "Cantidad de alquileres según categoría"
         },
         subcaption: {
-          text: "Filtrados por categoría"
+          text: "Ordenados por día"
         },
         series: "Categoria",
         yaxis: [
@@ -1638,25 +1638,25 @@ export class EstadisticasComponent implements OnInit {
           if (element[1] == "Cámaras y accesorios") array_camaras_y_accesorios.push({ value: element[2] });
 
           if (i == (array_total_mes.length - 1)) {
-            if (this.evitarLog(array_tv_audio_video) != 0) {
+            if (this.evitarLog(array_tv_audio_video, array_meses) != 0) {
               dataset.push({ seriesname: "TV - Audio - Video", data: array_tv_audio_video })
             }
-            if (this.evitarLog(array_celulares_tablets) != 0) {
+            if (this.evitarLog(array_celulares_tablets, array_meses) != 0) {
               dataset.push({ seriesname: "Celulares - Tablets", data: array_celulares_tablets })
             }
-            if (this.evitarLog(array_computadoras) != 0) {
+            if (this.evitarLog(array_computadoras, array_meses) != 0) {
               dataset.push({ seriesname: "Computadoras", data: array_computadoras })
             }
-            if (this.evitarLog(array_notebooks) != 0) {
+            if (this.evitarLog(array_notebooks, array_meses) != 0) {
               dataset.push({ seriesname: "Notebooks", data: array_notebooks })
             }
-            if (this.evitarLog(array_videojuegos) != 0) {
+            if (this.evitarLog(array_videojuegos, array_meses) != 0) {
               dataset.push({ seriesname: "Videojuegos", data: array_videojuegos })
             }
-            if (this.evitarLog(array_consolas) != 0) {
+            if (this.evitarLog(array_consolas, array_meses) != 0) {
               dataset.push({ seriesname: "Consolas", data: array_consolas })
             }
-            if (this.evitarLog(array_camaras_y_accesorios) != 0) {
+            if (this.evitarLog(array_camaras_y_accesorios, array_meses) != 0) {
               dataset.push({ seriesname: "Cámaras y accesorios", data: array_camaras_y_accesorios })
             }
           }
@@ -1670,19 +1670,19 @@ export class EstadisticasComponent implements OnInit {
           if (element[1] == "Jardin") array_jardin.push({ value: element[2] });
 
           if (i == (array_total_mes.length - 1)) {
-            if (this.evitarLog(array_accesorios_hogar) != 0) {
+            if (this.evitarLog(array_accesorios_hogar, array_meses) != 0) {
               dataset.push({ seriesname: "Accesorios (Hogar)", data: array_accesorios_hogar })
             }
-            if (this.evitarLog(array_decoracion) != 0) {
+            if (this.evitarLog(array_decoracion, array_meses) != 0) {
               dataset.push({ seriesname: "Decoración", data: array_decoracion })
             }
-            if (this.evitarLog(array_electrodomesticos) != 0) {
+            if (this.evitarLog(array_electrodomesticos, array_meses) != 0) {
               dataset.push({ seriesname: "Electrodomésticos", data: array_electrodomesticos })
             }
-            if (this.evitarLog(array_muebles) != 0) {
+            if (this.evitarLog(array_muebles, array_meses) != 0) {
               dataset.push({ seriesname: "Muebles", data: array_muebles })
             }
-            if (this.evitarLog(array_jardin) != 0) {
+            if (this.evitarLog(array_jardin, array_meses) != 0) {
               dataset.push({ seriesname: "Jardin", data: array_jardin })
             }
           }
@@ -1697,22 +1697,22 @@ export class EstadisticasComponent implements OnInit {
           if (element[1] == "Otros deportes") array_otros_deportes.push({ value: element[2] });
 
           if (i == (array_total_mes.length - 1)) {
-            if (this.evitarLog(array_aerobics_y_fitness) != 0) {
+            if (this.evitarLog(array_aerobics_y_fitness, array_meses) != 0) {
               dataset.push({ seriesname: "Aerobics y fitness", data: array_aerobics_y_fitness })
             }
-            if (this.evitarLog(array_bicicletas_y_ciclismo) != 0) {
+            if (this.evitarLog(array_bicicletas_y_ciclismo, array_meses) != 0) {
               dataset.push({ seriesname: "Bicicletas y ciclismo", data: array_bicicletas_y_ciclismo })
             }
-            if (this.evitarLog(array_camping_y_pesca) != 0) {
+            if (this.evitarLog(array_camping_y_pesca, array_meses) != 0) {
               dataset.push({ seriesname: "Camping y pesca", data: array_camping_y_pesca })
             }
-            if (this.evitarLog(array_deportes_acuaticos) != 0) {
+            if (this.evitarLog(array_deportes_acuaticos, array_meses) != 0) {
               dataset.push({ seriesname: "Deportes acuaticos", data: array_deportes_acuaticos })
             }
-            if (this.evitarLog(array_futbol) != 0) {
+            if (this.evitarLog(array_futbol, array_meses) != 0) {
               dataset.push({ seriesname: "Futbol", data: array_futbol })
             }
-            if (this.evitarLog(array_otros_deportes) != 0) {
+            if (this.evitarLog(array_otros_deportes, array_meses) != 0) {
               dataset.push({ seriesname: "Otros deportes", data: array_otros_deportes })
             }
           }
@@ -1725,16 +1725,16 @@ export class EstadisticasComponent implements OnInit {
           if (element[1] == "Libros y revistas") array_libros_y_revistas.push({ value: element[2] });
 
           if (i == (array_total_mes.length - 1)) {
-            if (this.evitarLog(array_arte_y_antiguedades) != 0) {
+            if (this.evitarLog(array_arte_y_antiguedades, array_meses) != 0) {
               dataset.push({ seriesname: "Arte y antiguedades", data: array_arte_y_antiguedades })
             }
-            if (this.evitarLog(array_cds_dvds) != 0) {
+            if (this.evitarLog(array_cds_dvds, array_meses) != 0) {
               dataset.push({ seriesname: "CDs - DVDs", data: array_cds_dvds })
             }
-            if (this.evitarLog(array_instrumentos_musicales) != 0) {
+            if (this.evitarLog(array_instrumentos_musicales, array_meses) != 0) {
               dataset.push({ seriesname: "Instrumentos musicales", data: array_instrumentos_musicales })
             }
-            if (this.evitarLog(array_libros_y_revistas) != 0) {
+            if (this.evitarLog(array_libros_y_revistas, array_meses) != 0) {
               dataset.push({ seriesname: "Libros y revistas", data: array_libros_y_revistas })
             }
           }
@@ -1746,13 +1746,13 @@ export class EstadisticasComponent implements OnInit {
           if (element[1] == "Salud y belleza") array_salud_y_belleza.push({ value: element[2] });
 
           if (i == (array_total_mes.length - 1)) {
-            if (this.evitarLog(array_relojes_joyas_accesorios) != 0) {
+            if (this.evitarLog(array_relojes_joyas_accesorios, array_meses) != 0) {
               dataset.push({ seriesname: "Relojes - joyas - accesorios", data: array_relojes_joyas_accesorios })
             }
-            if (this.evitarLog(array_ropa_y_calzado) != 0) {
+            if (this.evitarLog(array_ropa_y_calzado, array_meses) != 0) {
               dataset.push({ seriesname: "Ropa y calzado", data: array_ropa_y_calzado })
             }
-            if (this.evitarLog(array_salud_y_belleza) != 0) {
+            if (this.evitarLog(array_salud_y_belleza, array_meses) != 0) {
               dataset.push({ seriesname: "Salud y belleza", data: array_salud_y_belleza })
             }
           }
@@ -1764,13 +1764,13 @@ export class EstadisticasComponent implements OnInit {
           if (element[1] == "Ropa bebés y niños") array_ropa_bebés_y_niños.push({ value: element[2] });
 
           if (i == (array_total_mes.length - 1)) {
-            if (this.evitarLog(array_cunas_accesorios) != 0) {
+            if (this.evitarLog(array_cunas_accesorios, array_meses) != 0) {
               dataset.push({ seriesname: "Cunas - Accesorios", data: array_cunas_accesorios })
             }
-            if (this.evitarLog(array_juegos_juguetes) != 0) {
+            if (this.evitarLog(array_juegos_juguetes, array_meses) != 0) {
               dataset.push({ seriesname: "Juegos - juguetes", data: array_juegos_juguetes })
             }
-            if (this.evitarLog(array_ropa_bebés_y_niños) != 0) {
+            if (this.evitarLog(array_ropa_bebés_y_niños, array_meses) != 0) {
               dataset.push({ seriesname: "Ropa bebés y niños", data: array_ropa_bebés_y_niños })
             }
           }
@@ -1782,13 +1782,13 @@ export class EstadisticasComponent implements OnInit {
           if (element[1] == "Otros (mascotas)") array_otros_mascotas.push({ value: element[2] });
 
           if (i == (array_total_mes.length - 1)) {
-            if (this.evitarLog(array_accesorios_para_perros) != 0) {
+            if (this.evitarLog(array_accesorios_para_perros, array_meses) != 0) {
               dataset.push({ seriesname: "Accesorios para perros", data: array_accesorios_para_perros })
             }
-            if (this.evitarLog(array_accesorios_para_gatos) != 0) {
+            if (this.evitarLog(array_accesorios_para_gatos, array_meses) != 0) {
               dataset.push({ seriesname: "Accesorios para gatos", data: array_accesorios_para_gatos })
             }
-            if (this.evitarLog(array_otros_mascotas) != 0) {
+            if (this.evitarLog(array_otros_mascotas, array_meses) != 0) {
               dataset.push({ seriesname: "Otros (mascotas)", data: array_otros_mascotas })
             }
           }
@@ -1800,13 +1800,13 @@ export class EstadisticasComponent implements OnInit {
           if (element[1] == "Muebles para negocios - oficinas") array_muebles_para_negocios_oficinas.push({ value: element[2] });
 
           if (i == (array_total_mes.length - 1)) {
-            if (this.evitarLog(array_industria) != 0) {
+            if (this.evitarLog(array_industria, array_meses) != 0) {
               dataset.push({ seriesname: "Industria", data: array_industria })
             }
-            if (this.evitarLog(array_repuestos) != 0) {
+            if (this.evitarLog(array_repuestos, array_meses) != 0) {
               dataset.push({ seriesname: "Repuestos", data: array_repuestos })
             }
-            if (this.evitarLog(array_muebles_para_negocios_oficinas) != 0) {
+            if (this.evitarLog(array_muebles_para_negocios_oficinas, array_meses) != 0) {
               dataset.push({ seriesname: "Muebles para negocios - oficinas", data: array_muebles_para_negocios_oficinas })
             }
           }
@@ -1824,31 +1824,31 @@ export class EstadisticasComponent implements OnInit {
           if (element[1] == "Fantástica") array_fantastica.push({ value: element[2] });
 
           if (i == (array_total_mes.length - 1)) {
-            if (this.evitarLog(array_novela) != 0) {
+            if (this.evitarLog(array_novela, array_meses) != 0) {
               dataset.push({ seriesname: "Novela", data: array_novela })
             }
-            if (this.evitarLog(array_gotico) != 0) {
+            if (this.evitarLog(array_gotico, array_meses) != 0) {
               dataset.push({ seriesname: "Gótico", data: array_gotico })
             }
-            if (this.evitarLog(array_ciencia_ficcion) != 0) {
+            if (this.evitarLog(array_ciencia_ficcion, array_meses) != 0) {
               dataset.push({ seriesname: "Ciencia Ficción", data: array_ciencia_ficcion })
             }
-            if (this.evitarLog(array_cuento_de_hadas) != 0) {
+            if (this.evitarLog(array_cuento_de_hadas, array_meses) != 0) {
               dataset.push({ seriesname: "Cuento de hadas", data: array_cuento_de_hadas })
             }
-            if (this.evitarLog(array_accion) != 0) {
+            if (this.evitarLog(array_accion, array_meses) != 0) {
               dataset.push({ seriesname: "Acción", data: array_accion })
             }
-            if (this.evitarLog(array_drama) != 0) {
+            if (this.evitarLog(array_drama, array_meses) != 0) {
               dataset.push({ seriesname: "Drama", data: array_drama })
             }
-            if (this.evitarLog(array_suspenso) != 0) {
+            if (this.evitarLog(array_suspenso, array_meses) != 0) {
               dataset.push({ seriesname: "Suspenso", data: array_suspenso })
             }
-            if (this.evitarLog(array_terror) != 0) {
+            if (this.evitarLog(array_terror, array_meses) != 0) {
               dataset.push({ seriesname: "Terror", data: array_terror })
             }
-            if (this.evitarLog(array_fantastica) != 0) {
+            if (this.evitarLog(array_fantastica, array_meses) != 0) {
               dataset.push({ seriesname: "Fantástica", data: array_fantastica })
             }
           }
@@ -1858,7 +1858,7 @@ export class EstadisticasComponent implements OnInit {
           if (element[1] == "Otra categoria") array_otra_categoria.push({ value: element[2] });
 
           if (i == (array_total_mes.length - 1)) {
-            if (this.evitarLog(array_otra_categoria) != 0) {
+            if (this.evitarLog(array_otra_categoria, array_meses) != 0) {
               dataset.push({ seriesname: "Otra categoria", data: array_otra_categoria })
             }
           }
@@ -2319,6 +2319,1639 @@ export class EstadisticasComponent implements OnInit {
       this.spinner.hide();
     }
 
+
+    /* Cantidad de publicaciones según categoría */
+    if (periodo == "Por día" && this.nombreEstadisticaSeleccionada == "Cantidad total de publicaciones según categoría") {
+      let schema2 = [
+        {
+          "name": "Tiempo",
+          "type": "date",
+          "format": "%d-%b-%y"
+        },
+        {
+          "name": "Categoria",
+          "type": "string"
+        },
+        {
+          "name": "Cantidad",
+          "type": "number"
+        }
+      ]
+      /* Arma array con las categorias que salen en una determinada fecha */
+      for (let i = 0; i < this.publicaciones.length; i++) {
+        const element = this.publicaciones[i];
+        let fecha = new Date(element.createdAt);
+        let mes = this.obtenerMes(fecha);
+        let año = String(fecha.getFullYear()).slice(2)
+        let formato_elemento = fecha.getUTCDate() + "-" + mes + "-" + año;
+        objeto = {
+          tiempo: formato_elemento,
+          categoria: this.publicaciones[i].categoria
+        }
+        array_parcial.push(objeto);
+      }
+
+      /* Arma array con las fechas de los alquileres creados */
+      for (let i = 0; i < this.publicaciones.length; i++) {
+        const element1 = this.publicaciones[i];
+        let fecha = new Date(element1.createdAt);
+        let mes = this.obtenerMes(fecha);
+        let año = String(fecha.getFullYear()).slice(2)
+        let formato_elemento = fecha.getUTCDate() + "-" + mes + "-" + año;
+        if (array_fechas.length == 0) {
+          array_fechas.push(formato_elemento);
+        } else {
+          if (!array_fechas.includes(formato_elemento)) {
+            array_fechas.push(formato_elemento)
+          }
+        }
+      }
+
+      /* Arma array para el grafico */
+      for (let i = 0; i < array_fechas.length; i++) {
+        objeto = {};
+        const element1 = array_fechas[i];
+        let tecnologia = 0, hogar = 0, deporte = 0, musica = 0, belleza = 0, bebes = 0, mascotas = 0, herramientas = 0, libros = 0, otros = 0;
+        for (let j = 0; j < array_parcial.length; j++) {
+          const element2 = array_parcial[j];
+          if (element1 == element2.tiempo) {
+            if (element2.categoria == "Tecnologia") tecnologia++;
+            if (element2.categoria == "Hogar") hogar++;
+            if (element2.categoria == "Deporte") deporte++;
+            if (element2.categoria == "Musica") musica++;
+            if (element2.categoria == "Belleza") belleza++;
+            if (element2.categoria == "Bebes") bebes++;
+            if (element2.categoria == "Mascotas") mascotas++;
+            if (element2.categoria == "Herramientas") herramientas++;
+            if (element2.categoria == "Libros") libros++;
+            if (element2.categoria == "Otros") otros++;
+          }
+        }
+
+        array_general.push([element1, "Tecnologia", tecnologia])
+        array_general.push([element1, "Hogar", hogar])
+        array_general.push([element1, "Deporte", deporte])
+        array_general.push([element1, "Musica", musica])
+        array_general.push([element1, "Belleza", belleza])
+        array_general.push([element1, "Bebes", bebes])
+        array_general.push([element1, "Mascotas", mascotas])
+        array_general.push([element1, "Herramientas", herramientas])
+        array_general.push([element1, "Libros", libros])
+        array_general.push([element1, "Otros", otros])
+      }
+
+      const fusionDataStore = new FusionCharts.DataStore();
+      const fusionTable = fusionDataStore.createDataTable(array_general, schema2);
+      this.type = "timeseries"
+      this.dataSource = {
+        chart: { theme: "fusion", bgColor: "#fafafa" },
+        caption: {
+          text: "Publicaciones creadas por día"
+        },
+        subcaption: {
+          text: "Filtrados por categoría"
+        },
+        series: "Categoria",
+        yaxis: [
+          {
+            plot: "cantidad",
+            title: "Cantidad",
+            plottype: "smooth-line",
+          }
+        ]
+      };
+      this.dataSource.data = fusionTable;
+      this.mostrarGrafico = true;
+      this.spinner.hide();
+    }
+
+    if (periodo == "Por mes" && this.nombreEstadisticaSeleccionada == "Cantidad total de publicaciones según categoría") {
+      let array_meses = [], array_labels = [], array_categorias = [], array_total_mes = [];
+      let belleza = 0, deporte = 0, bebes = 0, herramientas = 0, tecnologia = 0, hogar = 0, mascotas = 0, libros = 0, musica = 0, otros = 0;
+      let array_belleza = [], array_deporte = [], array_bebes = [], array_herramientas = [], array_tecnologia = [], array_hogar = [];
+      let array_mascotas = [], array_libros = [], array_musica = [], array_otros = [];
+
+      /* Armar array con meses existentes en el array total + armar array con labels para el grafico + armar array con nombres de categorias*/
+      for (let i = 0; i < this.publicaciones.length; i++) {
+        const element = this.publicaciones[i];
+        let fecha = new Date(element.createdAt)
+        let mes = this.obtenerMes(fecha);
+        let año = String(fecha.getFullYear()).slice(2, 4);
+        let fecha_formateada = mes + " " + año
+        if (array_meses.length == 0) {
+          array_meses.push(fecha_formateada);
+        } else {
+          if (!array_meses.includes(fecha_formateada)) {
+            array_meses.push(fecha_formateada);
+          }
+        }
+
+        let categoria = element.categoria;
+        if (array_categorias.length == 0) {
+          array_categorias.push(categoria);
+        } else {
+          if (!array_categorias.includes(categoria)) {
+            array_categorias.push(categoria)
+          }
+        }
+      }
+
+      /*Armar array con totales por mes */
+      for (let i = 0; i < array_meses.length; i++) {
+        const element1 = array_meses[i];
+        belleza = 0, deporte = 0, bebes = 0, herramientas = 0, tecnologia = 0, hogar = 0, mascotas = 0, libros = 0, musica = 0, otros = 0;
+        for (let j = 0; j < this.publicaciones.length; j++) {
+          const element2 = this.publicaciones[j];
+          let fecha = new Date(element2.createdAt)
+          let mes = this.obtenerMes(fecha);
+          let año = String(fecha.getFullYear()).slice(2, 4);
+          let fecha_formateada = mes + " " + año;
+          if (fecha_formateada == element1) {
+            if (element2.categoria == "Tecnologia") tecnologia++;
+            if (element2.categoria == "Hogar") hogar++;
+            if (element2.categoria == "Deporte") deporte++;
+            if (element2.categoria == "Musica") musica++;
+            if (element2.categoria == "Belleza") belleza++;
+            if (element2.categoria == "Bebes") bebes++;
+            if (element2.categoria == "Mascotas") mascotas++;
+            if (element2.categoria == "Herramientas") herramientas++;
+            if (element2.categoria == "Libros") libros++;
+            if (element2.categoria == "Otros") otros++;
+          }
+        }
+        array_total_mes.push([element1, "Tecnologia", tecnologia])
+        array_total_mes.push([element1, "Hogar", hogar])
+        array_total_mes.push([element1, "Deporte", deporte])
+        array_total_mes.push([element1, "Musica", musica])
+        array_total_mes.push([element1, "Belleza", belleza])
+        array_total_mes.push([element1, "Bebes", bebes])
+        array_total_mes.push([element1, "Mascotas", mascotas])
+        array_total_mes.push([element1, "Herramientas", herramientas])
+        array_total_mes.push([element1, "Libros", libros])
+        array_total_mes.push([element1, "Otros", otros])
+
+      }
+
+      /* Ordena y crea los arreglos para después mostrar el gráfico */
+      var monthNames = {
+        "Jan 20": 1, "Feb 20": 2, "Mar 20": 3, "Apr 20": 4, "May 20": 5, "Jun 20": 6, "Jul 20": 7, "Aug 20": 8, "Sep 20": 9, "Oct 20": 10, "Nov 20": 11, "Dec 20": 12,
+        "Jan 21": 13, "Feb 21": 14, "Mar 21": 15, "Apr 21": 16, "May 21": 17, "Jun 21": 18, "Jul 21": 19, "Aug 21": 20, "Sep 21": 21, "Oct 21": 22, "Nov 21": 23, "Dec 21": 24
+      };
+
+      array_total_mes.sort(function (a, b) {
+        return monthNames[a[0]] - monthNames[b[0]];
+      });
+
+      array_meses.sort(function (a, b) {
+        return monthNames[a] - monthNames[b];
+      })
+
+      for (let i = 0; i < array_total_mes.length; i++) {
+        const element = array_total_mes[i];
+        if (element[1] == "Tecnologia") array_tecnologia.push({ value: element[2] });
+        if (element[1] == "Hogar") array_hogar.push({ value: element[2] });
+        if (element[1] == "Deporte") array_deporte.push({ value: element[2] });
+        if (element[1] == "Musica") array_musica.push({ value: element[2] });
+        if (element[1] == "Belleza") array_belleza.push({ value: element[2] });
+        if (element[1] == "Bebes") array_bebes.push({ value: element[2] });
+        if (element[1] == "Mascotas") array_mascotas.push({ value: element[2] });
+        if (element[1] == "Herramientas") array_herramientas.push({ value: element[2] });
+        if (element[1] == "Libros") array_libros.push({ value: element[2] });
+        if (element[1] == "Otros") array_otros.push({ value: element[2] });
+      }
+
+      for (let i = 0; i < array_meses.length; i++) {
+        const element = array_meses[i];
+        array_labels.push({ label: element })
+      }
+
+      this.type = "msspline";
+      this.dataFormat = "json";
+      this.dataSource = {
+        chart: {
+          caption: "Cantidad de publicaciones según categoría",
+          bgColor: "#fafafa",
+          xaxisname: "Meses",
+          yaxisname: "Cantidad",
+          subcaption: "Ordenados por mes",
+          numdivlines: "3",
+          showvalues: "1",
+          legenditemfontsize: "11",
+          legenditemfontbold: "1",
+          theme: "fusion"
+        },
+        categories: [
+          {
+            category: array_labels
+          }
+        ],
+        dataset: [
+          {
+            seriesname: "Tecnologia",
+            data: array_tecnologia
+          },
+          {
+            seriesname: "Hogar",
+            data: array_hogar
+          },
+          {
+            seriesname: "Deporte",
+            data: array_deporte
+          },
+          {
+            seriesname: "Musica",
+            data: array_musica
+          },
+          {
+            seriesname: "Belleza",
+            data: array_belleza
+          },
+          {
+            seriesname: "Bebes",
+            data: array_bebes
+          },
+          {
+            seriesname: "Herramientas",
+            data: array_herramientas
+          },
+          {
+            seriesname: "Libros",
+            data: array_libros
+          },
+          {
+            seriesname: "Otros",
+            data: array_otros
+          },
+          {
+            seriesname: "Mascotas",
+            data: array_mascotas
+          }
+        ]
+      }
+      this.mostrarGrafico = true;
+      this.spinner.hide();
+    }
+
+    if (periodo == "Por año" && this.nombreEstadisticaSeleccionada == "Cantidad total de publicaciones según categoría") {
+      let array_año = [], array_categorias = [], array_total_año = [], array_labels = [];
+      let array_belleza = [], array_deporte = [], array_bebes = [], array_herramientas = [], array_tecnologia = [], array_hogar = [];
+      let array_mascotas = [], array_libros = [], array_musica = [], array_otros = [];
+
+      for (let i = 0; i < this.publicaciones.length; i++) {
+        const element = this.publicaciones[i];
+        let fecha = new Date(element.createdAt)
+        let año = fecha.getFullYear()
+        if (array_año.length == 0) {
+          array_año.push(año);
+        } else {
+          if (!array_año.includes(año)) {
+            array_año.push(año);
+          }
+        }
+
+        let categoria = element.categoria;
+        if (array_categorias.length == 0) {
+          array_categorias.push(categoria);
+        } else {
+          if (!array_categorias.includes(categoria)) {
+            array_categorias.push(categoria)
+          }
+        }
+      }
+
+      for (let i = 0; i < array_año.length; i++) {
+        const element1 = array_año[i];
+        let belleza = 0, deporte = 0, bebes = 0, herramientas = 0, tecnologia = 0, hogar = 0, mascotas = 0, libros = 0, musica = 0, otros = 0;
+        for (let j = 0; j < this.publicaciones.length; j++) {
+          const element2 = this.publicaciones[j];
+          let fecha = new Date(element2.createdAt)
+          let año = fecha.getFullYear()
+          if (año == element1) {
+            if (element2.categoria == "Tecnologia") tecnologia++;
+            if (element2.categoria == "Hogar") hogar++;
+            if (element2.categoria == "Deporte") deporte++;
+            if (element2.categoria == "Musica") musica++;
+            if (element2.categoria == "Belleza") belleza++;
+            if (element2.categoria == "Bebes") bebes++;
+            if (element2.categoria == "Mascotas") mascotas++;
+            if (element2.categoria == "Herramientas") herramientas++;
+            if (element2.categoria == "Libros") libros++;
+            if (element2.categoria == "Otros") otros++;
+          }
+        }
+        array_total_año.push([element1, "Tecnologia", tecnologia])
+        array_total_año.push([element1, "Hogar", hogar])
+        array_total_año.push([element1, "Deporte", deporte])
+        array_total_año.push([element1, "Musica", musica])
+        array_total_año.push([element1, "Belleza", belleza])
+        array_total_año.push([element1, "Bebes", bebes])
+        array_total_año.push([element1, "Mascotas", mascotas])
+        array_total_año.push([element1, "Herramientas", herramientas])
+        array_total_año.push([element1, "Libros", libros])
+        array_total_año.push([element1, "Otros", otros])
+      }
+
+      let years = { "2019": 1, "2020": 2, "2021": 3 };
+      array_año.sort();
+      array_total_año.sort(function (a, b) {
+        return years[a[0]] - years[b[0]];
+      });
+
+      for (let i = 0; i < array_total_año.length; i++) {
+        const element = array_total_año[i];
+        if (element[1] == "Tecnologia") array_tecnologia.push({ value: element[2] });
+        if (element[1] == "Hogar") array_hogar.push({ value: element[2] });
+        if (element[1] == "Deporte") array_deporte.push({ value: element[2] });
+        if (element[1] == "Musica") array_musica.push({ value: element[2] });
+        if (element[1] == "Belleza") array_belleza.push({ value: element[2] });
+        if (element[1] == "Bebes") array_bebes.push({ value: element[2] });
+        if (element[1] == "Mascotas") array_mascotas.push({ value: element[2] });
+        if (element[1] == "Herramientas") array_herramientas.push({ value: element[2] });
+        if (element[1] == "Libros") array_libros.push({ value: element[2] });
+        if (element[1] == "Otros") array_otros.push({ value: element[2] });
+      }
+
+      for (let i = 0; i < array_año.length; i++) {
+        const element = array_año[i];
+        array_labels.push({ label: element })
+      }
+
+      this.type = "mscolumn3d";
+      this.dataFormat = "json";
+      this.dataSource = {
+        chart: {
+          caption: "Cantidad de aquileres según categoría",
+          subcaption: "Ordenados por año",
+          bgColor: "#fafafa",
+          xaxisname: "Años",
+          yaxisname: "Cantidad",
+          formatnumberscale: "1",
+          theme: "fusion",
+          showvalues: "1"
+        },
+        categories: [
+          {
+            category: [{ label: "2019" }, { label: "2020" }, { label: "2021" }]
+          }
+        ],
+        dataset: [
+          {
+            seriesname: "Tecnologia",
+            data: array_tecnologia
+          },
+          {
+            seriesname: "Hogar",
+            data: array_hogar
+          },
+          {
+            seriesname: "Deporte",
+            data: array_deporte
+          },
+          {
+            seriesname: "Musica",
+            data: array_musica
+          },
+          {
+            seriesname: "Belleza",
+            data: array_belleza
+          },
+          {
+            seriesname: "Bebes",
+            data: array_bebes
+          },
+          {
+            seriesname: "Herramientas",
+            data: array_herramientas
+          },
+          {
+            seriesname: "Libros",
+            data: array_libros
+          },
+          {
+            seriesname: "Otros",
+            data: array_otros
+          },
+          {
+            seriesname: "Mascotas",
+            data: array_mascotas
+          }
+        ]
+      }
+      this.mostrarGrafico = true;
+      this.spinner.hide();
+    }
+
+
+    /* Cantidad de publicaciones según subcategoría */
+    if (periodo == "Por día" && this.nombreEstadisticaSeleccionada == "Cantidad total de publicaciones según subcategorías") {
+      let schema2 = [
+        {
+          "name": "Tiempo",
+          "type": "date",
+          "format": "%d-%b-%y"
+        },
+        {
+          "name": "Subcategoria",
+          "type": "string"
+        },
+        {
+          "name": "Cantidad",
+          "type": "number"
+        }
+      ]
+      /* Arma array con las categorias que salen en una determinada fecha */
+      for (let i = 0; i < this.publicaciones.length; i++) {
+        const element = this.publicaciones[i];
+        let fecha = new Date(element.createdAt);
+        let mes = this.obtenerMes(fecha);
+        let año = String(fecha.getFullYear()).slice(2)
+        let formato_elemento = fecha.getUTCDate() + "-" + mes + "-" + año;
+        objeto = {
+          tiempo: formato_elemento,
+          categoria: this.publicaciones[i].categoria,
+          subcategoria: this.publicaciones[i].subcategoria
+        }
+        array_parcial.push(objeto);
+      }
+
+      /* Arma array con las fechas de los alquileres creados */
+      for (let i = 0; i < this.publicaciones.length; i++) {
+        const element1 = this.publicaciones[i];
+        let fecha = new Date(element1.createdAt);
+        let mes = this.obtenerMes(fecha);
+        let año = String(fecha.getFullYear()).slice(2)
+        let formato_elemento = fecha.getUTCDate() + "-" + mes + "-" + año;
+        if (array_fechas.length == 0) {
+          array_fechas.push(formato_elemento);
+        } else {
+          if (!array_fechas.includes(formato_elemento)) {
+            array_fechas.push(formato_elemento)
+          }
+        }
+      }
+
+      /* Arma array para el grafico */
+      for (let i = 0; i < array_fechas.length; i++) {
+        objeto = {};
+        const element1 = array_fechas[i];
+
+        //ELECTRONICA
+        let tv_audio_video = 0, celulares_tablets = 0, computadoras = 0, notebooks = 0, videojuegos = 0, consolas = 0, camaras_y_accesorios = 0;
+
+        //HOGAR
+        let accesorios_hogar = 0, decoracion = 0, electrodomesticos = 0, muebles = 0, jardin = 0;
+
+        //DEPORTES
+        let aerobics_y_fitness = 0, bicicletas_y_ciclismo = 0, camping_y_pesca = 0, deportes_acuaticos = 0, futbol = 0, otros_deportes = 0;
+
+        //MUSICA
+        let arte_y_antiguedades = 0, cds_dvds = 0, instrumentos_musicales = 0, libros_y_revistas = 0;
+
+        //BELLEZA
+        let relojes_joyas_accesorios = 0, ropa_y_calzado = 0, salud_y_belleza = 0;
+
+        //BEBES
+        let cunas_accesorios = 0, juegos_juguetes = 0, ropa_bebés_y_niños = 0;
+
+        //ANIMALES
+        let accesorios_para_perros = 0, accesorios_para_gatos = 0, otros_mascotas = 0;
+
+        //HERRAMIENTAS
+        let industria = 0, repuestos = 0, muebles_para_negocios_oficinas = 0;
+
+        //LIBROS
+        let novela = 0, gotico = 0, ciencia_ficcion = 0, cuento_de_hadas = 0, accion = 0, drama = 0, suspenso = 0, terror = 0, fantastica = 0;
+
+        //OTROS
+        let otra_categoria = 0
+
+        for (let j = 0; j < array_parcial.length; j++) {
+          const element2 = array_parcial[j];
+          if (element1 == element2.tiempo) {
+            if (element2.categoria == "Tecnologia") {
+              if (element2.subcategoria == 'TV - Audio - Video') tv_audio_video++;
+              if (element2.subcategoria == 'Celulares - Tablets') celulares_tablets++;
+              if (element2.subcategoria == 'Computadoras') computadoras++;
+              if (element2.subcategoria == 'Notebooks') notebooks++;
+              if (element2.subcategoria == 'Videojuegos') videojuegos++;
+              if (element2.subcategoria == 'Consolas') consolas++;
+              if (element2.subcategoria == 'Cámaras y accesorios') camaras_y_accesorios++;
+            }
+
+            if (element2.categoria == "Hogar") {
+              if (element2.subcategoria == 'Accesorios (Hogar)') accesorios_hogar++;
+              if (element2.subcategoria == 'Decoración') decoracion++;
+              if (element2.subcategoria == 'Electrodomésticos') electrodomesticos++;
+              if (element2.subcategoria == 'Muebles') muebles++;
+              if (element2.subcategoria == 'Jardin') jardin++;
+            }
+
+            if (element2.categoria == "Deporte") {
+              if (element2.subcategoria == 'Aerobics y fitness') aerobics_y_fitness++;
+              if (element2.subcategoria == 'Bicicletas y ciclismo') bicicletas_y_ciclismo++;
+              if (element2.subcategoria == 'Camping y pesca') camping_y_pesca++;
+              if (element2.subcategoria == 'Deportes acuaticos') deportes_acuaticos++;
+              if (element2.subcategoria == 'Futbol') futbol++;
+              if (element2.subcategoria == 'Otros deportes') otros_deportes++;
+            }
+
+            if (element2.categoria == "Musica") {
+              if (element2.subcategoria == 'Arte y antiguedades') arte_y_antiguedades++;
+              if (element2.subcategoria == 'CDs - DVDs') cds_dvds++;
+              if (element2.subcategoria == 'Instrumentos musicales') instrumentos_musicales++;
+              if (element2.subcategoria == 'Libros y revistas') libros_y_revistas++;
+            }
+
+            if (element2.categoria == "Belleza") {
+              if (element2.subcategoria == 'Relojes - joyas - accesorios') relojes_joyas_accesorios++;
+              if (element2.subcategoria == 'Ropa y calzado') ropa_y_calzado++;
+              if (element2.subcategoria == 'Salud y belleza') salud_y_belleza++;
+            }
+
+            if (element2.categoria == "Bebes") {
+              if (element2.subcategoria == 'Cunas - Accesorios') cunas_accesorios++;
+              if (element2.subcategoria == 'Juegos - juguetes') juegos_juguetes++;
+              if (element2.subcategoria == 'Ropa bebés y niños') ropa_bebés_y_niños++;
+            }
+
+            if (element2.categoria == "Mascotas") {
+              if (element2.subcategoria == 'Accesorios para perros') accesorios_para_perros++;
+              if (element2.subcategoria == 'Accesorios para gatos') accesorios_para_gatos++;
+              if (element2.subcategoria == 'Otros (mascotas)') otros_mascotas++;
+            }
+
+            if (element2.categoria == "Herramientas") {
+              if (element2.subcategoria == 'Industria') industria++;
+              if (element2.subcategoria == 'Repuestos') repuestos++;
+              if (element2.subcategoria == 'Muebles para negocios - oficinas') muebles_para_negocios_oficinas++;
+            }
+
+            if (element2.categoria == "Libros") {
+              if (element2.subcategoria == 'Novela') novela++;
+              if (element2.subcategoria == 'Gótico') gotico++;
+              if (element2.subcategoria == 'Ciencia Ficción') ciencia_ficcion++;
+              if (element2.subcategoria == 'Cuento de hadas') cuento_de_hadas++;
+              if (element2.subcategoria == 'Acción') accion++;
+              if (element2.subcategoria == 'Drama') drama++;
+              if (element2.subcategoria == 'Suspenso') suspenso++;
+              if (element2.subcategoria == 'Terror') terror++;
+              if (element2.subcategoria == 'Fantástica') fantastica++;
+            }
+
+            if (element2.categoria == "Otros") {
+              if (element2.subcategoria == 'Otra categoria') otra_categoria++;
+            }
+          }
+        }
+
+        if (this.categoriaSeleccionada == "Tecnologia") {
+          array_general.push([element1, "TV - Audio - Video", tv_audio_video]);
+          array_general.push([element1, "Celulares - Tablets", celulares_tablets]);
+          array_general.push([element1, "Computadoras", computadoras]);
+          array_general.push([element1, "Notebooks", notebooks]);
+          array_general.push([element1, "Videojuegos", videojuegos]);
+          array_general.push([element1, "Consolas", consolas]);
+          array_general.push([element1, "Cámaras y accesorios", camaras_y_accesorios]);
+        }
+
+        if (this.categoriaSeleccionada == "Hogar") {
+          array_general.push([element1, "Accesorios (Hogar)", accesorios_hogar]);
+          array_general.push([element1, "Decoración", decoracion]);
+          array_general.push([element1, "Electrodomésticos", electrodomesticos]);
+          array_general.push([element1, "Muebles", muebles]);
+          array_general.push([element1, "Jardin", jardin]);
+        }
+
+        if (this.categoriaSeleccionada == "Deportes") {
+          array_general.push([element1, "Aerobics y fitness", aerobics_y_fitness]);
+          array_general.push([element1, "Bicicletas y ciclismo", bicicletas_y_ciclismo]);
+          array_general.push([element1, "Camping y pesca", camping_y_pesca]);
+          array_general.push([element1, "Deportes acuaticos", deportes_acuaticos]);
+          array_general.push([element1, "Futbol", futbol]);
+          array_general.push([element1, "Otros deportes", otros_deportes]);
+        }
+
+        if (this.categoriaSeleccionada == "Musica") {
+          array_general.push([element1, "Arte y antiguedades", arte_y_antiguedades]);
+          array_general.push([element1, "CDs - DVDs", cds_dvds]);
+          array_general.push([element1, "Instrumentos musicales", instrumentos_musicales]);
+          array_general.push([element1, "Libros y revistas", libros_y_revistas]);
+        }
+
+        if (this.categoriaSeleccionada == "Belleza") {
+          array_general.push([element1, "Relojes - joyas - accesorios", relojes_joyas_accesorios]);
+          array_general.push([element1, "Ropa y calzado", ropa_y_calzado]);
+          array_general.push([element1, "Salud y belleza", salud_y_belleza]);
+        }
+
+        if (this.categoriaSeleccionada == "Bebes") {
+          array_general.push([element1, "Cunas - Accesorios", cunas_accesorios]);
+          array_general.push([element1, "Juegos - juguetes", juegos_juguetes]);
+          array_general.push([element1, "Ropa bebés y niños", ropa_bebés_y_niños]);
+        }
+
+        if (this.categoriaSeleccionada == "Mascotas") {
+          array_general.push([element1, "Accesorios para perros", accesorios_para_perros]);
+          array_general.push([element1, "Accesorios para gatos", accesorios_para_gatos]);
+          array_general.push([element1, "Otros (mascotas)", otros_mascotas]);
+        }
+
+        if (this.categoriaSeleccionada == "Herramientas") {
+          array_general.push([element1, "Industria", industria]);
+          array_general.push([element1, "Repuestos", repuestos]);
+          array_general.push([element1, "Muebles para negocios - oficinas", muebles_para_negocios_oficinas]);
+        }
+
+        if (this.categoriaSeleccionada == "Libros") {
+          array_general.push([element1, "Novela", novela]);
+          array_general.push([element1, "Gótico", gotico]);
+          array_general.push([element1, "Ciencia Ficción", ciencia_ficcion]);
+          array_general.push([element1, "Cuento de hadas", cuento_de_hadas]);
+          array_general.push([element1, "Acción", accion]);
+          array_general.push([element1, "Drama", drama]);
+          array_general.push([element1, "Suspenso", suspenso]);
+          array_general.push([element1, "Terror", terror]);
+          array_general.push([element1, "Fantástica", fantastica]);
+        }
+
+        if (this.categoriaSeleccionada == "Otros") {
+          array_general.push([element1, "Otra categoria", otra_categoria]);
+        }
+      }
+
+      const fusionDataStore = new FusionCharts.DataStore();
+      const fusionTable = fusionDataStore.createDataTable(array_general, schema2);
+      this.type = "timeseries"
+      this.dataSource = {
+        chart: { theme: "fusion", bgColor: "#fafafa", xaxisname: "Días", },
+        caption: {
+          text: "Publicaciones creadas por día"
+        },
+        subcaption: {
+          text: "Filtradas por subcategoría"
+        },
+        series: "Subcategoria",
+        yaxis: [
+          {
+            plot: "cantidad",
+            title: "Cantidad",
+            plottype: "smooth-line",
+          }
+        ]
+      };
+      this.dataSource.data = fusionTable;
+      this.mostrarGrafico = true;
+      this.spinner.hide();
+    }
+
+    if (periodo == "Por mes" && this.nombreEstadisticaSeleccionada == "Cantidad total de publicaciones según subcategorías") {
+      let array_meses = [], array_labels = [], array_categorias = [], array_total_mes = [];
+
+      //ELECTRONICA
+      let array_tv_audio_video = [], array_celulares_tablets = [], array_computadoras = [], array_notebooks = [], array_videojuegos = [], array_consolas = [], array_camaras_y_accesorios = [];
+      //HOGAR
+      let array_accesorios_hogar = [], array_decoracion = [], array_electrodomesticos = [], array_muebles = [], array_jardin = [];
+      //DEPORTES
+      let array_aerobics_y_fitness = [], array_bicicletas_y_ciclismo = [], array_camping_y_pesca = [], array_deportes_acuaticos = [], array_futbol = [], array_otros_deportes = [];
+      //MUSICA
+      let array_arte_y_antiguedades = [], array_cds_dvds = [], array_instrumentos_musicales = [], array_libros_y_revistas = [];
+      //BELLEZA
+      let array_relojes_joyas_accesorios = [], array_ropa_y_calzado = [], array_salud_y_belleza = [];
+      //BEBES
+      let array_cunas_accesorios = [], array_juegos_juguetes = [], array_ropa_bebés_y_niños = []
+      //ANIMALES
+      let array_accesorios_para_perros = [], array_accesorios_para_gatos = [], array_otros_mascotas = [];
+      //HERRAMIENTAS
+      let array_industria = [], array_repuestos = [], array_muebles_para_negocios_oficinas = [];
+      //LIBROS
+      let array_novela = [], array_gotico = [], array_ciencia_ficcion = [], array_cuento_de_hadas = [], array_accion = [], array_drama = [], array_suspenso = [], array_terror = [], array_fantastica = [];
+      //OTROS
+      let array_otra_categoria = []
+
+      /* Armar array con meses existentes en el array total + armar array con labels para el grafico + armar array con nombres de categorias*/
+      for (let i = 0; i < this.publicaciones.length; i++) {
+        const element = this.publicaciones[i];
+        let fecha = new Date(element.createdAt)
+        let mes = this.obtenerMes(fecha);
+        let año = String(fecha.getFullYear()).slice(2, 4);
+        let fecha_formateada = mes + " " + año
+        if (array_meses.length == 0) {
+          array_meses.push(fecha_formateada);
+        } else {
+          if (!array_meses.includes(fecha_formateada)) {
+            array_meses.push(fecha_formateada);
+          }
+        }
+
+        let categoria = element.categoria;
+        if (array_categorias.length == 0) {
+          array_categorias.push(categoria);
+        } else {
+          if (!array_categorias.includes(categoria)) {
+            array_categorias.push(categoria)
+          }
+        }
+      }
+
+      /*Armar array con totales por mes */
+      for (let i = 0; i < array_meses.length; i++) {
+        const element1 = array_meses[i];
+        //ELECTRONICA
+        let tv_audio_video = 0, celulares_tablets = 0, computadoras = 0, notebooks = 0, videojuegos = 0, consolas = 0, camaras_y_accesorios = 0;
+
+        //HOGAR
+        let accesorios_hogar = 0, decoracion = 0, electrodomesticos = 0, muebles = 0, jardin = 0;
+
+        //DEPORTES
+        let aerobics_y_fitness = 0, bicicletas_y_ciclismo = 0, camping_y_pesca = 0, deportes_acuaticos = 0, futbol = 0, otros_deportes = 0;
+
+        //MUSICA
+        let arte_y_antiguedades = 0, cds_dvds = 0, instrumentos_musicales = 0, libros_y_revistas = 0;
+
+        //BELLEZA
+        let relojes_joyas_accesorios = 0, ropa_y_calzado = 0, salud_y_belleza = 0;
+
+        //BEBES
+        let cunas_accesorios = 0, juegos_juguetes = 0, ropa_bebés_y_niños = 0;
+
+        //ANIMALES
+        let accesorios_para_perros = 0, accesorios_para_gatos = 0, otros_mascotas = 0;
+
+        //HERRAMIENTAS
+        let industria = 0, repuestos = 0, muebles_para_negocios_oficinas = 0;
+
+        //LIBROS
+        let novela = 0, gotico = 0, ciencia_ficcion = 0, cuento_de_hadas = 0, accion = 0, drama = 0, suspenso = 0, terror = 0, fantastica = 0;
+
+        //OTROS
+        let otra_categoria = 0
+
+
+        for (let j = 0; j < this.publicaciones.length; j++) {
+          const element2 = this.publicaciones[j];
+          let fecha = new Date(element2.createdAt)
+          let mes = this.obtenerMes(fecha);
+          let año = String(fecha.getFullYear()).slice(2, 4);
+          let fecha_formateada = mes + " " + año;
+          if (fecha_formateada == element1) {
+            if (element2.categoria == "Tecnologia") {
+              if (element2.subcategoria == 'TV - Audio - Video') tv_audio_video++;
+              if (element2.subcategoria == 'Celulares - Tablets') celulares_tablets++;
+              if (element2.subcategoria == 'Computadoras') computadoras++;
+              if (element2.subcategoria == 'Notebooks') notebooks++;
+              if (element2.subcategoria == 'Videojuegos') videojuegos++;
+              if (element2.subcategoria == 'Consolas') consolas++;
+              if (element2.subcategoria == 'Cámaras y accesorios') camaras_y_accesorios++;
+            }
+
+            if (element2.categoria == "Hogar") {
+              if (element2.subcategoria == 'Accesorios (Hogar)') accesorios_hogar++;
+              if (element2.subcategoria == 'Decoración') decoracion++;
+              if (element2.subcategoria == 'Electrodomésticos') electrodomesticos++;
+              if (element2.subcategoria == 'Muebles') muebles++;
+              if (element2.subcategoria == 'Jardin') jardin++;
+            }
+
+            if (element2.categoria == "Deporte") {
+              if (element2.subcategoria == 'Aerobics y fitness') aerobics_y_fitness++;
+              if (element2.subcategoria == 'Bicicletas y ciclismo') bicicletas_y_ciclismo++;
+              if (element2.subcategoria == 'Camping y pesca') camping_y_pesca++;
+              if (element2.subcategoria == 'Deportes acuaticos') deportes_acuaticos++;
+              if (element2.subcategoria == 'Futbol') futbol++;
+              if (element2.subcategoria == 'Otros deportes') otros_deportes++;
+            }
+
+            if (element2.categoria == "Musica") {
+              if (element2.subcategoria == 'Arte y antiguedades') arte_y_antiguedades++;
+              if (element2.subcategoria == 'CDs - DVDs') cds_dvds++;
+              if (element2.subcategoria == 'Instrumentos musicales') instrumentos_musicales++;
+              if (element2.subcategoria == 'Libros y revistas') libros_y_revistas++;
+            }
+
+            if (element2.categoria == "Belleza") {
+              if (element2.subcategoria == 'Relojes - joyas - accesorios') relojes_joyas_accesorios++;
+              if (element2.subcategoria == 'Ropa y calzado') ropa_y_calzado++;
+              if (element2.subcategoria == 'Salud y belleza') salud_y_belleza++;
+            }
+
+            if (element2.categoria == "Bebes") {
+              if (element2.subcategoria == 'Cunas - Accesorios') cunas_accesorios++;
+              if (element2.subcategoria == 'Juegos - juguetes') juegos_juguetes++;
+              if (element2.subcategoria == 'Ropa bebés y niños') ropa_bebés_y_niños++;
+            }
+
+            if (element2.categoria == "Mascotas") {
+              if (element2.subcategoria == 'Accesorios para perros') accesorios_para_perros++;
+              if (element2.subcategoria == 'Accesorios para gatos') accesorios_para_gatos++;
+              if (element2.subcategoria == 'Otros (mascotas)') otros_mascotas++;
+            }
+
+            if (element2.categoria == "Herramientas") {
+              if (element2.subcategoria == 'Industria') industria++;
+              if (element2.subcategoria == 'Repuestos') repuestos++;
+              if (element2.subcategoria == 'Muebles para negocios - oficinas') muebles_para_negocios_oficinas++;
+            }
+
+            if (element2.categoria == "Libros") {
+              if (element2.subcategoria == 'Novela') novela++;
+              if (element2.subcategoria == 'Gótico') gotico++;
+              if (element2.subcategoria == 'Ciencia Ficción') ciencia_ficcion++;
+              if (element2.subcategoria == 'Cuento de hadas') cuento_de_hadas++;
+              if (element2.subcategoria == 'Acción') accion++;
+              if (element2.subcategoria == 'Drama') drama++;
+              if (element2.subcategoria == 'Suspenso') suspenso++;
+              if (element2.subcategoria == 'Terror') terror++;
+              if (element2.subcategoria == 'Fantástica') fantastica++;
+            }
+
+            if (element2.categoria == "Otros") {
+              if (element2.subcategoria == 'Otra categoria') otra_categoria++;
+            }
+          }
+        }
+        if (this.categoriaSeleccionada == "Tecnologia") {
+          array_total_mes.push([element1, "TV - Audio - Video", tv_audio_video]);
+          array_total_mes.push([element1, "Celulares - Tablets", celulares_tablets]);
+          array_total_mes.push([element1, "Computadoras", computadoras]);
+          array_total_mes.push([element1, "Notebooks", notebooks]);
+          array_total_mes.push([element1, "Videojuegos", videojuegos]);
+          array_total_mes.push([element1, "Consolas", consolas]);
+          array_total_mes.push([element1, "Cámaras y accesorios", camaras_y_accesorios]);
+        }
+
+        if (this.categoriaSeleccionada == "Hogar") {
+          array_total_mes.push([element1, "Accesorios (Hogar)", accesorios_hogar]);
+          array_total_mes.push([element1, "Decoración", decoracion]);
+          array_total_mes.push([element1, "Electrodomésticos", electrodomesticos]);
+          array_total_mes.push([element1, "Muebles", muebles]);
+          array_total_mes.push([element1, "Jardin", jardin]);
+        }
+
+        if (this.categoriaSeleccionada == "Deportes") {
+          array_total_mes.push([element1, "Aerobics y fitness", aerobics_y_fitness]);
+          array_total_mes.push([element1, "Bicicletas y ciclismo", bicicletas_y_ciclismo]);
+          array_total_mes.push([element1, "Camping y pesca", camping_y_pesca]);
+          array_total_mes.push([element1, "Deportes acuaticos", deportes_acuaticos]);
+          array_total_mes.push([element1, "Futbol", futbol]);
+          array_total_mes.push([element1, "Otros deportes", otros_deportes]);
+        }
+
+        if (this.categoriaSeleccionada == "Musica") {
+          array_total_mes.push([element1, "Arte y antiguedades", arte_y_antiguedades]);
+          array_total_mes.push([element1, "CDs - DVDs", cds_dvds]);
+          array_total_mes.push([element1, "Instrumentos musicales", instrumentos_musicales]);
+          array_total_mes.push([element1, "Libros y revistas", libros_y_revistas]);
+        }
+
+        if (this.categoriaSeleccionada == "Belleza") {
+          array_total_mes.push([element1, "Relojes - joyas - accesorios", relojes_joyas_accesorios]);
+          array_total_mes.push([element1, "Ropa y calzado", ropa_y_calzado]);
+          array_total_mes.push([element1, "Salud y belleza", salud_y_belleza]);
+        }
+
+        if (this.categoriaSeleccionada == "Bebes") {
+          array_total_mes.push([element1, "Cunas - Accesorios", cunas_accesorios]);
+          array_total_mes.push([element1, "Juegos - juguetes", juegos_juguetes]);
+          array_total_mes.push([element1, "Ropa bebés y niños", ropa_bebés_y_niños]);
+        }
+
+        if (this.categoriaSeleccionada == "Mascotas") {
+          array_total_mes.push([element1, "Accesorios para perros", accesorios_para_perros]);
+          array_total_mes.push([element1, "Accesorios para gatos", accesorios_para_gatos]);
+          array_total_mes.push([element1, "Otros (mascotas)", otros_mascotas]);
+        }
+
+        if (this.categoriaSeleccionada == "Herramientas") {
+          array_total_mes.push([element1, "Industria", industria]);
+          array_total_mes.push([element1, "Repuestos", repuestos]);
+          array_total_mes.push([element1, "Muebles para negocios - oficinas", muebles_para_negocios_oficinas]);
+        }
+
+        if (this.categoriaSeleccionada == "Libros") {
+          array_total_mes.push([element1, "Novela", novela]);
+          array_total_mes.push([element1, "Gótico", gotico]);
+          array_total_mes.push([element1, "Ciencia Ficción", ciencia_ficcion]);
+          array_total_mes.push([element1, "Cuento de hadas", cuento_de_hadas]);
+          array_total_mes.push([element1, "Acción", accion]);
+          array_total_mes.push([element1, "Drama", drama]);
+          array_total_mes.push([element1, "Suspenso", suspenso]);
+          array_total_mes.push([element1, "Terror", terror]);
+          array_total_mes.push([element1, "Fantástica", fantastica]);
+        }
+
+        if (this.categoriaSeleccionada == "Otros") {
+          array_total_mes.push([element1, "Otra categoria", otra_categoria]);
+        }
+
+      }
+
+      /* Ordena y crea los arreglos para después mostrar el gráfico */
+      var monthNames = {
+        "Jan 20": 1, "Feb 20": 2, "Mar 20": 3, "Apr 20": 4, "May 20": 5, "Jun 20": 6, "Jul 20": 7, "Aug 20": 8, "Sep 20": 9, "Oct 20": 10, "Nov 20": 11, "Dec 20": 12,
+        "Jan 21": 13, "Feb 21": 14, "Mar 21": 15, "Apr 21": 16, "May 21": 17, "Jun 21": 18, "Jul 21": 19, "Aug 21": 20, "Sep 21": 21, "Oct 21": 22, "Nov 21": 23, "Dec 21": 24
+      };
+
+      array_total_mes.sort(function (a, b) {
+        return monthNames[a[0]] - monthNames[b[0]];
+      });
+
+      array_meses.sort(function (a, b) {
+        return monthNames[a] - monthNames[b];
+      })
+
+      let dataset = [];
+      for (let i = 0; i < array_total_mes.length; i++) {
+        const element = array_total_mes[i];
+        if (this.categoriaSeleccionada == "Tecnologia") {
+          if (element[1] == "TV - Audio - Video") array_tv_audio_video.push({ value: element[2] });
+          if (element[1] == "Celulares - Tablets") array_celulares_tablets.push({ value: element[2] });
+          if (element[1] == "Computadoras") array_computadoras.push({ value: element[2] });
+          if (element[1] == "Notebooks") array_notebooks.push({ value: element[2] });
+          if (element[1] == "Videojuegos") array_videojuegos.push({ value: element[2] });
+          if (element[1] == "Consolas") array_consolas.push({ value: element[2] });
+          if (element[1] == "Cámaras y accesorios") array_camaras_y_accesorios.push({ value: element[2] });
+
+          if (i == (array_total_mes.length - 1)) {
+            if (this.evitarLog(array_tv_audio_video, array_meses) != 0) {
+              dataset.push({ seriesname: "TV - Audio - Video", data: array_tv_audio_video })
+            }
+            if (this.evitarLog(array_celulares_tablets, array_meses) != 0) {
+              dataset.push({ seriesname: "Celulares - Tablets", data: array_celulares_tablets })
+            }
+            if (this.evitarLog(array_computadoras, array_meses) != 0) {
+              dataset.push({ seriesname: "Computadoras", data: array_computadoras })
+            }
+            if (this.evitarLog(array_notebooks, array_meses) != 0) {
+              dataset.push({ seriesname: "Notebooks", data: array_notebooks })
+            }
+            if (this.evitarLog(array_videojuegos, array_meses) != 0) {
+              dataset.push({ seriesname: "Videojuegos", data: array_videojuegos })
+            }
+            if (this.evitarLog(array_consolas, array_meses) != 0) {
+              dataset.push({ seriesname: "Consolas", data: array_consolas })
+            }
+            if (this.evitarLog(array_camaras_y_accesorios, array_meses) != 0) {
+              dataset.push({ seriesname: "Cámaras y accesorios", data: array_camaras_y_accesorios })
+            }
+          }
+        }
+
+        if (this.categoriaSeleccionada == "Hogar") {
+          if (element[1] == "Accesorios (Hogar)") array_accesorios_hogar.push({ value: element[2] });
+          if (element[1] == "Decoración") array_decoracion.push({ value: element[2] });
+          if (element[1] == "Electrodomésticos") array_electrodomesticos.push({ value: element[2] });
+          if (element[1] == "Muebles") array_muebles.push({ value: element[2] });
+          if (element[1] == "Jardin") array_jardin.push({ value: element[2] });
+
+          if (i == (array_total_mes.length - 1)) {
+            if (this.evitarLog(array_accesorios_hogar, array_meses) != 0) {
+              dataset.push({ seriesname: "Accesorios (Hogar)", data: array_accesorios_hogar })
+            }
+            if (this.evitarLog(array_decoracion, array_meses) != 0) {
+              dataset.push({ seriesname: "Decoración", data: array_decoracion })
+            }
+            if (this.evitarLog(array_electrodomesticos, array_meses) != 0) {
+              dataset.push({ seriesname: "Electrodomésticos", data: array_electrodomesticos })
+            }
+            if (this.evitarLog(array_muebles, array_meses) != 0) {
+              dataset.push({ seriesname: "Muebles", data: array_muebles })
+            }
+            if (this.evitarLog(array_jardin, array_meses) != 0) {
+              dataset.push({ seriesname: "Jardin", data: array_jardin })
+            }
+          }
+        }
+
+        if (this.categoriaSeleccionada == "Deportes") {
+          if (element[1] == "Aerobics y fitness") array_aerobics_y_fitness.push({ value: element[2] });
+          if (element[1] == "Bicicletas y ciclismo") array_bicicletas_y_ciclismo.push({ value: element[2] });
+          if (element[1] == "Camping y pesca") array_camping_y_pesca.push({ value: element[2] });
+          if (element[1] == "Deportes acuaticos") array_deportes_acuaticos.push({ value: element[2] });
+          if (element[1] == "Futbol") array_futbol.push({ value: element[2] });
+          if (element[1] == "Otros deportes") array_otros_deportes.push({ value: element[2] });
+
+          if (i == (array_total_mes.length - 1)) {
+            if (this.evitarLog(array_aerobics_y_fitness, array_meses) != 0) {
+              dataset.push({ seriesname: "Aerobics y fitness", data: array_aerobics_y_fitness })
+            }
+            if (this.evitarLog(array_bicicletas_y_ciclismo, array_meses) != 0) {
+              dataset.push({ seriesname: "Bicicletas y ciclismo", data: array_bicicletas_y_ciclismo })
+            }
+            if (this.evitarLog(array_camping_y_pesca, array_meses) != 0) {
+              dataset.push({ seriesname: "Camping y pesca", data: array_camping_y_pesca })
+            }
+            if (this.evitarLog(array_deportes_acuaticos, array_meses) != 0) {
+              dataset.push({ seriesname: "Deportes acuaticos", data: array_deportes_acuaticos })
+            }
+            if (this.evitarLog(array_futbol, array_meses) != 0) {
+              dataset.push({ seriesname: "Futbol", data: array_futbol })
+            }
+            if (this.evitarLog(array_otros_deportes, array_meses) != 0) {
+              dataset.push({ seriesname: "Otros deportes", data: array_otros_deportes })
+            }
+          }
+        }
+
+        if (this.categoriaSeleccionada == "Musica") {
+          if (element[1] == "Arte y antiguedades") array_arte_y_antiguedades.push({ value: element[2] });
+          if (element[1] == "CDs - DVDs") array_cds_dvds.push({ value: element[2] });
+          if (element[1] == "Instrumentos musicales") array_instrumentos_musicales.push({ value: element[2] });
+          if (element[1] == "Libros y revistas") array_libros_y_revistas.push({ value: element[2] });
+
+          if (i == (array_total_mes.length - 1)) {
+            if (this.evitarLog(array_arte_y_antiguedades, array_meses) != 0) {
+              dataset.push({ seriesname: "Arte y antiguedades", data: array_arte_y_antiguedades })
+            }
+            if (this.evitarLog(array_cds_dvds, array_meses) != 0) {
+              dataset.push({ seriesname: "CDs - DVDs", data: array_cds_dvds })
+            }
+            if (this.evitarLog(array_instrumentos_musicales, array_meses) != 0) {
+              dataset.push({ seriesname: "Instrumentos musicales", data: array_instrumentos_musicales })
+            }
+            if (this.evitarLog(array_libros_y_revistas, array_meses) != 0) {
+              dataset.push({ seriesname: "Libros y revistas", data: array_libros_y_revistas })
+            }
+          }
+        }
+
+        if (this.categoriaSeleccionada == "Belleza") {
+          if (element[1] == "Relojes - joyas - accesorios") array_relojes_joyas_accesorios.push({ value: element[2] });
+          if (element[1] == "Ropa y calzado") array_ropa_y_calzado.push({ value: element[2] });
+          if (element[1] == "Salud y belleza") array_salud_y_belleza.push({ value: element[2] });
+
+          if (i == (array_total_mes.length - 1)) {
+            if (this.evitarLog(array_relojes_joyas_accesorios, array_meses) != 0) {
+              dataset.push({ seriesname: "Relojes - joyas - accesorios", data: array_relojes_joyas_accesorios })
+            }
+            if (this.evitarLog(array_ropa_y_calzado, array_meses) != 0) {
+              dataset.push({ seriesname: "Ropa y calzado", data: array_ropa_y_calzado })
+            }
+            if (this.evitarLog(array_salud_y_belleza, array_meses) != 0) {
+              dataset.push({ seriesname: "Salud y belleza", data: array_salud_y_belleza })
+            }
+          }
+        }
+
+        if (this.categoriaSeleccionada == "Bebes") {
+          if (element[1] == "Cunas - Accesorios") array_cunas_accesorios.push({ value: element[2] });
+          if (element[1] == "Juegos - juguetes") array_juegos_juguetes.push({ value: element[2] });
+          if (element[1] == "Ropa bebés y niños") array_ropa_bebés_y_niños.push({ value: element[2] });
+
+          if (i == (array_total_mes.length - 1)) {
+            if (this.evitarLog(array_cunas_accesorios, array_meses) != 0) {
+              dataset.push({ seriesname: "Cunas - Accesorios", data: array_cunas_accesorios })
+            }
+            if (this.evitarLog(array_juegos_juguetes, array_meses) != 0) {
+              dataset.push({ seriesname: "Juegos - juguetes", data: array_juegos_juguetes })
+            }
+            if (this.evitarLog(array_ropa_bebés_y_niños, array_meses) != 0) {
+              dataset.push({ seriesname: "Ropa bebés y niños", data: array_ropa_bebés_y_niños })
+            }
+          }
+        }
+
+        if (this.categoriaSeleccionada == "Mascotas") {
+          if (element[1] == "Accesorios para perros") array_accesorios_para_perros.push({ value: element[2] });
+          if (element[1] == "Accesorios para gatos") array_accesorios_para_gatos.push({ value: element[2] });
+          if (element[1] == "Otros (mascotas)") array_otros_mascotas.push({ value: element[2] });
+
+          if (i == (array_total_mes.length - 1)) {
+            if (this.evitarLog(array_accesorios_para_perros, array_meses) != 0) {
+              dataset.push({ seriesname: "Accesorios para perros", data: array_accesorios_para_perros })
+            }
+            if (this.evitarLog(array_accesorios_para_gatos, array_meses) != 0) {
+              dataset.push({ seriesname: "Accesorios para gatos", data: array_accesorios_para_gatos })
+            }
+            if (this.evitarLog(array_otros_mascotas, array_meses) != 0) {
+              dataset.push({ seriesname: "Otros (mascotas)", data: array_otros_mascotas })
+            }
+          }
+        }
+
+        if (this.categoriaSeleccionada == "Herramientas") {
+          if (element[1] == "Industria") array_industria.push({ value: element[2] });
+          if (element[1] == "Repuestos") array_repuestos.push({ value: element[2] });
+          if (element[1] == "Muebles para negocios - oficinas") array_muebles_para_negocios_oficinas.push({ value: element[2] });
+
+          if (i == (array_total_mes.length - 1)) {
+            if (this.evitarLog(array_industria, array_meses) != 0) {
+              dataset.push({ seriesname: "Industria", data: array_industria })
+            }
+            if (this.evitarLog(array_repuestos, array_meses) != 0) {
+              dataset.push({ seriesname: "Repuestos", data: array_repuestos })
+            }
+            if (this.evitarLog(array_muebles_para_negocios_oficinas, array_meses) != 0) {
+              dataset.push({ seriesname: "Muebles para negocios - oficinas", data: array_muebles_para_negocios_oficinas })
+            }
+          }
+        }
+
+        if (this.categoriaSeleccionada == "Libros") {
+          if (element[1] == "Novela") array_novela.push({ value: element[2] });
+          if (element[1] == "Gótico") array_gotico.push({ value: element[2] });
+          if (element[1] == "Ciencia Ficción") array_ciencia_ficcion.push({ value: element[2] });
+          if (element[1] == "Cuento de hadas") array_cuento_de_hadas.push({ value: element[2] });
+          if (element[1] == "Acción") array_accion.push({ value: element[2] });
+          if (element[1] == "Drama") array_drama.push({ value: element[2] });
+          if (element[1] == "Suspenso") array_suspenso.push({ value: element[2] });
+          if (element[1] == "Terror") array_terror.push({ value: element[2] });
+          if (element[1] == "Fantástica") array_fantastica.push({ value: element[2] });
+
+          if (i == (array_total_mes.length - 1)) {
+            if (this.evitarLog(array_novela, array_meses) != 0) {
+              dataset.push({ seriesname: "Novela", data: array_novela })
+            }
+            if (this.evitarLog(array_gotico, array_meses) != 0) {
+              dataset.push({ seriesname: "Gótico", data: array_gotico })
+            }
+            if (this.evitarLog(array_ciencia_ficcion, array_meses) != 0) {
+              dataset.push({ seriesname: "Ciencia Ficción", data: array_ciencia_ficcion })
+            }
+            if (this.evitarLog(array_cuento_de_hadas, array_meses) != 0) {
+              dataset.push({ seriesname: "Cuento de hadas", data: array_cuento_de_hadas })
+            }
+            if (this.evitarLog(array_accion, array_meses) != 0) {
+              dataset.push({ seriesname: "Acción", data: array_accion })
+            }
+            if (this.evitarLog(array_drama, array_meses) != 0) {
+              dataset.push({ seriesname: "Drama", data: array_drama })
+            }
+            if (this.evitarLog(array_suspenso, array_meses) != 0) {
+              dataset.push({ seriesname: "Suspenso", data: array_suspenso })
+            }
+            if (this.evitarLog(array_terror, array_meses) != 0) {
+              dataset.push({ seriesname: "Terror", data: array_terror })
+            }
+            if (this.evitarLog(array_fantastica, array_meses) != 0) {
+              dataset.push({ seriesname: "Fantástica", data: array_fantastica })
+            }
+          }
+        }
+
+        if (this.categoriaSeleccionada == "Otros") {
+          if (element[1] == "Otra categoria") array_otra_categoria.push({ value: element[2] });
+
+          if (i == (array_total_mes.length - 1)) {
+            if (this.evitarLog(array_otra_categoria, array_meses) != 0) {
+              dataset.push({ seriesname: "Otra categoria", data: array_otra_categoria })
+            }
+          }
+        }
+
+      }
+
+      for (let i = 0; i < array_meses.length; i++) {
+        const element = array_meses[i];
+        array_labels.push({ label: element })
+      }
+
+      /* Armado de los distintos dataset */
+      this.type = "msspline";
+      this.dataFormat = "json";
+      this.dataSource = {
+        chart: {
+          bgColor: "#fafafa",
+          yAxisMinValue: "0",
+          caption: "Cantidad de publicaciones según subcategoría",
+          xaxisname: "Meses",
+          yaxisname: "Cantidad",
+          subcaption: "Ordenados por mes",
+          numdivlines: "1",
+          showvalues: "1",
+          legenditemfontsize: "11",
+          legenditemfontbold: "1",
+
+          theme: "fusion"
+        },
+        categories: [
+          {
+            category: array_labels
+          }
+        ],
+        dataset: dataset
+      }
+
+      this.mostrarGrafico = true;
+      this.spinner.hide();
+
+    }
+
+    if (periodo == "Por año" && this.nombreEstadisticaSeleccionada == "Cantidad total de publicaciones según subcategorías") {
+      let array_año = [], array_categorias = [], array_total_año = [], array_labels = [];
+      //ELECTRONICA
+      let array_tv_audio_video = [], array_celulares_tablets = [], array_computadoras = [], array_notebooks = [], array_videojuegos = [], array_consolas = [], array_camaras_y_accesorios = [];
+      //HOGAR
+      let array_accesorios_hogar = [], array_decoracion = [], array_electrodomesticos = [], array_muebles = [], array_jardin = [];
+      //DEPORTES
+      let array_aerobics_y_fitness = [], array_bicicletas_y_ciclismo = [], array_camping_y_pesca = [], array_deportes_acuaticos = [], array_futbol = [], array_otros_deportes = [];
+      //MUSICA
+      let array_arte_y_antiguedades = [], array_cds_dvds = [], array_instrumentos_musicales = [], array_libros_y_revistas = [];
+      //BELLEZA
+      let array_relojes_joyas_accesorios = [], array_ropa_y_calzado = [], array_salud_y_belleza = [];
+      //BEBES
+      let array_cunas_accesorios = [], array_juegos_juguetes = [], array_ropa_bebés_y_niños = []
+      //ANIMALES
+      let array_accesorios_para_perros = [], array_accesorios_para_gatos = [], array_otros_mascotas = [];
+      //HERRAMIENTAS
+      let array_industria = [], array_repuestos = [], array_muebles_para_negocios_oficinas = [];
+      //LIBROS
+      let array_novela = [], array_gotico = [], array_ciencia_ficcion = [], array_cuento_de_hadas = [], array_accion = [], array_drama = [], array_suspenso = [], array_terror = [], array_fantastica = [];
+      //OTROS
+      let array_otra_categoria = []
+
+      for (let i = 0; i < this.publicaciones.length; i++) {
+        const element = this.publicaciones[i];
+        let fecha = new Date(element.createdAt)
+        let año = fecha.getFullYear()
+        if (array_año.length == 0) {
+          array_año.push(año);
+        } else {
+          if (!array_año.includes(año)) {
+            array_año.push(año);
+          }
+        }
+
+        let categoria = element.categoria;
+        if (array_categorias.length == 0) {
+          array_categorias.push(categoria);
+        } else {
+          if (!array_categorias.includes(categoria)) {
+            array_categorias.push(categoria)
+          }
+        }
+      }
+
+      for (let i = 0; i < array_año.length; i++) {
+        const element1 = array_año[i];
+        //ELECTRONICA
+        let tv_audio_video = 0, celulares_tablets = 0, computadoras = 0, notebooks = 0, videojuegos = 0, consolas = 0, camaras_y_accesorios = 0;
+
+        //HOGAR
+        let accesorios_hogar = 0, decoracion = 0, electrodomesticos = 0, muebles = 0, jardin = 0;
+
+        //DEPORTES
+        let aerobics_y_fitness = 0, bicicletas_y_ciclismo = 0, camping_y_pesca = 0, deportes_acuaticos = 0, futbol = 0, otros_deportes = 0;
+
+        //MUSICA
+        let arte_y_antiguedades = 0, cds_dvds = 0, instrumentos_musicales = 0, libros_y_revistas = 0;
+
+        //BELLEZA
+        let relojes_joyas_accesorios = 0, ropa_y_calzado = 0, salud_y_belleza = 0;
+
+        //BEBES
+        let cunas_accesorios = 0, juegos_juguetes = 0, ropa_bebés_y_niños = 0;
+
+        //ANIMALES
+        let accesorios_para_perros = 0, accesorios_para_gatos = 0, otros_mascotas = 0;
+
+        //HERRAMIENTAS
+        let industria = 0, repuestos = 0, muebles_para_negocios_oficinas = 0;
+
+        //LIBROS
+        let novela = 0, gotico = 0, ciencia_ficcion = 0, cuento_de_hadas = 0, accion = 0, drama = 0, suspenso = 0, terror = 0, fantastica = 0;
+
+        //OTROS
+        let otra_categoria = 0
+
+        for (let j = 0; j < this.publicaciones.length; j++) {
+          const element2 = this.publicaciones[j];
+          let fecha = new Date(element2.createdAt)
+          let año = fecha.getFullYear()
+          if (año == element1) {
+            if (element2.categoria == "Tecnologia") {
+              if (element2.subcategoria == 'TV - Audio - Video') tv_audio_video++;
+              if (element2.subcategoria == 'Celulares - Tablets') celulares_tablets++;
+              if (element2.subcategoria == 'Computadoras') computadoras++;
+              if (element2.subcategoria == 'Notebooks') notebooks++;
+              if (element2.subcategoria == 'Videojuegos') videojuegos++;
+              if (element2.subcategoria == 'Consolas') consolas++;
+              if (element2.subcategoria == 'Cámaras y accesorios') camaras_y_accesorios++;
+            }
+
+            if (element2.categoria == "Hogar") {
+              if (element2.subcategoria == 'Accesorios (Hogar)') accesorios_hogar++;
+              if (element2.subcategoria == 'Decoración') decoracion++;
+              if (element2.subcategoria == 'Electrodomésticos') electrodomesticos++;
+              if (element2.subcategoria == 'Muebles') muebles++;
+              if (element2.subcategoria == 'Jardin') jardin++;
+            }
+
+            if (element2.categoria == "Deporte") {
+              if (element2.subcategoria == 'Aerobics y fitness') aerobics_y_fitness++;
+              if (element2.subcategoria == 'Bicicletas y ciclismo') bicicletas_y_ciclismo++;
+              if (element2.subcategoria == 'Camping y pesca') camping_y_pesca++;
+              if (element2.subcategoria == 'Deportes acuaticos') deportes_acuaticos++;
+              if (element2.subcategoria == 'Futbol') futbol++;
+              if (element2.subcategoria == 'Otros deportes') otros_deportes++;
+            }
+
+            if (element2.categoria == "Musica") {
+              if (element2.subcategoria == 'Arte y antiguedades') arte_y_antiguedades++;
+              if (element2.subcategoria == 'CDs - DVDs') cds_dvds++;
+              if (element2.subcategoria == 'Instrumentos musicales') instrumentos_musicales++;
+              if (element2.subcategoria == 'Libros y revistas') libros_y_revistas++;
+            }
+
+            if (element2.categoria == "Belleza") {
+              if (element2.subcategoria == 'Relojes - joyas - accesorios') relojes_joyas_accesorios++;
+              if (element2.subcategoria == 'Ropa y calzado') ropa_y_calzado++;
+              if (element2.subcategoria == 'Salud y belleza') salud_y_belleza++;
+            }
+
+            if (element2.categoria == "Bebes") {
+              if (element2.subcategoria == 'Cunas - Accesorios') cunas_accesorios++;
+              if (element2.subcategoria == 'Juegos - juguetes') juegos_juguetes++;
+              if (element2.subcategoria == 'Ropa bebés y niños') ropa_bebés_y_niños++;
+            }
+
+            if (element2.categoria == "Mascotas") {
+              if (element2.subcategoria == 'Accesorios para perros') accesorios_para_perros++;
+              if (element2.subcategoria == 'Accesorios para gatos') accesorios_para_gatos++;
+              if (element2.subcategoria == 'Otros (mascotas)') otros_mascotas++;
+            }
+
+            if (element2.categoria == "Herramientas") {
+              if (element2.subcategoria == 'Industria') industria++;
+              if (element2.subcategoria == 'Repuestos') repuestos++;
+              if (element2.subcategoria == 'Muebles para negocios - oficinas') muebles_para_negocios_oficinas++;
+            }
+
+            if (element2.categoria == "Libros") {
+              if (element2.subcategoria == 'Novela') novela++;
+              if (element2.subcategoria == 'Gótico') gotico++;
+              if (element2.subcategoria == 'Ciencia Ficción') ciencia_ficcion++;
+              if (element2.subcategoria == 'Cuento de hadas') cuento_de_hadas++;
+              if (element2.subcategoria == 'Acción') accion++;
+              if (element2.subcategoria == 'Drama') drama++;
+              if (element2.subcategoria == 'Suspenso') suspenso++;
+              if (element2.subcategoria == 'Terror') terror++;
+              if (element2.subcategoria == 'Fantástica') fantastica++;
+            }
+
+            if (element2.categoria == "Otros") {
+              if (element2.subcategoria == 'Otra categoria') otra_categoria++;
+            }
+          }
+        }
+        if (this.categoriaSeleccionada == "Tecnologia") {
+          array_total_año.push([element1, "TV - Audio - Video", tv_audio_video]);
+          array_total_año.push([element1, "Celulares - Tablets", celulares_tablets]);
+          array_total_año.push([element1, "Computadoras", computadoras]);
+          array_total_año.push([element1, "Notebooks", notebooks]);
+          array_total_año.push([element1, "Videojuegos", videojuegos]);
+          array_total_año.push([element1, "Consolas", consolas]);
+          array_total_año.push([element1, "Cámaras y accesorios", camaras_y_accesorios]);
+        }
+
+        if (this.categoriaSeleccionada == "Hogar") {
+          array_total_año.push([element1, "Accesorios (Hogar)", accesorios_hogar]);
+          array_total_año.push([element1, "Decoración", decoracion]);
+          array_total_año.push([element1, "Electrodomésticos", electrodomesticos]);
+          array_total_año.push([element1, "Muebles", muebles]);
+          array_total_año.push([element1, "Jardin", jardin]);
+        }
+
+        if (this.categoriaSeleccionada == "Deportes") {
+          array_total_año.push([element1, "Aerobics y fitness", aerobics_y_fitness]);
+          array_total_año.push([element1, "Bicicletas y ciclismo", bicicletas_y_ciclismo]);
+          array_total_año.push([element1, "Camping y pesca", camping_y_pesca]);
+          array_total_año.push([element1, "Deportes acuaticos", deportes_acuaticos]);
+          array_total_año.push([element1, "Futbol", futbol]);
+          array_total_año.push([element1, "Otros deportes", otros_deportes]);
+        }
+
+        if (this.categoriaSeleccionada == "Musica") {
+          array_total_año.push([element1, "Arte y antiguedades", arte_y_antiguedades]);
+          array_total_año.push([element1, "CDs - DVDs", cds_dvds]);
+          array_total_año.push([element1, "Instrumentos musicales", instrumentos_musicales]);
+          array_total_año.push([element1, "Libros y revistas", libros_y_revistas]);
+        }
+
+        if (this.categoriaSeleccionada == "Belleza") {
+          array_total_año.push([element1, "Relojes - joyas - accesorios", relojes_joyas_accesorios]);
+          array_total_año.push([element1, "Ropa y calzado", ropa_y_calzado]);
+          array_total_año.push([element1, "Salud y belleza", salud_y_belleza]);
+        }
+
+        if (this.categoriaSeleccionada == "Bebes") {
+          array_total_año.push([element1, "Cunas - Accesorios", cunas_accesorios]);
+          array_total_año.push([element1, "Juegos - juguetes", juegos_juguetes]);
+          array_total_año.push([element1, "Ropa bebés y niños", ropa_bebés_y_niños]);
+        }
+
+        if (this.categoriaSeleccionada == "Mascotas") {
+          array_total_año.push([element1, "Accesorios para perros", accesorios_para_perros]);
+          array_total_año.push([element1, "Accesorios para gatos", accesorios_para_gatos]);
+          array_total_año.push([element1, "Otros (mascotas)", otros_mascotas]);
+        }
+
+        if (this.categoriaSeleccionada == "Herramientas") {
+          array_total_año.push([element1, "Industria", industria]);
+          array_total_año.push([element1, "Repuestos", repuestos]);
+          array_total_año.push([element1, "Muebles para negocios - oficinas", muebles_para_negocios_oficinas]);
+        }
+
+        if (this.categoriaSeleccionada == "Libros") {
+          array_total_año.push([element1, "Novela", novela]);
+          array_total_año.push([element1, "Gótico", gotico]);
+          array_total_año.push([element1, "Ciencia Ficción", ciencia_ficcion]);
+          array_total_año.push([element1, "Cuento de hadas", cuento_de_hadas]);
+          array_total_año.push([element1, "Acción", accion]);
+          array_total_año.push([element1, "Drama", drama]);
+          array_total_año.push([element1, "Suspenso", suspenso]);
+          array_total_año.push([element1, "Terror", terror]);
+          array_total_año.push([element1, "Fantástica", fantastica]);
+        }
+
+        if (this.categoriaSeleccionada == "Otros") {
+          array_total_año.push([element1, "Otra categoria", otra_categoria]);
+        }
+      }
+
+      let years = { "2019": 1, "2020": 2, "2021": 3 };
+      array_año.sort();
+      array_total_año.sort(function (a, b) {
+        return years[a[0]] - years[b[0]];
+      });
+
+      let dataset = [];
+      for (let i = 0; i < array_total_año.length; i++) {
+        const element = array_total_año[i];
+        if (this.categoriaSeleccionada == "Tecnologia") {
+          if (element[1] == "TV - Audio - Video") array_tv_audio_video.push({ value: element[2] });
+          if (element[1] == "Celulares - Tablets") array_celulares_tablets.push({ value: element[2] });
+          if (element[1] == "Computadoras") array_computadoras.push({ value: element[2] });
+          if (element[1] == "Notebooks") array_notebooks.push({ value: element[2] });
+          if (element[1] == "Videojuegos") array_videojuegos.push({ value: element[2] });
+          if (element[1] == "Consolas") array_consolas.push({ value: element[2] });
+          if (element[1] == "Cámaras y accesorios") array_camaras_y_accesorios.push({ value: element[2] });
+
+          if (i == (array_total_año.length - 1)) {
+            dataset.push({ seriesname: "TV - Audio - Video", data: array_tv_audio_video })
+            dataset.push({ seriesname: "Celulares - Tablets", data: array_celulares_tablets })
+            dataset.push({ seriesname: "Computadoras", data: array_computadoras })
+            dataset.push({ seriesname: "Notebooks", data: array_notebooks })
+            dataset.push({ seriesname: "Videojuegos", data: array_videojuegos })
+            dataset.push({ seriesname: "Consolas", data: array_consolas })
+            dataset.push({ seriesname: "Cámaras y accesorios", data: array_camaras_y_accesorios })
+          }
+        }
+
+        if (this.categoriaSeleccionada == "Hogar") {
+          if (element[1] == "Accesorios (Hogar)") array_accesorios_hogar.push({ value: element[2] });
+          if (element[1] == "Decoración") array_decoracion.push({ value: element[2] });
+          if (element[1] == "Electrodomésticos") array_electrodomesticos.push({ value: element[2] });
+          if (element[1] == "Muebles") array_muebles.push({ value: element[2] });
+          if (element[1] == "Jardin") array_jardin.push({ value: element[2] });
+
+          if (i == (array_total_año.length - 1)) {
+            dataset.push({ seriesname: "Accesorios (Hogar)", data: array_accesorios_hogar })
+            dataset.push({ seriesname: "Decoración", data: array_decoracion })
+            dataset.push({ seriesname: "Electrodomésticos", data: array_electrodomesticos })
+            dataset.push({ seriesname: "Muebles", data: array_muebles })
+            dataset.push({ seriesname: "Jardin", data: array_jardin })
+          }
+        }
+
+        if (this.categoriaSeleccionada == "Deportes") {
+          if (element[1] == "Aerobics y fitness") array_aerobics_y_fitness.push({ value: element[2] });
+          if (element[1] == "Bicicletas y ciclismo") array_bicicletas_y_ciclismo.push({ value: element[2] });
+          if (element[1] == "Camping y pesca") array_camping_y_pesca.push({ value: element[2] });
+          if (element[1] == "Deportes acuaticos") array_deportes_acuaticos.push({ value: element[2] });
+          if (element[1] == "Futbol") array_futbol.push({ value: element[2] });
+          if (element[1] == "Otros deportes") array_otros_deportes.push({ value: element[2] });
+
+          if (i == (array_total_año.length - 1)) {
+            dataset.push({ seriesname: "Aerobics y fitness", data: array_aerobics_y_fitness })
+            dataset.push({ seriesname: "Bicicletas y ciclismo", data: array_bicicletas_y_ciclismo })
+            dataset.push({ seriesname: "Camping y pesca", data: array_camping_y_pesca })
+            dataset.push({ seriesname: "Deportes acuaticos", data: array_deportes_acuaticos })
+            dataset.push({ seriesname: "Futbol", data: array_futbol })
+            dataset.push({ seriesname: "Otros deportes", data: array_otros_deportes })
+          }
+        }
+
+        if (this.categoriaSeleccionada == "Musica") {
+          if (element[1] == "Arte y antiguedades") array_arte_y_antiguedades.push({ value: element[2] });
+          if (element[1] == "CDs - DVDs") array_cds_dvds.push({ value: element[2] });
+          if (element[1] == "Instrumentos musicales") array_instrumentos_musicales.push({ value: element[2] });
+          if (element[1] == "Libros y revistas") array_libros_y_revistas.push({ value: element[2] });
+
+          if (i == (array_total_año.length - 1)) {
+            dataset.push({ seriesname: "Arte y antiguedades", data: array_arte_y_antiguedades })
+            dataset.push({ seriesname: "CDs - DVDs", data: array_cds_dvds })
+            dataset.push({ seriesname: "Instrumentos musicales", data: array_instrumentos_musicales })
+            dataset.push({ seriesname: "Libros y revistas", data: array_libros_y_revistas })
+          }
+        }
+
+        if (this.categoriaSeleccionada == "Belleza") {
+          if (element[1] == "Relojes - joyas - accesorios") array_relojes_joyas_accesorios.push({ value: element[2] });
+          if (element[1] == "Ropa y calzado") array_ropa_y_calzado.push({ value: element[2] });
+          if (element[1] == "Salud y belleza") array_salud_y_belleza.push({ value: element[2] });
+          if (i == (array_total_año.length - 1)) {
+            dataset.push({ seriesname: "Relojes - joyas - accesorios", data: array_relojes_joyas_accesorios })
+            dataset.push({ seriesname: "Ropa y calzado", data: array_ropa_y_calzado })
+            dataset.push({ seriesname: "Salud y belleza", data: array_salud_y_belleza })
+          }
+        }
+
+        if (this.categoriaSeleccionada == "Bebes") {
+          if (element[1] == "Cunas - Accesorios") array_cunas_accesorios.push({ value: element[2] });
+          if (element[1] == "Juegos - juguetes") array_juegos_juguetes.push({ value: element[2] });
+          if (element[1] == "Ropa bebés y niños") array_ropa_bebés_y_niños.push({ value: element[2] });
+          if (i == (array_total_año.length - 1)) {
+            dataset.push({ seriesname: "Cunas - Accesorios", data: array_cunas_accesorios })
+            dataset.push({ seriesname: "Juegos - juguetes", data: array_juegos_juguetes })
+            dataset.push({ seriesname: "Ropa bebés y niños", data: array_ropa_bebés_y_niños })
+          }
+        }
+
+        if (this.categoriaSeleccionada == "Mascotas") {
+          if (element[1] == "Accesorios para perros") array_accesorios_para_perros.push({ value: element[2] });
+          if (element[1] == "Accesorios para gatos") array_accesorios_para_gatos.push({ value: element[2] });
+          if (element[1] == "Otros (mascotas)") array_otros_mascotas.push({ value: element[2] });
+
+          if (i == (array_total_año.length - 1)) {
+            dataset.push({ seriesname: "Accesorios para perros", data: array_accesorios_para_perros })
+            dataset.push({ seriesname: "Accesorios para gatos", data: array_accesorios_para_gatos })
+            dataset.push({ seriesname: "Otros (mascotas)", data: array_otros_mascotas })
+          }
+        }
+
+        if (this.categoriaSeleccionada == "Herramientas") {
+          if (element[1] == "Industria") array_industria.push({ value: element[2] });
+          if (element[1] == "Repuestos") array_repuestos.push({ value: element[2] });
+          if (element[1] == "Muebles para negocios - oficinas") array_muebles_para_negocios_oficinas.push({ value: element[2] });
+          if (i == (array_total_año.length - 1)) {
+            dataset.push({ seriesname: "Industria", data: array_industria })
+            dataset.push({ seriesname: "Repuestos", data: array_repuestos })
+            dataset.push({ seriesname: "Muebles para negocios - oficinas", data: array_muebles_para_negocios_oficinas })
+          }
+        }
+
+        if (this.categoriaSeleccionada == "Libros") {
+          if (element[1] == "Novela") array_novela.push({ value: element[2] });
+          if (element[1] == "Gótico") array_gotico.push({ value: element[2] });
+          if (element[1] == "Ciencia Ficción") array_ciencia_ficcion.push({ value: element[2] });
+          if (element[1] == "Cuento de hadas") array_cuento_de_hadas.push({ value: element[2] });
+          if (element[1] == "Acción") array_accion.push({ value: element[2] });
+          if (element[1] == "Drama") array_drama.push({ value: element[2] });
+          if (element[1] == "Suspenso") array_suspenso.push({ value: element[2] });
+          if (element[1] == "Terror") array_terror.push({ value: element[2] });
+          if (element[1] == "Fantástica") array_fantastica.push({ value: element[2] });
+
+          if (i == (array_total_año.length - 1)) {
+            dataset.push({ seriesname: "Novela", data: array_novela })
+            dataset.push({ seriesname: "Gótico", data: array_gotico })
+            dataset.push({ seriesname: "Ciencia Ficción", data: array_ciencia_ficcion })
+            dataset.push({ seriesname: "Cuento de hadas", data: array_cuento_de_hadas })
+            dataset.push({ seriesname: "Acción", data: array_accion })
+            dataset.push({ seriesname: "Drama", data: array_drama })
+            dataset.push({ seriesname: "Suspenso", data: array_suspenso })
+            dataset.push({ seriesname: "Terror", data: array_terror })
+            dataset.push({ seriesname: "Fantástica", data: array_fantastica })
+          }
+        }
+
+        if (this.categoriaSeleccionada == "Otros") {
+          if (element[1] == "Otra categoria") array_otra_categoria.push({ value: element[2] });
+
+          if (i == (array_total_año.length - 1)) {
+            dataset.push({ seriesname: "Otra categoria", data: array_otra_categoria })
+          }
+        }
+
+      }
+
+      for (let i = 0; i < array_año.length; i++) {
+        const element = array_año[i];
+        array_labels.push({ label: element })
+      }
+
+      this.type = "mscolumn3d";
+      this.dataFormat = "json";
+      this.dataSource = {
+        chart: {
+          caption: "Cantidad de publicaciones según subcategoría",
+          subcaption: "Ordenados por año",
+          bgColor: "#fafafa",
+          xaxisname: "Años",
+          yaxisname: "Cantidad",
+          formatnumberscale: "1",
+          theme: "fusion",
+          showvalues: "1"
+        },
+        categories: [
+          {
+            category: [{ label: "2019" }, { label: "2020" }, { label: "2021" }]
+          }
+        ],
+        dataset: dataset
+      }
+      this.mostrarGrafico = true;
+      this.spinner.hide();
+    }
   }
 
   obtenerMes(fecha: Date) {
@@ -2336,7 +3969,7 @@ export class EstadisticasComponent implements OnInit {
     if ((fecha.getMonth() + 1) == 12) return "Dec";
   }
 
-  evitarLog(array: any,) {
+  evitarLog(array: any, array_meses: any) {
     let contador = 0;
     for (let j = 0; j < array.length; j++) {
       const element = array[j];
@@ -2344,7 +3977,7 @@ export class EstadisticasComponent implements OnInit {
         contador++;
       }
       if (j == (array.length - 1)) {
-        if (contador == 4) {
+        if (contador == array_meses.length) {
           return 0;
         } else {
           return 1;
