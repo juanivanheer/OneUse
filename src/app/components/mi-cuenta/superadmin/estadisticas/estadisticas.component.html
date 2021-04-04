@@ -1,5 +1,5 @@
 <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="large" color="#fff" type="timer" [fullScreen]="true">
-    <p style="color: white"> Armando estadística </p>
+    <p style="color: white"> {{textoSpinner}} </p>
 </ngx-spinner>
 
 <div fxLayout="row" fxFlexFill>
@@ -26,11 +26,12 @@
                 <mat-form-field class="selector">
                     <mat-label>Estadística</mat-label>
                     <mat-select>
-                        <mat-option (click)="mostrarGrafico = false; estadisticaGeneralSeleccionada = false;">- Elegir
+                        <mat-option (click)="clicks('Elegir estadística')">
+                            - Elegir
                             estadística -</mat-option>
                         <mat-optgroup *ngFor="let estGroup of estadisticas" [label]="estGroup.name">
                             <mat-option
-                                (click)="estadisticaSeleccionada(estIndiv.viewValue); estadisticaGeneralSeleccionada = true;categoriaSeleccionada = undefined"
+                                (click)="estadisticaSeleccionada(estIndiv.viewValue);clicks('Estadística seleccionada')"
                                 *ngFor="let estIndiv of estGroup.estadistica" [value]="estIndiv.value">
                                 {{estIndiv.viewValue}}
                             </mat-option>
@@ -42,32 +43,65 @@
                     *ngIf="publicacionesSubcategoriaSeleccionada || alquileresSubcategoriaSeleccionada">
                     <mat-label>Subcategoría</mat-label>
 
-                    <mat-select [(value)]="categoriaSeleccionada" *ngIf="publicacionesSubcategoriaSeleccionada" #select2>
-                        <mat-option (click)="mostrarGrafico = false; fechasDeshabilitadas = true" [value]="none"> - Elegir categoria -
+                    <mat-select [(value)]="categoriaSeleccionada">
+                        <mat-option (click)="clicks('Elegir categoría'); " value="none">-
+                            Elegir categoría -
                         </mat-option>
-                        <mat-option *ngFor="let s of subcategorias" [value]="s"
-                            (click)="subcategoriaSeleccionada('publicaciones', s); fechasDeshabilitadas = false">
-                            {{s}}
-                        </mat-option>
-                    </mat-select>
+                        <div *ngIf="publicacionesSubcategoriaSeleccionada">
+                            <mat-option *ngFor="let s of subcategorias" [value]="s"
+                                (click)="subcategoriaSeleccionada('alquileres', s); clicks('Categoria seleccionada')">
+                                {{s}}
+                            </mat-option>
+                        </div>
+                        <div *ngIf="alquileresSubcategoriaSeleccionada">
+                            <mat-option *ngFor="let s of subcategorias" [value]="s"
+                                (click)="subcategoriaSeleccionada('publicaciones', s); clicks('Categoria seleccionada')">
+                                {{s}}
+                            </mat-option>
+                        </div>
 
-                    <mat-select [(value)]="categoriaSeleccionada" *ngIf="alquileresSubcategoriaSeleccionada" #select3>
-                        <mat-option (click)="mostrarGrafico = false; fechasDeshabilitadas = true" [value]="none"> - Elegir categoria -
-                        </mat-option>
-                        <mat-option *ngFor="let s of subcategorias" [value]="s"
-                            (click)="subcategoriaSeleccionada('alquileres', s); fechasDeshabilitadas = false">
-                            {{s}}
-                        </mat-option>
+
                     </mat-select>
                 </mat-form-field>
 
                 <mat-form-field class="selector" *ngIf="estadisticaGeneralSeleccionada">
                     <mat-label>Período de búsqueda</mat-label>
 
-                    <mat-select [disabled]="fechasDeshabilitadas">
-                        <mat-option (click)="mostrarGrafico = false"> - Elegir período - </mat-option>
-                        <mat-option (click)="calcularPorPeriodo(p)" *ngFor="let p of periodo" [value]="p">
-                            {{p}}
+                    <mat-select [(value)]="periodoSeleccionado" [disabled]="deshabilitarPeriodo">
+                        <mat-option (click)="clicks('Elegir período')" value="none"> - Elegir período - </mat-option>
+                        <div *ngIf="periodoDiaMesAnio">
+                            <mat-option (click)="calcularPorPeriodo(p)" *ngFor="let p of periodo" [value]="p">
+                                {{p}}
+                            </mat-option>
+                        </div>
+                        <div *ngIf="!periodoDiaMesAnio">
+                            <mat-option (click)="calcularPorPeriodo(p)" *ngFor="let p of periodoRanking" [value]="p">
+                                {{p}}
+                            </mat-option>
+                        </div>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="selector" *ngIf="periodoRankingMesHabilitado">
+                    <mat-label>Meses por filtrar</mat-label>
+
+                    <mat-select [(value)]="periodoRankingMesSeleccionado">
+                        <mat-option (click)="clicks('Elegir período mes ranking')" value="none"> - Elegir período -
+                        </mat-option>
+                        <mat-option (click)="calcularPorPeriodoMesRanking(p.value,p.viewValue)" *ngFor="let p of periodoRankingMes" [value]="p">
+                            {{p.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="selector" *ngIf="periodoRankingAnioHabilitado">
+                    <mat-label>Año por filtrar</mat-label>
+
+                    <mat-select [(value)]="periodoRankingAnioSeleccionado">
+                        <mat-option (click)="clicks('Elegir período anio ranking')" value="none"> - Elegir período -
+                        </mat-option>
+                        <mat-option (click)="calcularPorPeriodoAnioRanking(p.value,p.viewValue)" *ngFor="let p of periodoRankingAnio" [value]="p">
+                            {{p.viewValue}}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>

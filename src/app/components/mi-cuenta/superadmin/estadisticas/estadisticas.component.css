@@ -70,3 +70,7 @@ th.mat-sort-header-sorted {
 .selector {
     width: 33%;
 }
+
+svg > g[class^="raphael-group-"] > text{
+    display: none;
+}

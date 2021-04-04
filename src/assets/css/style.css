@@ -291,6 +291,9 @@ ul {
 /* ----------------------------------------------
 	1.2 Typography 
 ----------------------------------------------- */
+svg > g[class^="raphael-group-"] > text{
+    display: none;
+}
 
 a {
     cursor: pointer;
