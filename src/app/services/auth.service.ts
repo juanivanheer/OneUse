@@ -85,6 +85,8 @@ export class AuthService {
   private _getAllImagenesUsuarios = this.url + "get-all-imagenes-usuarios"
   private _registrarVisitaIP = this.url + 'registrar-visita-ip'
   private _getAllVisitasIP = this.url + 'get-all-visitas-ip'
+  private _getInfoIP = this.url + 'obtener-info-ip'
+  private _getIP = this.url + 'obtener-ip'
 
   constructor(private http: HttpClient) { }
 
@@ -395,11 +397,12 @@ export class AuthService {
   }
 
   get_direccion_ip() {
-    return this.http.get<any>('http://api.ipify.org'); //http://api.ipify.org/?format=json
+    return this.http.get<any>(this._getIP)
+    //return this.http.get<any>('https://api.ipify.org/?format=json', { headers: headers }); //http://api.ipify.org/?format=json
   }
 
-  get_info_IP(ip){
-    return this.http.get<any>('http://api.ipstack.com/' + ip + '?access_key=9291591e7e2c83940c4929fda95401c0& output=json&language=es')
+  get_info_IP(ip) {
+    return this.http.get<any>(this._getInfoIP + '?ip=' + ip)
   }
 
   get_all_visitas_IP() {
