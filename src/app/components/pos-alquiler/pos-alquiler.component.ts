@@ -9,7 +9,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   templateUrl: './pos-alquiler.component.html',
   styleUrls: ['./pos-alquiler.component.css']
 })
-export class PosAlquilerComponent implements OnInit, AfterViewInit {
+export class PosAlquilerComponent implements OnInit {
 
   constructor(private _auth: AuthService, private http: HttpClient) { }
   titulo;
@@ -77,6 +77,8 @@ export class PosAlquilerComponent implements OnInit, AfterViewInit {
                 this.montoReembolso = element.montoReembolso;
                 this.cantidadSeleccionada = element.cantidadAlquilar
                 this.montoUnitario = parseFloat(this.montoTotal) / parseFloat(this.cantidadSeleccionada)
+                this.mercadopago();
+                break;
               }
             }
           }
@@ -86,8 +88,7 @@ export class PosAlquilerComponent implements OnInit, AfterViewInit {
   }
 
 
-  ngAfterViewInit() {
-    setTimeout(() => {
+  mercadopago() {
       const httpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
@@ -167,7 +168,6 @@ export class PosAlquilerComponent implements OnInit, AfterViewInit {
         card.setAttribute('data-preference-id', this.id_pago_mp);
         div.appendChild(card)
       }, 5000);
-    }, 3000);
   }
 }
 

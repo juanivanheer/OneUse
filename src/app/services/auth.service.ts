@@ -83,6 +83,8 @@ export class AuthService {
   private _registrarPuntuacion = this.url + "registrar-puntuacion"
   private _verificarFinalizacion = this.url + "verificar-finalizacion"
   private _getAllImagenesUsuarios = this.url + "get-all-imagenes-usuarios"
+  private _registrarVisitaIP = this.url + 'registrar-visita-ip'
+  private _getAllVisitasIP = this.url + 'get-all-visitas-ip'
 
   constructor(private http: HttpClient) { }
 
@@ -124,7 +126,7 @@ export class AuthService {
     return this.http.get<any>(this._userData + email)
   }
 
-  user_id(id){
+  user_id(id) {
     return this.http.get<any>(this._userId + id);
   }
 
@@ -153,7 +155,7 @@ export class AuthService {
     return this.http.delete<any>(this._deleteUser + mail)
   }
 
-  get_all_images_user(){
+  get_all_images_user() {
     return this.http.get<any>(this._getAllImagenesUsuarios);
   }
 
@@ -320,7 +322,7 @@ export class AuthService {
 
   registrar_reclamado(id_alquiler) {
     let params = JSON.stringify(id_alquiler);
-    return this.http.post<any>(this._registrarReclamado + id_alquiler , params);
+    return this.http.post<any>(this._registrarReclamado + id_alquiler, params);
   }
 
 
@@ -358,7 +360,7 @@ export class AuthService {
   responder_reclamo(reclamo) {
     return this.http.post<any>(this._responderReclamo, reclamo);
   }
-  
+
   registrar_reclamo(reclamo) {
     return this.http.post<any>(this._registrarReclamo, reclamo);
   }
@@ -390,6 +392,22 @@ export class AuthService {
 
   get_estadistica_publicaciones_categorias() {
     return this.http.get<any>(this._getEstadisticaPublicacionesCategorias)
+  }
+
+  get_direccion_ip() {
+    return this.http.get<any>('http://api.ipify.org'); //http://api.ipify.org/?format=json
+  }
+
+  get_info_IP(ip){
+    return this.http.get<any>('http://api.ipstack.com/' + ip + '?access_key=9291591e7e2c83940c4929fda95401c0& output=json&language=es')
+  }
+
+  get_all_visitas_IP() {
+    return this.http.get<any>(this._getAllVisitasIP);
+  }
+
+  registrar_visita_IP(objeto) {
+    return this.http.post<any>(this._registrarVisitaIP, objeto)
   }
 
 }

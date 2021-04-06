@@ -54,6 +54,7 @@ export class EstadisticasComponent implements OnInit {
   periodoDiaMesAnio = false;
   periodoRankingMesHabilitado = false;
   periodoRankingAnioHabilitado = false;
+  noHayDatos = false;
 
   /* Variables UI grafica */
   width = 900;
@@ -74,6 +75,7 @@ export class EstadisticasComponent implements OnInit {
     {
       name: 'PUBLICACIONES',
       estadistica: [
+        { value: 'Categorías donde más se hacen preguntas', viewValue: 'Categorías donde más se hacen preguntas' },
         { value: 'Cantidad total de publicaciones según categoría', viewValue: 'Cantidad total de publicaciones según categoría' },
         { value: 'Cantidad total de publicaciones según subcategorías', viewValue: 'Cantidad total de publicaciones según subcategorías' },
       ]
@@ -83,10 +85,9 @@ export class EstadisticasComponent implements OnInit {
       estadistica: [
         { value: 'Cantidad de usuarios filtrado por red social', viewValue: 'Cantidad de usuarios filtrados por red social' },
         { value: 'Ranking de quienes más alquilan objetos', viewValue: 'Ranking de quienes más alquilan objetos' },
-        { value: 'Ranking de quienes más publican', viewValue: 'Ranking de quienes más publican' },
-        { value: 'Ranking de quienes más comentan publicaciones', viewValue: 'Ranking de quienes más comentan publicaciones' },
-        { value: 'Ranking de quienes más responden preguntas', viewValue: 'Ranking de quienes más responden preguntas' },
-        { value: 'Ranking de mejores puntuados del sitio', viewValue: 'Ranking de mejores puntuados del sitio' },
+        { value: 'Ranking de quienes más publican objetos', viewValue: 'Ranking de quienes más publican objetos' },
+        { value: 'Ranking de propietarios mejores puntuados del sitio', viewValue: 'Ranking de propietarios mejores puntuados del sitio' },
+        { value: 'Ranking de locatarios mejores puntuados del sitio', viewValue: 'Ranking de locatarios mejores puntuados del sitio' },
         { value: 'Ranking de los usuarios más denunciados', viewValue: 'Ranking de los usuarios más denunciados' },
       ]
     },
@@ -115,6 +116,7 @@ export class EstadisticasComponent implements OnInit {
 
   ngOnInit() {
     //this.usuariosMasivos();
+    this.deshabilitarTodo();
     this.spinner.show()
     var obsA = this._auth.get_all_alquileres();
     var obsB = this._auth.get_all_publicaciones();
@@ -138,17 +140,29 @@ export class EstadisticasComponent implements OnInit {
     this.alquileresSubcategoriaSeleccionada = false;
     this.publicacionesCategoriasSeleccionada = false;
     this.publicacionesSubcategoriaSeleccionada = false
+    this.deshabilitarPeriodo = true;
+    this.periodoDiaMesAnio = false;
+    this.periodoRankingMesHabilitado = false;
+    this.periodoRankingAnioHabilitado = false;
+    this.estadisticaGeneralSeleccionada = false;
+    this.noHayDatos = false;
 
     this.mostrarGrafico = false;
     this.subcategorias = []
     this.array_completo = [];
     this.arrayPeriodo = [];
+
+    this.periodoSeleccionado = 'none';
+    this.nombreEstadisticaSeleccionada = 'none';
+    this.categoriaSeleccionada = 'none';
+    this.periodoRankingMesSeleccionado = 'none'
+    this.periodoRankingAnioSeleccionado = 'none'
   }
 
   estadisticaSeleccionada(estadistica) {
-    this.nombreEstadisticaSeleccionada = estadistica;
     this.textoSpinner = "Armando estadística"
     this.deshabilitarTodo();
+    this.nombreEstadisticaSeleccionada = estadistica;
     /* ALQUILERES */
     if (estadistica == "Cantidad total de alquileres según categoría") {
       this.spinner.show();
@@ -248,7 +262,7 @@ export class EstadisticasComponent implements OnInit {
         }
 
         if (array_calculo.length > 5) {
-          array_calculo.slice(0, 4)
+          array_calculo.splice(5)
         }
 
         array_calculo.sort(function (a, b) {
@@ -266,6 +280,7 @@ export class EstadisticasComponent implements OnInit {
       this.dataSource = {
         chart: {
           bgColor: "#fafafa",
+          showvalues: "1",
           caption: "Ranking de quienes más alquilan objetos",
           subcaption: "Histórico total",
           plottooltext: "<b>$label</b> realizó $value alquileres",
@@ -278,6 +293,266 @@ export class EstadisticasComponent implements OnInit {
       this.mostrarGrafico = true;
       this.spinner.hide()
     }
+
+    if (estadistica == "Ranking de quienes más publican objetos") {
+      this.spinner.show();
+      var array_usuarios = [], array_calculo = [], array_resultado = [];
+
+      for (let i = 0; i < this.publicaciones.length; i++) {
+        const element1 = this.publicaciones[i];
+        for (let j = 0; j < this.usuarios.length; j++) {
+          const element2 = this.usuarios[j];
+          if (element2.email == element1.email) {
+            array_usuarios.push(element2.name)
+          }
+        }
+      }
+
+      if (array_usuarios.length > 0) {
+        for (let i = 0; i < array_usuarios.length; i++) {
+          const element1 = array_usuarios[i];
+          if (array_calculo.length == 0) {
+            array_calculo.push([element1, 1])
+          } else {
+            let indice = -1;
+            for (let j = 0; j < array_calculo.length; j++) {
+              const element2 = array_calculo[j];
+              if (element2[0] == element1) {
+                indice = j;
+                break;
+              } else continue;
+            }
+            if (indice < 0) {
+              array_calculo.push([element1, 1])
+            } else {
+              array_calculo[indice][1]++;
+            }
+          }
+        }
+
+        if (array_calculo.length > 5) {
+          array_calculo.splice(5)
+        }
+
+        array_calculo.sort(function (a, b) {
+          return b[1] - a[1];
+        });
+
+        for (let i = 0; i < array_calculo.length; i++) {
+          const element = array_calculo[i];
+          array_resultado.push({ label: element[0], value: element[1] })
+        }
+      }
+
+      this.type = "column2d";
+      this.dataFormat = "json";
+      this.dataSource = {
+        chart: {
+          bgColor: "#fafafa",
+          showvalues: "1",
+          caption: "Ranking de quienes más publican objetos",
+          subcaption: "Histórico total",
+          plottooltext: "<b>$label</b> realizó $value publicaciones",
+          xaxisname: "Usuarios",
+          yaxisname: "Cantidad de publicaciones",
+          theme: "fusion"
+        },
+        data: array_resultado
+      };
+      this.mostrarGrafico = true;
+      this.spinner.hide()
+    }
+
+    if (estadistica == 'Ranking de propietarios mejores puntuados del sitio') {
+      let array_sumatorias = [], array_resultado = []
+      for (let i = 0; i < this.alquileres.length; i++) {
+        const element1 = this.alquileres[i];
+        let existe = false;
+        if (element1.puntuacion_locatario_al_propietario_ingresada == true) {
+          if (array_sumatorias.length == 0) {
+            array_sumatorias.push([element1.name_usuarioPropietario, 1, element1.puntuacion_locatario_al_propietario])
+          } else {
+            for (let j = 0; j < array_sumatorias.length; j++) {
+              const element2 = array_sumatorias[j];
+              if (element2.includes(element1.name_usuarioPropietario)) {
+                element2[1]++;
+                element2[2] += element1.puntuacion_locatario_al_propietario;
+                existe = true;
+                break;
+              }
+            }
+            if (!existe) {
+              array_sumatorias.push([element1.name_usuarioPropietario, 1, element1.puntuacion_locatario_al_propietario])
+            }
+          }
+        }
+      }
+
+      if (array_sumatorias.length > 5) {
+        array_sumatorias.splice(5)
+      }
+
+      array_resultado.sort(function (a, b) {
+        return b[2] - a[2];
+      })
+
+      for (let i = 0; i < array_sumatorias.length; i++) {
+        const element = array_sumatorias[i];
+        let promedio = Math.floor(element[2] / element[1]);
+        array_resultado.push({ label: element[0], value: promedio })
+      }
+
+      this.type = "column2d";
+      this.dataFormat = "json";
+      this.dataSource = {
+        chart: {
+          bgColor: "#fafafa",
+          showvalues: "1",
+          caption: "Ranking de propietarios mejores puntuados del sitio",
+          subcaption: "Histórico total",
+          plottooltext: "<b>$label</b> tuvo una puntuación promedio de $value estrellas",
+          xaxisname: "Usuarios",
+          yaxisname: "Cantidad de estrellas",
+          theme: "fusion"
+        },
+        data: array_resultado
+      };
+      this.mostrarGrafico = true;
+      this.spinner.hide()
+    }
+
+    if (estadistica == 'Ranking de locatarios mejores puntuados del sitio') {
+      let array_sumatorias = [], array_resultado = []
+      for (let i = 0; i < this.alquileres.length; i++) {
+        const element1 = this.alquileres[i];
+        let existe = false;
+        if (element1.puntuacion_propietario_al_locatario_ingresada == true) {
+          if (array_sumatorias.length == 0) {
+            array_sumatorias.push([element1.name_usuarioLocatario, 1, element1.puntuacion_propietario_al_locatario])
+          } else {
+            for (let j = 0; j < array_sumatorias.length; j++) {
+              const element2 = array_sumatorias[j];
+              if (element2.includes(element1.name_usuarioLocatario)) {
+                element2[1]++;
+                element2[2] += element1.puntuacion_propietario_al_locatario;
+                existe = true;
+                break;
+              }
+            }
+            if (!existe) {
+              array_sumatorias.push([element1.name_usuarioLocatario, 1, element1.puntuacion_propietario_al_locatario])
+            }
+          }
+        }
+      }
+
+      if (array_sumatorias.length > 5) {
+        array_sumatorias.splice(5)
+      }
+
+      array_resultado.sort(function (a, b) {
+        return b[2] - a[2];
+      })
+
+      for (let i = 0; i < array_sumatorias.length; i++) {
+        const element = array_sumatorias[i];
+        let promedio = Math.floor(element[2] / element[1]);
+        array_resultado.push({ label: element[0], value: promedio })
+      }
+
+      this.type = "column2d";
+      this.dataFormat = "json";
+      this.dataSource = {
+        chart: {
+          bgColor: "#fafafa",
+          showvalues: "1",
+          caption: "Ranking de locatarios mejores puntuados del sitio",
+          subcaption: "Histórico total",
+          plottooltext: "<b>$label</b> tuvo una puntuación promedio de $value estrellas",
+          xaxisname: "Usuarios",
+          yaxisname: "Cantidad de estrellas",
+          theme: "fusion"
+        },
+        data: array_resultado
+      };
+      this.mostrarGrafico = true;
+      this.spinner.hide()
+    }
+
+
+    /* VISITANTES */
+    if (estadistica == 'Cantidad de visitantes al sitio'){
+      navigator.geolocation.getCurrentPosition(function(position) {
+        console.log(position)
+      })
+      this.type = 'maps/argentina';
+      this.dataSource = {
+        "chart": {
+          "caption": "Average Annual Population Growth",
+          "subcaption": " 1955-2015",
+          "numbersuffix": "%",
+          "includevalueinlabels": "1",
+          "labelsepchar": ": ",
+          "entityFillHoverColor": "#FFF9C4",
+          "theme": "fusion"
+        },
+        "colorrange": {
+          "minvalue": "0.5",
+          "code": "#5D62B5",
+          "gradient": "0",
+          "color": [
+            {
+              "displayvalue": "0.5 - 1.0",
+              "maxvalue": "1.0",
+              "code": "#F3726F"
+            },
+            {
+              "maxvalue": "1.5",
+              "displayvalue": "1.0 - 1.5",
+              "code": "#FFC532"
+            },
+            {
+              "maxvalue": "2.5",
+              "displayvalue": "1.5 - 2.0",
+              "code": "#61B68E"
+            }
+          ]
+        },
+        "data": [{
+            "id": "01",
+            "value": "1.30",
+            "showLabel": "1"
+          },
+          {
+            "id": "02",
+            "value": "1.30",
+            "showLabel": "1"
+          },
+          {
+            "id": "03",
+            "value": "1.30",
+            "showLabel": "1"
+  
+          },
+          {
+            "id": "04",
+            "value": "1.30",
+            "showLabel": "1"
+          },
+          {
+            "id": "05",
+            "value": "1.30",
+            "showLabel": "1"
+          },
+          {
+            "id": "06",
+            "value": "1.30",
+            "showLabel": "1"
+          }
+        ]
+      }
+    }
+    this.mostrarGrafico = true;
   }
 
   alquileresPorCategoria() {
@@ -719,6 +994,7 @@ export class EstadisticasComponent implements OnInit {
       this.dataSource = {
         chart: {
           bgColor: "#fafafa",
+          showvalues: "1",
           caption: "Cantidad de " + tipo + " según la categoría " + this.categoriaSeleccionada,
           yaxisname: "Cantidad de " + tipo,
           aligncaptionwithcanvas: "0",
@@ -858,7 +1134,7 @@ export class EstadisticasComponent implements OnInit {
       const fusionTable = fusionDataStore.createDataTable(array_general, schema2);
       this.type = "timeseries"
       this.dataSource = {
-        chart: { theme: "fusion", bgColor: "#fafafa" },
+        chart: { theme: "fusion", bgColor: "#fafafa", },
         caption: {
           text: "Cantidad de alquileres según categoría"
         },
@@ -4363,7 +4639,7 @@ export class EstadisticasComponent implements OnInit {
         }
 
         if (array_x_dia.length > 5) {
-          array_x_dia.slice(0, 4)
+          array_x_dia.splice(5)
         }
 
         array_x_dia.sort(function (a, b) {
@@ -4381,6 +4657,7 @@ export class EstadisticasComponent implements OnInit {
       this.dataSource = {
         chart: {
           bgColor: "#fafafa",
+          showvalues: "1",
           caption: "Ranking de quienes más alquilan objetos",
           subcaption: "En esta semana",
           plottooltext: "<b>$label</b> realizó $value alquileres",
@@ -4460,100 +4737,711 @@ export class EstadisticasComponent implements OnInit {
       }
     }
 
-    if (periodo == "Por año" && this.nombreEstadisticaSeleccionada == 'Ranking de quienes más alquilan objetos'){
+    if (periodo == "Por año" && this.nombreEstadisticaSeleccionada == 'Ranking de quienes más alquilan objetos') {
       this.periodoRankingMesHabilitado = false;
       this.periodoRankingAnioHabilitado = true;
 
-      var array_años = []
       this.periodoRankingAnio = []
 
       for (let i = 0; i < this.alquileres.length; i++) {
-        const element2 = this.alquileres[i];
-        let fecha = new Date(element2.createdAt)
+        const element = this.alquileres[i];
+        let fecha = new Date(element.createdAt)
         let año = fecha.getFullYear();
-        if (array_años.length == 0) {
-          array_años.push(año)
+        if (this.periodoRankingAnio.length == 0) {
+          this.periodoRankingAnio.push(año)
         } else {
-          if (!array_años.includes(año)) {
-            array_años.push(año)
+          if (!this.periodoRankingAnio.includes(año)) {
+            this.periodoRankingAnio.push(año)
           }
         }
       }
 
-      array_años.sort()
-
-      for (let j = 0; j < array_años.length; j++) {
-        const element = array_años[j];
-        this.periodoRankingAnio.push({ viewValue: element, value: element });
-      }
+      this.periodoRankingAnio.sort()
       this.spinner.hide();
     }
+
+
+    /* Ranking de quienes más publican objetos */
+    if (periodo == "Esta semana" && this.nombreEstadisticaSeleccionada == 'Ranking de quienes más publican objetos') {
+      this.spinner.show()
+      this.periodoRankingMesHabilitado = false;
+      let semana: Date[] = this.obtenerSemana();
+      var array_usuarios = [], array_x_dia = [], array_resultado = [];
+      for (let j = 0; j < semana.length; j++) {
+        const element1 = semana[j];
+        for (let i = 0; i < this.publicaciones.length; i++) {
+          const element2 = this.publicaciones[i];
+          let fecha = new Date(element2.createdAt)
+          if (element1.getDate() == fecha.getDate() && element1.getFullYear() == fecha.getFullYear() && element1.getMonth() == fecha.getMonth()) {
+            for (let h = 0; h < this.usuarios.length; h++) {
+              const element3 = this.usuarios[h];
+              if (element3.email == element2.email) {
+                array_usuarios.push(element2.name)
+                break;
+              }
+            }
+          }
+        }
+      }
+
+      if (array_usuarios.length > 0) {
+        for (let index = 0; index < array_usuarios.length; index++) {
+          const element1 = array_usuarios[index];
+          if (array_x_dia.length == 0) {
+            array_x_dia.push([element1, 1])
+          } else {
+            let indice = -1;
+            for (let h = 0; h < array_x_dia.length; h++) {
+              const element2 = array_x_dia[h];
+              if (element2[0] == element1) {
+                indice = h;
+                break;
+              } else continue;
+            }
+            if (indice < 0) {
+              array_x_dia.push([element1, 1])
+            } else {
+              array_x_dia[indice][1]++;
+            }
+          }
+        }
+
+        if (array_x_dia.length > 5) {
+          array_x_dia.splice(5)
+        }
+
+        array_x_dia.sort(function (a, b) {
+          return b[1] - a[1];
+        });
+
+        for (let i = 0; i < array_x_dia.length; i++) {
+          const element = array_x_dia[i];
+          array_resultado.push({ label: element[0], value: element[1] })
+        }
+        this.noHayDatos = false;
+        this.mostrarGrafico = true;
+      } else {
+        this.mostrarGrafico = false;
+        this.noHayDatos = true;
+      }
+
+      this.type = "column2d";
+      this.dataFormat = "json";
+      this.dataSource = {
+        chart: {
+          bgColor: "#fafafa",
+          showvalues: "1",
+          caption: "Ranking de quienes más publican objetos",
+          subcaption: "En esta semana",
+          plottooltext: "<b>$label</b> realizó $value alquileres",
+          xaxisname: "Usuarios",
+          yaxisname: "Cantidad de publicaciones",
+          theme: "fusion"
+        },
+        data: array_resultado
+      };
+      this.spinner.hide()
+    }
+
+    if (periodo == "Por mes" && this.nombreEstadisticaSeleccionada == 'Ranking de quienes más publican objetos') {
+      var array_meses = []
+      this.periodoRankingMes = []
+
+      this.periodoRankingMesHabilitado = true;
+      this.periodoRankingAnioHabilitado = false;
+
+      for (let i = 0; i < this.publicaciones.length; i++) {
+        const element2 = this.publicaciones[i];
+        let fecha = new Date(element2.createdAt)
+        let mes = this.obtenerMes(fecha);
+        let año = String(fecha.getFullYear()).slice(2, 4);
+        let fecha_formateada = mes + " " + año
+        if (array_meses.length == 0) {
+          array_meses.push(fecha_formateada)
+        } else {
+          if (!array_meses.includes(fecha_formateada)) {
+            array_meses.push(fecha_formateada)
+          }
+        }
+      }
+
+      let monthNames = {
+        "Jan 19": 1, "Feb 19": 2, "Mar 19": 3, "Apr 19": 4, "May 19": 5, "Jun 19": 6, "Jul 19": 7, "Aug 19": 8, "Sep 19": 9, "Oct 19": 10, "Nov 19": 11, "Dec 19": 12,
+        "Jan 20": 13, "Feb 20": 14, "Mar 20": 15, "Apr 20": 16, "May 20": 17, "Jun 20": 18, "Jul 20": 19, "Aug 20": 20, "Sep 20": 21, "Oct 20": 22, "Nov 20": 23, "Dec 20": 24,
+        "Jan 21": 25, "Feb 21": 26, "Mar 21": 27, "Apr 21": 28, "May 21": 29, "Jun 21": 30, "Jul 21": 31, "Aug 21": 32, "Sep 21": 33, "Oct 21": 34, "Nov 21": 35, "Dec 21": 36
+      };
+
+      array_meses.sort(function (a, b) {
+        return monthNames[a] - monthNames[b];
+      })
+
+      for (let j = 0; j < array_meses.length; j++) {
+        const element = array_meses[j];
+        let muestra = obtenerViewValue(element)
+        this.periodoRankingMes.push({ viewValue: muestra, value: element });
+      }
+      this.spinner.hide();
+
+      function obtenerViewValue(elemento) {
+        if (elemento == "Jan 19") return "Enero - 2019"
+        if (elemento == "Feb 19") return "Febrero - 2019"
+        if (elemento == "Mar 19") return "Marzo - 2019"
+        if (elemento == "Apr 19") return "Abril - 2019"
+        if (elemento == "May 19") return "Mayo - 2019"
+        if (elemento == "Jun 19") return "Junio - 2019"
+        if (elemento == "Jul 19") return "Julio - 2019"
+        if (elemento == "Aug 19") return "Agosto - 2019"
+        if (elemento == "Sep 19") return "Septiembre - 2019"
+        if (elemento == "Oct 19") return "Octubre - 2019"
+        if (elemento == "Nov 19") return "Noviembre - 2019"
+        if (elemento == "Dec 19") return "Diciembre - 2019"
+        if (elemento == "Jan 20") return "Enero - 2020"
+        if (elemento == "Feb 20") return "Febrero - 2020"
+        if (elemento == "Mar 20") return "Marzo - 2020"
+        if (elemento == "Apr 20") return "Abril - 2020"
+        if (elemento == "May 20") return "Mayo - 2020"
+        if (elemento == "Jun 20") return "Junio - 2020"
+        if (elemento == "Jul 20") return "Julio - 2020"
+        if (elemento == "Aug 20") return "Agosto - 2020"
+        if (elemento == "Sep 20") return "Septiembre - 2020"
+        if (elemento == "Oct 20") return "Octubre - 2020"
+        if (elemento == "Nov 20") return "Noviembre - 2020"
+        if (elemento == "Dec 20") return "Diciembre - 2020"
+        if (elemento == "Jan 21") return "Enero - 2021"
+        if (elemento == "Feb 21") return "Febrero - 2021"
+        if (elemento == "Mar 21") return "Marzo - 2021"
+        if (elemento == "Apr 21") return "Abril - 2021"
+        if (elemento == "May 21") return "Mayo - 2021"
+        if (elemento == "Jun 21") return "Junio - 2021"
+        if (elemento == "Jul 21") return "Julio - 2021"
+        if (elemento == "Aug 21") return "Agosto - 2021"
+        if (elemento == "Sep 21") return "Septiembre - 2021"
+        if (elemento == "Oct 21") return "Octubre - 2021"
+        if (elemento == "Nov 21") return "Noviembre - 2021"
+        if (elemento == "Dec 21") return "Diciembre - 2021"
+      }
+    }
+
+    if (periodo == "Por año" && this.nombreEstadisticaSeleccionada == 'Ranking de quienes más publican objetos') {
+      this.periodoRankingMesHabilitado = false;
+      this.periodoRankingAnioHabilitado = true;
+
+      this.periodoRankingAnio = []
+
+      for (let i = 0; i < this.publicaciones.length; i++) {
+        const element = this.publicaciones[i];
+        let fecha = new Date(element.createdAt)
+        let año = fecha.getFullYear();
+        if (this.periodoRankingAnio.length == 0) {
+          this.periodoRankingAnio.push(año)
+        } else {
+          if (!this.periodoRankingAnio.includes(año)) {
+            this.periodoRankingAnio.push(año)
+          }
+        }
+      }
+
+      this.periodoRankingAnio.sort()
+      this.spinner.hide();
+    }
+
+
+    /* Ranking de propietarios mejores puntuados del sitio */
+    if (periodo == "Esta semana" && this.nombreEstadisticaSeleccionada == 'Ranking de propietarios mejores puntuados del sitio') {
+      this.spinner.show()
+      this.periodoRankingMesHabilitado = false;
+
+      let semana: Date[] = this.obtenerSemana(), array_sumatorias = [], array_resultado = [];
+      for (let j = 0; j < semana.length; j++) {
+        const element1 = semana[j];
+        for (let i = 0; i < this.alquileres.length; i++) {
+          const element2 = this.alquileres[i];
+          let existe = false;
+          let fecha = new Date(element2.createdAt)
+          if (element1.getDate() == fecha.getDate() && element1.getFullYear() == fecha.getFullYear() && element1.getMonth() == fecha.getMonth() && element2.puntuacion_locatario_al_propietario_ingresada == true) {
+            if (array_sumatorias.length == 0) {
+              array_sumatorias.push([element2.name_usuarioPropietario, 1, element2.puntuacion_locatario_al_propietario])
+            } else {
+              for (let j = 0; j < array_sumatorias.length; j++) {
+                const element3 = array_sumatorias[j];
+                if (element3.includes(element2.name_usuarioPropietario)) {
+                  element3[1]++;
+                  element3[2] += element2.puntuacion_locatario_al_propietario;
+                  existe = true;
+                  break;
+                }
+              }
+              if (!existe) {
+                array_sumatorias.push([element2.name_usuarioPropietario, 1, element2.puntuacion_locatario_al_propietario])
+              }
+            }
+          }
+        }
+      }
+
+      if (array_sumatorias.length == 0) {
+        this.mostrarGrafico = false;
+        this.noHayDatos = true;
+      } else {
+        if (array_sumatorias.length > 5) {
+          array_sumatorias.splice(5)
+        }
+
+        array_resultado.sort(function (a, b) {
+          return b[2] - a[2];
+        })
+
+        for (let i = 0; i < array_sumatorias.length; i++) {
+          const element = array_sumatorias[i];
+          let promedio = Math.floor(element[2] / element[1]);
+          array_resultado.push({ label: element[0], value: promedio })
+        }
+
+        this.type = "column2d";
+        this.dataFormat = "json";
+        this.dataSource = {
+          chart: {
+            bgColor: "#fafafa",
+            showvalues: "1",
+            caption: "Ranking de propietarios mejores puntuados del sitio",
+            subcaption: "Esta semana",
+            plottooltext: "<b>$label</b> tuvo una puntuación promedio de $value estrellas",
+            xaxisname: "Usuarios",
+            yaxisname: "Puntuación promedio",
+            theme: "fusion"
+          },
+          data: array_resultado
+        };
+        this.mostrarGrafico = true;
+        this.spinner.hide()
+      }
+    }
+
+    if (periodo == "Por mes" && this.nombreEstadisticaSeleccionada == 'Ranking de propietarios mejores puntuados del sitio') {
+      var array_meses = []
+      this.periodoRankingMes = []
+
+      this.periodoRankingMesHabilitado = true;
+      this.periodoRankingAnioHabilitado = false;
+
+      for (let i = 0; i < this.alquileres.length; i++) {
+        const element = this.alquileres[i];
+        if (element.puntuacion_locatario_al_propietario_ingresada == true) {
+          let fecha = new Date(element.createdAt)
+          let mes = this.obtenerMes(fecha);
+          let año = String(fecha.getFullYear()).slice(2, 4);
+          let fecha_formateada = mes + " " + año
+          if (array_meses.length == 0) {
+            array_meses.push(fecha_formateada)
+          } else {
+            if (!array_meses.includes(fecha_formateada)) {
+              array_meses.push(fecha_formateada)
+            }
+          }
+        }
+      }
+
+      let monthNames = {
+        "Jan 19": 1, "Feb 19": 2, "Mar 19": 3, "Apr 19": 4, "May 19": 5, "Jun 19": 6, "Jul 19": 7, "Aug 19": 8, "Sep 19": 9, "Oct 19": 10, "Nov 19": 11, "Dec 19": 12,
+        "Jan 20": 13, "Feb 20": 14, "Mar 20": 15, "Apr 20": 16, "May 20": 17, "Jun 20": 18, "Jul 20": 19, "Aug 20": 20, "Sep 20": 21, "Oct 20": 22, "Nov 20": 23, "Dec 20": 24,
+        "Jan 21": 25, "Feb 21": 26, "Mar 21": 27, "Apr 21": 28, "May 21": 29, "Jun 21": 30, "Jul 21": 31, "Aug 21": 32, "Sep 21": 33, "Oct 21": 34, "Nov 21": 35, "Dec 21": 36
+      };
+
+      array_meses.sort(function (a, b) {
+        return monthNames[a] - monthNames[b];
+      })
+
+      for (let j = 0; j < array_meses.length; j++) {
+        const element = array_meses[j];
+        let muestra = obtenerViewValue(element)
+        this.periodoRankingMes.push({ viewValue: muestra, value: element });
+      }
+      this.spinner.hide();
+
+      function obtenerViewValue(elemento) {
+        if (elemento == "Jan 19") return "Enero - 2019"
+        if (elemento == "Feb 19") return "Febrero - 2019"
+        if (elemento == "Mar 19") return "Marzo - 2019"
+        if (elemento == "Apr 19") return "Abril - 2019"
+        if (elemento == "May 19") return "Mayo - 2019"
+        if (elemento == "Jun 19") return "Junio - 2019"
+        if (elemento == "Jul 19") return "Julio - 2019"
+        if (elemento == "Aug 19") return "Agosto - 2019"
+        if (elemento == "Sep 19") return "Septiembre - 2019"
+        if (elemento == "Oct 19") return "Octubre - 2019"
+        if (elemento == "Nov 19") return "Noviembre - 2019"
+        if (elemento == "Dec 19") return "Diciembre - 2019"
+        if (elemento == "Jan 20") return "Enero - 2020"
+        if (elemento == "Feb 20") return "Febrero - 2020"
+        if (elemento == "Mar 20") return "Marzo - 2020"
+        if (elemento == "Apr 20") return "Abril - 2020"
+        if (elemento == "May 20") return "Mayo - 2020"
+        if (elemento == "Jun 20") return "Junio - 2020"
+        if (elemento == "Jul 20") return "Julio - 2020"
+        if (elemento == "Aug 20") return "Agosto - 2020"
+        if (elemento == "Sep 20") return "Septiembre - 2020"
+        if (elemento == "Oct 20") return "Octubre - 2020"
+        if (elemento == "Nov 20") return "Noviembre - 2020"
+        if (elemento == "Dec 20") return "Diciembre - 2020"
+        if (elemento == "Jan 21") return "Enero - 2021"
+        if (elemento == "Feb 21") return "Febrero - 2021"
+        if (elemento == "Mar 21") return "Marzo - 2021"
+        if (elemento == "Apr 21") return "Abril - 2021"
+        if (elemento == "May 21") return "Mayo - 2021"
+        if (elemento == "Jun 21") return "Junio - 2021"
+        if (elemento == "Jul 21") return "Julio - 2021"
+        if (elemento == "Aug 21") return "Agosto - 2021"
+        if (elemento == "Sep 21") return "Septiembre - 2021"
+        if (elemento == "Oct 21") return "Octubre - 2021"
+        if (elemento == "Nov 21") return "Noviembre - 2021"
+        if (elemento == "Dec 21") return "Diciembre - 2021"
+      }
+    }
+
+    if (periodo == "Por año" && this.nombreEstadisticaSeleccionada == 'Ranking de propietarios mejores puntuados del sitio') {
+      this.periodoRankingMesHabilitado = false;
+      this.periodoRankingAnioHabilitado = true;
+
+      this.periodoRankingAnio = []
+
+      for (let i = 0; i < this.alquileres.length; i++) {
+        const element = this.alquileres[i];
+        if (element.puntuacion_locatario_al_propietario_ingresada == true) {
+          let fecha = new Date(element.createdAt)
+          let año = fecha.getFullYear();
+          if (this.periodoRankingAnio.length == 0) {
+            this.periodoRankingAnio.push(año)
+          } else {
+            if (!this.periodoRankingAnio.includes(año)) {
+              this.periodoRankingAnio.push(año)
+            }
+          }
+        }
+      }
+
+      this.periodoRankingAnio.sort()
+      this.spinner.hide();
+    }
+
+    /* Ranking de propietarios mejores puntuados del sitio */
+    if (periodo == "Esta semana" && this.nombreEstadisticaSeleccionada == 'Ranking de locatarios mejores puntuados del sitio') {
+      this.spinner.show()
+      this.periodoRankingMesHabilitado = false;
+
+      let semana: Date[] = this.obtenerSemana(), array_sumatorias = [], array_resultado = [];
+      for (let j = 0; j < semana.length; j++) {
+        const element1 = semana[j];
+        for (let i = 0; i < this.alquileres.length; i++) {
+          const element2 = this.alquileres[i];
+          let existe = false;
+          let fecha = new Date(element2.createdAt)
+          if (element1.getDate() == fecha.getDate() && element1.getFullYear() == fecha.getFullYear() && element1.getMonth() == fecha.getMonth() && element2.puntuacion_propietario_al_locatario_ingresada == true) {
+            if (array_sumatorias.length == 0) {
+              array_sumatorias.push([element2.name_usuarioLocatario, 1, element2.puntuacion_propietario_al_locatario])
+            } else {
+              for (let j = 0; j < array_sumatorias.length; j++) {
+                const element3 = array_sumatorias[j];
+                if (element3.includes(element2.name_usuarioLocatario)) {
+                  element3[1]++;
+                  element3[2] += element2.puntuacion_propietario_al_locatario;
+                  existe = true;
+                  break;
+                }
+              }
+              if (!existe) {
+                array_sumatorias.push([element2.name_usuarioLocatario, 1, element2.puntuacion_propietario_al_locatario])
+              }
+            }
+          }
+        }
+      }
+
+      if (array_sumatorias.length == 0) {
+        this.mostrarGrafico = false;
+        this.noHayDatos = true;
+      } else {
+        if (array_sumatorias.length > 5) {
+          array_sumatorias.splice(5)
+        }
+
+        array_resultado.sort(function (a, b) {
+          return b[2] - a[2];
+        })
+
+        for (let i = 0; i < array_sumatorias.length; i++) {
+          const element = array_sumatorias[i];
+          let promedio = Math.floor(element[2] / element[1]);
+          array_resultado.push({ label: element[0], value: promedio })
+        }
+
+        this.type = "column2d";
+        this.dataFormat = "json";
+        this.dataSource = {
+          chart: {
+            bgColor: "#fafafa",
+            showvalues: "1",
+            caption: "Ranking de locatarios mejores puntuados del sitio",
+            subcaption: "Esta semana",
+            plottooltext: "<b>$label</b> tuvo una puntuación promedio de $value estrellas",
+            xaxisname: "Usuarios",
+            yaxisname: "Puntuación promedio",
+            theme: "fusion"
+          },
+          data: array_resultado
+        };
+        this.mostrarGrafico = true;
+        this.spinner.hide()
+      }
+    }
+
+    if (periodo == "Por mes" && this.nombreEstadisticaSeleccionada == 'Ranking de locatarios mejores puntuados del sitio') {
+      var array_meses = []
+      this.periodoRankingMes = []
+
+      this.periodoRankingMesHabilitado = true;
+      this.periodoRankingAnioHabilitado = false;
+
+      for (let i = 0; i < this.alquileres.length; i++) {
+        const element = this.alquileres[i];
+        if (element.puntuacion_propietario_al_locatario_ingresada == true) {
+          let fecha = new Date(element.createdAt)
+          let mes = this.obtenerMes(fecha);
+          let año = String(fecha.getFullYear()).slice(2, 4);
+          let fecha_formateada = mes + " " + año
+          if (array_meses.length == 0) {
+            array_meses.push(fecha_formateada)
+          } else {
+            if (!array_meses.includes(fecha_formateada)) {
+              array_meses.push(fecha_formateada)
+            }
+          }
+        }
+      }
+
+      let monthNames = {
+        "Jan 19": 1, "Feb 19": 2, "Mar 19": 3, "Apr 19": 4, "May 19": 5, "Jun 19": 6, "Jul 19": 7, "Aug 19": 8, "Sep 19": 9, "Oct 19": 10, "Nov 19": 11, "Dec 19": 12,
+        "Jan 20": 13, "Feb 20": 14, "Mar 20": 15, "Apr 20": 16, "May 20": 17, "Jun 20": 18, "Jul 20": 19, "Aug 20": 20, "Sep 20": 21, "Oct 20": 22, "Nov 20": 23, "Dec 20": 24,
+        "Jan 21": 25, "Feb 21": 26, "Mar 21": 27, "Apr 21": 28, "May 21": 29, "Jun 21": 30, "Jul 21": 31, "Aug 21": 32, "Sep 21": 33, "Oct 21": 34, "Nov 21": 35, "Dec 21": 36
+      };
+
+      array_meses.sort(function (a, b) {
+        return monthNames[a] - monthNames[b];
+      })
+
+      for (let j = 0; j < array_meses.length; j++) {
+        const element = array_meses[j];
+        let muestra = obtenerViewValue(element)
+        this.periodoRankingMes.push({ viewValue: muestra, value: element });
+      }
+      this.spinner.hide();
+
+      function obtenerViewValue(elemento) {
+        if (elemento == "Jan 19") return "Enero - 2019"
+        if (elemento == "Feb 19") return "Febrero - 2019"
+        if (elemento == "Mar 19") return "Marzo - 2019"
+        if (elemento == "Apr 19") return "Abril - 2019"
+        if (elemento == "May 19") return "Mayo - 2019"
+        if (elemento == "Jun 19") return "Junio - 2019"
+        if (elemento == "Jul 19") return "Julio - 2019"
+        if (elemento == "Aug 19") return "Agosto - 2019"
+        if (elemento == "Sep 19") return "Septiembre - 2019"
+        if (elemento == "Oct 19") return "Octubre - 2019"
+        if (elemento == "Nov 19") return "Noviembre - 2019"
+        if (elemento == "Dec 19") return "Diciembre - 2019"
+        if (elemento == "Jan 20") return "Enero - 2020"
+        if (elemento == "Feb 20") return "Febrero - 2020"
+        if (elemento == "Mar 20") return "Marzo - 2020"
+        if (elemento == "Apr 20") return "Abril - 2020"
+        if (elemento == "May 20") return "Mayo - 2020"
+        if (elemento == "Jun 20") return "Junio - 2020"
+        if (elemento == "Jul 20") return "Julio - 2020"
+        if (elemento == "Aug 20") return "Agosto - 2020"
+        if (elemento == "Sep 20") return "Septiembre - 2020"
+        if (elemento == "Oct 20") return "Octubre - 2020"
+        if (elemento == "Nov 20") return "Noviembre - 2020"
+        if (elemento == "Dec 20") return "Diciembre - 2020"
+        if (elemento == "Jan 21") return "Enero - 2021"
+        if (elemento == "Feb 21") return "Febrero - 2021"
+        if (elemento == "Mar 21") return "Marzo - 2021"
+        if (elemento == "Apr 21") return "Abril - 2021"
+        if (elemento == "May 21") return "Mayo - 2021"
+        if (elemento == "Jun 21") return "Junio - 2021"
+        if (elemento == "Jul 21") return "Julio - 2021"
+        if (elemento == "Aug 21") return "Agosto - 2021"
+        if (elemento == "Sep 21") return "Septiembre - 2021"
+        if (elemento == "Oct 21") return "Octubre - 2021"
+        if (elemento == "Nov 21") return "Noviembre - 2021"
+        if (elemento == "Dec 21") return "Diciembre - 2021"
+      }
+    }
+
+    if (periodo == "Por año" && this.nombreEstadisticaSeleccionada == 'Ranking de locatarios mejores puntuados del sitio') {
+      this.periodoRankingMesHabilitado = false;
+      this.periodoRankingAnioHabilitado = true;
+
+      this.periodoRankingAnio = []
+
+      for (let i = 0; i < this.alquileres.length; i++) {
+        const element = this.alquileres[i];
+        if (element.puntuacion_propietario_al_locatario_ingresada == true) {
+          let fecha = new Date(element.createdAt)
+          let año = fecha.getFullYear();
+          if (this.periodoRankingAnio.length == 0) {
+            this.periodoRankingAnio.push(año)
+          } else {
+            if (!this.periodoRankingAnio.includes(año)) {
+              this.periodoRankingAnio.push(año)
+            }
+          }
+        }
+      }
+
+      this.periodoRankingAnio.sort()
+      this.spinner.hide();
+    }
+
   }
 
   calcularPorPeriodoMesRanking(periodo: string, viewValue: string) {
-    let año = obtenerAnio(periodo), mes = obtenerMes(periodo);
-    var array_usuarios = [], array_x_mes = [], array_resultado = [];
+    if (this.nombreEstadisticaSeleccionada == 'Ranking de quienes más publican objetos') {
+      let año = obtenerAnio(periodo), mes = obtenerMes(periodo);
+      var array_usuarios = [], array_x_mes = [], array_resultado = [];
 
-    for (let i = 0; i < this.alquileres.length; i++) {
-      const element = this.alquileres[i];
-      let fecha = new Date(element.createdAt)
-      if (año == fecha.getFullYear() && mes == fecha.getMonth()) {
-        array_usuarios.push(element.name_usuarioLocatario)
-      }
-    }
-
-    if (array_usuarios.length > 0) {
-      for (let index = 0; index < array_usuarios.length; index++) {
-        const element1 = array_usuarios[index];
-        if (array_x_mes.length == 0) {
-          array_x_mes.push([element1, 1])
-        } else {
-          let indice = -1;
-          for (let h = 0; h < array_x_mes.length; h++) {
-            const element2 = array_x_mes[h];
-            if (element2[0] == element1) {
-              indice = h;
+      for (let i = 0; i < this.publicaciones.length; i++) {
+        const element1 = this.publicaciones[i];
+        let fecha = new Date(element1.createdAt)
+        if (año == fecha.getFullYear() && mes == fecha.getMonth()) {
+          for (let j = 0; j < this.usuarios.length; j++) {
+            const element2 = this.usuarios[j];
+            if (element1.email == element2.email) {
+              array_usuarios.push(element2.name);
               break;
-            } else continue;
-          }
-          if (indice < 0) {
-            array_x_mes.push([element1, 1])
-          } else {
-            array_x_mes[indice][1]++;
+            }
           }
         }
       }
 
-      if (array_x_mes.length > 5) {
-        array_x_mes.slice(0, 4)
+      if (array_usuarios.length > 0) {
+        for (let index = 0; index < array_usuarios.length; index++) {
+          const element1 = array_usuarios[index];
+          if (array_x_mes.length == 0) {
+            array_x_mes.push([element1, 1])
+          } else {
+            let indice = -1;
+            for (let h = 0; h < array_x_mes.length; h++) {
+              const element2 = array_x_mes[h];
+              if (element2[0] == element1) {
+                indice = h;
+                break;
+              } else continue;
+            }
+            if (indice < 0) {
+              array_x_mes.push([element1, 1])
+            } else {
+              array_x_mes[indice][1]++;
+            }
+          }
+        }
+
+        if (array_x_mes.length > 5) {
+          array_x_mes.splice(5)
+        }
+
+        array_x_mes.sort(function (a, b) {
+          return b[1] - a[1];
+        });
+
+        for (let i = 0; i < array_x_mes.length; i++) {
+          const element = array_x_mes[i];
+          array_resultado.push({ label: element[0], value: element[1] })
+        }
       }
 
-      array_x_mes.sort(function (a, b) {
-        return b[1] - a[1];
-      });
-
-      for (let i = 0; i < array_x_mes.length; i++) {
-        const element = array_x_mes[i];
-        array_resultado.push({ label: element[0], value: element[1] })
-      }
+      this.type = "column2d";
+      this.dataFormat = "json";
+      this.dataSource = {
+        chart: {
+          bgColor: "#fafafa",
+          showvalues: "1",
+          caption: "Ranking de quienes más publican objetos",
+          subcaption: viewValue,
+          plottooltext: "<b>$label</b> realizó $value publicaciones",
+          xaxisname: "Usuarios",
+          yaxisname: "Cantidad de publicaciones",
+          theme: "fusion"
+        },
+        data: array_resultado
+      };
+      this.mostrarGrafico = true;
+      this.spinner.hide()
     }
 
-    this.type = "column2d";
-    this.dataFormat = "json";
-    this.dataSource = {
-      chart: {
-        bgColor: "#fafafa",
-        caption: "Ranking de quienes más alquilan objetos",
-        subcaption: viewValue,
-        plottooltext: "<b>$label</b> realizó $value alquileres",
-        xaxisname: "Usuarios",
-        yaxisname: "Cantidad de alquileres",
-        theme: "fusion"
-      },
-      data: array_resultado
-    };
-    this.mostrarGrafico = true;
-    this.spinner.hide()
+    if (this.nombreEstadisticaSeleccionada == 'Ranking de quienes más alquilan objetos') {
+      let año = obtenerAnio(periodo), mes = obtenerMes(periodo);
+      var array_usuarios = [], array_x_mes = [], array_resultado = [];
+
+      for (let i = 0; i < this.alquileres.length; i++) {
+        const element = this.alquileres[i];
+        let fecha = new Date(element.createdAt)
+        if (año == fecha.getFullYear() && mes == fecha.getMonth()) {
+          array_usuarios.push(element.name_usuarioLocatario)
+        }
+      }
+
+      if (array_usuarios.length > 0) {
+        for (let index = 0; index < array_usuarios.length; index++) {
+          const element1 = array_usuarios[index];
+          if (array_x_mes.length == 0) {
+            array_x_mes.push([element1, 1])
+          } else {
+            let indice = -1;
+            for (let h = 0; h < array_x_mes.length; h++) {
+              const element2 = array_x_mes[h];
+              if (element2[0] == element1) {
+                indice = h;
+                break;
+              } else continue;
+            }
+            if (indice < 0) {
+              array_x_mes.push([element1, 1])
+            } else {
+              array_x_mes[indice][1]++;
+            }
+          }
+        }
+
+        if (array_x_mes.length > 5) {
+          array_x_mes.splice(5)
+        }
+
+        array_x_mes.sort(function (a, b) {
+          return b[1] - a[1];
+        });
+
+        for (let i = 0; i < array_x_mes.length; i++) {
+          const element = array_x_mes[i];
+          array_resultado.push({ label: element[0], value: element[1] })
+        }
+      }
+
+      this.type = "column2d";
+      this.dataFormat = "json";
+      this.dataSource = {
+        chart: {
+          bgColor: "#fafafa",
+          showvalues: "1",
+          caption: "Ranking de quienes más alquilan objetos",
+          subcaption: viewValue,
+          plottooltext: "<b>$label</b> realizó $value alquileres",
+          xaxisname: "Usuarios",
+          yaxisname: "Cantidad de alquileres",
+          theme: "fusion"
+        },
+        data: array_resultado
+      };
+      this.mostrarGrafico = true;
+      this.spinner.hide()
+    }
 
     function obtenerAnio(a: string) {
       if (a.includes('19')) return 2019
@@ -4576,71 +5464,410 @@ export class EstadisticasComponent implements OnInit {
       if (p.includes('Dec')) return 11
     }
 
-  }
+    if (this.nombreEstadisticaSeleccionada == 'Ranking de propietarios mejores puntuados del sitio') {
+      let año = obtenerAnio(periodo), mes = obtenerMes(periodo), array_sumatorias = [], array_resultado = [];
 
-  calcularPorPeriodoAnioRanking(periodo){
-    var array_usuarios = [], array_x_año = [], array_resultado = [];
-
-    for (let i = 0; i < this.alquileres.length; i++) {
-      const element = this.alquileres[i];
-      let fecha = new Date(element.createdAt)
-      if (periodo == fecha.getFullYear()) {
-        array_usuarios.push(element.name_usuarioLocatario)
-      }
-    }
-
-    if (array_usuarios.length > 0) {
-      for (let index = 0; index < array_usuarios.length; index++) {
-        const element1 = array_usuarios[index];
-        if (array_x_año.length == 0) {
-          array_x_año.push([element1, 1])
-        } else {
-          let indice = -1;
-          for (let h = 0; h < array_x_año.length; h++) {
-            const element2 = array_x_año[h];
-            if (element2[0] == element1) {
-              indice = h;
-              break;
-            } else continue;
-          }
-          if (indice < 0) {
-            array_x_año.push([element1, 1])
+      for (let i = 0; i < this.alquileres.length; i++) {
+        const element1 = this.alquileres[i];
+        let existe = false;
+        let fecha = new Date(element1.createdAt)
+        if (año == fecha.getFullYear() && mes == fecha.getMonth() && element1.puntuacion_locatario_al_propietario_ingresada == true) {
+          if (array_sumatorias.length == 0) {
+            array_sumatorias.push([element1.name_usuarioPropietario, 1, element1.puntuacion_locatario_al_propietario])
           } else {
-            array_x_año[indice][1]++;
+            for (let j = 0; j < array_sumatorias.length; j++) {
+              const element2 = array_sumatorias[j];
+              if (element2.includes(element1.name_usuarioPropietario)) {
+                element2[1]++;
+                element2[2] += element1.puntuacion_locatario_al_propietario;
+                existe = true;
+                break;
+              }
+            }
+            if (!existe) {
+              array_sumatorias.push([element1.name_usuarioPropietario, 1, element1.puntuacion_locatario_al_propietario])
+            }
           }
         }
       }
 
-      if (array_x_año.length > 5) {
-        array_x_año.slice(0, 4)
-      }
+      if (array_sumatorias.length == 0) {
+        this.mostrarGrafico = false;
+        this.noHayDatos = true;
+      } else {
+        if (array_sumatorias.length > 5) {
+          array_sumatorias.splice(5)
+        }
 
-      array_x_año.sort(function (a, b) {
-        return b[1] - a[1];
-      });
+        array_resultado.sort(function (a, b) {
+          return b[2] - a[2];
+        })
 
-      for (let i = 0; i < array_x_año.length; i++) {
-        const element = array_x_año[i];
-        array_resultado.push({ label: element[0], value: element[1] })
+        for (let i = 0; i < array_sumatorias.length; i++) {
+          const element = array_sumatorias[i];
+          let promedio = Math.floor(element[2] / element[1]);
+          array_resultado.push({ label: element[0], value: promedio })
+        }
+
+        this.type = "column2d";
+        this.dataFormat = "json";
+        this.dataSource = {
+          chart: {
+            bgColor: "#fafafa",
+            showvalues: "1",
+            caption: "Ranking de propietarios mejores puntuados del sitio",
+            subcaption: viewValue,
+            plottooltext: "<b>$label</b> tuvo una puntuación promedio de $value estrellas",
+            xaxisname: "Usuarios",
+            yaxisname: "Puntuación promedio",
+            theme: "fusion"
+          },
+          data: array_resultado
+        };
+        this.mostrarGrafico = true;
+        this.spinner.hide()
       }
     }
 
-    this.type = "column2d";
-    this.dataFormat = "json";
-    this.dataSource = {
-      chart: {
-        bgColor: "#fafafa",
-        caption: "Ranking de quienes más alquilan objetos por año",
-        subcaption: "Año " + periodo,
-        plottooltext: "<b>$label</b> realizó $value alquileres",
-        xaxisname: "Usuarios",
-        yaxisname: "Cantidad de alquileres",
-        theme: "fusion"
-      },
-      data: array_resultado
-    };
-    this.mostrarGrafico = true;
-    this.spinner.hide()
+    if (this.nombreEstadisticaSeleccionada == 'Ranking de locatarios mejores puntuados del sitio') {
+      let año = obtenerAnio(periodo), mes = obtenerMes(periodo), array_sumatorias = [], array_resultado = [];
+
+      for (let i = 0; i < this.alquileres.length; i++) {
+        const element1 = this.alquileres[i];
+        let existe = false;
+        let fecha = new Date(element1.createdAt)
+        if (año == fecha.getFullYear() && mes == fecha.getMonth() && element1.puntuacion_propietario_al_locatario_ingresada == true) {
+          if (array_sumatorias.length == 0) {
+            array_sumatorias.push([element1.name_usuarioLocatario, 1, element1.puntuacion_propietario_al_locatario])
+          } else {
+            for (let j = 0; j < array_sumatorias.length; j++) {
+              const element2 = array_sumatorias[j];
+              if (element2.includes(element1.name_usuarioLocatario)) {
+                element2[1]++;
+                element2[2] += element1.puntuacion_propietario_al_locatario;
+                existe = true;
+                break;
+              }
+            }
+            if (!existe) {
+              array_sumatorias.push([element1.name_usuarioLocatario, 1, element1.puntuacion_propietario_al_locatario])
+            }
+          }
+        }
+      }
+
+      if (array_sumatorias.length == 0) {
+        this.mostrarGrafico = false;
+        this.noHayDatos = true;
+      } else {
+        if (array_sumatorias.length > 5) {
+          array_sumatorias.splice(5)
+        }
+
+        array_resultado.sort(function (a, b) {
+          return b[2] - a[2];
+        })
+
+        for (let i = 0; i < array_sumatorias.length; i++) {
+          const element = array_sumatorias[i];
+          let promedio = Math.floor(element[2] / element[1]);
+          array_resultado.push({ label: element[0], value: promedio })
+        }
+
+        this.type = "column2d";
+        this.dataFormat = "json";
+        this.dataSource = {
+          chart: {
+            bgColor: "#fafafa",
+            showvalues: "1",
+            caption: "Ranking de locatarios mejores puntuados del sitio",
+            subcaption: viewValue,
+            plottooltext: "<b>$label</b> tuvo una puntuación promedio de $value estrellas",
+            xaxisname: "Usuarios",
+            yaxisname: "Puntuación promedio",
+            theme: "fusion"
+          },
+          data: array_resultado
+        };
+        this.mostrarGrafico = true;
+        this.spinner.hide()
+      }
+    }
+
+  }
+
+  calcularPorPeriodoAnioRanking(periodo) {
+    if (this.nombreEstadisticaSeleccionada == 'Ranking de quienes más alquilan objetos') {
+      let array_usuarios = [], array_x_año = [], array_resultado = [];
+      for (let i = 0; i < this.alquileres.length; i++) {
+        const element = this.alquileres[i];
+        let fecha = new Date(element.createdAt)
+        if (periodo == fecha.getFullYear()) {
+          array_usuarios.push(element.name_usuarioLocatario)
+        }
+      }
+
+      if (array_usuarios.length > 0) {
+        for (let index = 0; index < array_usuarios.length; index++) {
+          const element1 = array_usuarios[index];
+          if (array_x_año.length == 0) {
+            array_x_año.push([element1, 1])
+          } else {
+            let indice = -1;
+            for (let h = 0; h < array_x_año.length; h++) {
+              const element2 = array_x_año[h];
+              if (element2[0] == element1) {
+                indice = h;
+                break;
+              } else continue;
+            }
+            if (indice < 0) {
+              array_x_año.push([element1, 1])
+            } else {
+              array_x_año[indice][1]++;
+            }
+          }
+        }
+
+        if (array_x_año.length > 5) {
+          array_x_año.splice(5)
+        }
+
+        array_x_año.sort(function (a, b) {
+          return b[1] - a[1];
+        });
+
+        for (let i = 0; i < array_x_año.length; i++) {
+          const element = array_x_año[i];
+          array_resultado.push({ label: element[0], value: element[1] })
+        }
+      }
+
+      this.type = "column2d";
+      this.dataFormat = "json";
+      this.dataSource = {
+        chart: {
+          bgColor: "#fafafa",
+          showvalues: "1",
+          caption: "Ranking de quienes más alquilan objetos por año",
+          subcaption: "Año " + periodo,
+          plottooltext: "<b>$label</b> realizó $value alquileres",
+          xaxisname: "Usuarios",
+          yaxisname: "Cantidad de alquileres",
+          theme: "fusion"
+        },
+        data: array_resultado
+      };
+      this.mostrarGrafico = true;
+      this.spinner.hide()
+    }
+
+    if (this.nombreEstadisticaSeleccionada == 'Ranking de quienes más publican objetos') {
+      let array_usuarios = [], array_x_año = [], array_resultado = [];
+      for (let i = 0; i < this.publicaciones.length; i++) {
+        const element1 = this.publicaciones[i];
+        let fecha = new Date(element1.createdAt)
+        if (periodo == fecha.getFullYear()) {
+          for (let j = 0; j < this.usuarios.length; j++) {
+            const element2 = this.usuarios[j];
+            if (element1.email == element2.email) {
+              array_usuarios.push(element2.name);
+              break;
+            }
+          }
+        }
+      }
+
+      if (array_usuarios.length > 0) {
+        for (let index = 0; index < array_usuarios.length; index++) {
+          const element1 = array_usuarios[index];
+          if (array_x_año.length == 0) {
+            array_x_año.push([element1, 1])
+          } else {
+            let indice = -1;
+            for (let h = 0; h < array_x_año.length; h++) {
+              const element2 = array_x_año[h];
+              if (element2[0] == element1) {
+                indice = h;
+                break;
+              } else continue;
+            }
+            if (indice < 0) {
+              array_x_año.push([element1, 1])
+            } else {
+              array_x_año[indice][1]++;
+            }
+          }
+        }
+
+        if (array_x_año.length > 5) {
+          array_x_año.splice(5)
+        }
+
+        array_x_año.sort(function (a, b) {
+          return b[1] - a[1];
+        });
+
+        for (let i = 0; i < array_x_año.length; i++) {
+          const element = array_x_año[i];
+          array_resultado.push({ label: element[0], value: element[1] })
+        }
+      }
+
+      this.type = "column2d";
+      this.dataFormat = "json";
+      this.dataSource = {
+        chart: {
+          bgColor: "#fafafa",
+          showvalues: "1",
+          caption: "Ranking de quienes más publican objetos por año",
+          subcaption: "Año " + periodo,
+          plottooltext: "<b>$label</b> realizó $value publicaciones",
+          xaxisname: "Usuarios",
+          yaxisname: "Cantidad de publicaciones",
+          theme: "fusion"
+        },
+        data: array_resultado
+      };
+      this.mostrarGrafico = true;
+      this.spinner.hide()
+    }
+
+    if (this.nombreEstadisticaSeleccionada == 'Ranking de propietarios mejores puntuados del sitio') {
+      let array_sumatorias = [], array_resultado = [];
+
+      for (let i = 0; i < this.alquileres.length; i++) {
+        const element1 = this.alquileres[i];
+        let existe = false;
+        let fecha = new Date(element1.createdAt)
+        if (periodo == fecha.getFullYear() && element1.puntuacion_locatario_al_propietario_ingresada == true) {
+          if (array_sumatorias.length == 0) {
+            array_sumatorias.push([element1.name_usuarioPropietario, 1, element1.puntuacion_locatario_al_propietario])
+          } else {
+            for (let j = 0; j < array_sumatorias.length; j++) {
+              const element2 = array_sumatorias[j];
+              if (element2.includes(element1.name_usuarioPropietario)) {
+                element2[1]++;
+                element2[2] += element1.puntuacion_locatario_al_propietario;
+                existe = true;
+                break;
+              }
+            }
+            if (!existe) {
+              array_sumatorias.push([element1.name_usuarioPropietario, 1, element1.puntuacion_locatario_al_propietario])
+            }
+          }
+        }
+      }
+
+      if (array_sumatorias.length == 0) {
+        this.mostrarGrafico = false;
+        this.noHayDatos = true;
+      } else {
+        if (array_sumatorias.length > 5) {
+          array_sumatorias.splice(5)
+        }
+
+        array_resultado.sort(function (a, b) {
+          return b[2] - a[2];
+        })
+
+        for (let i = 0; i < array_sumatorias.length; i++) {
+          const element = array_sumatorias[i];
+          let promedio = Math.floor(element[2] / element[1]);
+          array_resultado.push({ label: element[0], value: promedio })
+        }
+
+        this.type = "column2d";
+        this.dataFormat = "json";
+        this.dataSource = {
+          chart: {
+            bgColor: "#fafafa",
+            showvalues: "1",
+            caption: "Ranking de propietarios mejores puntuados del sitio",
+            subcaption: "Año " + periodo,
+            plottooltext: "<b>$label</b> tuvo una puntuación promedio de $value estrellas",
+            xaxisname: "Usuarios",
+            yaxisname: "Puntuación promedio",
+            theme: "fusion"
+          },
+          data: array_resultado
+        };
+        this.mostrarGrafico = true;
+        this.spinner.hide()
+      }
+
+      this.mostrarGrafico = true;
+      this.spinner.hide()
+    }
+
+    if (this.nombreEstadisticaSeleccionada == 'Ranking de locatarios mejores puntuados del sitio') {
+      let array_sumatorias = [], array_resultado = [];
+
+      for (let i = 0; i < this.alquileres.length; i++) {
+        const element1 = this.alquileres[i];
+        let existe = false;
+        let fecha = new Date(element1.createdAt)
+        if (periodo == fecha.getFullYear() && element1.puntuacion_propietario_al_locatario_ingresada == true) {
+          if (array_sumatorias.length == 0) {
+            array_sumatorias.push([element1.name_usuarioLocatario, 1, element1.puntuacion_propietario_al_locatario])
+          } else {
+            for (let j = 0; j < array_sumatorias.length; j++) {
+              const element2 = array_sumatorias[j];
+              if (element2.includes(element1.name_usuarioPropietario)) {
+                element2[1]++;
+                element2[2] += element1.puntuacion_propietario_al_locatario;
+                existe = true;
+                break;
+              }
+            }
+            if (!existe) {
+              array_sumatorias.push([element1.name_usuarioPropietario, 1, element1.puntuacion_propietario_al_locatario])
+            }
+          }
+        }
+      }
+
+      if (array_sumatorias.length == 0) {
+        this.mostrarGrafico = false;
+        this.noHayDatos = true;
+      } else {
+        if (array_sumatorias.length > 5) {
+          array_sumatorias.splice(5)
+        }
+
+        array_resultado.sort(function (a, b) {
+          return b[2] - a[2];
+        })
+
+        for (let i = 0; i < array_sumatorias.length; i++) {
+          const element = array_sumatorias[i];
+          let promedio = Math.floor(element[2] / element[1]);
+          array_resultado.push({ label: element[0], value: promedio })
+        }
+
+        this.type = "column2d";
+        this.dataFormat = "json";
+        this.dataSource = {
+          chart: {
+            bgColor: "#fafafa",
+            showvalues: "1",
+            caption: "Ranking de locatarios mejores puntuados del sitio",
+            subcaption: "Año " + periodo,
+            plottooltext: "<b>$label</b> tuvo una puntuación promedio de $value estrellas",
+            xaxisname: "Usuarios",
+            yaxisname: "Puntuación promedio",
+            theme: "fusion"
+          },
+          data: array_resultado
+        };
+        this.mostrarGrafico = true;
+        this.spinner.hide()
+      }
+
+      this.mostrarGrafico = true;
+      this.spinner.hide()
+    }
   }
 
   obtenerMes(fecha: Date) {
@@ -4801,10 +6028,7 @@ export class EstadisticasComponent implements OnInit {
 
   clicks(tipo) {
     if (tipo == 'Elegir estadística') {
-      this.mostrarGrafico = false;
-      this.estadisticaGeneralSeleccionada = false;
-      this.periodoSeleccionado = 'none';
-      this.deshabilitarPeriodo = true
+      this.deshabilitarTodo();
     }
 
     if (tipo == 'Estadística seleccionada') {
@@ -4812,7 +6036,10 @@ export class EstadisticasComponent implements OnInit {
       this.categoriaSeleccionada = 'none';
       this.periodoSeleccionado = 'none'
 
-      if (this.nombreEstadisticaSeleccionada == "Ranking de quienes más alquilan objetos") {
+      if (this.nombreEstadisticaSeleccionada == "Ranking de quienes más alquilan objetos" ||
+        this.nombreEstadisticaSeleccionada == "Ranking de quienes más publican objetos" ||
+        this.nombreEstadisticaSeleccionada == 'Ranking de propietarios mejores puntuados del sitio' ||
+        this.nombreEstadisticaSeleccionada == 'Ranking de locatarios mejores puntuados del sitio') {
         this.periodoDiaMesAnio = false;
       } else {
         this.periodoDiaMesAnio = true;

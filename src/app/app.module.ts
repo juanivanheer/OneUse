@@ -72,6 +72,9 @@ import * as FusionCharts from 'fusioncharts';
 import * as TimeSeries from 'fusioncharts/fusioncharts.timeseries'
 import * as Charts from 'fusioncharts/fusioncharts.charts';
 import * as FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
+import * as Maps from 'fusioncharts/fusioncharts.maps';
+import * as World from 'fusioncharts/maps/fusioncharts.world';
+import * as Argentina from 'fusioncharts/maps/fusioncharts.argentina';
 import { CodigoDevolucionLocatarioDialogComponent } from './components/mi-cuenta/mis-alquileres/codigo-devolucion-locatario-dialog/codigo-devolucion-locatario-dialog.component';
 import { CodigoDevolucionPropietarioDialogComponent } from './components/mi-cuenta/mis-alquileres/codigo-devolucion-propietario-dialog/codigo-devolucion-propietario-dialog.component';
 import { SuperadminComponent } from './components/mi-cuenta/superadmin/superadmin.component';
@@ -101,7 +104,7 @@ import { IvyCarouselModule } from 'angular-responsive-carousel';
 import { EliminarReclamoDialogComponent } from './components/mi-cuenta/superadmin/reclamos/eliminar-reclamo-dialog/eliminar-reclamo-dialog.component';
 import { RespuestaReclamoDialogComponent } from './components/mi-cuenta/superadmin/reclamos/respuesta-reclamo-dialog/respuesta-reclamo-dialog.component';
 import { NgxSpinnerModule } from "ngx-spinner";
-FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme, TimeSeries);
+FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme, TimeSeries, Maps, World, Argentina);
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   direction: 'horizontal',
