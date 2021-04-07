@@ -35,6 +35,7 @@ export class EstadisticasComponent implements OnInit {
   alquileres = [];
   publicaciones = [];
   usuarios = [];
+  visitas = [];
   arrayPeriodo = [];
   nombreEstadisticaSeleccionada;
   none = 1;
@@ -55,6 +56,7 @@ export class EstadisticasComponent implements OnInit {
   periodoRankingMesHabilitado = false;
   periodoRankingAnioHabilitado = false;
   noHayDatos = false;
+  mostrarPeriodo = true;
 
   /* Variables UI grafica */
   width = 900;
@@ -62,8 +64,12 @@ export class EstadisticasComponent implements OnInit {
   type;
   dataFormat = "json";
   dataSource;
-  mostrar: boolean = true;
+  mostrar: boolean = false;
 
+  //{ value: 'Categorías donde más se hacen preguntas', viewValue: 'Categorías donde más se hacen preguntas' },
+  //{ value: 'Cantidad de ingresos monetarios al sitio', viewValue: 'Cantidad de ingresos monetarios al sitio' },
+  //{ value: 'Cantidad de visitas según destacación existente', viewValue: 'Cantidad de visitas según destacación existente' },
+  //
   estadisticas: Estadisticas[] = [
     {
       name: 'ALQUILERES',
@@ -75,7 +81,6 @@ export class EstadisticasComponent implements OnInit {
     {
       name: 'PUBLICACIONES',
       estadistica: [
-        { value: 'Categorías donde más se hacen preguntas', viewValue: 'Categorías donde más se hacen preguntas' },
         { value: 'Cantidad total de publicaciones según categoría', viewValue: 'Cantidad total de publicaciones según categoría' },
         { value: 'Cantidad total de publicaciones según subcategorías', viewValue: 'Cantidad total de publicaciones según subcategorías' },
       ]
@@ -95,8 +100,6 @@ export class EstadisticasComponent implements OnInit {
       name: 'VISITAS',
       estadistica: [
         { value: 'Cantidad de visitantes al sitio', viewValue: 'Cantidad de visitantes al sitio' },
-        { value: 'Cantidad de ingresos monetarios al sitio', viewValue: 'Cantidad de ingresos monetarios al sitio' },
-        { value: 'Cantidad de visitas según destacación existente', viewValue: 'Cantidad de visitas según destacación existente' },
       ]
     },
     {
@@ -117,19 +120,19 @@ export class EstadisticasComponent implements OnInit {
   ngOnInit() {
     //this.usuariosMasivos();
     this.deshabilitarTodo();
-    this.spinner.show()
     var obsA = this._auth.get_all_alquileres();
     var obsB = this._auth.get_all_publicaciones();
     var obsC = this._auth.get_all_users();
-    const obsvArray = [obsA, obsB, obsC];
+    var obsD = this._auth.get_all_visitas_IP();
+    const obsvArray = [obsA, obsB, obsC, obsD];
     const zip = Observable.zip(...obsvArray)
     zip.subscribe(
       res => {
         this.alquileres = res[0];
         this.publicaciones = res[1].publicaciones;
         this.usuarios = res[2];
-        this.spinner.hide()
-
+        this.visitas = res[3];
+        this.mostrar = true;
         //this.alquileresMasivos()
       }
     )
@@ -146,6 +149,7 @@ export class EstadisticasComponent implements OnInit {
     this.periodoRankingAnioHabilitado = false;
     this.estadisticaGeneralSeleccionada = false;
     this.noHayDatos = false;
+    this.mostrarPeriodo = true;
 
     this.mostrarGrafico = false;
     this.subcategorias = []
@@ -479,78 +483,130 @@ export class EstadisticasComponent implements OnInit {
       this.spinner.hide()
     }
 
+    /*
+        01	BA	Buenos Aires
+        02	CT	Catamarca
+        03	CC	Chaco
+        04	CH	Chubut
+        06	CN	Corrientes
+        05	CB	Córdoba
+        07	DF	Distrito Federal
+        08	ER	Entre Rios
+        09	FM	Formosa
+        10	JY	Jujuy
+        11	LP	La Pampa
+        12	LR	La Rioja
+        13	MZ	Mendoza
+        14	MN	Misiones
+        15	NQ	Neuquén
+        16	RN	Rio Negro
+        17	SA	Salta
+        18	SJ	San Juan
+        19	SL	San Luis
+        20	SC	Santa Cruz
+        21	SF	Santa Fe
+        22	SE	Santiago del Estero
+        23	TF	Tierra del Feugo
+        24	TM	Tucumán
+    */
 
     /* VISITANTES */
-    if (estadistica == 'Cantidad de visitantes al sitio'){
-      navigator.geolocation.getCurrentPosition(function(position) {
-        console.log(position)
-      })
+    if (estadistica == 'Cantidad de visitantes al sitio') {
+      this.spinner.show();
+      let array_provincias = [], array_resultado = []
+
+      for (let i = 0; i < 25; i++) {
+        array_provincias.push(0);
+      }
+
+      for (let i = 0; i < this.visitas.length; i++) {
+        const element = this.visitas[i];
+        if (String(element.region_name).includes('Aires')) array_provincias[1]++;
+        if (String(element.region_name).includes('Catamarca')) array_provincias[2]++;
+        if (String(element.region_name).includes('Chaco')) array_provincias[3]++;
+        if (String(element.region_name).includes('Chubut')) array_provincias[4]++;
+        if (String(element.region_name).includes('Córdoba')) array_provincias[5]++;
+        if (String(element.region_name).includes('Corrientes')) array_provincias[6]++;
+        if (String(element.region_name) == 'Ciudad De Buenos Aires') array_provincias[7]++;
+        if (String(element.region_name).includes('Entre Rios')) array_provincias[8]++;
+        if (String(element.region_name).includes('Formosa')) array_provincias[9]++;
+        if (String(element.region_name).includes('Jujuy')) array_provincias[10]++;
+        if (String(element.region_name).includes('La Pampa')) array_provincias[11]++;
+        if (String(element.region_name).includes('La Rioja')) array_provincias[12]++;
+        if (String(element.region_name).includes('Mendoza')) array_provincias[13]++;
+        if (String(element.region_name).includes('Misiones')) array_provincias[14]++;
+        if (String(element.region_name).includes('Neuquén')) array_provincias[15]++;
+        if (String(element.region_name).includes('Rio Negro')) array_provincias[16]++;
+        if (String(element.region_name).includes('Salta')) array_provincias[17]++;
+        if (String(element.region_name).includes('San Juan')) array_provincias[18]++;
+        if (String(element.region_name).includes('San Luis')) array_provincias[19]++;
+        if (String(element.region_name).includes('Santa Cruz')) array_provincias[20]++;
+        if (String(element.region_name).includes('Santa Fe')) array_provincias[21]++;
+        if (String(element.region_name).includes('Santiago del Estero')) array_provincias[22]++;
+        if (String(element.region_name).includes('Tierra del Fuego')) array_provincias[23]++;
+        if (String(element.region_name).includes('Tucumán')) array_provincias[24]++;
+      }
+
+      for (let i = 1; i < array_provincias.length; i++) {
+        let objeto = {
+          id: i.toLocaleString('es-ES', {
+            minimumIntegerDigits: 2,
+            useGrouping: false
+          }),
+          value: array_provincias[i],
+          showLabel: 1
+        }
+        array_resultado.push(objeto);
+      }
+
       this.type = 'maps/argentina';
       this.dataSource = {
         "chart": {
-          "caption": "Average Annual Population Growth",
-          "subcaption": " 1955-2015",
-          "numbersuffix": "%",
+          "caption": "Cantidad de visitas al sitio",
+          "subcaption": "Según la localización del usuario",
           "includevalueinlabels": "1",
           "labelsepchar": ": ",
           "entityFillHoverColor": "#FFF9C4",
           "theme": "fusion"
         },
         "colorrange": {
-          "minvalue": "0.5",
+          "minvalue": "1",
           "code": "#5D62B5",
           "gradient": "0",
           "color": [
             {
-              "displayvalue": "0.5 - 1.0",
-              "maxvalue": "1.0",
-              "code": "#F3726F"
+              "displayvalue": "1 - 10",
+              "maxvalue": "10",
+              "code": "#FFFAFA"
             },
             {
-              "maxvalue": "1.5",
-              "displayvalue": "1.0 - 1.5",
-              "code": "#FFC532"
+              "maxvalue": "20",
+              "displayvalue": "10 - 20",
+              "code": "#F4C2C2"
             },
             {
-              "maxvalue": "2.5",
-              "displayvalue": "1.5 - 2.0",
-              "code": "#61B68E"
+              "maxvalue": "30",
+              "displayvalue": "20 - 30",
+              "code": "#FF6961"
+            },
+            {
+              "maxvalue": "40",
+              "displayvalue": "30 - 40",
+              "code": "#FF1C00"
+            },
+            {
+              "maxvalue": "50",
+              "displayvalue": "40 - 50",
+              "code": "#FF0800"
             }
           ]
         },
-        "data": [{
-            "id": "01",
-            "value": "1.30",
-            "showLabel": "1"
-          },
-          {
-            "id": "02",
-            "value": "1.30",
-            "showLabel": "1"
-          },
-          {
-            "id": "03",
-            "value": "1.30",
-            "showLabel": "1"
-  
-          },
-          {
-            "id": "04",
-            "value": "1.30",
-            "showLabel": "1"
-          },
-          {
-            "id": "05",
-            "value": "1.30",
-            "showLabel": "1"
-          },
-          {
-            "id": "06",
-            "value": "1.30",
-            "showLabel": "1"
-          }
-        ]
+        "data": array_resultado
       }
+
+      this.spinner.hide()
+      this.mostrarGrafico = true;
+
     }
     this.mostrarGrafico = true;
   }
@@ -6043,6 +6099,12 @@ export class EstadisticasComponent implements OnInit {
         this.periodoDiaMesAnio = false;
       } else {
         this.periodoDiaMesAnio = true;
+      }
+
+      if (this.nombreEstadisticaSeleccionada == 'Cantidad de visitantes al sitio') {
+        this.estadisticaGeneralSeleccionada = false;
+        this.periodoRankingMesHabilitado = false;
+        this.periodoRankingAnioHabilitado = false;
       }
 
       if (!this.publicacionesSubcategoriaSeleccionada && !this.alquileresSubcategoriaSeleccionada) {

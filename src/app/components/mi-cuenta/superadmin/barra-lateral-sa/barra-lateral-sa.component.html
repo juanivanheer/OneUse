@@ -1,13 +1,15 @@
+<ngx-spinner bdColor = "rgb(255,255,255)" size = "medium" color = "#000000" type = "timer" [fullScreen] = "true"><p style="color: black" > Verificando... </p></ngx-spinner>
+
 <mat-toolbar style="height: 100%;">
     <mat-toolbar-row>
-        <a [routerLink]="['/mi-cuenta/superadmin/usuarios']">
+        <a [routerLink]="['/superadmin/usuarios']">
             <!-- [routerLink]="['/perfil']" -->
             <mat-icon>account_box</mat-icon><span class="iconitos letritas" fxHide.lt-lg="true">Usuarios</span>
         </a>
     </mat-toolbar-row>
 
     <mat-toolbar-row>
-        <a [routerLink]="['/mi-cuenta/superadmin/publicaciones']">
+        <a [routerLink]="['/superadmin/publicaciones']">
             <!-- [routerLink]="['/perfil']" -->
             <mat-icon>storefront</mat-icon><span class="iconitos letritas"
                 fxHide.lt-lg="true">Publicaciones</span>
@@ -15,21 +17,21 @@
     </mat-toolbar-row>
 
     <mat-toolbar-row>
-        <a [routerLink]="['/mi-cuenta/superadmin/alquileres']">
+        <a [routerLink]="['/superadmin/alquileres']">
             <!-- [routerLink]="['/perfil']" -->
             <mat-icon>dashboard</mat-icon><span class="iconitos letritas" fxHide.lt-lg="true">Alquileres</span>
         </a>
     </mat-toolbar-row>
 
     <mat-toolbar-row>
-        <a [routerLink]="['/mi-cuenta/superadmin/reclamos']">
+        <a [routerLink]="['/superadmin/reclamos']">
             <!-- [routerLink]="['/mis-publicaciones']" -->
             <mat-icon>menu_book</mat-icon><span class="iconitos letritas" fxHide.lt-lg="true">Reclamos</span>
         </a>
     </mat-toolbar-row>
 
     <mat-toolbar-row>
-        <a [routerLink]="['/mi-cuenta/superadmin/estadisticas']">
+        <a [routerLink]="['/superadmin/estadisticas']">
             <!-- [routerLink]="['/mis-publicaciones']" -->
             <mat-icon>assessment</mat-icon><span class="iconitos letritas" fxHide.lt-lg="true">Estadísticas</span>
         </a>

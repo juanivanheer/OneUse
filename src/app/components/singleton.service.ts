@@ -21,6 +21,10 @@ export class SingletonService {
       this.estado = false;
     }
 
+    if (urlActual == "/superadmin") {
+      this.estado = true;
+    }
+
     if(urlActual.includes("publicaciones")){
       this.estado = true;
     }

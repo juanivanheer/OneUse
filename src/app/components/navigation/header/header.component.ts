@@ -51,6 +51,7 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
   esImagenFacebook: boolean = false;
   urlImagenFacebook;
   esImagenOneUse: boolean = false;
+  esAdmin: boolean = false;
 
   constructor(private http: HttpClient, private singleton: SingletonService, private _auth: AuthService, private _snackBar: MatSnackBar, /* private pusherService: PusherService */) { }
 
@@ -159,6 +160,10 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
         res => {
           this.usuarioIniciado = res;
           this.usuarioLogueado = res;
+          if(res.admin != undefined){
+            if(res.admin == true) this.esAdmin = true;
+            else this.esAdmin = false;
+          }
           if (res.tipo == "google") {
             if (String(res.removablefile).includes("http")) {
               this.esImagenGoogle = true;

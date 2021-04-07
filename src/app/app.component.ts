@@ -1827,7 +1827,6 @@ export class AppComponent implements OnInit {
   constructor(private _auth: AuthService) { }
 
   ngOnInit(): void {
-    console.log(this.obtenerRandomIP())
     this.registrarIP()
   }
 
@@ -1911,7 +1910,7 @@ export class AppComponent implements OnInit {
                   }
                   this._auth.registrar_visita_IP(objeto).subscribe(
                     res => {
-                      console.log(res)
+                      //console.log(res)
                     })
                 }
               )

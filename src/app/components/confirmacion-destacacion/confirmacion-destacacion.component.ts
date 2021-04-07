@@ -10,11 +10,18 @@ export class ConfirmacionDestacacionComponent implements OnInit {
 
   constructor(private _auth: AuthService) { }
 
-  id_publicacion;
-
   ngOnInit() {
-    this.id_publicacion = String(window.location.href).slice(48);
-    this._auth.update_publicacion(this.id_publicacion, { pago_destacacion: true }).subscribe(
+    let url = new URL(window.location.href)
+    console.log(url.searchParams.toString())
+    let id = url.searchParams.get("id"), tipo_destacacion = url.searchParams.get("tipo_destacacion"), fecha_caducacion = new Date();
+    let fecha = new Date();
+    if(tipo_destacacion == "gold"){
+      fecha_caducacion.setMonth(fecha.getMonth() + 1)
+    } else {
+      fecha_caducacion.setDate(fecha.getDate() + 7)
+    }
+
+    this._auth.update_publicacion(id, { pago_destacacion: true, fecha_caducacion_destacacion: fecha_caducacion.toISOString()}).subscribe(
       res => {
         console.log(res);
       }
