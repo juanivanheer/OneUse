@@ -15,7 +15,8 @@ import { BarraLateralComponent } from '../barra-lateral/barra-lateral.component'
 import { MatStepper } from '@angular/material/stepper';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PuntuacionObtenidaDialogComponent } from './puntuacion-obtenida-dialog/puntuacion-obtenida-dialog.component';
-import { take } from 'rxjs/operators';
+import { Observable } from 'rxjs/Observable';
+import "rxjs/add/observable/zip";
 import { Router } from '@angular/router';
 
 @Component({
@@ -61,45 +62,52 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
       res => {
         this.usuarioLogueado = res;
         var username = res.name
-        //Suscripción que obtiene los alquileres realizados por otras personas de las publicaciones que realizó un usuario
-        this._auth.getAlquilerPublicaciones(username).subscribe(
-          res1 => {
-            this.arrayAlquilerPropietario = res1.alquiler;
+
+        var obsA = this._auth.getAlquilerPublicaciones(username);
+        var obsB = this._auth.getAlquilerPropios(username);
+        var obsC = this._auth.get_all_publicaciones();
+        const obsvArray = [obsA, obsB, obsC];
+        const zip = Observable.zip(...obsvArray)
+        zip.subscribe(
+          res => {
+            this.arrayAlquilerPropietario = res[0].alquiler;
+            this.arrayAlquilerPropios = res[1].alquiler;
+            let publicaciones = res[2].publicaciones;
+
+            /* ALQUILERES DE MIS PUBLICACIONES */
             if (this.arrayAlquilerPropietario.length > 0) {
               for (let i = 0; i < this.arrayAlquilerPropietario.length; i++) {
-                var date = new Date(res1.alquiler[i].createdAt).toLocaleDateString();
-                this.arrayAlquilerPropietario[i].createdAt = date;
-                if (this.arrayAlquilerPropietario[i].estado != "Cancelado" && this.arrayAlquilerPropietario[i].estado != "En proceso de reclamo") {
-                  this.arrayDatosPropietario.push(this.arrayAlquilerPropietario[i]);
+                const element1 = this.arrayAlquilerPropietario[i]
+                var date = new Date(element1.createdAt).toLocaleDateString();
+                element1.createdAt = date;
+                if (element1.estado != "Cancelado" && element1.estado != "En proceso de reclamo") {
+                  this.arrayDatosPropietario.push(element1);
                 }
-                this._auth.get_publicacion_id(res1.alquiler[i].id_publicacion).subscribe(
-                  res2 => {
-                    this.arrayTipoAlquilerPropietarios.push(res2.tipoAlquiler);
+                for (let j = 0; j < publicaciones.length; j++) {
+                  const element2 = publicaciones[j];
+                  if (element2._id == element1.id_publicacion) {
+                    this.arrayTipoAlquilerPropietarios.push(element2.tipoAlquiler);
                     this.array_propietario_lleno = true
                   }
-                )
+                }
               }
-              
               this.hayAlquileresPropietario = true;
             } else this.hayAlquileresPropietario = false; this.array_propietario_lleno = true;
-          })
 
-        //Suscripción que obtiene los alquileres realizados por el usuario logueado a publicaciones de otros usuarios
-        this._auth.getAlquilerPropios(username).subscribe(
-          res1 => {
+            /* ALQUILERES PROPIOS */
             var fechaActual = new Date();
-            this.arrayAlquilerPropios = res1.alquiler;
-
-            if (res1.alquiler.length > 0) {
+            if (this.arrayAlquilerPropios.length > 0) {
               for (let i = 0; i < this.arrayAlquilerPropios.length; i++) {
-                this._auth.get_publicacion_id(res1.alquiler[i].id_publicacion).subscribe(
-                  res2 => {
-                    let fechaCaducidad = new Date(res1.alquiler[i].fechaCaducidadEntrega);
-                    let fechaCaducidadDev = new Date(res1.alquiler[i].fechaCaducidadDevolucion);
+                const element1 = this.arrayAlquilerPropios[i];
+                for (let j = 0; j < publicaciones.length; j++) {
+                  const element2 = publicaciones[j];
+                  if(element1.id_publicacion == element2._id){
+                    let fechaCaducidad = new Date(element1.fechaCaducidadEntrega);
+                    let fechaCaducidadDev = new Date(element1.fechaCaducidadDevolucion);
 
                     // Ayuda a que se muestren los botones de "Reclamar"
-                    if ((res1.alquiler[i].estado == "En proceso de entrega" && res2.tipoAlquiler == "AlquilerConIntervencion") ||
-                      (res1.alquiler[i].estado == "En proceso de devolución" && res2.tipoAlquiler == "AlquilerConIntervencion")) {
+                    if ((element1.estado == "En proceso de entrega" && element2.tipoAlquiler == "AlquilerConIntervencion") ||
+                      (element1.estado == "En proceso de devolución" && element2.tipoAlquiler == "AlquilerConIntervencion")) {
                       if (fechaActual > fechaCaducidad || fechaActual > fechaCaducidadDev) {
                         this.arrayEstados.push(true);
                       } else {
@@ -108,18 +116,21 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
                     } else {
                       this.arrayEstados.push(false);
                     }
-                    this.arrayTipoAlquilerPropios.push(res2.tipoAlquiler)
+                    this.arrayTipoAlquilerPropios.push(element2.tipoAlquiler)
                     this.hayAlquileresPropios = true;
-                  })
-
-                var date = new Date(res1.alquiler[i].createdAt).toLocaleDateString();
-                this.arrayAlquilerPropios[i].createdAt = date;
-                if (this.arrayAlquilerPropios[i].estado != "Cancelado" && this.arrayAlquilerPropios[i].estado != "En proceso de reclamo") {
-                  this.arrayDatosPropios.push(this.arrayAlquilerPropios[i])
+                  }
+                }
+                var date = new Date(element1.createdAt).toLocaleDateString();
+                element1.createdAt = date;
+                if (element1.estado != "Cancelado" && element1.estado != "En proceso de reclamo") {
+                  this.arrayDatosPropios.push(element1)
                 }
               }
             } else this.hayAlquileresPropios = false; this.array_propio_lleno = true;
-          })
+          }
+        );
+
+        //Suscripción que obtiene los alquileres realizados por el usuario logueado a publicaciones de otros usuarios
       });
 
     setInterval(() => {
