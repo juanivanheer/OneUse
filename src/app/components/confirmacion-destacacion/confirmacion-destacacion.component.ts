@@ -21,7 +21,9 @@ export class ConfirmacionDestacacionComponent implements OnInit {
       fecha_caducacion.setDate(fecha.getDate() + 7)
     }
 
-    this._auth.update_publicacion(id, { pago_destacacion: true, fecha_caducacion_destacacion: fecha_caducacion.toISOString()}).subscribe(
+    console.log(fecha_caducacion.toISOString())
+
+    this._auth.update_publicacion(id, { destacar: 'SI', pago_destacacion: true, fecha_caducacion_destacacion: fecha_caducacion.toISOString()}).subscribe(
       res => {
         console.log(res);
       }

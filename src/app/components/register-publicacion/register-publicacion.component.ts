@@ -319,8 +319,9 @@ export class RegisterPublicacionComponent implements OnInit {
       const element = array[index];
       var img = document.createElement("img");
       img.setAttribute("src", element);
-      const model = await nsfwjs.load()
+      const model = await nsfwjs.load('../../../assets/js/model_nsfwjs/', { size: 299 })
       const predictions = await model.classify(img)
+      console.log(predictions)
       this.predicciones.push(predictions)
     }
     this.procesarPredicciones();
