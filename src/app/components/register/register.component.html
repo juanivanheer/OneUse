@@ -32,6 +32,7 @@
                 </mat-form-field>
 
                 <mat-form-field hideRequiredMarker ngClass.lt-lg="input-sm">
+                    <!--pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d$@$!%*?&]{8,15}$"-->
                     <input type="password" matInput placeholder="Contraseña" [(ngModel)]="registerUserData.password"
                         pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d$@$!%*?&]{8,15}$" name="password"
                         [type]="hide ? 'password' : 'text'" class="input-login" style="color: black !important"
@@ -43,8 +44,7 @@
                     </button>
 
                     <mat-error *ngIf="password.hasError('pattern')">La contraseña debe tener al menos 8(ocho) caracteres
-                        y
-                        contener al menos una mayúscula y un dígito.</mat-error>
+                        y contener al menos una mayúscula y un dígito.</mat-error>
                     <mat-error *ngIf="password.hasError('required')">Contraseña requerida</mat-error>
 
                 </mat-form-field>
@@ -65,8 +65,8 @@
 
                 <div class="text-center mt_30" ngClass.lt-lg="input-sm">
                     <div #recaptcha style="display: inline-block;"></div>
-                    <button id="submit" style="width: 100%; margin-top: 15px;" (click)="registerUser()" type="submit" [disabled]="!habilitado"
-                        mat-raised-button color="primary">Registrarse</button>
+                    <button id="submit" style="width: 100%; margin-top: 15px;" (click)="registerUser()" type="submit"
+                        [disabled]="!habilitado" mat-raised-button color="primary">Registrarse</button>
                     <!--[disabled]="formGroup.invalid"-->
                     <p class="tycFoot">
                         <br>

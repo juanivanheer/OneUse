@@ -2,14 +2,15 @@
     <div fxLayout ngClass.lt-lg="toolbar-div-lt-md">
         <app-barra-lateral></app-barra-lateral>
     </div>
-    <div fxLayout="column" ngClass.gt-md="container-gt-md mat-elevation-z8" ngClass.lt-md="container-lt-md mat-elevation-z8">
+    <div fxLayout="column" ngClass.gt-md="container-gt-md mat-elevation-z8"
+        ngClass.lt-md="container-lt-md mat-elevation-z8">
         <div fxLayout="column" style="width: 100%; text-align: center; margin-top: 40px" fxLayoutAlign="center center">
             <p style="font-size: 25px;margin-bottom: 25px; "> Mis publicaciones <button mat-mini-fab color="primary"
                     (click)="verificarUsuario()" *ngIf="mostrar">+</button> </p>
             <mat-divider style="width: 100%;"></mat-divider>
         </div>
-        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px"  *ngIf="!mostrar" style="margin:50px">
-            <mat-spinner diameter="200" ></mat-spinner>
+        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px" *ngIf="!mostrar" style="margin:50px">
+            <mat-spinner diameter="200"></mat-spinner>
             <p>Cargando...</p>
         </div>
         <mat-tab-group dynamicHeight style="width: 100%;" (selectedTabChange)="cambioTab($event)" *ngIf="mostrar">
@@ -47,14 +48,14 @@
                                             src="{{'https://oneuse-backend.herokuapp.com/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}"> -->
                                     </div>
                                 </swiper>
-                                <mat-card-content style="text-align: left; font-size: 12px">
-                                    <!-- <p> <b>Descripción:</b> {{publicacion.descripcion}} </p> -->
-                                    <!-- <p> <b>Precio por día:</b> ${{publicacion.preciodia}} </p> -->
-                                    <!-- <p> <b>Destacado:</b> {{publicacion.destacar}} </p> -->
-                                    <!-- <p> <b>Vigente hasta:</b> implementar fecha </p> -->
+                                <mat-card-content style="text-align: justify; font-size: 12px" fxLayout="row"
+                                    fxLayoutAlign="start start" fxLayoutGap="10px">
+                                    <mat-icon style="color: cornflowerblue;">info</mat-icon>
+                                    <!-- <p *ngIf="publicacion.pago_destacacion == true">  </p> -->
                                 </mat-card-content>
                                 <mat-card-actions>
-                                    <button mat-raised-button color="primary" (click)="destacarPublicacion(publicacion._id)"
+                                    <button mat-raised-button color="primary"
+                                        (click)="destacarPublicacion(publicacion._id)"
                                         *ngIf="publicacion.pago_destacacion == false">Destacar</button>
                                     <button mat-raised-button color="primary"
                                         routerLink="/editar-publicacion/{{publicacion._id}}">Editar</button>
@@ -101,11 +102,12 @@
                                             src="{{'https://oneuse-backend.herokuapp.com/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}">    -->
                                     </div>
                                 </swiper>
-                                <mat-card-content style="text-align: left; font-size: 12px">
-                                    <!-- <p> <b>Descripción:</b> {{publicacion.descripcion}} </p> -->
-                                    <p> <b>Precio por día:</b> ${{publicacion.preciodia}} </p>
-                                    <p> <b>Precio por semana:</b> ${{publicacion.preciosemana}} </p>
-                                    <p> <b>Precio por mes:</b> ${{publicacion.preciomes}} </p>
+                                <mat-card-content style="text-align: justify; font-size: 12px" fxLayout="row"
+                                    fxLayoutAlign="start start" fxLayoutGap="10px">
+                                    <mat-icon style="color: cornflowerblue;">info</mat-icon>
+                                    <p> La publicación se encuentra desactivada y no va a ser mostrada a los
+                                        demás usuarios del sitio. Puedes habilitarla haciendo click en el botón
+                                        <b>Habilitar</b> </p>
                                 </mat-card-content>
                                 <mat-card-actions>
                                     <button mat-raised-button color="primary"

@@ -25,7 +25,7 @@ export class MisPublicacionesComponent implements OnInit {
   arrayJSON = [];
   arrayImagen = [];
   mostrar: boolean = false;
-  
+
   ngOnInit() {
 
     /* PARA OBTENER FECHAS EN FORMATO AR
@@ -35,21 +35,28 @@ export class MisPublicacionesComponent implements OnInit {
         this.newDate = this.newDate.slice(0,10)
      */
     this._auth.get_publicacion(localStorage.getItem("email")).subscribe(
-      err => {
-        this.hayPublicaciones = true;
-        this.publicaciones = err.publicaciones;
-        for (let i = 0; i < this.publicaciones.length; i++) {
-          this.imagen = this.publicaciones[i].multiplefile;
-          this.imagenJSON = JSON.parse(this.imagen); //CREA JSON CONVERTIDO DE STRING
-          for (let j in this.imagenJSON) {
-            this.arrayJSON.push(this.imagenJSON[j]);
-          }
-          this.publicaciones[i].multiplefile = this.arrayJSON;
-          this.arrayJSON = [];
-        }
-        this.mostrar = true;
-      },
       res => {
+        this.hayPublicaciones = true;
+        this.publicaciones = res;
+        if (res.length > 0) {
+          for (let i = 0; i < this.publicaciones.length; i++) {
+            this.imagen = this.publicaciones[i].multiplefile;
+            this.imagenJSON = JSON.parse(this.imagen); //CREA JSON CONVERTIDO DE STRING
+            for (let j in this.imagenJSON) {
+              this.arrayJSON.push(this.imagenJSON[j]);
+            }
+            this.publicaciones[i].multiplefile = this.arrayJSON;
+            this.arrayJSON = [];
+          }
+          this.mostrar = true;
+        } else {
+          this.titulo = "No hay publicaciones para mostrar"
+          this.hayPublicaciones = false;
+          this.mostrar = false; 
+        }
+
+      },
+      err => {
         //console.log(res);
         this.titulo = "No hay publicaciones para mostrar"
         this.hayPublicaciones = false;
@@ -59,10 +66,10 @@ export class MisPublicacionesComponent implements OnInit {
 
   }
 
-  destacarPublicacion(id){
-    window.location.assign("/destacacion-publicacion/"+id)
+  destacarPublicacion(id) {
+    window.location.assign("/destacacion-publicacion/" + id)
   }
-  
+
   cerrarSesion() {
     this.singleton.cerrarSesion();
   }

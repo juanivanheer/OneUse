@@ -42,9 +42,9 @@ export class RegisterComponent implements OnInit {
   registerUser() {
     this._auth.registerUser(this.registerUserData).subscribe(
       res => {
-        //console.log(res)
+        console.log(res)
         localStorage.setItem('token', res.token)
-        this._router.navigate(['/confirma'])
+        window.location.assign("/confirma")
       },
       err => {
         //console.log(err);
@@ -124,11 +124,11 @@ export class RegisterComponent implements OnInit {
     if (this.formGroup.status == 'VALID') {
       if (this.recaptcha == true) {
         this.habilitado = true;
-        document.querySelectorAll("button")[12].disabled = false;
+        document.querySelectorAll("button")[13].disabled = false;
       }
     } else {
       this.habilitado = false;
-      document.querySelectorAll("button")[12].disabled = true;
+      document.querySelectorAll("button")[13].disabled = true;
     }
   }
 

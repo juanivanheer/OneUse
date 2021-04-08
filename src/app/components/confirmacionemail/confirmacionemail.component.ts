@@ -15,9 +15,7 @@ export class ConfirmacionEmailComponent implements OnInit {
   private token: string;
 
   ngOnInit() {
-    if (!this.singleton.verificarToken()) {
-      this._router.navigate(['/*']);
-    } else this.token = this.route.snapshot.params['token'];
+    this.token = this.route.snapshot.params['token'];
   }
 
   confirmar() {

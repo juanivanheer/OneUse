@@ -3,6 +3,13 @@
   margin-bottom: 40px;
 }
 
+.contenedor{
+  margin: 50px;
+  padding: 50px;
+  margin-right: 450px;
+  margin-left: 450px;
+}
+
 .confirmacion-confirma{
   text-align: center;
   line-height: 50px;
