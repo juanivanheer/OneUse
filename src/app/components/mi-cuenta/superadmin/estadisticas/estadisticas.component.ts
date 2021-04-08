@@ -575,28 +575,28 @@ export class EstadisticasComponent implements OnInit {
           "gradient": "0",
           "color": [
             {
-              "displayvalue": "1 - 10",
-              "maxvalue": "10",
+              "displayvalue": "1 - 30",
+              "maxvalue": "30",
               "code": "#FFFAFA"
             },
             {
-              "maxvalue": "20",
-              "displayvalue": "10 - 20",
+              "maxvalue": "60",
+              "displayvalue": "30 - 60",
               "code": "#F4C2C2"
             },
             {
-              "maxvalue": "30",
-              "displayvalue": "20 - 30",
+              "maxvalue": "90",
+              "displayvalue": "60 - 90",
               "code": "#FF6961"
             },
             {
-              "maxvalue": "40",
-              "displayvalue": "30 - 40",
+              "maxvalue": "120",
+              "displayvalue": "90 - 120",
               "code": "#FF1C00"
             },
             {
-              "maxvalue": "50",
-              "displayvalue": "40 - 50",
+              "maxvalue": "200",
+              "displayvalue": "120 - 200",
               "code": "#FF0800"
             }
           ]
