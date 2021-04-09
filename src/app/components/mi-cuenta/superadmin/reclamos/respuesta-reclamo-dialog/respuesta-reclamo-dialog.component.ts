@@ -19,9 +19,9 @@ export class RespuestaReclamoDialogComponent implements OnInit {
   respuesta = undefined
 
   ngOnInit() {
-    // console.log(this.data)
-    // this.respuestas = this.data.data.respuestas
-    //console.log('qqqqqqqqqqqqqqqqqqqqq')
+    
+    this.respuestas = this.data.data.respuestas
+    
   }
 
   close() {
