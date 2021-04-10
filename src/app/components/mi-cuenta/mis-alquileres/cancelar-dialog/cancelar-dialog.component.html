@@ -1,11 +1,12 @@
 <h2 mat-dialog-title style="text-align: center">Cancelar alquiler</h2>
 <mat-dialog-content class="mat-typography">
   <h3>¿Está seguro de cancelar el alquiler?</h3>
-  <p>Tené en cuenta se eliminará de tus alquileres y no recibirás el producto.</p>
+  <p>El alquiler se eliminará y no podras volver a recuperarlo.</p>
+  <p>Le enviaremos un mail a la otra parte para notificarla de la situación</p>
 
 
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-raised-button color="warn" mat-dialog-close (click)="close()">Cerrar</button>
-  <button mat-raised-button color="primary" [mat-dialog-close]="true" (click)="prueba()" cdkFocusInitial>Cancelar alquiler</button>
+  <button mat-raised-button color="primary" (click)="cancelar_alquiler()">Cancelar alquiler</button>
 </mat-dialog-actions>     
