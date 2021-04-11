@@ -1826,34 +1826,84 @@ export class AppComponent implements OnInit {
 
   constructor(private _auth: AuthService) { }
 
-  ngOnInit(): void {
-    this.registrarIP()
-  }
+  visitas;
+  direccion_ip;
+  usuarios;
+  publicaciones;
 
-  registrarIP() {
+  ngOnInit() {
     var obsA = this._auth.get_all_visitas_IP();
     var obsB = this._auth.get_direccion_ip();
     var obsC = this._auth.get_all_users();
-    const obsvArray = [obsA, obsB, obsC];
+    var obsD = this._auth.get_all_publicaciones()
+    const obsvArray = [obsA, obsB, obsC, obsD];
     const zip = Observable.zip(...obsvArray)
     zip.subscribe(
       res => {
-        let visitas = res[0];
+        this.visitas = res[0];
         //let direccion_ip = res[1].ip;
-        let direccion_ip = this.obtenerRandomIP()
-        let usuarios = res[2];
+        this.direccion_ip = this.obtenerRandomIP()
+        this.usuarios = res[2];
+        this.publicaciones = res[3].publicaciones;
+        this.registrarIP()
+        this.caducidadPublicaciones()
+      })
+  }
 
-        if (visitas.length == 0 && localStorage.getItem("email") != undefined) {
-          let usuario, email = localStorage.getItem("email");
-          for (let j = 0; j < usuarios.length; j++) {
-            const element2 = usuarios[j];
+  registrarIP() {
+    if (this.visitas.length == 0 && localStorage.getItem("email") != undefined) {
+      let usuario, email = localStorage.getItem("email");
+      for (let j = 0; j < this.usuarios.length; j++) {
+        const element2 = this.usuarios[j];
+        if (element2.email == email) {
+          usuario = element2;
+          break;
+        }
+      }
+
+      this._auth.get_info_IP(this.direccion_ip).subscribe(
+        res => {
+          let objeto = {
+            ip: res.ip,
+            user: usuario,
+            continent_name: res.continent_name,
+            country_name: res.country_name,
+            region_name: res.region_name,
+            city: res.city,
+            zip: res.zip,
+            latitude: res.latitude,
+            longitude: res.longitude
+          }
+          this._auth.registrar_visita_IP(objeto).subscribe(
+            res => {
+              console.log(res)
+            })
+        },
+        err => {
+          console.log(err)
+        }
+      )
+    }
+
+    if (this.visitas.length > 0 && localStorage.getItem("email") != undefined) {
+      let email = localStorage.getItem("email");
+      for (let i = 0; i < this.visitas.length; i++) {
+        const element1 = this.visitas[i];
+        if (element1.ip == this.direccion_ip) {
+          break;
+        }
+
+        if (i == (this.visitas.length - 1)) {
+          let usuario;
+          for (let j = 0; j < this.usuarios.length; j++) {
+            const element2 = this.usuarios[j];
             if (element2.email == email) {
               usuario = element2;
               break;
             }
           }
 
-          this._auth.get_info_IP(direccion_ip).subscribe(
+          this._auth.get_info_IP(this.direccion_ip).subscribe(
             res => {
               let objeto = {
                 ip: res.ip,
@@ -1868,57 +1918,34 @@ export class AppComponent implements OnInit {
               }
               this._auth.registrar_visita_IP(objeto).subscribe(
                 res => {
-                  console.log(res)
+                  //console.log(res)
                 })
-            },
-            err => {
-              console.log(err)
             }
           )
         }
+      }
+    }
+  }
 
-        if (visitas.length > 0 && localStorage.getItem("email") != undefined) {
-          let email = localStorage.getItem("email");
-          for (let i = 0; i < visitas.length; i++) {
-            const element1 = visitas[i];
-            if (element1.ip == direccion_ip) {
-              break;
-            }
-
-            if (i == (visitas.length - 1)) {
-              let usuario;
-              for (let j = 0; j < usuarios.length; j++) {
-                const element2 = usuarios[j];
-                if (element2.email == email) {
-                  usuario = element2;
-                  break;
-                }
-              }
-
-              this._auth.get_info_IP(direccion_ip).subscribe(
-                res => {
-                  let objeto = {
-                    ip: res.ip,
-                    user: usuario,
-                    continent_name: res.continent_name,
-                    country_name: res.country_name,
-                    region_name: res.region_name,
-                    city: res.city,
-                    zip: res.zip,
-                    latitude: res.latitude,
-                    longitude: res.longitude
-                  }
-                  this._auth.registrar_visita_IP(objeto).subscribe(
-                    res => {
-                      //console.log(res)
-                    })
-                }
-              )
-            }
-          }
+  caducidadPublicaciones() {
+    let array_cambios = [];
+    for (let i = 0; i < this.publicaciones.length; i++) {
+      const element = this.publicaciones[i];
+      if (element.fecha_caducacion_destacacion != undefined) {
+        let caducacion = new Date(element.fecha_caducacion_destacacion);
+        let hoy = new Date();
+        if (hoy > caducacion) {
+          array_cambios.push(element);
         }
       }
-    )
+    }
+    if (array_cambios.length > 0) {
+      let suscripcion = this._auth.update_publicacion_caducacion(array_cambios).subscribe(
+        res => {
+          suscripcion.unsubscribe()
+        }
+      )
+    }
   }
 
   random(min, max) {

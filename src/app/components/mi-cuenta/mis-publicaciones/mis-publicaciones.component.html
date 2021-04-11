@@ -48,10 +48,15 @@
                                             src="{{'https://oneuse-backend.herokuapp.com/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}"> -->
                                     </div>
                                 </swiper>
-                                <mat-card-content style="text-align: justify; font-size: 12px" fxLayout="row"
-                                    fxLayoutAlign="start start" fxLayoutGap="10px">
+                                <mat-card-content style="text-align: justify; font-size: 11px; margin-top: 15px;" fxLayout="row"
+                                    fxLayoutAlign="start start" fxLayoutGap="10px" *ngIf="publicacion.pago_destacacion">
                                     <mat-icon style="color: cornflowerblue;">info</mat-icon>
-                                    <!-- <p *ngIf="publicacion.pago_destacacion == true">  </p> -->
+                                     <p> El producto se encontrará destacado hasta el <b>{{publicacion.fecha_caducacion_destacacion}}</b></p>
+                                </mat-card-content>
+                                <mat-card-content style="text-align: justify; font-size: 11px; margin-top: 15px;" fxLayout="row"
+                                    fxLayoutAlign="start start" fxLayoutGap="10px" *ngIf="!publicacion.pago_destacacion">
+                                    <mat-icon style="color: black;"> paid </mat-icon>
+                                     <p>Para destacar el producto, haz click en el botón <b>destacar</b></p>
                                 </mat-card-content>
                                 <mat-card-actions>
                                     <button mat-raised-button color="primary"

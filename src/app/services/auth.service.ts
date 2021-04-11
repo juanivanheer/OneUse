@@ -87,8 +87,14 @@ export class AuthService {
   private _getAllVisitasIP = this.url + 'get-all-visitas-ip'
   private _getInfoIP = this.url + 'obtener-info-ip'
   private _getIP = this.url + 'obtener-ip'
+  private _updatePublicacionesDestacacion = this.url + 'update-pub-destacacion'
+  private _sendMail = this.url + 'send-mail'
 
   constructor(private http: HttpClient) { }
+
+  enviarEmail(objeto){
+    return this.http.post<any>(this._sendMail,objeto)
+  }
 
   /* CRUD DE USUARIOS */
 
@@ -196,6 +202,10 @@ export class AuthService {
 
   get_all_publicaciones() {
     return this.http.get<any>(this._getAllPublicaciones);
+  }
+
+  update_publicacion_caducacion(array){
+    return this.http.post<any>(this._updatePublicacionesDestacacion, array)
   }
 
 

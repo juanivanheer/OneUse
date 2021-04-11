@@ -18,6 +18,7 @@ export class DestacacionPublicacionComponent implements OnInit {
   cantidad = 0;
   id_publicacion;
   hayQueDestacar: boolean = true;
+  email;
 
   constructor(private http: HttpClient, private _auth: AuthService, private spinner: NgxSpinnerService) { }
 
@@ -26,6 +27,7 @@ export class DestacacionPublicacionComponent implements OnInit {
     this._auth.get_publicacion_id(this.id_publicacion).subscribe(
       res => {
         let publicacion = res;
+        this.email = res.email;
         if (publicacion.pago_destacacion == false) {
           this.hayQueDestacar = true;
         } else {
@@ -79,7 +81,7 @@ export class DestacacionPublicacionComponent implements OnInit {
         }
       ],
       "back_urls": {
-        "success": "https://localhost:4200/confirmacion-destacacion?id=" + this.id_publicacion+ "&tipo_destacacion=platinum",
+        "success": "https://localhost:4200/confirmacion-destacacion?id=" + this.id_publicacion+ "&tipo_destacacion=platinum&email=" + this.email,
         "failure": "https://localhost:4200/404"
       },
       "statement_descriptor": "OneUse"
@@ -96,7 +98,7 @@ export class DestacacionPublicacionComponent implements OnInit {
         }
       ],
       "back_urls": {
-        "success": "https://localhost:4200/confirmacion-destacacion?id=" + this.id_publicacion + "&tipo_destacacion=gold",
+        "success": "https://localhost:4200/confirmacion-destacacion?id=" + this.id_publicacion + "&tipo_destacacion=gold&email=" + this.email,
         "failure": "https://localhost:4200/404"
       },
       "statement_descriptor": "OneUse"

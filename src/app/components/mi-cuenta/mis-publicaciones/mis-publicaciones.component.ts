@@ -40,6 +40,11 @@ export class MisPublicacionesComponent implements OnInit {
         this.publicaciones = res;
         if (res.length > 0) {
           for (let i = 0; i < this.publicaciones.length; i++) {
+            const element = res[i];
+            if(element.fecha_caducacion_destacacion != undefined){
+              let fecha = new Date(element.fecha_caducacion_destacacion);
+              this.publicaciones[i].fecha_caducacion_destacacion = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear()
+            }
             this.imagen = this.publicaciones[i].multiplefile;
             this.imagenJSON = JSON.parse(this.imagen); //CREA JSON CONVERTIDO DE STRING
             for (let j in this.imagenJSON) {
