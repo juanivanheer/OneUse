@@ -35,7 +35,7 @@ export class ReclamosComponent implements OnInit {
   respuestaReclamoDialogRef: MatDialogRef<RespuestaReclamoDialogComponent>
   
   dataSource;
-  displayedColumns = ['_id', 'motivo', 'usuario_reclamo', 'boton' ];
+  displayedColumns = ['_id', 'tipo', 'usuario_reclamo', 'boton' ];
   data;
 
   ngOnInit() {

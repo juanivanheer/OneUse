@@ -18,6 +18,8 @@ export class CancelarDialogComponent implements OnInit {
   imagenJSON;
   arrayJSON = [];
   arrayImagen = [];
+  q
+  
 
   ngOnInit() {
     
@@ -27,16 +29,36 @@ export class CancelarDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-prueba(){
+  cancelar_alquiler(){
+  
+  let quien_cancela = localStorage.getItem("email");
+  let alquiler = JSON.parse(localStorage.getItem("alquiler"));
+  
+  this._auth.user_data(quien_cancela).subscribe(
+    res => {
+    this.q = res.name
 
-let alquiler = JSON.parse(localStorage.getItem("alquiler"));
+    if(alquiler.name_usuarioLocatario == res.name)
+      alquiler.estado = 'Cancela Locatario'
+    else
+      alquiler.estado = 'Cancela Propietario'
 
-console.log(alquiler);
+    
+    this._auth.cancelarAlquiler(alquiler).subscribe()
+    this.dialogRef.close();
+    
+  },
+  err => {
+    
+  }
+  
+  )
 
-   this._auth.cancelarAlquiler(alquiler).subscribe()
+ 
+  localStorage.removeItem("alquiler");
+  
+  
 
-   localStorage.removeItem("alquiler");
-
-}
+  }
 
 }
