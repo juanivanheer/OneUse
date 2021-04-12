@@ -11,13 +11,13 @@ import { CodigoDevolucionPropietarioDialogComponent } from './codigo-devolucion-
 import { PuntuacionComponent } from './puntuacion-dialog/puntuacion-dialog.component'
 import { CancelarDialogComponent } from './cancelar-dialog/cancelar-dialog.component'
 import { Subscription } from 'rxjs';
-import { BarraLateralComponent } from '../barra-lateral/barra-lateral.component'
 import { MatStepper } from '@angular/material/stepper';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PuntuacionObtenidaDialogComponent } from './puntuacion-obtenida-dialog/puntuacion-obtenida-dialog.component';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/add/observable/zip";
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-mis-alquileres',
@@ -28,116 +28,51 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
 
   private subscription: Subscription;
 
+  estadosAlquiler = [
+    { viewValue: '- Elegir estado -', value: '- Elegir estado -' },
+    { viewValue: 'En proceso de pago', value: 'En proceso de pago' },
+    { viewValue: 'En proceso de entrega', value: 'En proceso de entrega' },
+    { viewValue: 'En proceso de devolución', value: 'En proceso de devolución' },
+    { viewValue: 'En proceso de puntación', value: 'En proceso de puntación' },
+    { viewValue: 'Finalizado', value: 'Finalizado' },
+    { viewValue: 'Cancelado', value: 'Cancelado' },
+  ]
+
+  tipoAlquiler = [
+    { viewValue: 'Alquiler sin intervención', value: 'AlquilerSinIntervencion' },
+    { viewValue: 'Alquiler con intervención', value: 'AlquilerConIntervencion' },
+  ]
+
   usuarioLogueado = {};
   arrayAlquilerPropietario = [];
-  arrayDatosPropietario = [];
   arrayAlquilerPropios = [];
-  arrayPublicacionesAlquileresPropios = [];
-  arrayPublicacionesAlquileresPropietarios = []
+  arrayTipoAlquilerPropios = [];
+  arrayTipoAlquilerPropietarios = []
+  arrayDatosPropietario = [];
   arrayDatosPropios = [];
+
   hayAlquileresPropietario = false;
   hayAlquileresPropios = false;
   reclamado = false;
-  arrayEstados = [];
-  arrayDevolucionLocatario = [];
-  arrayDevolucionPropietario = [];
   mostrar: boolean = false;
-  array_estados = [];
-  arrayTitulosPublicacionesPropios = [];
-  arrayTitulosPublicacionesPropietario = []
-  arrayTipoAlquilerPropios = [];
-  arrayTipoAlquilerPropietarios = []
-  array_propietario_lleno: boolean = false;
-  array_propio_lleno: boolean = false;
+  filtroConIntervencion = false;
 
-  constructor(private _auth: AuthService, private singleton: SingletonService, public dialog: MatDialog, private _snackBar: MatSnackBar, private _router: Router) { }
+
+  seleccionadoMisPublicaciones = "none";
+  seleccionadoPropios = "none";
+  mensaje = ""
+  seleccionadoTipoAlquilerPropietario;
+  seleccionadoTipoAlquilerPropio;
+
+
+  constructor(private spinner: NgxSpinnerService, private _auth: AuthService, private singleton: SingletonService, public dialog: MatDialog, private _snackBar: MatSnackBar, private _router: Router) { }
 
   @ViewChild("stepper", { static: false }) stepper: MatStepper;
 
   ngOnInit() {
-    this.arrayAlquilerPropietario = []
-    this.arrayAlquilerPropios = []
-
-    this.subscription = this._auth.user_data(localStorage.getItem("email")).subscribe(
-      res => {
-        this.usuarioLogueado = res;
-        var username = res.name
-
-        var obsA = this._auth.getAlquilerPublicaciones(username);
-        var obsB = this._auth.getAlquilerPropios(username);
-        var obsC = this._auth.get_all_publicaciones();
-        const obsvArray = [obsA, obsB, obsC];
-        const zip = Observable.zip(...obsvArray)
-        zip.subscribe(
-          res => {
-            this.arrayAlquilerPropietario = res[0].alquiler;
-            this.arrayAlquilerPropios = res[1].alquiler;
-            let publicaciones = res[2].publicaciones;
-
-            /* ALQUILERES DE MIS PUBLICACIONES */
-            if (this.arrayAlquilerPropietario.length > 0) {
-              for (let i = 0; i < this.arrayAlquilerPropietario.length; i++) {
-                const element1 = this.arrayAlquilerPropietario[i]
-                var date = new Date(element1.createdAt).toLocaleDateString();
-                element1.createdAt = date;
-                if (element1.estado != "Cancelado" && element1.estado != "En proceso de reclamo") {
-                  this.arrayDatosPropietario.push(element1);
-                }
-                for (let j = 0; j < publicaciones.length; j++) {
-                  const element2 = publicaciones[j];
-                  if (element2._id == element1.id_publicacion) {
-                    this.arrayTipoAlquilerPropietarios.push(element2.tipoAlquiler);
-                    this.array_propietario_lleno = true
-                  }
-                }
-              }
-              this.hayAlquileresPropietario = true;
-            } else this.hayAlquileresPropietario = false; this.array_propietario_lleno = true;
-
-            /* ALQUILERES PROPIOS */
-            var fechaActual = new Date();
-            if (this.arrayAlquilerPropios.length > 0) {
-              for (let i = 0; i < this.arrayAlquilerPropios.length; i++) {
-                const element1 = this.arrayAlquilerPropios[i];
-                for (let j = 0; j < publicaciones.length; j++) {
-                  const element2 = publicaciones[j];
-                  if(element1.id_publicacion == element2._id){
-                    let fechaCaducidad = new Date(element1.fechaCaducidadEntrega);
-                    let fechaCaducidadDev = new Date(element1.fechaCaducidadDevolucion);
-
-                    // Ayuda a que se muestren los botones de "Reclamar"
-                    if ((element1.estado == "En proceso de entrega" && element2.tipoAlquiler == "AlquilerConIntervencion") ||
-                      (element1.estado == "En proceso de devolución" && element2.tipoAlquiler == "AlquilerConIntervencion")) {
-                      if (fechaActual > fechaCaducidad || fechaActual > fechaCaducidadDev) {
-                        this.arrayEstados.push(true);
-                      } else {
-                        this.arrayEstados.push(false);
-                      }
-                    } else {
-                      this.arrayEstados.push(false);
-                    }
-                    this.arrayTipoAlquilerPropios.push(element2.tipoAlquiler)
-                    this.hayAlquileresPropios = true;
-                  }
-                }
-                var date = new Date(element1.createdAt).toLocaleDateString();
-                element1.createdAt = date;
-                if (element1.estado != "Cancelado" && element1.estado != "En proceso de reclamo") {
-                  this.arrayDatosPropios.push(element1)
-                }
-              }
-            } else this.hayAlquileresPropios = false; this.array_propio_lleno = true;
-          }
-        );
-
-        //Suscripción que obtiene los alquileres realizados por el usuario logueado a publicaciones de otros usuarios
-      });
-
-    setInterval(() => {
-      if (this.array_propio_lleno != false && this.array_propietario_lleno != false) {
-        this.mostrar = true;
-      } else this.mostrar = false;
-    }, 500)
+    this.seleccionadoMisPublicaciones = "- Elegir estado -"
+    this.seleccionadoPropios = "- Elegir estado -"
+    this.mostrarTodo();
   }
 
   ngAfterViewInit() {
@@ -164,6 +99,71 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
         }
       }
     }, 2000);
+  }
+
+  mostrarTodo() {
+    this.arrayAlquilerPropietario = []
+    this.arrayAlquilerPropios = []
+
+    this._auth.user_data(localStorage.getItem("email")).subscribe(
+      res => {
+        this.usuarioLogueado = res;
+        var username = res.name
+
+        var obsA = this._auth.getAlquilerPublicaciones(username);
+        var obsB = this._auth.getAlquilerPropios(username);
+        var obsC = this._auth.get_all_publicaciones();
+        const obsvArray = [obsA, obsB, obsC];
+        const zip = Observable.zip(...obsvArray)
+        zip.subscribe(
+          res => {
+            this.arrayAlquilerPropietario = res[0].alquiler;
+            this.arrayAlquilerPropios = res[1].alquiler;
+            let publicaciones = res[2].publicaciones;
+
+            /* ALQUILERES DE MIS PUBLICACIONES */
+            if (this.arrayAlquilerPropietario.length > 0) {
+              for (let i = 0; i < this.arrayAlquilerPropietario.length; i++) {
+                let element1 = this.arrayAlquilerPropietario[i]
+                let date = new Date(element1.createdAt);
+                let date_formatted = date.getDate() + "/" + (date.getMonth() + 1) + "/" + String(date.getFullYear()).slice(0, 2);
+                element1.createdAt = date_formatted;
+                for (let j = 0; j < publicaciones.length; j++) {
+                  const element2 = publicaciones[j];
+                  if (element2._id == element1.id_publicacion) {
+                    element1 = Object.assign(element1, { tipoAlquiler: element2.tipoAlquiler })
+                    break;
+                  }
+                }
+                this.arrayDatosPropietario.push(element1);
+              }
+              //this.hayAlquileresPropietario = true;
+            } else this.hayAlquileresPropietario = false;
+
+            /* ALQUILERES PROPIOS */
+            var fechaActual = new Date();
+            if (this.arrayAlquilerPropios.length > 0) {
+              for (let i = 0; i < this.arrayAlquilerPropios.length; i++) {
+                let element1 = this.arrayAlquilerPropios[i];
+                for (let j = 0; j < publicaciones.length; j++) {
+                  const element2 = publicaciones[j];
+                  if (element1.id_publicacion == element2._id) {
+                    element1 = Object.assign(element1, { tipoAlquiler: element2.tipoAlquiler })
+                    //this.hayAlquileresPropios = true;
+                    break;
+                  }
+                }
+                let date = new Date(element1.createdAt)
+                let date_formatted = date.getDate() + "/" + (date.getMonth() + 1) + "/" + String(date.getFullYear()).slice(0, 1);
+                element1.createdAt = date_formatted;
+                this.arrayDatosPropios.push(element1)
+              }
+            } else this.hayAlquileresPropios = false;
+            this.mostrar = true;
+            this.mensaje = ""
+          }
+        );
+      });
   }
 
   estaCompleto(alquiler, n_step, stepper) {
@@ -377,21 +377,143 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
     this.arrayAlquilerPropietario = [];
     this.arrayDatosPropietario = [];
     this.arrayAlquilerPropios = [];
-    this.arrayPublicacionesAlquileresPropios = [];
-    this.arrayPublicacionesAlquileresPropietarios = []
     this.arrayDatosPropios = [];
     this.hayAlquileresPropietario = false;
     this.hayAlquileresPropios = false;
     this.reclamado = false;
-    this.arrayEstados = [];
-    this.arrayDevolucionLocatario = [];
-    this.arrayDevolucionPropietario = [];
     this.mostrar = false;
-    this.array_estados = [];
-    this.arrayTitulosPublicacionesPropios = [];
-    this.arrayTitulosPublicacionesPropietario = []
-    this.array_propietario_lleno = false;
-    this.array_propio_lleno = false;
+  }
+
+  selectMisPublicaciones(estado) {
+    if (this.arrayAlquilerPropietario.length > 0) {
+      this.arrayDatosPropietario = [];
+      if (estado == "- Elegir estado -") {
+        this.hayAlquileresPropietario = false;
+      } else {
+        for (let i = 0; i < this.arrayAlquilerPropietario.length; i++) {
+          const element = this.arrayAlquilerPropietario[i];
+          if (element.estado == estado && element.tipoAlquiler == "AlquilerConIntervencion") {
+            this.arrayDatosPropietario.push(element);
+          }
+
+          if (i === (this.arrayAlquilerPropietario.length - 1)) {
+            if (this.arrayDatosPropietario.length == 0) {
+              this.mensaje = "No hay alquileres disponibles con el estado seleccionado"
+              this.hayAlquileresPropietario = false;
+            } else {
+              this.hayAlquileresPropietario = true;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  selectPropios(estado) {
+    if (this.arrayAlquilerPropios.length > 0) {
+      this.arrayDatosPropios = [];
+
+      if (estado == "- Elegir estado -") {
+        this.mostrarTodo();
+      } else {
+        for (let i = 0; i < this.arrayAlquilerPropios.length; i++) {
+          const element = this.arrayAlquilerPropios[i];
+          if (element.estado == estado && element.tipoAlquiler == "AlquilerConIntervencion") {
+            this.arrayDatosPropios.push(element);
+          }
+
+          if (i === (this.arrayAlquilerPropios.length - 1)) {
+            if (this.arrayDatosPropios.length == 0) {
+              this.mensaje = "No hay alquileres disponibles con el estado seleccionado"
+              this.hayAlquileresPropios = false;
+            } else {
+              this.hayAlquileresPropios = true;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  selectMisPublicacionesTipoAlquiler(tipo) {
+    this.hayAlquileresPropietario = false;
+    this.arrayDatosPropietario = []
+    this.spinner.show();
+    if (this.arrayAlquilerPropietario.length > 0) {
+      if (tipo == "AlquilerConIntervencion") {
+        this.filtroConIntervencion = true;
+        for (let i = 0; i < this.arrayAlquilerPropietario.length; i++) {
+          const element = this.arrayAlquilerPropietario[i];
+          if (element.tipoAlquiler == "AlquilerConIntervencion") {
+            this.arrayDatosPropietario.push(element)
+          }
+          //QUITARLO DSP
+          if (this.arrayDatosPropietario.length == 15) {
+            break;
+          }
+          //
+          this.hayAlquileresPropietario = true;
+        }
+      } else {
+        this.filtroConIntervencion = false;
+        for (let i = 0; i < this.arrayAlquilerPropietario.length; i++) {
+          const element = this.arrayAlquilerPropietario[i];
+          if (element.tipoAlquiler == "AlquilerSinIntervencion") {
+            this.arrayDatosPropietario.push(element)
+          }
+          //QUITARLO DSP
+          if (this.arrayDatosPropietario.length == 15) {
+            break;
+          }
+          //
+        }
+        this.hayAlquileresPropietario = true;
+      }
+    }
+    this.spinner.hide();
+  }
+
+  selectPropiosTipoAlquiler(tipo) {
+    this.hayAlquileresPropios = false;
+    this.arrayDatosPropios = []
+    this.spinner.show();
+    if (this.arrayAlquilerPropios.length > 0) {
+      if (tipo == "AlquilerConIntervencion") {
+        this.filtroConIntervencion = true;
+        for (let i = 0; i < this.arrayAlquilerPropios.length; i++) {
+          const element = this.arrayAlquilerPropios[i];
+          if (element.tipoAlquiler == "AlquilerConIntervencion") {
+            this.arrayDatosPropios.push(element)
+          }
+          //QUITARLO DSP
+          if (this.arrayDatosPropios.length == 15) {
+            break;
+          }
+          //
+          this.hayAlquileresPropios = true;
+        }
+      } else {
+        this.filtroConIntervencion = false;
+        for (let i = 0; i < this.arrayAlquilerPropios.length; i++) {
+          const element = this.arrayAlquilerPropios[i];
+          if (element.tipoAlquiler == "AlquilerSinIntervencion") {
+            this.arrayDatosPropios.push(element)
+          }
+          //QUITARLO DSP
+          if (this.arrayDatosPropios.length == 15) {
+            break;
+          }
+          //
+        }
+        this.hayAlquileresPropios = true;
+      }
+    }
+    this.spinner.hide();
+  }
+
+  cambioTab(){
+    this.seleccionadoMisPublicaciones = "none";
+    this.seleccionadoPropios = "none";
   }
 }
 

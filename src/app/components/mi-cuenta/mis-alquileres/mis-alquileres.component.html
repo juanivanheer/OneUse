@@ -1,3 +1,7 @@
+<ngx-spinner bdColor="rgb(0,0,1)" size="medium" color="#ffffff" type="timer" [fullScreen]="true">
+    <p style="color: white"> Cargando alquileres... </p>
+</ngx-spinner>
+
 <div fxLayout="row" fxFlexFill>
     <div fxLayout fxFlexOrder="1" ngClass.lt-lg="container-muestra-imagenes">
         <app-barra-lateral></app-barra-lateral>
@@ -17,7 +21,7 @@
             <mat-spinner diameter="200"></mat-spinner>
             <p>Cargando...</p>
         </div>
-        <mat-tab-group dynamicHeight *ngIf="mostrar">
+        <mat-tab-group dynamicHeight *ngIf="mostrar" (selectedIndexChange)="cambioTab()">
             <!-- ALQUILERES DE MIS PUBLICACIONES -->
             <mat-tab>
                 <div fxHide.lt-lg="true">
@@ -26,20 +30,40 @@
                         De mis publicaciones
                     </ng-template>
                 </div>
+                <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="center center"
+                    style="width: 100%;margin-top:30px">
+                    <mat-form-field style="width: 300px;">
+                        <mat-label>Filtrar por tipo de alquiler</mat-label>
+                        <mat-select [(value)]="seleccionadoTipoAlquilerPropietario"
+                            (selectionChange)="selectMisPublicacionesTipoAlquiler($event.value)">
+                            <mat-option *ngFor="let tipo of tipoAlquiler" [value]="tipo.value">
+                                {{tipo.viewValue}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field *ngIf="filtroConIntervencion" style="width: 300px;">
+                        <mat-label>Filtrar por estado</mat-label>
+                        <mat-select [(value)]="seleccionadoMisPublicaciones"
+                            (selectionChange)="selectMisPublicaciones($event.value)">
+                            <mat-option *ngFor="let estado of estadosAlquiler" [value]="estado.value">
+                                {{estado.viewValue}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
                 <div style="text-align: center; margin-top: 100px;overflow: hidden;" *ngIf="!hayAlquileresPropietario">
-                    <h3>No hay alquileres por mostrar</h3>
+                    <h3> {{mensaje}} </h3>
                 </div>
                 <div *ngFor="let alquilerPropietario of arrayDatosPropietario; let indice = index">
                     <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px"
                         class="mat-elevation-z8 contenedor-individual" *ngIf="hayAlquileresPropietario">
-                        <div *ngIf="array_propio_lleno != false && array_propietario_lleno != false">
-                            <a routerLink="/publicaciones/{{alquilerPropietario.id_publicacion}}"
-                                class="titulo_alquiler" target="_blank">
-                                {{alquilerPropietario.titulo_publicacion}} </a>
-                        </div>
+                        <a routerLink="/publicaciones/{{alquilerPropietario.id_publicacion}}" class="titulo_alquiler"
+                            target="_blank">
+                            {{alquilerPropietario.titulo_publicacion}} </a>
                         <mat-divider style="width: 100%;"></mat-divider>
 
-                        <div *ngIf="arrayTipoAlquilerPropietarios[indice] == 'AlquilerSinIntervencion'"
+                        <div *ngIf="alquilerPropietario.tipoAlquiler == 'AlquilerSinIntervencion'"
                             style="padding: 20px;">
                             <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
                                 <div>
@@ -76,7 +100,7 @@
                         </div>
 
                         <div fxLayout="column" fxLayoutAlign="center center"
-                            *ngIf="arrayTipoAlquilerPropietarios[indice] == 'AlquilerConIntervencion'">
+                            *ngIf="alquilerPropietario.tipoAlquiler == 'AlquilerConIntervencion'">
                             <div fxLayout="row" fxLayoutAlign="center center">
                                 <a id="titulo" fxLayout="column" fxLayoutAlign="center center"
                                     routerLink="/publicaciones/{{alquilerPropietario.id_publicacion}}"
@@ -88,9 +112,30 @@
                                 <div>
                                     <mat-horizontal-stepper #stepper [disableRipple]="true" labelPosition="bottom">
 
+                                        <!-- CANCELADO -->
+                                        <mat-step [editable]="false"
+                                            [completed]="estaCompleto(alquilerPropietario,0,stepper)"
+                                            *ngIf="alquilerPropietario.estado == 'Cancelado'">
+                                            <ng-template matStepLabel>Cancelado</ng-template>
+                                            <ul class="items">
+                                                <li>
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon style="color: red; margin-right: 10px !important;">
+                                                            error
+                                                        </mat-icon>
+                                                        <span style="margin-right: 5px !important;">El alquiler ha sido
+                                                            cancelado debido a que has cancelado el pago del
+                                                            mismo.</span>
+                                                    </p>
+                                                </li>
+                                            </ul>
+                                        </mat-step>
+
                                         <!-- EN PROCESO DE PAGO -->
                                         <mat-step [editable]="false"
-                                            [completed]="estaCompleto(alquilerPropietario,0,stepper)">
+                                            [completed]="estaCompleto(alquilerPropietario,0,stepper)"
+                                            *ngIf="alquilerPropietario.estado != 'Cancelado'">
                                             <ng-template matStepLabel>En proceso de pago</ng-template>
                                             <ul class="items">
                                                 <li>
@@ -106,7 +151,8 @@
                                         </mat-step>
 
                                         <!-- EN PROCESO DE ENTREGA -->
-                                        <mat-step [editable]="false" [completed]="estaCompleto(alquilerPropietario,1)">
+                                        <mat-step [editable]="false" [completed]="estaCompleto(alquilerPropietario,1)"
+                                            *ngIf="alquilerPropietario.estado != 'Cancelado'">
                                             <ng-template matStepLabel>En proceso de entrega</ng-template>
                                             <ul class="items">
                                                 <li class="item">
@@ -173,7 +219,8 @@
                                         </mat-step>
 
                                         <!-- EN PROCESO DE DEVOLUCIÓN -->
-                                        <mat-step [editable]="false" [completed]="estaCompleto(alquilerPropietario,2)">
+                                        <mat-step [editable]="false" [completed]="estaCompleto(alquilerPropietario,2)"
+                                            *ngIf="alquilerPropietario.estado != 'Cancelado'">
                                             <ng-template matStepLabel>En proceso de devolución</ng-template>
                                             <ul class="items">
                                                 <li class="item">
@@ -249,7 +296,8 @@
                                         </mat-step>
 
                                         <!-- EN PROCESO DE PUNTUACIÓN -->
-                                        <mat-step [editable]="false" [completed]="estaCompleto(alquilerPropietario,3)">
+                                        <mat-step [editable]="false" [completed]="estaCompleto(alquilerPropietario,3)"
+                                            *ngIf="alquilerPropietario.estado != 'Cancelado'">
                                             <ng-template matStepLabel>En proceso de puntuación</ng-template>
                                             <ul class="items">
                                                 <li class="item">
@@ -296,7 +344,8 @@
                                         </mat-step>
 
                                         <!-- FINALIZADO -->
-                                        <mat-step [editable]="false" [completed]="estaCompleto(alquilerPropietario,4)">
+                                        <mat-step [editable]="false" [completed]="estaCompleto(alquilerPropietario,4)"
+                                            *ngIf="alquilerPropietario.estado != 'Cancelado'">
                                             <ng-template matStepLabel>Finalizado</ng-template>
                                             <ul class="items">
                                                 <li class="item">
@@ -388,22 +437,41 @@
                         Propios
                     </ng-template>
                 </div>
+                <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="center center"
+                    style="width: 100%;margin-top:30px">
+                    <mat-form-field style="width: 300px;">
+                        <mat-label>Filtrar por tipo de alquiler</mat-label>
+                        <mat-select [(value)]="seleccionadoPropios"
+                            (selectionChange)="selectPropiosTipoAlquiler($event.value)">
+                            <mat-option *ngFor="let tipo of tipoAlquiler" [value]="tipo.value">
+                                {{tipo.viewValue}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field *ngIf="filtroConIntervencion" style="width: 300px;">
+                        <mat-label>Filtrar por estado</mat-label>
+                        <mat-select [(value)]="seleccionadoMisPublicaciones"
+                            (selectionChange)="selectPropios($event.value)">
+                            <mat-option *ngFor="let estado of estadosAlquiler" [value]="estado.value">
+                                {{estado.viewValue}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
                 <div style="text-align: center; margin-top: 100px;overflow: hidden;" *ngIf="!hayAlquileresPropios">
-                    <h3>No hay alquileres por mostrar</h3>
+                    <h3>{{mensaje}}</h3>
                 </div>
                 <div *ngFor="let alquilerPropio of arrayDatosPropios; let indice = index">
                     <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px"
                         class="mat-elevation-z8 contenedor-individual" *ngIf="hayAlquileresPropios">
-                        <div *ngIf="
-                        array_propio_lleno !=false && array_propietario_lleno !=false">
-                            <a routerLink="/publicaciones/{{alquilerPropio.id_publicacion}}" class="titulo_alquiler"
-                                target="_blank">
-                                {{alquilerPropio.titulo_publicacion}} </a>
-                        </div>
+
+                        <a routerLink="/publicaciones/{{alquilerPropio.id_publicacion}}" class="titulo_alquiler"
+                            target="_blank">
+                            {{alquilerPropio.titulo_publicacion}} </a>
                         <mat-divider style="width: 100%;"></mat-divider>
                         <!-- ALQUILER SIN INTERVENCIÓN -->
-                        <div *ngIf="arrayTipoAlquilerPropios[indice] == 'AlquilerSinIntervencion'"
-                            style="padding: 20px;">
+                        <div *ngIf="alquilerPropio.tipoAlquiler == 'AlquilerSinIntervencion'" style="padding: 20px;">
                             <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
                                 <div>
                                     <a id="titulo" fxLayout="column" fxLayoutAlign="center center"
@@ -439,7 +507,7 @@
                         </div>
                         <!-- ALQUILER CON INTERVENCIÓN -->
                         <div fxLayout="column" fxLayoutAlign="center center"
-                            *ngIf="arrayTipoAlquilerPropios[indice] == 'AlquilerConIntervencion'">
+                            *ngIf="alquilerPropio.tipoAlquiler == 'AlquilerConIntervencion'">
                             <div fxLayout="row" fxLayoutAlign="center center">
                                 <a id="titulo" fxLayout="column" fxLayoutAlign="center center"
                                     routerLink="/publicaciones/{{alquilerPropio.id_publicacion}}"
@@ -450,10 +518,30 @@
                                 </a>
                                 <div>
                                     <mat-horizontal-stepper #stepper [disableRipple]="true" labelPosition="bottom">
+                                        <!-- CANCELADO -->
+                                        <mat-step [editable]="false"
+                                            [completed]="estaCompleto(alquilerPropio,0,stepper)"
+                                            *ngIf="alquilerPropio.estado == 'Cancelado'">
+                                            <ng-template matStepLabel>Cancelado</ng-template>
+                                            <ul class="items">
+                                                <li>
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon style="color: red; margin-right: 10px !important;">
+                                                            error
+                                                        </mat-icon>
+                                                        <span style="margin-right: 5px !important;">El alquiler ha sido
+                                                            cancelado debido a que has cancelado el pago del
+                                                            mismo.</span>
+                                                    </p>
+                                                </li>
+                                            </ul>
+                                        </mat-step>
 
                                         <!-- EN PROCESO DE PAGO -->
                                         <mat-step [editable]="false"
-                                            [completed]="estaCompleto(alquilerPropio,0,stepper)">
+                                            [completed]="estaCompleto(alquilerPropio,0,stepper)"
+                                            *ngIf="alquilerPropio.estado != 'Cancelado'">
                                             <ng-template matStepLabel>En proceso de pago</ng-template>
                                             <ul class="items">
                                                 <li>
@@ -471,7 +559,8 @@
                                         </mat-step>
 
                                         <!-- EN PROCESO DE ENTREGA -->
-                                        <mat-step [editable]="false" [completed]="estaCompleto(alquilerPropio,1)">
+                                        <mat-step [editable]="false" [completed]="estaCompleto(alquilerPropio,1)"
+                                            *ngIf="alquilerPropio.estado != 'Cancelado'">
                                             <ng-template matStepLabel>En proceso de entrega</ng-template>
                                             <ul class="items">
                                                 <li class="item">
@@ -534,7 +623,8 @@
                                         </mat-step>
 
                                         <!-- EN PROCESO DE DEVOLUCIÓN -->
-                                        <mat-step [editable]="false" [completed]="estaCompleto(alquilerPropio,2)">
+                                        <mat-step [editable]="false" [completed]="estaCompleto(alquilerPropio,2)"
+                                            *ngIf="alquilerPropio.estado != 'Cancelado'">
                                             <ng-template matStepLabel>En proceso de devolución</ng-template>
                                             <ul class="items">
                                                 <li class="item">
@@ -609,7 +699,8 @@
                                         </mat-step>
 
                                         <!-- EN PROCESO DE PUNTUACIÓN -->
-                                        <mat-step [editable]="false" [completed]="estaCompleto(alquilerPropio,3)">
+                                        <mat-step [editable]="false" [completed]="estaCompleto(alquilerPropio,3)"
+                                            *ngIf="alquilerPropio.estado != 'Cancelado'">
                                             <ng-template matStepLabel>En proceso de puntuación</ng-template>
                                             <ul class="items">
                                                 <li class="item">
@@ -655,7 +746,8 @@
                                         </mat-step>
 
                                         <!-- FINALIZADO -->
-                                        <mat-step [editable]="false" [completed]="estaCompleto(alquilerPropio,4)">
+                                        <mat-step [editable]="false" [completed]="estaCompleto(alquilerPropio,4)"
+                                            *ngIf="alquilerPropio.estado != 'Cancelado'">
                                             <ng-template matStepLabel>Finalizado</ng-template>
                                             <ul class="items">
                                                 <li class="item">
