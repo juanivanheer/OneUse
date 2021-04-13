@@ -222,10 +222,7 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
   pre_reclamo(datos) {
     console.log('datos')
     this._auth.registraDatosPreReclamo(datos);
-
-    this._router.navigate(['/prereclamo']);
-
-
+    window.location.assign('/prereclamo');
   }
 
   pagar(alquiler) {
@@ -514,6 +511,10 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
   cambioTab(){
     this.seleccionadoMisPublicaciones = "none";
     this.seleccionadoPropios = "none";
+    this.filtroConIntervencion = false;
+    this.hayAlquileresPropietario = false;
+    this.hayAlquileresPropios = false;
+    this.mensaje = ""
   }
 }
 
