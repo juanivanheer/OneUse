@@ -24,7 +24,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
   templateUrl: './mis-alquileres.component.html',
   styleUrls: ['./mis-alquileres.component.css']
 })
-export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit {
+export class MisAlquileresComponent implements OnInit, AfterViewInit {
 
   private subscription: Subscription;
 
@@ -222,7 +222,7 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
   pre_reclamo(datos) {
     console.log('datos')
     this._auth.registraDatosPreReclamo(datos);
-    window.location.assign('/prereclamo');
+    this._router.navigate(['/prereclamo']);
   }
 
   pagar(alquiler) {
@@ -235,10 +235,6 @@ export class MisAlquileresComponent implements OnInit, OnDestroy, AfterViewInit 
 
   continuarPago(alquilerPropio) {
     window.location.assign("pos-alquiler/" + alquilerPropio.id_publicacion)
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 
   cerrarSesion() {

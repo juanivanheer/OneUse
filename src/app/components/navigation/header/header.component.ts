@@ -31,7 +31,7 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
   paginaActual: string;
   subscriptionIniciada: boolean = false;
   subscriptionNotIniciada: boolean = false;
-  usuarioIniciado = {};
+  usuarioIniciado = { name: '' };
   _id;
   mostrarImagen = false;
   tieneNombre = false;
@@ -160,8 +160,8 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
         res => {
           this.usuarioIniciado = res;
           this.usuarioLogueado = res;
-          if(res.admin != undefined){
-            if(res.admin == true) this.esAdmin = true;
+          if (res.admin != undefined) {
+            if (res.admin == true) this.esAdmin = true;
             else this.esAdmin = false;
           }
           if (res.tipo == "google") {
@@ -403,6 +403,10 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       )
     }
+  }
+
+  ir(url) {
+    window.location.assign(String(window.location.href).slice(0, 23) + url)
   }
 
 }

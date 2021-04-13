@@ -100,7 +100,7 @@
                         </div>
 
                         <div fxLayout="column" fxLayoutAlign="center center"
-                            *ngIf="alquilerPropietario.tipoAlquiler == 'AlquilerConIntervencion'">
+                            *ngIf="alquilerPropietario.tipoAlquiler == 'AlquilerConIntervencion'" style="padding: 10px;">
                             <div fxLayout="row" fxLayoutAlign="center center">
                                 <a id="titulo" fxLayout="column" fxLayoutAlign="center center"
                                     routerLink="/publicaciones/{{alquilerPropietario.id_publicacion}}"
@@ -113,8 +113,25 @@
                                     <mat-horizontal-stepper #stepper [disableRipple]="true" labelPosition="bottom">
 
                                         <!-- CANCELADO -->
-                                        <mat-step [editable]="false"
-                                            [completed]="estaCompleto(alquilerPropietario,0,stepper)"
+                                        <mat-step [editable]="false" [completed]="true"
+                                            *ngIf="alquilerPropietario.estado == 'Cancelado'">
+                                            <ng-template matStepLabel>En proceso de pago</ng-template>
+                                            <ul class="items">
+                                                <li>
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon style="color: red; margin-right: 10px !important;">
+                                                            error
+                                                        </mat-icon>
+                                                        <span style="margin-right: 5px !important;">El alquiler ha sido
+                                                            cancelado debido a que la otra parte ha cancelado el pago
+                                                            del mismo.</span>
+                                                    </p>
+                                                </li>
+                                            </ul>
+                                        </mat-step>
+
+                                        <mat-step [editable]="false" [completed]="true"
                                             *ngIf="alquilerPropietario.estado == 'Cancelado'">
                                             <ng-template matStepLabel>Cancelado</ng-template>
                                             <ul class="items">
@@ -125,8 +142,8 @@
                                                             error
                                                         </mat-icon>
                                                         <span style="margin-right: 5px !important;">El alquiler ha sido
-                                                            cancelado debido a que has cancelado el pago del
-                                                            mismo.</span>
+                                                            cancelado debido a que la otra parte ha cancelado el pago
+                                                            del mismo.</span>
                                                     </p>
                                                 </li>
                                             </ul>
@@ -190,6 +207,19 @@
                                                         <span style="margin-right: 5px !important;">Entrega este código
                                                             solamente si te encuentras en contacto con el
                                                             locatario.</span>
+                                                    </p>
+                                                </li>
+                                                <li class="item"
+                                                    *ngIf="!alquilerPropietario.codigoPropietarioIngresado">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon style="color: red;">
+                                                            dangerous</mat-icon>
+                                                        <span style="margin-right: 5px !important;">Por favor, verifica
+                                                            que el objeto se encuentra en buenas condiciones antes de
+                                                            entregar tu código. Si lo entregas y no está en buenas
+                                                            condiciones, perderás la oportunidad de obtener una
+                                                            garantía</span>
                                                     </p>
                                                 </li>
                                                 <li class=" item"
@@ -269,6 +299,19 @@
                                                         <span style="margin-right: 5px !important;">Entrega este código
                                                             solamente si te encuentras en contacto con el
                                                             propietario.</span>
+                                                    </p>
+                                                </li>
+                                                <li class="item"
+                                                    *ngIf="!alquilerPropietario.codigoPropietarioDevolucionIngresado">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon style="color: red;">
+                                                            dangerous</mat-icon>
+                                                        <span style="margin-right: 5px !important;">Por favor, verifica
+                                                            que el objeto se encuentra en buenas condiciones antes de
+                                                            entregar tu código. Si lo entregas y no está en buenas
+                                                            condiciones, perderás la oportunidad de obtener una
+                                                            garantía</span>
                                                     </p>
                                                 </li>
                                                 <li class="item"
@@ -464,7 +507,7 @@
                 </div>
                 <div *ngFor="let alquilerPropio of arrayDatosPropios; let indice = index">
                     <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px"
-                        class="mat-elevation-z8 contenedor-individual" *ngIf="hayAlquileresPropios">
+                        class="mat-elevation-z8 contenedor-individual" *ngIf="hayAlquileresPropios" style="padding: 10px;">
 
                         <a routerLink="/publicaciones/{{alquilerPropio.id_publicacion}}" class="titulo_alquiler"
                             target="_blank">
@@ -519,8 +562,25 @@
                                 <div>
                                     <mat-horizontal-stepper #stepper [disableRipple]="true" labelPosition="bottom">
                                         <!-- CANCELADO -->
-                                        <mat-step [editable]="false"
-                                            [completed]="estaCompleto(alquilerPropio,0,stepper)"
+                                        <mat-step [editable]="false" [completed]="true"
+                                            *ngIf="alquilerPropio.estado == 'Cancelado'">
+                                            <ng-template matStepLabel>En proceso de pago</ng-template>
+                                            <ul class="items">
+                                                <li>
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon style="color: red; margin-right: 10px !important;">
+                                                            error
+                                                        </mat-icon>
+                                                        <span style="margin-right: 5px !important;">El alquiler ha sido
+                                                            cancelado debido a que has cancelado el pago del
+                                                            mismo.</span>
+                                                    </p>
+                                                </li>
+                                            </ul>
+                                        </mat-step>
+
+                                        <mat-step [editable]="false" [completed]="true"
                                             *ngIf="alquilerPropio.estado == 'Cancelado'">
                                             <ng-template matStepLabel>Cancelado</ng-template>
                                             <ul class="items">
@@ -619,6 +679,19 @@
                                                             propietario.</span>
                                                     </p>
                                                 </li>
+                                                <li class="item"
+                                                    *ngIf="!alquilerPropio.codigoLocatarioIngresado && alquilerPropio.codigoPropietarioIngresado">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon style="color: red;">
+                                                            dangerous</mat-icon>
+                                                        <span style="margin-right: 5px !important;">Por favor, verifica
+                                                            que el objeto se encuentra en buenas condiciones antes de
+                                                            entregar tu código. Si lo entregas y no está en buenas
+                                                            condiciones, perderás la oportunidad de obtener una
+                                                            garantía</span>
+                                                    </p>
+                                                </li>
                                             </ul>
                                         </mat-step>
 
@@ -693,6 +766,18 @@
                                                         <span style="margin-right: 5px !important;">Entrega este código
                                                             solamente si te encuentras en contacto con el
                                                             propietario.</span>
+                                                    </p>
+                                                </li>
+                                                <li class="item"
+                                                    *ngIf="alquilerPropio.codigoPropietarioDevolucionIngresado && !alquilerPropio.codigoLocatarioDevolucionIngresado">
+                                                    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px"
+                                                        style="font-size: 12px;">
+                                                        <mat-icon style="color: red;">
+                                                            dangerous</mat-icon>
+                                                        <span style="margin-right: 5px !important;">Por favor, verifica
+                                                            que el objeto se encuentra en buenas condiciones antes de
+                                                            entregar tu código. Caso contrario, puedes perder la
+                                                            oportunidad de obtener una garantía</span>
                                                     </p>
                                                 </li>
                                             </ul>

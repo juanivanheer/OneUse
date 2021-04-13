@@ -102,10 +102,10 @@
                     </div>
                     <div fxLayout="row" fxFlexAlign="center" fxLayoutGap="15px" class="bienvenida-boton">
                         <button mat-raised-button color="primary"
-                            (click)="checkPage('/mi-cuenta'); myDropdown.close();obtenerNombreLogueado()"
-                            routerLink="/mi-cuenta/perfil">Ir a mi cuenta</button>
-                        <button mat-raised-button color="accent" (click)="checkPage('/superadmin'); myDropdown.close()"
-                            routerLink="/superadmin" *ngIf="esAdmin">Superadmin</button>
+                            (click)="checkPage('/mi-cuenta'); myDropdown.close();obtenerNombreLogueado(); ir('mi-cuenta/perfil')">Ir a mi cuenta</button>
+                        <button mat-raised-button color="accent"
+                            (click)="checkPage('/superadmin'); myDropdown.close(); ir('superadmin')"
+                            *ngIf="esAdmin">Superadmin</button>
                     </div>
                 </div>
                 <mat-divider [vertical]="true"></mat-divider>
