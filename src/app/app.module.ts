@@ -104,6 +104,7 @@ import { IvyCarouselModule } from 'angular-responsive-carousel';
 import { EliminarReclamoDialogComponent } from './components/mi-cuenta/superadmin/reclamos/eliminar-reclamo-dialog/eliminar-reclamo-dialog.component';
 import { RespuestaReclamoDialogComponent } from './components/mi-cuenta/superadmin/reclamos/respuesta-reclamo-dialog/respuesta-reclamo-dialog.component';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { HabilitarStockDialogComponent } from './components/mi-cuenta/mis-publicaciones/habilitar-stock-dialog/habilitar-stock-dialog.component';
 FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme, TimeSeries, Maps, World, Argentina);
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
@@ -187,6 +188,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     ReclamoDialogComponent,
     EliminarReclamoDialogComponent,
     RespuestaReclamoDialogComponent,
+    HabilitarStockDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -216,6 +218,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
   entryComponents: [DeshabilitarDialogComponent, EliminarDialogComponent, DatosPropietarioDialogComponent, EliminarAlquilerDialogComponent,
     DatosLocatarioDialogComponent, CodigoPropietarioDialogComponent, CodigoLocatarioDialogComponent, CodigoDevolucionLocatarioDialogComponent,
     CodigoDevolucionPropietarioDialogComponent, EliminarUsuarioDialogComponent, DatosUsuariosDialogComponent, ModificarUsuarioDialogComponent, DatosPublicacionesDialogComponent, EliminarPublicacionDialogComponent, ModificarPublicacionDialogComponent,
-    DatosAlquileresDialogComponent, ModificarAlquilerDialogComponent, EliminarAlquilerSuperadminDialogComponent, CancelarDialogComponent, PuntuacionComponent, PuntuacionObtenidaDialogComponent, ReclamoDialogComponent, EliminarReclamoDialogComponent, RespuestaReclamoDialogComponent]
+    DatosAlquileresDialogComponent, ModificarAlquilerDialogComponent, EliminarAlquilerSuperadminDialogComponent, CancelarDialogComponent, PuntuacionComponent, PuntuacionObtenidaDialogComponent, ReclamoDialogComponent, EliminarReclamoDialogComponent, RespuestaReclamoDialogComponent,
+    HabilitarStockDialogComponent]
 })
 export class AppModule { }

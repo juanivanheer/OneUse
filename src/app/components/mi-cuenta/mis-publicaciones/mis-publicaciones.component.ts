@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeshabilitarDialogComponent } from './deshabilitar-dialog/dehsabilitar-dialog'
 import { EliminarDialogComponent } from './eliminar-dialog/eliminar-dialog.component'
+import { HabilitarStockDialogComponent } from './habilitar-stock-dialog/habilitar-stock-dialog.component';
 
 
 @Component({
@@ -207,6 +208,7 @@ export class MisPublicacionesComponent implements OnInit {
 
   deshabilitarDialogRef: MatDialogRef<DeshabilitarDialogComponent>;
   eliminarDialogRef: MatDialogRef<EliminarDialogComponent>;
+  habilitarStockDialogRef: MatDialogRef<HabilitarStockDialogComponent>;
 
   openDialogDeshabilitar(publicacion): void {
     this.deshabilitarDialogRef = this.dialog.open(DeshabilitarDialogComponent,
@@ -228,6 +230,18 @@ export class MisPublicacionesComponent implements OnInit {
         }
       });
     this.eliminarDialogRef.afterClosed().subscribe(result => {
+      this.ngOnInit();
+    })
+  }
+
+  openDialogHabilitarStock(publicacion): void {
+    this.habilitarStockDialogRef = this.dialog.open(HabilitarStockDialogComponent,
+      {
+        data: {
+          publicacion: publicacion
+        }
+      });
+    this.habilitarStockDialogRef.afterClosed().subscribe(result => {
       this.ngOnInit();
     })
   }

@@ -1,0 +1,16 @@
+<h2 mat-dialog-title style="text-align: center">¡Ingresa el stock del producto!</h2>
+<mat-dialog-content class="mat-typography">
+    <p>Tu publicación no posee stock y deberás completar el siguiente campo con la cantidad de stock que dispones para
+        poder habilitarte la publicación</p>
+    <mat-form-field>
+        <input matInput #stock maxlength="3" placeholder="Stock disponible" [formControl]="stockFormControl">
+        <mat-error
+            *ngIf="stockFormControl.hasError('maxLength') || stockFormControl.hasError('required') || stockFormControl.hasError('min')">
+            La cantidad ingresada no es correcta</mat-error>
+        <mat-hint align="end">{{stock.value.length}} / 3</mat-hint>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" (click)="update(stock.value)">Habilitar</button>
+    <button mat-raised-button color="primary" mat-dialog-close (click)="close()">Volver</button>
+</mat-dialog-actions>

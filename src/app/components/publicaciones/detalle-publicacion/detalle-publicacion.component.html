@@ -29,7 +29,8 @@
                     <p style="text-align: justify; font-size: 14px;">{{publicacion.descripcion}} </p>
                 </div>
                 <mat-divider></mat-divider>
-                <div *ngIf="!esActiva" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px" style="font-size: 11px; margin-top: 50px;">
+                <div *ngIf="!esActiva" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px"
+                    style="font-size: 11px; margin-top: 50px;">
                     <mat-icon style="color: cornflowerblue"> info </mat-icon>
                     <span>La publicación se encuentra <b>desactivada</b> y no se pueden realizar preguntas</span>
                 </div>
@@ -62,12 +63,12 @@
                                 </div>
                                 <div fxLayoutAlign="end" style="width: 100%;">
                                     <p style="font-size: 9px; margin-bottom: 10px;">
-                                        <b>{{pregunta.usuario_pregunta}}</b> </p>
+                                        <b>{{pregunta.usuario_pregunta}}</b>
+                                    </p>
                                 </div>
                             </div>
                             <!--Respuesta-->
-                            <div fxLayout="column" style="margin-bottom: 30px;"  
-                                *ngIf="pregunta.tiene_respuesta">
+                            <div fxLayout="column" style="margin-bottom: 30px;" *ngIf="pregunta.tiene_respuesta">
                                 <div fxLayout="row" fxLayoutGap="10px">
                                     <div>
                                         <mat-icon>comment</mat-icon>
@@ -135,9 +136,11 @@
                         <span style="color: #3483fa">{{usuario_publicador.name}}</span>
                     </p>
                     <br>
-                    <div *ngIf="!esActiva" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px" style="font-size: 9px;">
+                    <div *ngIf="!esActiva" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px"
+                        style="font-size: 9px;">
                         <mat-icon style="color: cornflowerblue"> info </mat-icon>
-                        <span>La publicación se encuentra <b>desactivada</b> y no se puede realizar un alquiler de la misma</span>
+                        <span>La publicación se encuentra <b>desactivada</b> y no se puede realizar un alquiler de la
+                            misma</span>
                     </div>
                     <form [formGroup]="cantidades" *ngIf="esActiva">
                         <div fxLayout="row" fxFlexFill fxLayoutGap="20px" *ngIf="estaLogueado && !es_publicador">
@@ -173,7 +176,11 @@
                         <button routerLink='/editar-publicacion/{{id}}' style="width: 300px;" mat-raised-button
                             color="primary" *ngIf="estaLogueado && es_publicador">Editar</button>
                         <button (click)="registrarAlquiler()" style="width: 300px;" mat-raised-button color="primary"
-                            *ngIf="estaLogueado && !es_publicador" [disabled]="btnAlquilar">Alquilar</button>
+                            *ngIf="estaLogueado && !es_publicador && usuarioCompleto"
+                            [disabled]="btnAlquilar">Alquilar</button>
+                        <button (click)="completarPerfil()" style="width: 400px;" mat-raised-button color="primary"
+                            *ngIf="estaLogueado && !es_publicador && !usuarioCompleto">Debes completar tu perfil para
+                            poder realizar el alquiler</button>
                     </div>
                 </div>
                 <br>
