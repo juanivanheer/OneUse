@@ -89,11 +89,12 @@ export class AuthService {
   private _getIP = this.url + 'obtener-ip'
   private _updatePublicacionesDestacacion = this.url + 'update-pub-destacacion'
   private _sendMail = this.url + 'send-mail'
+  private _reducirStock = this.url + 'reducir-stock/'
 
   constructor(private http: HttpClient) { }
 
-  enviarEmail(objeto){
-    return this.http.post<any>(this._sendMail,objeto)
+  enviarEmail(objeto) {
+    return this.http.post<any>(this._sendMail, objeto)
   }
 
   /* CRUD DE USUARIOS */
@@ -182,6 +183,11 @@ export class AuthService {
     return this.http.delete<any>(this._deletePublicacion + id);
   }
 
+  reducir_stock(id, stock) {
+    let headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.http.post<any>(this._reducirStock + id, stock, { headers: headers });
+  }
+
   get_publicacion_id(id) {
     return this.http.get<any>(this._getPublicacionId + id);
   }
@@ -204,7 +210,7 @@ export class AuthService {
     return this.http.get<any>(this._getAllPublicaciones);
   }
 
-  update_publicacion_caducacion(array){
+  update_publicacion_caducacion(array) {
     return this.http.post<any>(this._updatePublicacionesDestacacion, array)
   }
 

@@ -1,8 +1,12 @@
-<section>
+<ngx-spinner bdColor="rgb(0,0,1)" size="medium" color="#ffffff" type="timer" [fullScreen]="true">
+    <p style="color: white"> Cargando publicación... </p>
+</ngx-spinner>
+
+<section *ngIf="mostrar">
     <div class="chips">
         <mat-chip-list>
-            <mat-chip color="primary" selected>{{categoria}}</mat-chip>
-            <mat-chip color="primary" selected>{{subcategoria}}</mat-chip>
+            <mat-chip color="primary" selected>{{publicacion.categoria}}</mat-chip>
+            <mat-chip color="primary" selected>{{publicacion.subcategoria}}</mat-chip>
         </mat-chip-list>
     </div>
     <div fxLayout="row" fxLayoutAlign="center center" class="contenedor-principal">
@@ -15,8 +19,6 @@
                         <div *ngFor="let img of publicacion.multiplefile; let indice2 = index">
                             <img class="container-muestra-imagenes"
                                 src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}">
-                            <!-- <img class="container-muestra-imagenes"
-                                src="{{'https://oneuse-backend.herokuapp.com/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}"> -->
                         </div>
                     </swiper>
                 </div>
@@ -24,10 +26,14 @@
                 <div class="descripcion">
                     <h3 style="text-align: center;">Descripción </h3>
                     <br>
-                    <p style="text-align: justify; font-size: 14px;">{{descripcion}} </p>
+                    <p style="text-align: justify; font-size: 14px;">{{publicacion.descripcion}} </p>
                 </div>
                 <mat-divider></mat-divider>
-                <div class="preguntasRespuestas" *ngIf="!es_publicador">
+                <div *ngIf="!esActiva" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px" style="font-size: 11px; margin-top: 50px;">
+                    <mat-icon style="color: cornflowerblue"> info </mat-icon>
+                    <span>La publicación se encuentra <b>desactivada</b> y no se pueden realizar preguntas</span>
+                </div>
+                <div class="preguntasRespuestas" *ngIf="!es_publicador && esActiva">
                     <h3>Preguntas y respuestas</h3>
                     <br><br>
                     <mat-form-field>
@@ -41,37 +47,43 @@
                 <div class="ultimasPreguntas">
                     <h3><b>Últimas preguntas</b></h3>
                     <br>
-                    <div *ngIf="tienePreguntas">
-                        <div *ngFor="let pregunta of preguntas">
+                    <div *ngIf="tienePreguntas" style="margin: 10px;">
+                        <div *ngFor="let pregunta of preguntas" class="mat-elevation-z4"
+                            style="padding-bottom: 1px; padding-inline: 20px; padding-top: 15px; margin-bottom: 15px;">
                             <!--Pregunta-->
-                            <div fxLayout="row" style="margin-bottom: 10px; margin-left: 10px">
-                                <div fxLayoutAlign="center center">
-                                    <p style="font-size: 9px; margin-right: 7px"> {{pregunta.usuario_pregunta}} </p>
+                            <div fxLayout="column" fxLayoutAlign="start start">
+                                <div fxLayout="row" fxLayoutGap="10px">
+                                    <div fxLayoutAlign="center center">
+                                        <mat-icon>chat</mat-icon>
+                                    </div>
+                                    <div>
+                                        <p>{{pregunta.pregunta}}</p>
+                                    </div>
                                 </div>
-                                <div fxLayoutAlign="center center">
-                                    <mat-icon>chat</mat-icon>
-                                </div>
-                                <div style="margin-left: 10px">
-                                    <p>{{pregunta.pregunta}}</p>
+                                <div fxLayoutAlign="end" style="width: 100%;">
+                                    <p style="font-size: 9px; margin-bottom: 10px;">
+                                        <b>{{pregunta.usuario_pregunta}}</b> </p>
                                 </div>
                             </div>
                             <!--Respuesta-->
-                            <div *ngIf="pregunta.tiene_respuesta">
-                                <div fxLayout="row" style="margin-bottom: 30px; margin-left: 10px">
-                                    <div fxLayoutAlign="center center">
-                                        <p style="font-size: 9px; margin-right: 7px"> {{pregunta.usuario_publicacion}}
-                                        </p>
-                                    </div>
-                                    <div fxLayoutAlign="center center">
+                            <div fxLayout="column" style="margin-bottom: 30px;"  
+                                *ngIf="pregunta.tiene_respuesta">
+                                <div fxLayout="row" fxLayoutGap="10px">
+                                    <div>
                                         <mat-icon>comment</mat-icon>
                                     </div>
-                                    <div style="margin-left: 10px">
+                                    <div>
                                         <p> {{pregunta.respuesta}} </p>
+                                    </div>
+                                </div>
+                                <div fxLayoutAlign="end">
+                                    <div>
+                                        <p style="font-size: 9px;"> <b>{{pregunta.usuario_publicacion}}</b> </p>
                                     </div>
                                 </div>
                             </div>
                             <div *ngIf="!pregunta.tiene_respuesta">
-                                <div fxLayout="row" style="margin-bottom: 30px; margin-left: 10px; margin-right: 15px;">
+                                <div fxLayout="row" style="margin-bottom: 30px">
                                     <div fxLayoutAlign="center center" *ngIf="!es_publicador">
                                         <mat-icon>comment</mat-icon>
                                     </div>
@@ -92,12 +104,12 @@
                             </div>
                         </div>
                     </div>
-                    <div *ngIf="!tienePreguntas">
+                    <div *ngIf="!tienePreguntas" style="margin: 10px;">
                         <div fxLayout="row" style="margin-bottom: 10px; margin-left: 10px">
                             <div fxLayoutAlign="center center">
                                 <mat-icon>chat</mat-icon>
                             </div>
-                            <div style="margin-left: 10px">
+                            <div>
                                 <p>Hasta el momento, no se han realizado preguntas</p>
                             </div>
                         </div>
@@ -110,18 +122,24 @@
             <!--Contenedor de precio + Alquilar-->
             <div fxLayout="column" fxFlexAlign="start" fxFlex="500px">
                 <div class="contenedor-2">
-                    <h2 fxFlexAlign="center"> <b>{{titulo}}</b> </h2>
+                    <h2 fxFlexAlign="center"> <b>{{publicacion.titulo}}</b> </h2>
                     <br>
-                    <h2 fxFlexAlign="start"><b>${{preciodia}}</b></h2>
+                    <h2 fxFlexAlign="start"><b>${{publicacion.preciodia}}</b></h2>
                     <br>
-                    <p fxFlexAlign="start" *ngIf="preciosemana > 0"><b>Precio por semana: </b> ${{preciosemana}} </p>
-                    <p fxFlexAlign="start" *ngIf="preciomes > 0"><b>Precio por mes: </b> ${{preciomes}} </p>
+                    <p fxFlexAlign="start" *ngIf="publicacion.preciosemana > 0"><b>Precio por semana: </b>
+                        ${{publicacion.preciosemana}} </p>
+                    <p fxFlexAlign="start" *ngIf="publicacion.preciomes > 0"><b>Precio por mes: </b>
+                        ${{publicacion.preciomes}} </p>
                     <p fxFlexAlign="start" (click)="irUsuario()" style="cursor: pointer;">
                         <b>Publicado por </b>
-                        <span style="color: #3483fa">{{usuario.name}}</span>
+                        <span style="color: #3483fa">{{usuario_publicador.name}}</span>
                     </p>
                     <br>
-                    <form [formGroup]="cantidades">
+                    <div *ngIf="!esActiva" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px" style="font-size: 9px;">
+                        <mat-icon style="color: cornflowerblue"> info </mat-icon>
+                        <span>La publicación se encuentra <b>desactivada</b> y no se puede realizar un alquiler de la misma</span>
+                    </div>
+                    <form [formGroup]="cantidades" *ngIf="esActiva">
                         <div fxLayout="row" fxFlexFill fxLayoutGap="20px" *ngIf="estaLogueado && !es_publicador">
                             <mat-form-field style="width: 150px">
                                 <mat-label>Cantidad a alquilar</mat-label>
@@ -146,7 +164,7 @@
                             </mat-form-field>
                         </div>
                     </form>
-                    <div class="btnAlquilar">
+                    <div class="btnAlquilar" *ngIf="esActiva">
                         <p *ngIf="montoTotal > 0"
                             style="text-align: left;font-size: 12px;color: orangered; margin-bottom: 10px;">Monto total
                             a abonar: ${{montoTotal}} </p>
@@ -166,7 +184,8 @@
                     <div *ngIf=esConIntervencion>
                         <div fxLayout="roe" fxLayoutAlign="center center" fxLayoutGap="10px">
                             <mat-icon style="color: green;">check</mat-icon>
-                            <span style="text-align: justify; margin-left: 23px">Este producto se encuentra asegurado ante
+                            <span style="text-align: justify; margin-left: 23px">Este producto se encuentra asegurado
+                                ante
                                 incidentes.</span>
                         </div>
                         <br>
@@ -182,7 +201,8 @@
                     <div *ngIf=!esConIntervencion>
                         <div fxLayout="roe" fxLayoutAlign="center center" fxLayoutGap="10px">
                             <mat-icon style="color: red;">cancel</mat-icon>
-                            <span style="text-align: justify; margin-left: 23px">Este producto no se encuentra asegurado ante
+                            <span style="text-align: justify; margin-left: 23px">Este producto no se encuentra asegurado
+                                ante
                                 incidentes.</span>
                         </div>
                     </div>

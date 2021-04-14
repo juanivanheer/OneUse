@@ -1,66 +1,71 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { SingletonService } from '../../singleton.service';
 import { MatSnackBar } from '@angular/material';
 import { TooltipPosition } from '@angular/material/tooltip';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import "rxjs/add/observable/zip";
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-detalle-publicacion',
   templateUrl: './detalle-publicacion.component.html',
   styleUrls: ['./detalle-publicacion.component.css']
 })
-export class DetallePublicacionComponent implements OnInit, OnDestroy {
+export class DetallePublicacionComponent implements OnInit {
 
-  constructor(private _auth: AuthService, private _singleton: SingletonService, private _snackBar: MatSnackBar, private _formBuilder: FormBuilder) { }
+  constructor(private spinner: NgxSpinnerService, private _auth: AuthService, private _singleton: SingletonService, private _snackBar: MatSnackBar, private _formBuilder: FormBuilder) { }
 
   position: TooltipPosition = 'right';
 
+  usuario_logueado = { name: '', email: '' };
+  usuario_publicador;
+  publicacion = {
+    _id: '',
+    titulo: '',
+    categoria: '',
+    subcategoria: '',
+    descripcion: '',
+    preciodia: '',
+    preciosemana: '',
+    preciomes: '',
+    email: '',
+    multiplefile: undefined,
+    tipoAlquiler: '',
+    estado: '',
+    createdAt: '',
+    cantDias: 0,
+    cantidadDisponible: 0,
+  }
 
-  id;
-  titulo;
-  preciodia;
-  preciosemana;
-  preciomes;
-  descripcion;
-  categoria;
-  subcategoria;
-  publicacion;
-  JSON;
-  JSONfinal;
-  arrayJSON = [];
-  preguntas = [];
+  esConIntervencion = false;
   tienePreguntas = false;
   tieneRespuesta = false;
   es_publicador = false;
-  email;
-  logueado;
-  usuario = { name: '' };
-  usuario_publicador;
-  usuario_logueado = { name: '' };
   estadoBtnPreguntar = false;
-  valorPregunta;
-  esConIntervencion = false;
   estaLogueado = false;
-  cantidadDisponible;
-  arrayCantidadDisponible = [];
-  cantidadDisponibleSeleccionada;
-  cantidadDias;
-  arraycantidadDias = [];
-  cantidadDiasSeleccionado;
   btnAlquilar = true;
-  cantidades: FormGroup;
-  tipoAlquiler;
-  suscription: Subscription;
-  montoTotal;
+  mostrar = false;
 
-  ngOnDestroy() {
-    this.suscription.unsubscribe();
-  }
+  arrayJSON = [];
+  arrayCantidadDisponible = [];
+  preguntas = [];
+  arraycantidadDias = [];
+  esActiva = false;
+  JSONfinal;
+  id;
+  cantidadDiasSeleccionado;
+  valorPregunta;
+  cantidadDisponibleSeleccionada;
+  tipoAlquiler;
+  montoTotal;
+  cantidades: FormGroup;
+
 
   ngOnInit() {
+    this.spinner.show();
     var urlActual = window.location.href;
     if (window.location.hostname != 'localhost') {
       this.id = urlActual.substr(43);
@@ -68,80 +73,83 @@ export class DetallePublicacionComponent implements OnInit, OnDestroy {
       this.id = urlActual.substr(37);
     }
 
-
     this.cantidades = this._formBuilder.group({
       cantidadDisponibleSeleccionada: ['', Validators.required],
       cantidadDiasSeleccionado: ['', Validators.required]
     });
 
-    this.suscription = this._auth.registrar_visita_publicacion(this.id).subscribe(
+
+    var obsA = this._auth.registrar_visita_publicacion(this.id);
+    var obsB = this._auth.get_publicacion_id(this.id)
+    var obsC = this._auth.get_all_users();
+    const obsvArray = [obsA, obsB, obsC];
+    const zip = Observable.zip(...obsvArray)
+    zip.subscribe(
       res => {
-        //console.log(res);
-      }
-    )
 
-    this._auth.get_publicacion_id(this.id).subscribe(
-      res => {
+        let publicacion = res[1];
+        let usuarios = res[2];
 
-        this.titulo = res.titulo;
-        this.preciodia = res.preciodia;
-        this.preciomes = res.preciomes;
-        this.preciosemana = res.preciosemana;
-        this.descripcion = res.descripcion;
-        this.categoria = res.categoria;
-        this.subcategoria = res.subcategoria;
-        this.cantidadDisponible = res.cantidadDisponible;
-        this.cantidadDias = res.cantDias;
-        this.tipoAlquiler = res.tipoAlquiler;
+        this.publicacion.titulo = publicacion.titulo;
+        this.publicacion.preciodia = publicacion.preciodia;
+        this.publicacion.preciomes = publicacion.preciomes;
+        this.publicacion.preciosemana = publicacion.preciosemana;
+        this.publicacion.descripcion = publicacion.descripcion;
+        this.publicacion.categoria = publicacion.categoria;
+        this.publicacion.subcategoria = publicacion.subcategoria;
+        this.publicacion.cantidadDisponible = publicacion.cantidadDisponible;
+        this.publicacion.cantDias = publicacion.cantDias;
+        this.publicacion.tipoAlquiler = publicacion.tipoAlquiler;
+        this.publicacion.multiplefile = publicacion.multiplefile
+        this.publicacion.email = publicacion.email
+        this.publicacion.estado = publicacion.estado;
 
-        if (this.tipoAlquiler == 'AlquilerConIntervencion') {
+        if(this.publicacion.estado == "INACTIVA"){
+          this.esActiva = false;
+        } else {
+          this.esActiva = true;
+          for (let i = 0; i <= this.publicacion.cantidadDisponible; i++) {
+            this.arrayCantidadDisponible.push(i);
+          }
+  
+          for (let i = 0; i <= this.publicacion.cantDias; i++) {
+            this.arraycantidadDias.push(i);
+          }
+        }
+
+        if (this.publicacion.tipoAlquiler == 'AlquilerConIntervencion') {
           this.esConIntervencion = true;
         } else {
           this.esConIntervencion = false;
         }
 
-        for (let i = 0; i <= this.cantidadDisponible; i++) {
-          this.arrayCantidadDisponible.push(i);
-        }
-
-        for (let i = 0; i <= this.cantidadDias; i++) {
-          this.arraycantidadDias.push(i);
-        }
-
         //Para mostrar las imagenes
-        this.publicacion = res;
-        this.JSON = res.multiplefile;
-        this.JSONfinal = JSON.parse(this.JSON); //CREA JSON CONVERTIDO DE STRING
+        this.JSONfinal = JSON.parse(this.publicacion.multiplefile); //CREA JSON CONVERTIDO DE STRING
         for (let j in this.JSONfinal) {
           this.arrayJSON.push(this.JSONfinal[j]);
         }
         this.publicacion.multiplefile = this.arrayJSON;
 
-        this.email = this.publicacion.email;
         if (localStorage.getItem("email") == undefined || localStorage.getItem("email") == null) {
           this.estaLogueado = false;
         } else {
-          this._auth.user_data(localStorage.getItem("email")).subscribe(
-            res => {
-              this.usuario_logueado = res;
-              this.logueado = res;
-              this.estaLogueado = true;
-              if (this.email == this.logueado.email) {
-                this.es_publicador = true;
-              } else {
-                this.es_publicador = false;
-              }
-            }
-          )
+          this.estaLogueado = true;
         }
 
+        for (let i = 0; i < usuarios.length; i++) {
+          const element = usuarios[i];
+          if (element.email == localStorage.getItem("email")) {
+            this.usuario_logueado = element;
 
-        this._auth.user_data(this.email).subscribe(
-          res => {
-            this.usuario = res;
-            this.usuario_publicador = res;
+            if (element.email == this.publicacion.email) {
+              this.es_publicador = true;
+            }
+            else this.es_publicador = false;
           }
-        )
+          if (element.email == this.publicacion.email) {
+            this.usuario_publicador = element;
+          }
+        }
 
 
         //VERIFICAR QUE SALGAN LAS PREGUNTAS SOLO DE ESTA PUBLICACION
@@ -155,12 +163,14 @@ export class DetallePublicacionComponent implements OnInit, OnDestroy {
                 this.tienePreguntas = true;
               }
             }
+            this.mostrar = true;
+            this.spinner.hide();
           },
         )
-      },
-      res => {
-      })
+      }
+    )
   }
+
 
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {
@@ -175,58 +185,38 @@ export class DetallePublicacionComponent implements OnInit, OnDestroy {
     } else {
       this.estadoBtnPreguntar = true;
       this.valorPregunta = "";
-      this._auth.user_data(localStorage.getItem("email")).subscribe(
+      let objeto = { pregunta: pregunta }
+
+      var obsA = this._auth.post_pregunta_publicacion(this.id, this.usuario_logueado.name, objeto)
+      var obsB = this._auth.notificacion_pregunta_publicacion(this.usuario_logueado.name, this.usuario_publicador.name, this.publicacion.titulo, this.publicacion.multiplefile[0], this.id)
+      const obsvArray = [obsA, obsB];
+      const zip2 = Observable.zip(...obsvArray)
+      zip2.subscribe(
         res => {
-          let usuario_pregunta = res;
-          let objeto = { pregunta: pregunta }
-          this._auth.post_pregunta_publicacion(this.id, usuario_pregunta.name, objeto).subscribe(
-            res => {
-              this.estadoBtnPreguntar = false;
-              this.ngOnInit();
-            }
-          );
-
-          this._auth.user_data(this.publicacion.email).subscribe(
-            res1 => {
-              let usuario_publicacion = res1.name;
-              this._auth.notificacion_pregunta_publicacion(usuario_pregunta.name, usuario_publicacion, this.publicacion.titulo, this.publicacion.multiplefile[0], this.publicacion._id).subscribe(
-                res2 => {
-                  //console.log(res2);
-                }
-              )
-            }
-          )
-
+          this.estadoBtnPreguntar = false;
+          this.ngOnInit();
         }
-      )
+      );
     }
   }
 
   enviarRespuesta(respuesta, pregunta) {
-
     let _id = pregunta._id;
-
-    this._auth.user_data(localStorage.getItem("email")).subscribe(
+    let objeto = { respuesta: respuesta }
+    var obsA = this._auth.post_respuesta_publicacion(_id, this.usuario_logueado.name, objeto)
+    var obsB = this._auth.get_una_pregunta_respuesta(_id)
+    const obsvArray = [obsA, obsB];
+    const zip3 = Observable.zip(...obsvArray)
+    zip3.subscribe(
       res => {
-        let usuario_respuesta = res;
-        let objeto = { respuesta: respuesta }
-        this._auth.post_respuesta_publicacion(_id, usuario_respuesta.name, objeto).subscribe(
-          res => {
-            this.ngOnInit();
-          }
-        );
-        this._auth.get_una_pregunta_respuesta(_id).subscribe(
-          res1 => {
-            let usuario_pregunta = res1.pyr.usuario_pregunta;
-            this._auth.notificacion_respuesta_publicacion(usuario_respuesta.name, usuario_pregunta, this.publicacion.titulo, this.publicacion.multiplefile[0], this.publicacion._id).subscribe(
-              res2 => {
-              }
-            )
+        this.ngOnInit();
+        let usuario_pregunta = res[1].pyr.usuario_pregunta;
+        this._auth.notificacion_respuesta_publicacion(this.usuario_logueado.name, usuario_pregunta, this.publicacion.titulo, this.publicacion.multiplefile[0], this.id).subscribe(
+          res2 => {
           }
         )
-
       }
-    )
+    );
   }
 
   habilitarAlquilar() {
@@ -239,7 +229,7 @@ export class DetallePublicacionComponent implements OnInit, OnDestroy {
           this.montoTotal = parseInt(this.cantidadDisponibleSeleccionada) * this.calcularPrecio();
         } else {
           if (this.cantidadDiasSeleccionado > 28) {
-            this.montoTotal = parseInt(this.cantidadDisponibleSeleccionada) * (parseInt(this.preciomes) + this.calcularPrecio());
+            this.montoTotal = parseInt(this.cantidadDisponibleSeleccionada) * (parseInt(this.publicacion.preciomes) + this.calcularPrecio());
           }
         }
         this.btnAlquilar = false;
@@ -249,10 +239,21 @@ export class DetallePublicacionComponent implements OnInit, OnDestroy {
   }
 
   registrarAlquiler() {
-    let reembolso = this.montoTotal * 0.40;
-    this._auth.registrar_EnProcesoPago(this.id, this.usuario.name, this.usuario_logueado.name, this.cantidadDiasSeleccionado, this.cantidadDisponible, this.publicacion.multiplefile[0], this.montoTotal, reembolso, this.publicacion.titulo).subscribe(
+    let reembolso;
+    if(this.publicacion.tipoAlquiler == "AlquilerSinIntervencion"){
+      reembolso = 0;
+    } else {
+      reembolso = this.montoTotal * 0.40;
+    }
+    let nuevo_stock = this.publicacion.cantidadDisponible - this.cantidadDisponibleSeleccionada;
+    var obsA = this._auth.registrar_EnProcesoPago(this.id, this.usuario_publicador.name, this.usuario_logueado.name, this.cantidadDiasSeleccionado, this.cantidadDisponibleSeleccionada, this.publicacion.multiplefile[0], this.montoTotal, reembolso, this.publicacion.titulo);
+    var obsB = this._auth.reducir_stock(this.id, { nuevo_stock: nuevo_stock });
+    const obsvArray = [obsA,obsB];
+    const zip = Observable.zip(...obsvArray)
+    zip.subscribe(
       res => {
-        window.location.assign("pos-alquiler/" + this.publicacion._id)
+        console.log(res);
+        window.location.assign("pos-alquiler/" + res[0]._id)
       }
     )
   }
@@ -262,37 +263,41 @@ export class DetallePublicacionComponent implements OnInit, OnDestroy {
   }
 
   calcularPrecio() {
-    if (this.preciomes == 0 && this.preciosemana == 0) {
-      return this.cantidadDiasSeleccionado * this.preciodia;
+    let preciodia = parseInt(this.publicacion.preciodia);
+    let preciosemana = parseInt(this.publicacion.preciosemana);
+    let preciomes = parseInt(this.publicacion.preciomes);
+
+    if (preciomes == 0 && preciosemana == 0) {
+      return this.cantidadDiasSeleccionado * preciodia;
     } else {
       if (this.cantidadDiasSeleccionado < 7) {
-        return this.cantidadDiasSeleccionado * this.preciodia;
+        return this.cantidadDiasSeleccionado * preciodia;
       } else {
-        if (this.preciosemana > 0) {
+        if (preciosemana > 0) {
           if (this.cantidadDiasSeleccionado == 7) {
-            return this.preciosemana;
+            return preciosemana;
           } else {
             if (this.cantidadDiasSeleccionado > 7 && this.cantidadDiasSeleccionado < 14) {
               let dias_restantes = this.cantidadDiasSeleccionado - 7
-              return dias_restantes * this.preciodia + parseInt(this.preciosemana)
+              return dias_restantes * preciodia + preciosemana
             } else {
               if (this.cantidadDiasSeleccionado == 14) {
-                return this.preciosemana * 2;
+                return preciosemana * 2;
               } else {
                 if (this.cantidadDiasSeleccionado > 14 && this.cantidadDiasSeleccionado < 21) {
                   let dias_restantes = this.cantidadDiasSeleccionado - 14
-                  return (dias_restantes * this.preciodia) + (2 * parseInt(this.preciosemana))
+                  return (dias_restantes * preciodia) + (2 * preciosemana)
                 } else {
                   if (this.cantidadDiasSeleccionado == 21) {
-                    return this.preciosemana * 3;
+                    return preciosemana * 3;
                   } else {
                     if (this.cantidadDiasSeleccionado > 21 && this.cantidadDiasSeleccionado < 28) {
                       let dias_restantes = this.cantidadDiasSeleccionado - 21
-                      return (dias_restantes * this.preciodia) + (3 * parseInt(this.preciosemana))
+                      return (dias_restantes * preciodia) + (3 * preciosemana)
                     } else {
-                        if (this.cantidadDiasSeleccionado == 28) {
-                          return parseInt(this.preciomes);
-                        }
+                      if (this.cantidadDiasSeleccionado == 28) {
+                        return preciomes;
+                      }
                     }
                   }
                 }
@@ -304,7 +309,7 @@ export class DetallePublicacionComponent implements OnInit, OnDestroy {
     }
   }
 
-  irUsuario(){
+  irUsuario() {
     window.location.assign("/users/" + this.usuario_publicador._id)
   }
 

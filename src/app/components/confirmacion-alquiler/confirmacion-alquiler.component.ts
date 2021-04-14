@@ -14,7 +14,6 @@ export class ConfirmacionAlquilerComponent implements OnInit {
 
   ngOnInit() {
     this.id_alquiler = String(window.location.href).slice(45, 69);
-    console.log(this.id_alquiler)
     this._auth.registrar_EnProcesoEntrega(this.id_alquiler).subscribe(
       res => {
         //console.log(res);

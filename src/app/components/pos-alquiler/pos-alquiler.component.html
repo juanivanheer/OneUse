@@ -5,7 +5,8 @@
     </div>
 
     <div fxLayoutAlign="center center" fxLayout="row" class="contenedor-grande" *ngIf="mostrar" fxLayoutGap="30px">
-        <div fxLayoutAlign="start center" fxLayout="column" class="mat-elevation-z8" style="width: 800px; height: 487px; background:#ffffff;">
+        <div fxLayoutAlign="start center" fxLayout="column" class="mat-elevation-z8"
+            style="width: 800px; height: 487px; background:#ffffff;">
             <div fxLayoutAlign="center center" style="margin-top: 30px;">
                 <img src="../../../assets/images/carro_compras.gif" style="height: 150px;">
             </div>
@@ -25,6 +26,7 @@
         </div>
         <div fxLayoutAlign="center center" fxLayout="column" fxLayoutGap="30px">
             <mat-accordion class="example-headers-align">
+
                 <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
                     <mat-expansion-panel-header>
                         <mat-panel-title>Datos del dueño del producto</mat-panel-title>
@@ -32,17 +34,19 @@
                     </mat-expansion-panel-header>
                     <ul>
                         <li>
-                            <h5><b>Nombre y Apellido:</b> {{nombre}} {{apellido}}</h5>
+                            <h5><b>Nombre y Apellido:</b> {{usuarioPropietario.nombre}} {{usuarioPropietario.apellido}}
+                            </h5>
                         </li>
                         <li>
-                            <h5><b>Email:</b> {{email}}</h5>
+                            <h5><b>Email:</b> {{usuarioPropietario.email}}</h5>
                         </li>
                         <li>
-                            <h5><b>Teléfono:</b> ({{codArea}}) {{telefono}}</h5>
+                            <h5><b>Teléfono:</b> ({{usuarioPropietario.codArea}}) {{usuarioPropietario.telefono}}</h5>
                         </li>
-    
+
                     </ul>
                 </mat-expansion-panel>
+
                 <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
                     <mat-expansion-panel-header>
                         <mat-panel-title>Datos del producto por alquilar</mat-panel-title>
@@ -50,25 +54,64 @@
                     </mat-expansion-panel-header>
                     <ul>
                         <li>
-                            <h5><b>Producto:</b> {{titulo}}</h5>
+                            <h5><b>Producto:</b> {{publicacionAlquilada.titulo}}</h5>
                         </li>
                         <li>
-                            <h5><b>Precio por día:</b> {{preciodia}}</h5>
+                            <h5><b>Precio por día:</b> ${{publicacionAlquilada.preciodia}}</h5>
                         </li>
-                        <li *ngIf="preciosemana != undefined">
-                            <h5><b>Precio por semana:</b> {{preciosemana}}</h5>
+                        <li *ngIf="publicacionAlquilada.preciosemana != undefined">
+                            <h5><b>Precio por semana:</b> ${{publicacionAlquilada.preciosemana}}</h5>
                         </li>
-                        <li *ngIf="preciomes != undefined">
-                            <h5><b>Precio por mes:</b> {{preciomes}}</h5>
+                        <li *ngIf="publicacionAlquilada.preciomes != undefined">
+                            <h5><b>Precio por mes:</b> ${{publicacionAlquilada.preciomes}}</h5>
                         </li>
+
                         <li>
-                            <h5><b>Precio unitario:</b> {{montoUnitario}} </h5>
+                            <h5><b>Cantidad de días a alquilar:</b> {{cantidadDias}}</h5>
                         </li>
-                        <li>
-                            <h5><b>Cantidad:</b> {{cantidadSeleccionada}} </h5>
+
+                    </ul>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>Cálculo del monto total</mat-panel-title>
+                        <mat-icon>local_atm</mat-icon>
+                    </mat-expansion-panel-header>
+                    <ul style="width: 100%;padding-left: 0;line-height: 30px;">
+                        <li fxLayout="row">
+                            <p fxLayoutAlign="start start" style="margin-top: 5px"><b>Precio unitario calculado</b></p>
+                            <span fxLayoutAlign="end end" style="width: 44%;"> ${{montoUnitario}} </span>
                         </li>
-                        <li>
-                            <h5><b>Monto total:</b> {{montoTotal}} </h5>
+
+                        <li fxLayout="row">
+                            <p fxLayoutAlign="start start" style="margin-top: 5px"><b>Cantidad a alquilar</b></p>
+                            <span fxLayoutAlign="end end" style="width: 56%;">x {{stockSeleccionado}} </span>
+                        </li>
+
+                        <mat-divider style="width: 100%;"></mat-divider>
+
+                        <li fxLayout="row">
+                            <p fxLayoutAlign="start start" style="margin-top: 5px"><b>Precio sin reembolso</b></p>
+                            <span fxLayoutAlign="end end" style="width: 51%;">$ {{montoUnitarioConCantidad}} </span>
+                        </li>
+
+                        <li fxLayout="row">
+                            <p fxLayoutAlign="start start" style="margin-top: 5px;"><b>Reembolso</b></p>
+                            <span fxLayoutAlign="center end">
+                                <mat-icon
+                                    matTooltip="El reembolso será devuelto a tu cuenta de Mercado Pago una vez finalizado el alquiler"
+                                    matTooltipPosition="below" style="color: cornflowerblue; font-size: 12px; text-align: center;">info
+                                </mat-icon>
+                            </span>
+                            <span fxLayoutAlign="end end" style="width: 63%;">+ ${{montoReembolso}} </span>
+                        </li>
+
+                        <mat-divider style="width: 100%;"></mat-divider>
+
+                        <li fxLayout="row">
+                            <p fxLayoutAlign="start start" style="margin-top: 5px"><b>Monto total</b></p>
+                            <span fxLayoutAlign="end end" style="width: 70%;"> ${{montoFinal}} </span>
                         </li>
                     </ul>
                 </mat-expansion-panel>

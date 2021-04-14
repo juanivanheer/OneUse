@@ -70,9 +70,15 @@
     margin-top: 80px;
     margin-bottom: 20px;
     margin-left: 10px;
+    margin-right: 10px;
 }
 
 .respuesta{
     margin-top: 15px;
     margin-bottom: 15px;
+}
+
+p{
+    font-size: 10px;
+    color: gray;
 }

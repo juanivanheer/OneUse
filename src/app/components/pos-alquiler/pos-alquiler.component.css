@@ -13,6 +13,7 @@
 h5, p {
     margin-left: 10px;
     margin-top: 20px;
+    font-size: 12px;
 }
 
 .contenedor-grande {
@@ -23,4 +24,12 @@ h5, p {
 
 h2{
     font-size: 24px;
+}
+
+ul{
+    padding-left: 15px;
+}
+
+.mat-expansion-panel-header .ng-tns-c16-19 .ng-trigger .ng-trigger-expansionHeight .ng-star-inserted .mat-expanded{
+    line-height: 25px;
 }

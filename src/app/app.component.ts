@@ -1836,16 +1836,16 @@ export class AppComponent implements OnInit {
     var obsB = this._auth.get_direccion_ip();
     var obsC = this._auth.get_all_users();
     var obsD = this._auth.get_all_publicaciones()
-    const obsvArray = [obsA, obsB, obsC, obsD];
+    const obsvArray = [obsC, obsD];
     const zip = Observable.zip(...obsvArray)
     zip.subscribe(
       res => {
-        this.visitas = res[0];
+        //this.visitas = res[0];
         //let direccion_ip = res[1].ip;
-        this.direccion_ip = this.obtenerRandomIP()
-        this.usuarios = res[2];
-        this.publicaciones = res[3].publicaciones;
-        this.registrarIP()
+        //this.direccion_ip = this.obtenerRandomIP()
+        this.usuarios = res[0];
+        this.publicaciones = res[1].publicaciones;
+        //this.registrarIP()
         this.caducidadPublicaciones()
       })
   }
