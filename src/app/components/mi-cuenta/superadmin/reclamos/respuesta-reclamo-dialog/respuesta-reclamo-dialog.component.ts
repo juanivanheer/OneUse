@@ -19,6 +19,13 @@ export class RespuestaReclamoDialogComponent implements OnInit {
   respuesta = undefined
 
   ngOnInit() {
+
+    if(this.data.data.estado_reclamo == 'Cerrado'){
+      document.getElementById('txt_rta').style.display = 'none';
+      document.getElementById('btn_rta').style.display = 'none';
+      document.getElementById('close').style.display = 'none';
+      document.getElementById('lbl_cerrado').style.display = 'none';
+    }
     
     this.respuestas = this.data.data.respuestas
     
@@ -30,10 +37,23 @@ export class RespuestaReclamoDialogComponent implements OnInit {
 
   enviar_respuesta(){
 
-    this._auth.responder_reclamo(this.data).subscribe()
-    // console.log(this.data.data._id)
-    // console.log(this.respuesta)
-    // console.log(this.respuestas.length)
+    let cerrar_reclamo = document.getElementById('close') as HTMLInputElement;
+    let next_rta = this.respuestas.length + 1;
+
+    console.log(cerrar_reclamo.checked)
+    if(cerrar_reclamo.checked)
+      this.data.data.estado_reclamo = 'Cerrado'
+    else
+      this.data.data.estado_reclamo = 'Respondido por OneUse'
+
+    
+    this.data.data.respuestas.push({ emisor_respuesta: 'Equipo de OneUse', respuesta: this.respuesta, nro_rta: next_rta });
+     
+    //  console.log(this.respuesta)
+    //  console.log(this.respuestas.length)
+    console.log(this.data.data)
+    this._auth.responder_reclamo(this.data.data).subscribe()
+
   }
 
 }

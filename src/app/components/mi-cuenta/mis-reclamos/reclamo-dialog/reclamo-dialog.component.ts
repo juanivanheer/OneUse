@@ -29,9 +29,16 @@ export class ReclamoDialogComponent implements OnInit {
   }
 
   enviar_respuesta(){
-    console.log(this.data.data._id)
-    console.log(this.respuesta)
-    console.log(this.respuestas.length)
+
+    
+    let next_rta = this.respuestas.length + 1;
+    let usr = this.data.data.usuario_reclamo
+    this.data.data.estado_reclamo = 'Esperando respuesta del sitio'
+    
+    
+    this.data.data.respuestas.push({ emisor_respuesta: usr, respuesta: this.respuesta, nro_rta: next_rta });
+    this._auth.responder_reclamo(this.data.data).subscribe()
+
   }
 
 }
