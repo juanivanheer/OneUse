@@ -36,6 +36,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   arrayJSON = [];
   imagenJSON;
 
+  usuario_logueado;
+
   constructor(private singleton: SingletonService, private _auth: AuthService) { }
 
   ngAfterViewInit(): void {
@@ -68,6 +70,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    if (localStorage.getItem("email") != undefined) {
+      this._auth.user_data(localStorage.getItem("email")).subscribe(
+        res => {
+          this.usuario_logueado = res;
+        },
+      )
+    }
+
     this._auth.get_publicaciones_destacadas().subscribe(
       res => {
         this.publicacionesDestacadas = res.publicaciones; //ARRAY DE PUBLICACIONES DESTACADAS
@@ -105,8 +115,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     )
   }
 
-
-
+  
   checkPagina() {
     if (this.singleton.getInicioSesion()) {
       this._auth.user_data(localStorage.getItem("email")).subscribe(
