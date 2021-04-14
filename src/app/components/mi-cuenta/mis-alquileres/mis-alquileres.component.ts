@@ -225,16 +225,8 @@ export class MisAlquileresComponent implements OnInit, AfterViewInit {
     this._router.navigate(['/prereclamo']);
   }
 
-  pagar(alquiler) {
-    this._auth.registrar_EnProcesoEntrega(alquiler.id_publicacion).subscribe(
-      res => {
-        this.ngOnInit();
-      }
-    )
-  }
-
   continuarPago(alquilerPropio) {
-    window.location.assign("pos-alquiler/" + alquilerPropio.id_publicacion)
+    window.location.assign("pos-alquiler/" + alquilerPropio._id)
   }
 
   cerrarSesion() {
