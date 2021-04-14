@@ -21,14 +21,20 @@ export interface Motivos {
 @Component({
   selector: 'app-confirmacion',
   templateUrl: './reclamar-alquiler.component.html',
-  styleUrls: ['./reclamar-alquiler.component.css']
-
+  styleUrls: ['./reclamar-alquiler.component.css'],
 })
 export class ReclamarAlquilerComponent implements OnInit {
 
   //Para traer los datos de la BD en el form
   public user = {};
   emailLogueado = localStorage.getItem("email");
+  
+  //tipo_reclamo = {pagado: undefined, codigos_ingresados: undefined}
+
+  //Para subir archivos
+  public filesToUpload: Array<File>;
+
+  
 
   //Para armar JSON
   hoy = new Date();
@@ -53,6 +59,9 @@ export class ReclamarAlquilerComponent implements OnInit {
   constructor(private _auth: AuthService, private singletoon: SingletonService, private _snackBar: MatSnackBar, private _adapter: DateAdapter<any>, private singleton: SingletonService, private _router: Router) { }
 
   ngOnInit() {
+    let reclama
+    let tipo_reclamo = {pagado: undefined, codigos_ingresados: undefined}
+
     if (this.verificarInicioSesion() == false) {
       return;
     }
@@ -60,7 +69,34 @@ export class ReclamarAlquilerComponent implements OnInit {
     .subscribe(mensaje => this.datosAlquiler = mensaje);
     console.log('hola')
     console.log(this.datosAlquiler);
-    this.crearJSONmotivos();
+
+    let quien_reclama = localStorage.getItem("email");
+    let alquiler = JSON.parse(localStorage.getItem("alquiler"));
+  
+    this._auth.user_data(quien_reclama).subscribe(
+      res => {
+      
+      if(this.datosAlquiler.name_usuarioLocatario == res.name)
+        reclama = 'Locatario'
+      else
+        reclama = 'Propietario'
+
+      if(this.datosAlquiler.fuePagado && !this.datosAlquiler.codigoLocatarioIngresado && !this.datosAlquiler.codigoPropietarioIngresado){
+        tipo_reclamo.pagado = true
+        tipo_reclamo.codigos_ingresados = false
+      }else{
+        tipo_reclamo.pagado = true
+        tipo_reclamo.codigos_ingresados = true
+      }
+      
+        
+      this.crearJSONmotivos(reclama,tipo_reclamo);  
+      console.log(reclama)
+    
+    })
+
+    
+    
   }
 
   cerrarSesion() {
@@ -73,6 +109,35 @@ export class ReclamarAlquilerComponent implements OnInit {
       return false;
     }
     return true;
+  }
+
+
+  crearJSONmotivos(reclama, tipo_reclamo) {
+
+
+    let index, JSONmotivos = motivos;
+    let arreglo = [];
+    
+    for (index in JSONmotivos) {
+
+      if(JSONmotivos[index].id == 9)
+        arreglo.push({ 'value': JSONmotivos[index].id, 'viewValue': JSONmotivos[index].descripción })
+
+      if(reclama == 'Locatario' && tipo_reclamo.pagado && !tipo_reclamo.codigos_ingresados && (JSONmotivos[index].id > 0 && JSONmotivos[index].id < 4))
+        arreglo.push({ 'value': JSONmotivos[index].id, 'viewValue': JSONmotivos[index].descripción })
+      
+      if(reclama == 'Locatario' && tipo_reclamo.pagado && tipo_reclamo.codigos_ingresados && JSONmotivos[index].id == 4 )
+        arreglo.push({ 'value': JSONmotivos[index].id, 'viewValue': JSONmotivos[index].descripción })
+
+      if(reclama == 'Propietario' && tipo_reclamo.pagado && !tipo_reclamo.codigos_ingresados && (JSONmotivos[index].id > 4 && JSONmotivos[index].id < 7 ))
+        arreglo.push({ 'value': JSONmotivos[index].id, 'viewValue': JSONmotivos[index].descripción })
+
+      if(reclama == 'Propietario' && tipo_reclamo.pagado && tipo_reclamo.codigos_ingresados && (JSONmotivos[index].id >= 7  && JSONmotivos[index].id < 9 ))
+        arreglo.push({ 'value': JSONmotivos[index].id, 'viewValue': JSONmotivos[index].descripción })
+    
+    }
+
+    this.motivosCancelacion = sortJsonArray(arreglo, 'value', 'asc');
   }
 
 
@@ -97,6 +162,7 @@ export class ReclamarAlquilerComponent implements OnInit {
     let diferencia_fecha = fecha_hoy.getTime() - fecha_pago.getTime();
     let horas_transcurridas = diferencia_fecha / 1000 / 60 / 60;
 
+   
     if(horas_transcurridas <= 24)
       return true
     else
@@ -116,12 +182,12 @@ export class ReclamarAlquilerComponent implements OnInit {
     let pagado = this.datosAlquiler.fuePagado
     let cerrar_reclamo = true
     let codigo_locatario = this.datosAlquiler.codigoLocatarioIngresado;
-    let codigo_propietario = this.datosAlquiler.codigoPropietarioIngresado
+    let codigo_propietario = this.datosAlquiler.codigoPropietarioIngresado;
+    let codigo_propietario_devolucion = this.datosAlquiler.codigoPropietarioDevolucionIngresado;
 
 
     
     switch (tipo) {
-      //Si fue pagado, no se ingreso ningun 
       case "He pagado el alquiler pero ya no estoy interesado en el objeto":
         if(!this.devolucionPagoCancelacion(f_pago)){
 
@@ -179,8 +245,8 @@ export class ReclamarAlquilerComponent implements OnInit {
         
         break;
 
-      case "No me puedo contactar con el propietario/locatario":
-          if(!this.devolucionPagoCancelacion(f_creac)){
+      case "No me puedo contactar con el propietario para retirar el objeto":
+          if(!this.devolucionNoContacto(f_pago)){
 
             this.reclamoData = { tipo: tipo, motivo: motivo, usuario_reclamo: this.emailLogueado, 
               codigoLocatarioDevolucionIngresado: this.datosAlquiler.codigoLocatarioDevolucionIngresado,
@@ -201,7 +267,7 @@ export class ReclamarAlquilerComponent implements OnInit {
             
                 },{
                 emisor_respuesta: 'Equipo de OneUse',
-                respuesta: 'Lamentamos mucho que no puedas contactarte con la otra parte. Han pasado mas de 24hs desde que ud realizo el alquiler, por lo establecido en nuestras politicas nos contactaremos con la otra parte para saber que fue lo que paso y dentro de 12hs tendra una nueva respuesta. Gracias por utilizar OneUse',
+                respuesta: 'Lamentamos mucho que no puedas contactarte con el propietario. Han pasado mas de 24hs desde que ud realizo el alquiler, por lo establecido en nuestras politicas nos contactaremos con el propietario para saber que fue lo que paso y dentro de las proximas 48hs tendra una nueva respuesta. Gracias por utilizar OneUse',
                 nro_rta: 2
                 }] 
             }
@@ -214,7 +280,7 @@ export class ReclamarAlquilerComponent implements OnInit {
               codigoPropietarioDevolucionIngresado: this.datosAlquiler.codigoPropietarioDevolucionIngresado,
               codigoPropietarioIngresado: this.datosAlquiler.codigoPropietarioIngresado,
               id_publicacion:this.datosAlquiler.id_publicacion,
-              estado_reclamo: 'Cerrado',
+              estado_reclamo: 'Respondido por OneUse',
               imagen: this.datosAlquiler.imagen,
               usuario_propietario: this.datosAlquiler.name_usuarioPropietario            ,
               usuario_locatario: this.datosAlquiler.name_usuarioLocatario,
@@ -227,19 +293,21 @@ export class ReclamarAlquilerComponent implements OnInit {
             
                 },{
                 emisor_respuesta: 'Equipo de OneUse',
-                respuesta: 'Lamentamos mucho que no puedas contactarte con la otra parte. Han pasado menos de 24hs desde que ud realizo el alquiler, por lo establecido en nuestras politicas la otra parte aun tiene tiempo para contactarse. Gracias por utilizar OneUse',
+                respuesta: 'Lamentamos mucho que no puedas contactarte con el propietario. Han pasado menos de 24hs desde que ud realizo el alquiler, por lo establecido en nuestras politicas el propietario aun tiene tiempo para contactarse. Gracias por utilizar OneUse',
                 nro_rta: 2
                 }] 
             }
 
-            cerrar_reclamo = false;
+            
   
           }
 
-        break;
+        cerrar_reclamo = false;
+      break;
 
-      case "El producto que alquilé no estaba en las mismas condiciones que se mostraban en las fotos o no funciona correctamente":
-          if(!codigo_locatario){
+      case "El objeto que alquilé no estaba en las mismas condiciones que se mostraban en las fotos o no funciona correctamente":
+        
+        if(!codigo_locatario){
   
             this.reclamoData = { tipo: tipo, motivo: motivo, usuario_reclamo: this.emailLogueado, 
               codigoLocatarioDevolucionIngresado: this.datosAlquiler.codigoLocatarioDevolucionIngresado,
@@ -260,7 +328,7 @@ export class ReclamarAlquilerComponent implements OnInit {
             
                 },{
                 emisor_respuesta: 'Equipo de OneUse',
-                respuesta: 'Lamentamos mucho que el objeto no haya sido lo que usted esperaba. En un lapso de entre 24 y 48hs se le reembolsara el dinero. Gracias por utilizar OneUse',
+                respuesta: 'Lamentamos mucho que el objeto no haya sido lo que usted esperaba. Entre las proximas 24 y 48hs se le reembolsara el dinero. Gracias por utilizar OneUse',
                 nro_rta: 2
                 }] 
             }
@@ -293,9 +361,9 @@ export class ReclamarAlquilerComponent implements OnInit {
   
           }
 
-        break;
+      break;
 
-        case "He tenido un problema con el objeto y no puedo cumplir / No deseo alquilarlo a esta persona":
+      case "He tenido un problema con el objeto y no puedo cumplir / No deseo alquilarlo a esta persona":
           if(!codigo_propietario){
   
             this.reclamoData = { tipo: tipo, motivo: motivo, usuario_reclamo: this.emailLogueado, 
@@ -324,9 +392,200 @@ export class ReclamarAlquilerComponent implements OnInit {
   
           }
 
-        break;
+      break;
 
-        //
+      case "No me puedo contactar con el propietario para devolver el objeto":
+            
+            this.reclamoData = { tipo: tipo, motivo: motivo, usuario_reclamo: this.emailLogueado, 
+              codigoLocatarioDevolucionIngresado: this.datosAlquiler.codigoLocatarioDevolucionIngresado,
+              codigoLocatarioIngresado: this.datosAlquiler.codigoLocatarioIngresado,
+              codigoPropietarioDevolucionIngresado: this.datosAlquiler.codigoPropietarioDevolucionIngresado,
+              codigoPropietarioIngresado: this.datosAlquiler.codigoPropietarioIngresado,
+              id_publicacion:this.datosAlquiler.id_publicacion,
+              estado_reclamo: 'Cerrado',
+              imagen: this.datosAlquiler.imagen,
+              usuario_propietario: this.datosAlquiler.name_usuarioPropietario            ,
+              usuario_locatario: this.datosAlquiler.name_usuarioLocatario,
+              resolucion: 8,
+              titulo: this.datosAlquiler.titulo_publicacion,
+              respuestas: [{
+                emisor_respuesta: this.emailLogueado,
+                respuesta: motivo,
+                nro_rta: 1
+            
+                },{
+                emisor_respuesta: 'Equipo de OneUse',
+                respuesta: 'Gracias por avisar a OneUse de lo ocurrido. Avisaremos al propietario para que se comunique contigo lo antes posible, pasadas las 72hs habiles se te liberara el dinero en garantia.',
+                nro_rta: 2
+                }] 
+            }
+      break;
+
+      case "No me puedo contactar con el locatario para entregarlo":
+
+          if(!this.devolucionNoContacto(f_pago)){
+
+            this.reclamoData = { tipo: tipo, motivo: motivo, usuario_reclamo: this.emailLogueado, 
+              codigoLocatarioDevolucionIngresado: this.datosAlquiler.codigoLocatarioDevolucionIngresado,
+              codigoLocatarioIngresado: this.datosAlquiler.codigoLocatarioIngresado,
+              codigoPropietarioDevolucionIngresado: this.datosAlquiler.codigoPropietarioDevolucionIngresado,
+              codigoPropietarioIngresado: this.datosAlquiler.codigoPropietarioIngresado,
+              id_publicacion:this.datosAlquiler.id_publicacion,
+              estado_reclamo: 'Respondido por OneUse',
+              imagen: this.datosAlquiler.imagen,
+              usuario_propietario: this.datosAlquiler.name_usuarioPropietario            ,
+              usuario_locatario: this.datosAlquiler.name_usuarioLocatario,
+              resolucion: 9,
+              titulo: this.datosAlquiler.titulo_publicacion,
+              respuestas: [{
+                emisor_respuesta: this.emailLogueado,
+                respuesta: motivo,
+                nro_rta: 1
+            
+                },{
+                emisor_respuesta: 'Equipo de OneUse',
+                respuesta: 'Lamentamos mucho que no puedas contactarte con el locatario. Han pasado mas de 24hs desde que se realizo el alquiler, por lo establecido en nuestras politicas nos contactaremos con el locatario para saber que fue lo que paso y pronto tendra una nueva respuesta. Gracias por utilizar OneUse',
+                nro_rta: 2
+                }] 
+            }
+
+          }else{
+
+            this.reclamoData = { tipo: tipo, motivo: motivo, usuario_reclamo: this.emailLogueado, 
+              codigoLocatarioDevolucionIngresado: this.datosAlquiler.codigoLocatarioDevolucionIngresado,
+              codigoLocatarioIngresado: this.datosAlquiler.codigoLocatarioIngresado,
+              codigoPropietarioDevolucionIngresado: this.datosAlquiler.codigoPropietarioDevolucionIngresado,
+              codigoPropietarioIngresado: this.datosAlquiler.codigoPropietarioIngresado,
+              id_publicacion:this.datosAlquiler.id_publicacion,
+              estado_reclamo: 'Esperando respuesta del sitio',
+              imagen: this.datosAlquiler.imagen,
+              usuario_propietario: this.datosAlquiler.name_usuarioPropietario            ,
+              usuario_locatario: this.datosAlquiler.name_usuarioLocatario,
+              resolucion: 10,
+              titulo: this.datosAlquiler.titulo_publicacion,
+              respuestas: [{
+                emisor_respuesta: this.emailLogueado,
+                respuesta: motivo,
+                nro_rta: 1
+            
+                },{
+                emisor_respuesta: 'Equipo de OneUse',
+                respuesta: 'Lamentamos mucho que no puedas contactarte con el locatario. Han pasado menos de 24hs desde que el locatario realizo el alquiler, por lo establecido en nuestras politicas el locatario aun tiene tiempo para contactarse. Gracias por utilizar OneUse',
+                nro_rta: 2
+                }] 
+            }
+
+            cerrar_reclamo = false;
+
+          }
+      break;
+        
+      case "El locatario no se contacto conmigo para devolverme el objeto":
+            
+            this.reclamoData = { tipo: tipo, motivo: motivo, usuario_reclamo: this.emailLogueado, 
+              codigoLocatarioDevolucionIngresado: this.datosAlquiler.codigoLocatarioDevolucionIngresado,
+              codigoLocatarioIngresado: this.datosAlquiler.codigoLocatarioIngresado,
+              codigoPropietarioDevolucionIngresado: this.datosAlquiler.codigoPropietarioDevolucionIngresado,
+              codigoPropietarioIngresado: this.datosAlquiler.codigoPropietarioIngresado,
+              id_publicacion:this.datosAlquiler.id_publicacion,
+              estado_reclamo: 'Esperando respuesta del sitio',
+              imagen: this.datosAlquiler.imagen,
+              usuario_propietario: this.datosAlquiler.name_usuarioPropietario            ,
+              usuario_locatario: this.datosAlquiler.name_usuarioLocatario,
+              resolucion: 11,
+              titulo: this.datosAlquiler.titulo_publicacion,
+              respuestas: [{
+                emisor_respuesta: this.emailLogueado,
+                respuesta: motivo,
+                nro_rta: 1
+            
+                },{
+                emisor_respuesta: 'Equipo de OneUse',
+                respuesta: 'Lamentamos mucho lo que paso. Intentaremos contactarnos con el propietario lo antes posible y volveremos a contactarnos contigo en las proximas 48hs.',
+                nro_rta: 2
+                }] 
+            }
+      break;
+
+      case "El producto fue devuelto en malas condiciones":
+            
+          if(!codigo_propietario_devolucion){
+  
+            this.reclamoData = { tipo: tipo, motivo: motivo, usuario_reclamo: this.emailLogueado, 
+              codigoLocatarioDevolucionIngresado: this.datosAlquiler.codigoLocatarioDevolucionIngresado,
+              codigoLocatarioIngresado: this.datosAlquiler.codigoLocatarioIngresado,
+              codigoPropietarioDevolucionIngresado: this.datosAlquiler.codigoPropietarioDevolucionIngresado,
+              codigoPropietarioIngresado: this.datosAlquiler.codigoPropietarioIngresado,
+              id_publicacion:this.datosAlquiler.id_publicacion,
+              estado_reclamo: 'Cerrado',
+              imagen: this.datosAlquiler.imagen,
+              usuario_propietario: this.datosAlquiler.name_usuarioPropietario            ,
+              usuario_locatario: this.datosAlquiler.name_usuarioLocatario,
+              resolucion: 12,
+              titulo: this.datosAlquiler.titulo_publicacion,
+              respuestas: [{
+                emisor_respuesta: this.emailLogueado,
+                respuesta: motivo,
+                nro_rta: 1
+            
+                },{
+                emisor_respuesta: 'Equipo de OneUse',
+                respuesta: 'Lamentamos mucho la experiencia que tuvo. Analizaremos su caso y en un lapso de entre 48 y 72hs tendra una respuesta favorable a su caso. Gracias por utilizar OneUse',
+                nro_rta: 2
+                }] 
+            }
+  
+          }else{
+  
+            this.reclamoData = { tipo: tipo, motivo: motivo, usuario_reclamo: this.emailLogueado, 
+              codigoLocatarioDevolucionIngresado: this.datosAlquiler.codigoLocatarioDevolucionIngresado,
+              codigoLocatarioIngresado: this.datosAlquiler.codigoLocatarioIngresado,
+              codigoPropietarioDevolucionIngresado: this.datosAlquiler.codigoPropietarioDevolucionIngresado,
+              codigoPropietarioIngresado: this.datosAlquiler.codigoPropietarioIngresado,
+              id_publicacion:this.datosAlquiler.id_publicacion,
+              estado_reclamo: 'Cerrado',
+              imagen: this.datosAlquiler.imagen,
+              usuario_propietario: this.datosAlquiler.name_usuarioPropietario            ,
+              usuario_locatario: this.datosAlquiler.name_usuarioLocatario,
+              resolucion: 13,
+              titulo: this.datosAlquiler.titulo_publicacion,
+              respuestas: [{
+                emisor_respuesta: this.emailLogueado,
+                respuesta: motivo,
+                nro_rta: 1
+            
+                },{
+                emisor_respuesta: 'Equipo de OneUse',
+                respuesta: 'Lamentamos mucho la experiencia que tuvo. Ud ingreso su codigo de devolucion de propietario, por lo que segun nuestra politica ud no tiene derecho a reembolso por este reclamo. Gracias por utilizar OneUse',
+                nro_rta: 2
+                }] 
+            }
+  
+          }
+
+      break;
+
+      case "Otro (Especificar que pasó)":
+            this.reclamoData = { tipo: tipo, motivo: motivo, usuario_reclamo: this.emailLogueado, 
+              codigoLocatarioDevolucionIngresado: this.datosAlquiler.codigoLocatarioDevolucionIngresado,
+              codigoLocatarioIngresado: this.datosAlquiler.codigoLocatarioIngresado,
+              codigoPropietarioDevolucionIngresado: this.datosAlquiler.codigoPropietarioDevolucionIngresado,
+              codigoPropietarioIngresado: this.datosAlquiler.codigoPropietarioIngresado,
+              id_publicacion:this.datosAlquiler.id_publicacion,
+              estado_reclamo: 'Esperando respuesta del sitio',
+              imagen: this.datosAlquiler.imagen,
+              usuario_propietario: this.datosAlquiler.name_usuarioPropietario            ,
+              usuario_locatario: this.datosAlquiler.name_usuarioLocatario,
+              resolucion: 14,
+              titulo: this.datosAlquiler.titulo_publicacion,
+              respuestas: [{
+                emisor_respuesta: this.emailLogueado,
+                respuesta: motivo,
+                nro_rta: 1
+            
+                }] 
+            }
+      break;
         
     
       default:
@@ -336,19 +595,20 @@ export class ReclamarAlquilerComponent implements OnInit {
     console.log(this.reclamoData)
                      
 
-    this._auth.registrar_reclamo(this.reclamoData).subscribe(
+    // this._auth.registrar_reclamo(this.reclamoData).subscribe(
       
-      res => {
+    //   res => {
         
-      },
-      err => {
-        console.log(err)
+    //   },
+    //   err => {
+    //     console.log(err)
         
-      }
-    )
+    //   }
+    // )
 
     // Dejo esto comentado, es lo que cambia de estado del alquiler a en proceso de reclamo para poder hacer muchos reclamos de 1 sola publi
     
+    // if(cerrar_reclamo)
     // this._auth.registrar_reclamado(this.datosAlquiler._id).subscribe(
     //   res => {
         
@@ -362,21 +622,14 @@ export class ReclamarAlquilerComponent implements OnInit {
     // )
 
 
-    this._router.navigate(['/reclamo-exito']);
+    //this._router.navigate(['/reclamo-exito']);
 
 
   }
 
 
 
-  crearJSONmotivos() {
-    let index, JSONmotivos = motivos;
-    let arreglo = [];
-    for (index in JSONmotivos) {
-      arreglo.push({ 'value': JSONmotivos[index].id, 'viewValue': JSONmotivos[index].descripción })
-    }
-    this.motivosCancelacion = sortJsonArray(arreglo, 'value', 'asc');
-  }
+  
 
 
 }

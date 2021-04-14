@@ -4,7 +4,7 @@
         <div>
             <h3><b>En esta seccion podra ver su reclamo y las respuestas del sitio, para de esta forma solucionar su problema</b></h3>
             <p *ngFor="let respuesta of respuestas"><b>{{respuesta.emisor_respuesta}}: </b> {{respuesta.respuesta}} </p>
-            <textarea matInput style="font-size: 20px"
+            <textarea id='txt_rta' matInput style="font-size: 20px"
                             placeholder="Responda su reclamo"
                             [(ngModel)]="respuesta" name="respuesta_persona" cdkTextareaAutosize required>
             </textarea>
@@ -15,6 +15,6 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="center">
-    <button mat-raised-button color="primary" mat-dialog-close (click)="enviar_respuesta()">Enviar Respuesta</button>
+    <button mat-raised-button color="primary" id='btn_rta' mat-dialog-close (click)="enviar_respuesta()">Enviar Respuesta</button>
     <button mat-raised-button color="primary" mat-dialog-close (click)="close()">Salir</button>
 </mat-dialog-actions>

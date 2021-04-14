@@ -16,7 +16,10 @@ export class ReclamoDialogComponent implements OnInit {
   respuesta = undefined
 
   ngOnInit() {
-    console.log(this.data)
+    if(this.data.data.estado_reclamo == 'Cerrado'){
+      document.getElementById('txt_rta').style.display = 'none';
+      document.getElementById('btn_rta').style.display = 'none';
+    }
     this.respuestas = this.data.data.respuestas
 
   }

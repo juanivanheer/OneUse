@@ -1,34 +1,38 @@
 [
-     {
-        "descripción": "El producto que alquilé no estaba en las mismas condiciones que se mostraban en las fotos o no funciona correctamente",
-        "id": "1"
-    },
     {
-        "descripción": "No me devolvieron el producto",
-        "id": "2"
-    },
-    {
-        "descripción": "El producto fue devuelto en malas condiciones",
-        "id": "3"
+        "descripción": "El objeto que alquilé no estaba en las mismas condiciones que se mostraban en las fotos o no funciona correctamente",
+        "id": 1
     },
     {
         "descripción": "He pagado el alquiler pero ya no estoy interesado en el objeto",
-        "id": "4"
+        "id": 2
     },
     {
-        "descripción": "No me puedo contactar con el propietario/locatario",
-        "id": "5"
+        "descripción": "No me puedo contactar con el propietario para retirar el objeto",
+        "id": 3
+    },
+    {
+        "descripción": "No me puedo contactar con el propietario para devolver el objeto",
+        "id": 4
     },
     {
         "descripción": "He tenido un problema con el objeto y no puedo cumplir / No deseo alquilarlo a esta persona",
-        "id": "6"
+        "id": 5
     },
     {
-        "descripción": "Otro (Especificar en información)",
-        "id": "7"
+        "descripción": "No me puedo contactar con el locatario para entregarlo",
+        "id": 6
     },
     {
         "descripción": "El locatario no se contacto conmigo para devolverme el objeto",
-        "id": "8"
+        "id": 7
+    },
+    {
+        "descripción": "El producto fue devuelto en malas condiciones",
+        "id": 8
+    },
+    {
+        "descripción": "Otro (Especificar que pasó)",
+        "id": 9
     }
 ]
