@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { MatPaginator, MatSort, MatTableDataSource, MatDialogRef, MatDialog } from '@angular/material';
 import { EliminarReclamoDialogComponent } from './eliminar-reclamo-dialog/eliminar-reclamo-dialog.component'
 import { RespuestaReclamoDialogComponent } from './respuesta-reclamo-dialog/respuesta-reclamo-dialog.component';
+import { VerImagenComponent } from './ver-imagen/ver-imagen.component';
 
 export interface Reclamos {
 updatedAt: string
@@ -33,9 +34,10 @@ export class ReclamosComponent implements OnInit {
 
   eliminarReclamoDialogRef: MatDialogRef<EliminarReclamoDialogComponent>
   respuestaReclamoDialogRef: MatDialogRef<RespuestaReclamoDialogComponent>
+  verImagenDialogRef: MatDialogRef<VerImagenComponent>
   
   dataSource;
-  displayedColumns = ['_id', 'tipo', 'usuario_reclamo', 'boton' ];
+  displayedColumns = ['estado_reclamo', 'tipo', 'usuario_reclamo', 'ver_img', 'boton' ];
   data;
 
   ngOnInit() {
@@ -75,6 +77,15 @@ export class ReclamosComponent implements OnInit {
 
   openDialogRespuestaReclamo(data): void {
     this.respuestaReclamoDialogRef = this.dialog.open(RespuestaReclamoDialogComponent,
+      {
+        data: {
+          data: data
+        }
+      });
+  }
+
+  openDialogVerImagen(data): void {
+    this.verImagenDialogRef = this.dialog.open(VerImagenComponent,
       {
         data: {
           data: data

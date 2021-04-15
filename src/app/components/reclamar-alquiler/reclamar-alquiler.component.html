@@ -4,7 +4,7 @@
         <h2 style="text-align: center;">¡Realizá tu reclamo!</h2>
         <hr>
         <br>
-        <form>
+        
             <!-- #udpdateForm="ngForm" -->
             <mat-tab-group>
                 <mat-tab>
@@ -27,7 +27,21 @@
                             placeholder="Escriba la mayor información posible y precisa sobre el reclamo"
                             [(ngModel)]="reclamoData.motivo" name="motivo" cdkTextareaAutosize required></textarea>
                     </mat-form-field>
-
+        
+        <form [formGroup]="formulario">
+                    <mat-form-field>
+                        <ngx-mat-file-input type="file" #removableInput formControlName="removableFile"
+                            (ngModelChange)="imagen = $event" placeholder="Subir imagen"
+                            [accept]="'.png, .jpg, .jpeg, .gif'"
+                            (change)="fileChangeEvent($event)">
+                        </ngx-mat-file-input>
+                        <button mat-icon-button matSuffix *ngIf="!removableInput.empty"
+                            (click)="removableInput.clear($event)">
+                            <mat-icon>clear</mat-icon>
+                        </button>
+                        <mat-icon matSuffix>image_search</mat-icon>
+                    </mat-form-field>
+        </form>
                     <div fxLayoutAlign="center center" styles="padding-bottom: 10px; height: 38px;">
                         <button mat-raised-button class="primary-btn banner-btn" (click)="reclamar()">Registrar
                             reclamo</button>
@@ -37,7 +51,7 @@
                 </mat-tab>
 
             </mat-tab-group>
-        </form>
+        
     </div>
     <div fxLayout="row" fxFlexOrder="3" style="width:100%" fxLayoutAlign="center start" fxShow.lt-lg="true"
         fxHide.gt-md="true">

@@ -8,6 +8,7 @@ import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/materia
 import { SingletonService } from '../singleton.service';
 import motivos from './motivos.json';
 import { take } from 'rxjs/operators';
+import { UploadService } from 'src/app/services/upload.service';
 
 declare var require: any;
 var sortJsonArray = require('sort-json-array');
@@ -22,19 +23,25 @@ export interface Motivos {
   selector: 'app-confirmacion',
   templateUrl: './reclamar-alquiler.component.html',
   styleUrls: ['./reclamar-alquiler.component.css'],
+  providers: [UploadService]
 })
 export class ReclamarAlquilerComponent implements OnInit {
 
   //Para traer los datos de la BD en el form
   public user = {};
   emailLogueado = localStorage.getItem("email");
+  public imagen: string;
+
+  formulario = new FormGroup({
+    removableFile: new FormControl({ value: '', disabled: false }),
+  });
   
   //tipo_reclamo = {pagado: undefined, codigos_ingresados: undefined}
 
   //Para subir archivos
   public filesToUpload: Array<File>;
 
-  
+  usr_rec
 
   //Para armar JSON
   hoy = new Date();
@@ -56,11 +63,12 @@ export class ReclamarAlquilerComponent implements OnInit {
   } 
   datosAlquiler: any;
 
-  constructor(private _auth: AuthService, private singletoon: SingletonService, private _snackBar: MatSnackBar, private _adapter: DateAdapter<any>, private singleton: SingletonService, private _router: Router) { }
+  constructor(private _auth: AuthService, private singletoon: SingletonService, private _snackBar: MatSnackBar, private _adapter: DateAdapter<any>, private singleton: SingletonService, private _router: Router,private _uploadService: UploadService) { }
 
   ngOnInit() {
     let reclama
-    let tipo_reclamo = {pagado: undefined, codigos_ingresados: undefined}
+    let tipo_reclamo = {pagado: undefined, cp_ingresado: undefined, cl_ingresado: undefined, cpd_ingresado: undefined, cld_ingresado: undefined}
+    
 
     if (this.verificarInicioSesion() == false) {
       return;
@@ -76,18 +84,20 @@ export class ReclamarAlquilerComponent implements OnInit {
     this._auth.user_data(quien_reclama).subscribe(
       res => {
       
-      if(this.datosAlquiler.name_usuarioLocatario == res.name)
+      if(this.datosAlquiler.name_usuarioLocatario == res.name){
         reclama = 'Locatario'
-      else
-        reclama = 'Propietario'
-
-      if(this.datosAlquiler.fuePagado && !this.datosAlquiler.codigoLocatarioIngresado && !this.datosAlquiler.codigoPropietarioIngresado){
-        tipo_reclamo.pagado = true
-        tipo_reclamo.codigos_ingresados = false
-      }else{
-        tipo_reclamo.pagado = true
-        tipo_reclamo.codigos_ingresados = true
+        this.usr_rec = res.nombre +' '+ res.apellido
       }
+      else{
+        reclama = 'Propietario'
+        this.usr_rec = res.nombre +' '+ res.apellido
+      }
+        
+      tipo_reclamo.pagado = this.datosAlquiler.fuePagado
+      tipo_reclamo.cp_ingresado = this.datosAlquiler.codigoPropietarioIngresado
+      tipo_reclamo.cl_ingresado = this.datosAlquiler.codigoLocatarioIngresado
+      tipo_reclamo.cpd_ingresado = this.datosAlquiler.codigoPropietarioDevolucionIngresado
+      tipo_reclamo.cld_ingresado = this.datosAlquiler.codigoLocatarioDevolucionIngresado
       
         
       this.crearJSONmotivos(reclama,tipo_reclamo);  
@@ -97,6 +107,13 @@ export class ReclamarAlquilerComponent implements OnInit {
 
     
     
+  }
+
+  fileChangeEvent(fileInput: any) {
+    this.filesToUpload = <Array<File>>fileInput.target.files;
+    this.imagen = this.filesToUpload[0].name;
+
+    console.log(this.filesToUpload)
   }
 
   cerrarSesion() {
@@ -123,16 +140,17 @@ export class ReclamarAlquilerComponent implements OnInit {
       if(JSONmotivos[index].id == 9)
         arreglo.push({ 'value': JSONmotivos[index].id, 'viewValue': JSONmotivos[index].descripción })
 
-      if(reclama == 'Locatario' && tipo_reclamo.pagado && !tipo_reclamo.codigos_ingresados && (JSONmotivos[index].id > 0 && JSONmotivos[index].id < 4))
+      if(reclama == 'Locatario' && tipo_reclamo.pagado && (!tipo_reclamo.cp_ingresado || !tipo_reclamo.cl_ingresado) &&  (JSONmotivos[index].id > 0 && JSONmotivos[index].id < 4)){
+        arreglo.push({ 'value': JSONmotivos[index].id, 'viewValue': JSONmotivos[index].descripción })
+      }
+
+      if(reclama == 'Locatario' && tipo_reclamo.pagado && (tipo_reclamo.cp_ingresado && tipo_reclamo.cl_ingresado)  && JSONmotivos[index].id == 4 )
         arreglo.push({ 'value': JSONmotivos[index].id, 'viewValue': JSONmotivos[index].descripción })
       
-      if(reclama == 'Locatario' && tipo_reclamo.pagado && tipo_reclamo.codigos_ingresados && JSONmotivos[index].id == 4 )
+      if(reclama == 'Propietario' && tipo_reclamo.pagado && (!tipo_reclamo.cp_ingresado || !tipo_reclamo.cl_ingresado) && (JSONmotivos[index].id > 4 && JSONmotivos[index].id < 7 ))
         arreglo.push({ 'value': JSONmotivos[index].id, 'viewValue': JSONmotivos[index].descripción })
 
-      if(reclama == 'Propietario' && tipo_reclamo.pagado && !tipo_reclamo.codigos_ingresados && (JSONmotivos[index].id > 4 && JSONmotivos[index].id < 7 ))
-        arreglo.push({ 'value': JSONmotivos[index].id, 'viewValue': JSONmotivos[index].descripción })
-
-      if(reclama == 'Propietario' && tipo_reclamo.pagado && tipo_reclamo.codigos_ingresados && (JSONmotivos[index].id >= 7  && JSONmotivos[index].id < 9 ))
+      if(reclama == 'Propietario' && tipo_reclamo.pagado && (tipo_reclamo.cp_ingresado && tipo_reclamo.cl_ingresado) && (JSONmotivos[index].id >= 7  && JSONmotivos[index].id < 9 ))
         arreglo.push({ 'value': JSONmotivos[index].id, 'viewValue': JSONmotivos[index].descripción })
     
     }
@@ -204,7 +222,7 @@ export class ReclamarAlquilerComponent implements OnInit {
             resolucion: 1,
             titulo: this.datosAlquiler.titulo_publicacion,
             respuestas: [{
-              emisor_respuesta: this.emailLogueado,
+              emisor_respuesta: this.usr_rec,
               respuesta: motivo,
               nro_rta: 1
           
@@ -230,7 +248,7 @@ export class ReclamarAlquilerComponent implements OnInit {
             resolucion: 2,
             titulo: this.datosAlquiler.titulo_publicacion,
             respuestas: [{
-              emisor_respuesta: this.emailLogueado,
+              emisor_respuesta: this.usr_rec,
               respuesta: motivo,
               nro_rta: 1
           
@@ -254,14 +272,14 @@ export class ReclamarAlquilerComponent implements OnInit {
               codigoPropietarioDevolucionIngresado: this.datosAlquiler.codigoPropietarioDevolucionIngresado,
               codigoPropietarioIngresado: this.datosAlquiler.codigoPropietarioIngresado,
               id_publicacion:this.datosAlquiler.id_publicacion,
-              estado_reclamo: 'Respondido por OneUse',
+              estado_reclamo: 'Esperando respuesta del sitio',
               imagen: this.datosAlquiler.imagen,
               usuario_propietario: this.datosAlquiler.name_usuarioPropietario            ,
               usuario_locatario: this.datosAlquiler.name_usuarioLocatario,
               resolucion: 3,
               titulo: this.datosAlquiler.titulo_publicacion,
               respuestas: [{
-                emisor_respuesta: this.emailLogueado,
+                emisor_respuesta: this.usr_rec,
                 respuesta: motivo,
                 nro_rta: 1
             
@@ -280,14 +298,14 @@ export class ReclamarAlquilerComponent implements OnInit {
               codigoPropietarioDevolucionIngresado: this.datosAlquiler.codigoPropietarioDevolucionIngresado,
               codigoPropietarioIngresado: this.datosAlquiler.codigoPropietarioIngresado,
               id_publicacion:this.datosAlquiler.id_publicacion,
-              estado_reclamo: 'Respondido por OneUse',
+              estado_reclamo: 'Esperando respuesta del sitio',
               imagen: this.datosAlquiler.imagen,
               usuario_propietario: this.datosAlquiler.name_usuarioPropietario            ,
               usuario_locatario: this.datosAlquiler.name_usuarioLocatario,
               resolucion: 4,
               titulo: this.datosAlquiler.titulo_publicacion,
               respuestas: [{
-                emisor_respuesta: this.emailLogueado,
+                emisor_respuesta: this.usr_rec,
                 respuesta: motivo,
                 nro_rta: 1
             
@@ -322,7 +340,7 @@ export class ReclamarAlquilerComponent implements OnInit {
               resolucion: 5,
               titulo: this.datosAlquiler.titulo_publicacion,
               respuestas: [{
-                emisor_respuesta: this.emailLogueado,
+                emisor_respuesta: this.usr_rec,
                 respuesta: motivo,
                 nro_rta: 1
             
@@ -348,7 +366,7 @@ export class ReclamarAlquilerComponent implements OnInit {
               resolucion: 6,
               titulo: this.datosAlquiler.titulo_publicacion,
               respuestas: [{
-                emisor_respuesta: this.emailLogueado,
+                emisor_respuesta: this.usr_rec,
                 respuesta: motivo,
                 nro_rta: 1
             
@@ -379,7 +397,7 @@ export class ReclamarAlquilerComponent implements OnInit {
               resolucion: 7,
               titulo: this.datosAlquiler.titulo_publicacion,
               respuestas: [{
-                emisor_respuesta: this.emailLogueado,
+                emisor_respuesta: this.usr_rec,
                 respuesta: motivo,
                 nro_rta: 1
             
@@ -409,13 +427,13 @@ export class ReclamarAlquilerComponent implements OnInit {
               resolucion: 8,
               titulo: this.datosAlquiler.titulo_publicacion,
               respuestas: [{
-                emisor_respuesta: this.emailLogueado,
+                emisor_respuesta: this.usr_rec,
                 respuesta: motivo,
                 nro_rta: 1
             
                 },{
                 emisor_respuesta: 'Equipo de OneUse',
-                respuesta: 'Gracias por avisar a OneUse de lo ocurrido. Avisaremos al propietario para que se comunique contigo lo antes posible, pasadas las 72hs habiles se te liberara el dinero en garantia.',
+                respuesta: 'Gracias por avisar a OneUse de lo ocurrido. Avisaremos al propietario para que se comunique contigo lo antes posible. Gracias por utilizar OneUse.',
                 nro_rta: 2
                 }] 
             }
@@ -431,14 +449,14 @@ export class ReclamarAlquilerComponent implements OnInit {
               codigoPropietarioDevolucionIngresado: this.datosAlquiler.codigoPropietarioDevolucionIngresado,
               codigoPropietarioIngresado: this.datosAlquiler.codigoPropietarioIngresado,
               id_publicacion:this.datosAlquiler.id_publicacion,
-              estado_reclamo: 'Respondido por OneUse',
+              estado_reclamo: 'Esperando respuesta del sitio',
               imagen: this.datosAlquiler.imagen,
               usuario_propietario: this.datosAlquiler.name_usuarioPropietario            ,
               usuario_locatario: this.datosAlquiler.name_usuarioLocatario,
               resolucion: 9,
               titulo: this.datosAlquiler.titulo_publicacion,
               respuestas: [{
-                emisor_respuesta: this.emailLogueado,
+                emisor_respuesta: this.usr_rec,
                 respuesta: motivo,
                 nro_rta: 1
             
@@ -464,7 +482,7 @@ export class ReclamarAlquilerComponent implements OnInit {
               resolucion: 10,
               titulo: this.datosAlquiler.titulo_publicacion,
               respuestas: [{
-                emisor_respuesta: this.emailLogueado,
+                emisor_respuesta: this.usr_rec,
                 respuesta: motivo,
                 nro_rta: 1
             
@@ -495,19 +513,19 @@ export class ReclamarAlquilerComponent implements OnInit {
               resolucion: 11,
               titulo: this.datosAlquiler.titulo_publicacion,
               respuestas: [{
-                emisor_respuesta: this.emailLogueado,
+                emisor_respuesta: this.usr_rec,
                 respuesta: motivo,
                 nro_rta: 1
             
                 },{
                 emisor_respuesta: 'Equipo de OneUse',
-                respuesta: 'Lamentamos mucho lo que paso. Intentaremos contactarnos con el propietario lo antes posible y volveremos a contactarnos contigo en las proximas 48hs.',
+                respuesta: 'Lamentamos mucho lo que paso. Intentaremos contactarnos con el propietario lo antes posible y volveremos a contactarnos contigo para brindarte una solución.',
                 nro_rta: 2
                 }] 
             }
       break;
 
-      case "El producto fue devuelto en malas condiciones":
+      case "El objeto fue devuelto en malas condiciones":
             
           if(!codigo_propietario_devolucion){
   
@@ -517,20 +535,20 @@ export class ReclamarAlquilerComponent implements OnInit {
               codigoPropietarioDevolucionIngresado: this.datosAlquiler.codigoPropietarioDevolucionIngresado,
               codigoPropietarioIngresado: this.datosAlquiler.codigoPropietarioIngresado,
               id_publicacion:this.datosAlquiler.id_publicacion,
-              estado_reclamo: 'Cerrado',
+              estado_reclamo: 'Esperando respuesta del sitio',
               imagen: this.datosAlquiler.imagen,
               usuario_propietario: this.datosAlquiler.name_usuarioPropietario            ,
               usuario_locatario: this.datosAlquiler.name_usuarioLocatario,
               resolucion: 12,
               titulo: this.datosAlquiler.titulo_publicacion,
               respuestas: [{
-                emisor_respuesta: this.emailLogueado,
+                emisor_respuesta: this.usr_rec,
                 respuesta: motivo,
                 nro_rta: 1
             
                 },{
                 emisor_respuesta: 'Equipo de OneUse',
-                respuesta: 'Lamentamos mucho la experiencia que tuvo. Analizaremos su caso y en un lapso de entre 48 y 72hs tendra una respuesta favorable a su caso. Gracias por utilizar OneUse',
+                respuesta: 'Lamentamos mucho la experiencia que tuvo. Investigaremos lo que paso para darle una respuesta lo mas rapido posible a su caso. Gracias por utilizar OneUse',
                 nro_rta: 2
                 }] 
             }
@@ -550,7 +568,7 @@ export class ReclamarAlquilerComponent implements OnInit {
               resolucion: 13,
               titulo: this.datosAlquiler.titulo_publicacion,
               respuestas: [{
-                emisor_respuesta: this.emailLogueado,
+                emisor_respuesta: this.usr_rec,
                 respuesta: motivo,
                 nro_rta: 1
             
@@ -579,7 +597,7 @@ export class ReclamarAlquilerComponent implements OnInit {
               resolucion: 14,
               titulo: this.datosAlquiler.titulo_publicacion,
               respuestas: [{
-                emisor_respuesta: this.emailLogueado,
+                emisor_respuesta: this.usr_rec,
                 respuesta: motivo,
                 nro_rta: 1
             
@@ -592,37 +610,41 @@ export class ReclamarAlquilerComponent implements OnInit {
         break;
     }
 
-    console.log(this.reclamoData)
+    //console.log(this.reclamoData)
                      
 
-    // this._auth.registrar_reclamo(this.reclamoData).subscribe(
+    this._auth.registrar_reclamo(this.reclamoData).subscribe(
       
-    //   res => {
-        
-    //   },
-    //   err => {
-    //     console.log(err)
-        
-    //   }
-    // )
+      res => {
+
+        this._uploadService.makeFileRequest("http://localhost:4201/api/upload-image-reclamo/" + res._id, [], this.filesToUpload, 'removablefile')
+            .then((result: any) => {
+            });
+      },
+      
+    )
+
+
+
 
     // Dejo esto comentado, es lo que cambia de estado del alquiler a en proceso de reclamo para poder hacer muchos reclamos de 1 sola publi
     
-    // if(cerrar_reclamo)
-    // this._auth.registrar_reclamado(this.datosAlquiler._id).subscribe(
-    //   res => {
-        
-    //   },
-    //   err => {
-    //     console.log(err)
-        
-    //   }
+    if(this.reclamoData.estado_reclamo == 'Cerrado'){
+      this._auth.registrar_reclamado(this.datosAlquiler._id).subscribe(
+        res => {
+          
+        },
+        err => {
+          console.log(err)
+          
+        }
 
 
-    // )
+      )
+    }
 
 
-    //this._router.navigate(['/reclamo-exito']);
+    this._router.navigate(['/reclamo-exito']);
 
 
   }

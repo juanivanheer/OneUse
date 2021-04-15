@@ -108,6 +108,7 @@ import { HabilitarStockDialogComponent } from './components/mi-cuenta/mis-public
 import { PagosComponent } from './components/mi-cuenta/superadmin/pagos/pagos.component';
 import { DenunciasComponent } from './components/mi-cuenta/superadmin/denuncias/denuncias.component';
 import { DenunciarDialogComponent } from './components/publicaciones/detalle-publicacion/denunciar-dialog/denunciar-dialog.component';
+import { VerImagenComponent } from './components/mi-cuenta/superadmin/reclamos/ver-imagen/ver-imagen.component';
 FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme, TimeSeries, Maps, World, Argentina);
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
@@ -195,6 +196,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     PagosComponent,
     DenunciasComponent,
     DenunciarDialogComponent,
+    VerImagenComponent,
   ],
   imports: [
     BrowserModule,
@@ -225,6 +227,6 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     DatosLocatarioDialogComponent, CodigoPropietarioDialogComponent, CodigoLocatarioDialogComponent, CodigoDevolucionLocatarioDialogComponent,
     CodigoDevolucionPropietarioDialogComponent, EliminarUsuarioDialogComponent, DatosUsuariosDialogComponent, ModificarUsuarioDialogComponent, DatosPublicacionesDialogComponent, EliminarPublicacionDialogComponent, ModificarPublicacionDialogComponent,
     DatosAlquileresDialogComponent, ModificarAlquilerDialogComponent, EliminarAlquilerSuperadminDialogComponent, CancelarDialogComponent, PuntuacionComponent, PuntuacionObtenidaDialogComponent, ReclamoDialogComponent, EliminarReclamoDialogComponent, RespuestaReclamoDialogComponent,
-    HabilitarStockDialogComponent,DenunciarDialogComponent]
+    HabilitarStockDialogComponent, DenunciarDialogComponent, VerImagenComponent]
 })
 export class AppModule { }
