@@ -16,7 +16,12 @@ var sortJsonArray = require('sort-json-array');
 
 export interface Provincias {
   value: string;
-  viewValue: string;
+  viewValue: string
+}
+
+export interface Ciudades {
+  value: string,
+  viewValue: string
 }
 
 @Component({
@@ -77,10 +82,11 @@ export class PerfilUsuarioComponent implements OnInit {
   emailLogueado = localStorage.getItem("email");
   perfilSocial: boolean = this.esSocial();
 
+
   //Para armar los JSON de provincias y ciudades
   datosCiudades = [];
   datosProvincias: Provincias[];
-  ciudadesFiltradas: string[];
+  ciudadesFiltradas: Ciudades[];
   date = new FormControl();
   ciudadControl: FormControl = new FormControl();
 
@@ -310,10 +316,12 @@ export class PerfilUsuarioComponent implements OnInit {
         if (window.localStorage.getItem("tipo") == "facebook" || window.localStorage.getItem("tipo") == "google") {
           window.location.assign("mi-cuenta/perfil")
         } else {
-          this._uploadService.makeFileRequest("http://localhost:4201/api/upload-image/" + this._id, [], this.filesToUpload, 'removablefile')
-            .then((result: any) => {
-              window.location.assign("mi-cuenta/perfil")
-            });
+          if (this.filesToUpload != undefined) {
+            this._uploadService.makeFileRequest("http://localhost:4201/api/upload-image/" + this._id, [], this.filesToUpload, 'removablefile')
+              .then((result: any) => {
+                window.location.assign("mi-cuenta/perfil")
+              });
+          }
         }
       },
       err => { }

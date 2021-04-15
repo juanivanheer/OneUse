@@ -4,6 +4,7 @@ import { StarRatingColor } from '../busqueda-publicaciones/star-rating.component
 import { Subscription } from 'rxjs';
 import { DataTableBusquedaCategoria } from './data-table-bc-datasource';
 import { MatPaginator, MatSort } from '@angular/material';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-busqueda-categorias',
@@ -28,7 +29,6 @@ export class BusquedaCategoriasComponent implements OnInit, OnDestroy {
   selectable = true;
   urlActual: String;
   categoria;
-
   url = new URL(window.location.href);
   params = new URLSearchParams(this.url.search.slice(1));
 
@@ -37,7 +37,7 @@ export class BusquedaCategoriasComponent implements OnInit, OnDestroy {
   displayedColumns = ['id']; /* ,'name', 'amount' */
   suscription: Subscription;
 
-  constructor(private _auth: AuthService) { }
+  constructor(private _auth: AuthService, private spinner: NgxSpinnerService) { }
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -64,6 +64,7 @@ export class BusquedaCategoriasComponent implements OnInit, OnDestroy {
     } else {
       this.filtroSeleccionado('c', parametro);
     }
+    this.spinner.hide()
   }
 
   formatoSlider(value) {

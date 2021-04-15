@@ -105,6 +105,9 @@ import { EliminarReclamoDialogComponent } from './components/mi-cuenta/superadmi
 import { RespuestaReclamoDialogComponent } from './components/mi-cuenta/superadmin/reclamos/respuesta-reclamo-dialog/respuesta-reclamo-dialog.component';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { HabilitarStockDialogComponent } from './components/mi-cuenta/mis-publicaciones/habilitar-stock-dialog/habilitar-stock-dialog.component';
+import { PagosComponent } from './components/mi-cuenta/superadmin/pagos/pagos.component';
+import { DenunciasComponent } from './components/mi-cuenta/superadmin/denuncias/denuncias.component';
+import { DenunciarDialogComponent } from './components/publicaciones/detalle-publicacion/denunciar-dialog/denunciar-dialog.component';
 FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme, TimeSeries, Maps, World, Argentina);
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
@@ -189,6 +192,9 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     EliminarReclamoDialogComponent,
     RespuestaReclamoDialogComponent,
     HabilitarStockDialogComponent,
+    PagosComponent,
+    DenunciasComponent,
+    DenunciarDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -219,6 +225,6 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     DatosLocatarioDialogComponent, CodigoPropietarioDialogComponent, CodigoLocatarioDialogComponent, CodigoDevolucionLocatarioDialogComponent,
     CodigoDevolucionPropietarioDialogComponent, EliminarUsuarioDialogComponent, DatosUsuariosDialogComponent, ModificarUsuarioDialogComponent, DatosPublicacionesDialogComponent, EliminarPublicacionDialogComponent, ModificarPublicacionDialogComponent,
     DatosAlquileresDialogComponent, ModificarAlquilerDialogComponent, EliminarAlquilerSuperadminDialogComponent, CancelarDialogComponent, PuntuacionComponent, PuntuacionObtenidaDialogComponent, ReclamoDialogComponent, EliminarReclamoDialogComponent, RespuestaReclamoDialogComponent,
-    HabilitarStockDialogComponent]
+    HabilitarStockDialogComponent,DenunciarDialogComponent]
 })
 export class AppModule { }

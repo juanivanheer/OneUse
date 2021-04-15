@@ -71,6 +71,7 @@ export class DestacacionPublicacionComponent implements OnInit {
     };
 
     let platinum = {
+      "purpose": "wallet_purchase",
       "items": [
         {
           "title": "Destacación PLATINUM",
@@ -88,6 +89,7 @@ export class DestacacionPublicacionComponent implements OnInit {
     }
 
     let gold = {
+      "purpose": "wallet_purchase",
       "items": [
         {
           "title": "Destacación GOLD",

@@ -14,7 +14,21 @@ export class PagoMercadopagoComponent implements AfterViewInit {
   /*
       URL de la app OneUse en MercadoPago: https://www.mercadopago.com.ar/developers/panel/credentials?id=8165018491705514&code=IdWclSDkYknng0jTradj9kEDgTmvYM9p
 
-      Claves de usuario de prueba 1 (VENDEDOR)
+
+      ---------------- APP MP OneUse (juanivanheer@gmail.com) -------------------------------
+      ************** CON ESTAS CLAVES HAY QUE ARMAR LOS USUARIOS ************************
+      PUBLIC_KEY = 'APP_USR-a4673aa0-ad58-4543-8cfa-9295400f68dc'
+      AUTH_KEY = 'APP_USR-8165018491705514-031214-50f0f1c6dac2a9e4f1abc7369f552828-321594747'
+      CLIENT_ID = '8165018491705514'
+
+      ---------------- APP MP OneUse-TEST MARKETPLACE (test_user_54742029@testuser.com) ------------------
+      ************** CON ESTAS CLAVES HAY QUE ARMAR LAS PREFERENCIAS ********************
+      PUBLIC_KEY = 'APP_USR-8f101a04-f6b9-4e48-acd1-b8ee31e63605'
+      AUTH_KEY = 'APP_USR-6441853255268027-031218-1cc601aea99e8a140d8107921e2e7cc7-727650332'
+      CLIENT_ID = '6441853255268027'
+
+
+      Claves de usuario de prueba 1 (MARKETPLACE)
       {
         "id": 727650332,
         "nickname": "TEST9XUGAWGE",
@@ -23,33 +37,24 @@ export class PagoMercadopagoComponent implements AfterViewInit {
         "email": "test_user_54742029@testuser.com",
       }
 
-      Claves de usuario de prueba 2 (COMPRADOR)
+      Claves de usuario de prueba 2 (PROPIETARIO)
       {
-        "id": 727653514,
-        "nickname": "TESTJUFV4LH1",
-        "password": "qatest133",
-        "site_status": "active",
-        "email": "test_user_25971562@testuser.com"
+          "id": 744162087,
+          "nickname": "TT069518",
+          "password": "qatest2145",
+          "site_status": "active",
+          "email": "test_user_57488157@testuser.com"
       }
 
-      Claves de usuario de prueba 3 (DESTACADOS)
+      Claves de usuario de prueba 3 (LOCATARIO)
       {
-        "id": 728081527,
-        "nickname": "TETE209755",
-        "password": "qatest8818",
-        "site_status": "active",
-        "email": "test_user_68217187@testuser.com"
+          "id": 744164820,
+          "nickname": "TESTUEW3I3QQ",
+          "password": "qatest4596",
+          "site_status": "active",
+          "email": "test_user_90157350@testuser.com"
       }
   
-      ---------------- APP MP OneUse PADRE (juanivanheer@gmail.com) -------------------------------
-      PUBLIC_KEY = 'APP_USR-a4673aa0-ad58-4543-8cfa-9295400f68dc'
-      AUTH_KEY = 'APP_USR-8165018491705514-031214-50f0f1c6dac2a9e4f1abc7369f552828-321594747'
-
-      ---------------- APP MP OneUse-TEST VENDEDOR (test_user_54742029@testuser.com) ------------------
-      ************** CON ESTAS CLAVES HAY QUE ARMAR LAS PREFERENCIAS DE VENTAS ************************
-      PUBLIC_KEY = 'APP_USR-8f101a04-f6b9-4e48-acd1-b8ee31e63605'
-      AUTH_KEY = 'APP_USR-6441853255268027-031218-1cc601aea99e8a140d8107921e2e7cc7-727650332'
-
   */
 
   constructor(private _auth: AuthService, private _snackBar: MatSnackBar, private spinner: NgxSpinnerService) { }

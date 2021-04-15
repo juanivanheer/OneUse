@@ -4,6 +4,7 @@ import { MatPaginator, MatSort } from '@angular/material';
 import { DataTableBusquedaPalabra } from './data-table-bp-datasource';
 import { StarRatingColor } from './star-rating.component';
 import { Subscription } from 'rxjs';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-busqueda-publicaciones',
@@ -12,7 +13,7 @@ import { Subscription } from 'rxjs';
 })
 export class BusquedaPublicacionesComponent implements OnInit, OnDestroy {
 
-  constructor(private _auth: AuthService) { }
+  constructor(private _auth: AuthService, private spinner: NgxSpinnerService) { }
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -35,13 +36,14 @@ export class BusquedaPublicacionesComponent implements OnInit, OnDestroy {
   objectSubcategoriaSeleccionada = {};
   removable = true;
   selectable = true;
-  urlActual : String;
+  urlActual: String;
 
 
   url = new URL(window.location.href);
   params = new URLSearchParams(this.url.search.slice(1));
 
   ngOnInit() {
+    this.spinner.show();
     this.clearURL();
     this.urlActual = document.location.href;
     let parametro = this.urlActual.slice(34);
@@ -72,12 +74,13 @@ export class BusquedaPublicacionesComponent implements OnInit, OnDestroy {
             this.arraySubcategoriasTotal.push(objeto);
           }
           this.arraySubcategoriasTotal.sort();
-
+          this.spinner.hide()
           this.dataSource = new DataTableBusquedaPalabra(this.paginator, this.sort, this.publicaciones);
-
         } else {
           this.hayPublicaciones = false;
+          this.spinner.hide()
         }
+
       }
     )
   }

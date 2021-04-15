@@ -1,3 +1,7 @@
+<ngx-spinner bdColor="rgb(0,0,1)" size="medium" color="#ffffff" type="timer" [fullScreen]="true">
+    <p style="color: white"> Cargando búsqueda... </p>
+</ngx-spinner>
+
 <section fxLayout="row" class="container-general" fxFlexFill>
     <!-- Sección de filtros -->
     <section fxFlex="28%">
@@ -55,11 +59,11 @@
 
             </div>
 
-            <div *ngIf="!filtroEstrellas" class="filtros">
+            <!-- <div *ngIf="!filtroEstrellas" class="filtros">
                 <p style="font-size: 16px;"><b>Puntuación del propietario</b></p>
                 <mat-star-rating [rating]="rating" [starCount]="starCount" [color]="starColorP"
                     (ratingUpdated)="onRatingChanged($event)"></mat-star-rating>
-            </div>
+            </div> -->
         </div>
     </section>
 
@@ -72,7 +76,7 @@
                     <mat-cell *matCellDef="let row" style="height: 100%; line-height: 38px">
                         <div fxLayout="row" fxLayoutGap="20px" style="margin-top: 10px;">
                             <div *ngIf="!hayPublicaciones">
-                                {{mensaje}}
+                                <h2>No hay publicaciones por mostrar</h2>
                             </div>
                             <div>
                                 <img class="container-muestra-imagenes"
@@ -86,7 +90,7 @@
                                 <p> <b> Categoría </b>: {{row.categoria}}</p>
                                 <div class="row tile-ratings">
 
-                                    <a aria-label="4.0 out of 5 stars. 1 review " itemprop="aggregateRating"
+                                 <!--    <a aria-label="4.0 out of 5 stars. 1 review " itemprop="aggregateRating"
                                         itemscope="">
                                         <span style="padding-left: 12px;" aria-hidden="true">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px"
@@ -205,7 +209,7 @@
                                             </svg>
                                         </span>
 
-                                    </a>
+                                    </a> -->
 
                                 </div>
                             </div>

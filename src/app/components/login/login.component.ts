@@ -4,6 +4,7 @@ import { AuthService } from '../../services/auth.service';
 import { MatSnackBar } from '@angular/material';
 import { SingletonService } from '../singleton.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { NgxSpinnerService } from 'ngx-spinner';
 declare const gapi: any;
 declare const FB: any;
 
@@ -23,13 +24,15 @@ export class LoginComponent implements OnInit, AfterViewInit {
   btn_habilitado: boolean = false;
 
 
-  constructor(private http: HttpClient, private _auth: AuthService, private _router: Router, private _snackBar: MatSnackBar, private singleton: SingletonService) { }
+  constructor(private http: HttpClient, private _auth: AuthService, private _router: Router, private _snackBar: MatSnackBar, private singleton: SingletonService, private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
+    this.spinner.show();
     this.addRecaptchaScript();
     setTimeout(() => {
       document.getElementsByTagName("span")[17].textContent = "Acceder con Google";
-    }, 600);
+      this.spinner.hide();
+    }, 2000);
   }
 
   ngAfterViewInit() {

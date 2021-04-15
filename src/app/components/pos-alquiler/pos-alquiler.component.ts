@@ -89,6 +89,7 @@ export class PosAlquilerComponent implements OnInit {
     };
 
     let objeto_conIntervencion = {
+      "purpose": "wallet_purchase",
       "items": [
         {
           "title": this.alquiler.titulo,
@@ -106,6 +107,7 @@ export class PosAlquilerComponent implements OnInit {
     }
 
     let objeto_sinIntervencion = {
+      "purpose": "wallet_purchase",
       "items": [
         {
           "title": this.alquiler.titulo,
