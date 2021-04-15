@@ -23,54 +23,57 @@
                 </div>
                 <div class="contenedor-imagenes">
 
-                    <div *ngIf="!hayPublicaciones">
-                        {{titulo}}
+                    <div *ngIf="!hayPublicacionesActivas" fxLayoutAlign="center center" style="height: 250px;">
+                        <h4>{{titulo}}</h4>
                     </div>
-
-                    <div *ngFor="let publicacion of publicaciones; let indice1 = index">
-                        <div ngClass.gt-md="contenedor-imagen-final" ngClass.lt-lg="tab-lt-md"
-                            *ngIf="publicacion.estado == 'ACTIVA'">
-                            <mat-card class="example-card">
-                                <mat-card-header>
-                                    <mat-card-title style="text-align: left; font-size: 17px"><a style="color:black;"
-                                            routerLink="/publicaciones/{{publicacion._id}}"> {{publicacion.titulo}} </a>
-                                    </mat-card-title>
-                                    <mat-card-subtitle style="text-align: left;"> {{publicacion.categoria}},
-                                        {{publicacion.subcategoria}} </mat-card-subtitle>
-                                </mat-card-header>
-                                <!-- <img class="container-muestra-imagenes" mat-card-image src="../../../../assets/images/OneUse.jpg">  -->
-                                <swiper class="swiper-container" [config]="config">
-                                    <div *ngFor="let img of publicacion.multiplefile; let indice2 = index"
-                                        style="width: 100% !important">
-                                        <img class="container-muestra-imagenes"
-                                            src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}">
-                                        <!--                                         <img class="container-muestra-imagenes"
+                    <div *ngIf="hayPublicacionesActivas">
+                        <div *ngFor="let publicacion of publicaciones; let indice1 = index">
+                            <div ngClass.gt-md="contenedor-imagen-final" ngClass.lt-lg="tab-lt-md"
+                                *ngIf="publicacion.estado == 'ACTIVA'">
+                                <mat-card class="example-card">
+                                    <mat-card-header>
+                                        <mat-card-title style="text-align: left; font-size: 17px"><a
+                                                style="color:black;" routerLink="/publicaciones/{{publicacion._id}}">
+                                                {{publicacion.titulo}} </a>
+                                        </mat-card-title>
+                                        <mat-card-subtitle style="text-align: left;"> {{publicacion.categoria}},
+                                            {{publicacion.subcategoria}} </mat-card-subtitle>
+                                    </mat-card-header>
+                                    <!-- <img class="container-muestra-imagenes" mat-card-image src="../../../../assets/images/OneUse.jpg">  -->
+                                    <swiper class="swiper-container" [config]="config">
+                                        <div *ngFor="let img of publicacion.multiplefile; let indice2 = index"
+                                            style="width: 100% !important">
+                                            <img class="container-muestra-imagenes"
+                                                src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}">
+                                            <!--                                         <img class="container-muestra-imagenes"
                                             src="{{'https://oneuse-backend.herokuapp.com/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}"> -->
-                                    </div>
-                                </swiper>
-                                <mat-card-content style="text-align: justify; font-size: 11px; margin-top: 15px;"
-                                    fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px"
-                                    *ngIf="publicacion.pago_destacacion">
-                                    <mat-icon style="color: cornflowerblue;">info</mat-icon>
-                                    <p> El producto se encontrará destacado hasta el
-                                        <b>{{publicacion.fecha_caducacion_destacacion}}</b></p>
-                                </mat-card-content>
-                                <mat-card-content style="text-align: justify; font-size: 11px; margin-top: 15px;"
-                                    fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px"
-                                    *ngIf="!publicacion.pago_destacacion">
-                                    <mat-icon style="color: black;"> paid </mat-icon>
-                                    <p>Para destacar el producto, haz click en el botón <b>destacar</b></p>
-                                </mat-card-content>
-                                <mat-card-actions>
-                                    <button mat-raised-button color="primary"
-                                        (click)="destacarPublicacion(publicacion._id)"
-                                        *ngIf="publicacion.pago_destacacion == false">Destacar</button>
-                                    <button mat-raised-button color="primary"
-                                        routerLink="/editar-publicacion/{{publicacion._id}}">Editar</button>
-                                    <button mat-raised-button color="warn"
-                                        (click)="openDialogDeshabilitar(publicacion)">Deshabilitar</button>
-                                </mat-card-actions>
-                            </mat-card>
+                                        </div>
+                                    </swiper>
+                                    <mat-card-content style="text-align: justify; font-size: 11px; margin-top: 15px;"
+                                        fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px"
+                                        *ngIf="publicacion.pago_destacacion">
+                                        <mat-icon style="color: cornflowerblue;">info</mat-icon>
+                                        <p> El producto se encontrará destacado hasta el
+                                            <b>{{publicacion.fecha_caducacion_destacacion}}</b>
+                                        </p>
+                                    </mat-card-content>
+                                    <mat-card-content style="text-align: justify; font-size: 11px; margin-top: 15px;"
+                                        fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px"
+                                        *ngIf="!publicacion.pago_destacacion">
+                                        <mat-icon style="color: black;"> paid </mat-icon>
+                                        <p>Para destacar el producto, haz click en el botón <b>destacar</b></p>
+                                    </mat-card-content>
+                                    <mat-card-actions>
+                                        <button mat-raised-button color="primary"
+                                            (click)="destacarPublicacion(publicacion._id)"
+                                            *ngIf="publicacion.pago_destacacion == false">Destacar</button>
+                                        <button mat-raised-button color="primary"
+                                            routerLink="/editar-publicacion/{{publicacion._id}}">Editar</button>
+                                        <button mat-raised-button color="warn"
+                                            (click)="openDialogDeshabilitar(publicacion)">Deshabilitar</button>
+                                    </mat-card-actions>
+                                </mat-card>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -85,56 +88,61 @@
                 </div>
                 <div class="contenedor-imagenes">
 
-                    <div *ngIf="!hayPublicaciones">
-                        {{titulo}}
+                    <div *ngIf="!hayPublicacionesInactivas" fxLayoutAlign="center center" style="height: 250px;">
+                        <h4>{{titulo}}</h4>
                     </div>
 
-                    <div *ngFor="let publicacion of publicaciones; let indice1 = index">
-                        <div ngClass.gt-md="contenedor-imagen-final" ngClass.lt-lg="tab-lt-md"
-                            *ngIf="publicacion.estado == 'INACTIVA'">
-                            <mat-card class="example-card">
-                                <mat-card-header>
-                                    <mat-card-title style="text-align: left; font-size: 17px"><a style="color:black;"
-                                            routerLink="/publicaciones/{{publicacion._id}}"> {{publicacion.titulo}} </a>
-                                    </mat-card-title>
-                                    <mat-card-subtitle style="text-align: left;"> {{publicacion.categoria}},
-                                        {{publicacion.subcategoria}} </mat-card-subtitle>
-                                </mat-card-header>
-                                <!-- <img class="container-muestra-imagenes" mat-card-image src="../../../../assets/images/OneUse.jpg">  -->
-                                <swiper class="swiper-container" [config]="config">
-                                    <div *ngFor="let img of publicacion.multiplefile; let indice2 = index"
-                                        style="width: 100% !important">
-                                        <img class="container-muestra-imagenes"
-                                            src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}">
-                                        <!--                                         <img class="container-muestra-imagenes"
+                    <div *ngIf="hayPublicacionesInactivas">
+                        <div *ngFor="let publicacion of publicaciones; let indice1 = index">
+                            <div ngClass.gt-md="contenedor-imagen-final" ngClass.lt-lg="tab-lt-md"
+                                *ngIf="publicacion.estado == 'INACTIVA'">
+                                <mat-card class="example-card">
+                                    <mat-card-header>
+                                        <mat-card-title style="text-align: left; font-size: 17px"><a
+                                                style="color:black;" routerLink="/publicaciones/{{publicacion._id}}">
+                                                {{publicacion.titulo}} </a>
+                                        </mat-card-title>
+                                        <mat-card-subtitle style="text-align: left;"> {{publicacion.categoria}},
+                                            {{publicacion.subcategoria}} </mat-card-subtitle>
+                                    </mat-card-header>
+                                    <!-- <img class="container-muestra-imagenes" mat-card-image src="../../../../assets/images/OneUse.jpg">  -->
+                                    <swiper class="swiper-container" [config]="config">
+                                        <div *ngFor="let img of publicacion.multiplefile; let indice2 = index"
+                                            style="width: 100% !important">
+                                            <img class="container-muestra-imagenes"
+                                                src="{{'http://localhost:4201/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}">
+                                            <!--                                         <img class="container-muestra-imagenes"
                                             src="{{'https://oneuse-backend.herokuapp.com/api/get-image-publicacion/'+ publicacion.multiplefile[indice2]}}">    -->
-                                    </div>
-                                </swiper>
-                                <mat-card-content style="text-align: justify; font-size: 12px" fxLayout="row"
-                                    fxLayoutAlign="start start" fxLayoutGap="10px">
-                                    <mat-icon style="color: cornflowerblue;">info</mat-icon>
-                                    <p *ngIf="publicacion.cantidadDisponible > 0"> La publicación se encuentra
-                                        desactivada y no va a ser mostrada a los
-                                        demás usuarios del sitio. Puedes habilitarla haciendo click en el botón
-                                        <b>Habilitar</b>
-                                    </p>
-                                    <p *ngIf="publicacion.cantidadDisponible == 0"> La publicación se encuentra
-                                        desactivada ya que no tiene más stock y no va a ser mostrada a los
-                                        demás usuarios del sitio. Puedes habilitarla haciendo click en el botón
-                                        <b>Habilitar</b>
-                                    </p>
-                                </mat-card-content>
-                                <mat-card-actions>
-                                    <button mat-raised-button color="primary"
-                                        routerLink="/editar-publicacion/{{publicacion._id}}">Editar</button>
-                                    <button *ngIf="publicacion.cantidadDisponible > 0" mat-raised-button color="primary"
-                                        (click)="habilitarPublicacion(publicacion)">Habilitar</button>
-                                        <button *ngIf="publicacion.cantidadDisponible == 0" mat-raised-button color="primary"
-                                        (click)="openDialogHabilitarStock(publicacion)">Habilitar</button>
-                                    <button mat-raised-button color="warn"
-                                        (click)="openDialogEliminar(publicacion)">Eliminar</button>
-                                </mat-card-actions>
-                            </mat-card>
+                                        </div>
+                                    </swiper>
+                                    <mat-card-content style="text-align: justify; font-size: 12px" fxLayout="row"
+                                        fxLayoutAlign="start start" fxLayoutGap="10px">
+                                        <mat-icon style="color: cornflowerblue;">info</mat-icon>
+                                        <p *ngIf="publicacion.cantidadDisponible > 0"> La publicación se encuentra
+                                            desactivada y no va a ser mostrada a los
+                                            demás usuarios del sitio. Puedes habilitarla haciendo click en el botón
+                                            <b>Habilitar</b>
+                                        </p>
+                                        <p *ngIf="publicacion.cantidadDisponible == 0"> La publicación se encuentra
+                                            desactivada ya que no tiene más stock y no va a ser mostrada a los
+                                            demás usuarios del sitio. Puedes habilitarla haciendo click en el botón
+                                            <b>Habilitar</b>
+                                        </p>
+                                    </mat-card-content>
+                                    <mat-card-actions>
+                                        <button mat-raised-button color="primary"
+                                            routerLink="/editar-publicacion/{{publicacion._id}}">Editar</button>
+                                        <button *ngIf="publicacion.cantidadDisponible > 0" mat-raised-button
+                                            color="primary"
+                                            (click)="habilitarPublicacion(publicacion)">Habilitar</button>
+                                        <button *ngIf="publicacion.cantidadDisponible == 0" mat-raised-button
+                                            color="primary"
+                                            (click)="openDialogHabilitarStock(publicacion)">Habilitar</button>
+                                        <button mat-raised-button color="warn"
+                                            (click)="openDialogEliminar(publicacion)">Eliminar</button>
+                                    </mat-card-actions>
+                                </mat-card>
+                            </div>
                         </div>
                     </div>
                 </div>

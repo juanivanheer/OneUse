@@ -19,8 +19,10 @@ export class MisPublicacionesComponent implements OnInit {
   constructor(private _auth: AuthService, private singleton: SingletonService, private _snackBar: MatSnackBar, public dialog: MatDialog) { }
 
   publicaciones = [];
-  titulo: string;
+  titulo: string = "No hay publicaciones para mostrar";
   hayPublicaciones: boolean;
+  hayPublicacionesActivas: boolean = false;
+  hayPublicacionesInactivas: boolean = false;
   imagen;
   imagenJSON;
   arrayJSON = [];
@@ -37,9 +39,9 @@ export class MisPublicacionesComponent implements OnInit {
      */
     this._auth.get_publicacion(localStorage.getItem("email")).subscribe(
       res => {
-        this.hayPublicaciones = true;
         this.publicaciones = res;
         if (res.length > 0) {
+          this.hayPublicaciones = true;
           for (let i = 0; i < this.publicaciones.length; i++) {
             const element = res[i];
             if(element.fecha_caducacion_destacacion != undefined){
@@ -53,18 +55,25 @@ export class MisPublicacionesComponent implements OnInit {
             }
             this.publicaciones[i].multiplefile = this.arrayJSON;
             this.arrayJSON = [];
+            if(element.estado == "ACTIVA"){
+              this.hayPublicacionesActivas = true;
+            }
+
+            if(element.estado == "INACTIVA"){
+              this.hayPublicacionesInactivas = true;
+            }
           }
+          if(this.hayPublicacionesActivas == false) this.titulo = "No hay publicaciones activas por mostrar"
+          if(this.hayPublicacionesInactivas == false) this.titulo = "No hay publicaciones inactivas por mostrar"
           this.mostrar = true;
         } else {
-          this.titulo = "No hay publicaciones para mostrar"
           this.hayPublicaciones = false;
-          this.mostrar = false; 
+          this.mostrar = true; 
         }
 
       },
       err => {
         //console.log(res);
-        this.titulo = "No hay publicaciones para mostrar"
         this.hayPublicaciones = false;
         this.mostrar = false;
       }
