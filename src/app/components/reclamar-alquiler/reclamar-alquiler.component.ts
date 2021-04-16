@@ -643,8 +643,7 @@ export class ReclamarAlquilerComponent implements OnInit {
       )
     }
 
-
-    this._router.navigate(['/reclamo-exito']);
+    window.location.assign("/reclamo-exito")
 
 
   }
