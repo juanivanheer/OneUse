@@ -9,6 +9,14 @@
     </mat-toolbar-row>
 
     <mat-toolbar-row>
+        <a [routerLink]="['/superadmin/pagos']">
+            <!-- [routerLink]="['/perfil']" -->
+            <mat-icon>credit_card</mat-icon><span class="iconitos letritas"
+                fxHide.lt-lg="true">Pagos</span>
+        </a>
+    </mat-toolbar-row>
+
+    <mat-toolbar-row>
         <a [routerLink]="['/superadmin/publicaciones']">
             <!-- [routerLink]="['/perfil']" -->
             <mat-icon>storefront</mat-icon><span class="iconitos letritas"

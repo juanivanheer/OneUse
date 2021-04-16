@@ -33,4 +33,9 @@ export class BarraLateralSaComponent implements OnInit {
     }
   }
 
+  cerrarSesion(){
+    localStorage.clear();
+    window.location.assign("/home");
+  }
+
 }

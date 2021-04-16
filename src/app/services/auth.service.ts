@@ -90,6 +90,8 @@ export class AuthService {
   private _updatePublicacionesDestacacion = this.url + 'update-pub-destacacion'
   private _sendMail = this.url + 'send-mail'
   private _reducirStock = this.url + 'reducir-stock/'
+  private _updatePyr = this.url + "update-pyr/"
+  private _registerDenuncia = this.url + "register-denuncia"
 
   constructor(private http: HttpClient) { }
 
@@ -246,6 +248,11 @@ export class AuthService {
     let params = JSON.stringify(respuesta);
     let headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.http.post<any>(this._respuestaPublicacion + id + "/" + name, params, { headers: headers });
+  }
+
+  update_pyr(id, objeto) {
+    let headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.http.post<any>(this._updatePyr + id, objeto, { headers: headers });
   }
 
 
@@ -427,6 +434,13 @@ export class AuthService {
 
   registrar_visita_IP(objeto) {
     return this.http.post<any>(this._registrarVisitaIP, objeto)
+  }
+
+
+  /* DENUNCIAS */
+  registrar_denuncia(objeto) {
+    let headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.http.post<any>(this._registerDenuncia, objeto, { headers: headers })
   }
 
 }

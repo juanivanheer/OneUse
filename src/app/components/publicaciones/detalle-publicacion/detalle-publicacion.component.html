@@ -52,9 +52,35 @@
                         <div *ngFor="let pregunta of preguntas" class="mat-elevation-z4"
                             style="padding-bottom: 1px; padding-inline: 20px; padding-top: 15px; margin-bottom: 15px;">
                             <!--Pregunta-->
-                            <div fxLayout="column" fxLayoutAlign="start start">
-                                <div fxLayout="row" fxLayoutGap="10px">
-                                    <div fxLayoutAlign="center center">
+                            <div fxLayout="column" fxLayoutAlign="start start" style="overflow-wrap:anywhere"
+                                *ngIf="pregunta.mostrarDenunciaPregunta">
+                                <div fxLayout="row" fxLayoutGap="6px" style="width: 100%;">
+                                    <p style="color: gray; font-style: italic;">La pregunta realizada está siendo
+                                        verificada por un administrador del sitio.</p>
+                                </div>
+                                <div fxLayoutAlign="end" style="width: 100%;">
+                                    <p style="font-size: 9px; margin-bottom: 10px;">
+                                        <b>{{pregunta.usuario_pregunta}}</b>
+                                        - {{pregunta.createdAt_formatted}}
+                                    </p>
+                                </div>
+                            </div>
+                            <div fxLayout="column" fxLayoutAlign="start start" style="overflow-wrap:anywhere"
+                                *ngIf="!pregunta.mostrarDenunciaPregunta">
+                                <div fxLayout="row" fxLayoutGap="6px" style="width: 100%;">
+                                    <div style="font-size: 35px;margin-right: 0px;"
+                                        (click)="denunciar(pregunta,'pregunta')" *ngIf="pregunta.usuario_pregunta != usuario_logueado.name">
+                                        <mat-icon *ngIf="!pregunta.denunciarPregunta"
+                                            (mouseover)="denunciarPregunta(pregunta, $event)"
+                                            matTooltip="Denunciar pregunta" matTooltipPosition="left"
+                                            style="color: gainsboro;">report</mat-icon>
+                                        <mat-icon *ngIf="pregunta.denunciarPregunta"
+                                            (mouseout)="denunciarPregunta(pregunta, $event)"
+                                            matTooltip="Denunciar pregunta" matTooltipPosition="left"
+                                            style="color: red;">report</mat-icon>
+                                    </div>
+
+                                    <div>
                                         <mat-icon>chat</mat-icon>
                                     </div>
                                     <div>
@@ -64,29 +90,54 @@
                                 <div fxLayoutAlign="end" style="width: 100%;">
                                     <p style="font-size: 9px; margin-bottom: 10px;">
                                         <b>{{pregunta.usuario_pregunta}}</b>
+                                        - {{pregunta.createdAt_formatted}}
                                     </p>
                                 </div>
                             </div>
                             <!--Respuesta-->
                             <div fxLayout="column" style="margin-bottom: 30px;" *ngIf="pregunta.tiene_respuesta">
-                                <div fxLayout="row" fxLayoutGap="10px">
-                                    <div>
-                                        <mat-icon>comment</mat-icon>
+                                <div fxLayout="column" fxLayoutAlign="start start" style="overflow-wrap:anywhere"
+                                    *ngIf="pregunta.mostrarDenunciaRespuesta">
+                                    <div fxLayout="row" fxLayoutGap="6px" style="width: 100%;">
+                                        <p style="color: gray; font-style: italic;">La respuesta está siendo verificada
+                                            por un administrador del sitio.</p>
                                     </div>
-                                    <div>
-                                        <p> {{pregunta.respuesta}} </p>
+                                    <div fxLayoutAlign="end" style="width: 100%;">
+                                        <p style="font-size: 9px;"> <b>{{pregunta.usuario_publicacion}}</b> -
+                                            {{pregunta.updatedAt_formatted}} </p>
                                     </div>
                                 </div>
-                                <div fxLayoutAlign="end">
-                                    <div>
-                                        <p style="font-size: 9px;"> <b>{{pregunta.usuario_publicacion}}</b> </p>
+                                <div *ngIf="!pregunta.mostrarDenunciaRespuesta"> 
+                                    <div fxLayout="row" fxLayoutGap="10px">
+                                        <div (click)="denunciar(pregunta,'respuesta')" *ngIf="pregunta.usuario_publicacion != usuario_logueado.name">
+                                            <mat-icon *ngIf="!pregunta.denunciarRespuesta"
+                                                (mouseover)="denunciarRespuesta(pregunta, $event)"
+                                                matTooltip="Denunciar respuesta" matTooltipPosition="left"
+                                                style="color: gainsboro;">report</mat-icon>
+                                            <mat-icon *ngIf="pregunta.denunciarRespuesta"
+                                                (mouseout)="denunciarRespuesta(pregunta, $event)"
+                                                matTooltip="Denunciar respuesta" matTooltipPosition="left"
+                                                style="color: red;">report</mat-icon>
+                                        </div>
+                                        <div>
+                                            <mat-icon>comment</mat-icon>
+                                        </div>
+                                        <div>
+                                            <p> {{pregunta.respuesta}} </p>
+                                        </div>
+                                    </div>
+                                    <div fxLayoutAlign="end">
+                                        <div>
+                                            <p style="font-size: 9px;"> <b>{{pregunta.usuario_publicacion}}</b> -
+                                                {{pregunta.updatedAt_formatted}} </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div *ngIf="!pregunta.tiene_respuesta">
-                                <div fxLayout="row" style="margin-bottom: 30px">
-                                    <div fxLayoutAlign="center center" *ngIf="!es_publicador">
-                                        <mat-icon>comment</mat-icon>
+                                <div fxLayout="row" style="margin-bottom: 30px;">
+                                    <div fxLayoutAlign="center center" *ngIf="!es_publicador" style="margin-left: 35px">
+                                        <mat-icon>help</mat-icon>
                                     </div>
                                     <div style="margin-left: 10px" *ngIf="!es_publicador">
                                         <p> Por el momento no hay respuesta a esta pregunta </p>
@@ -108,7 +159,7 @@
                     <div *ngIf="!tienePreguntas" style="margin: 10px;">
                         <div fxLayout="row" style="margin-bottom: 10px; margin-left: 10px">
                             <div fxLayoutAlign="center center">
-                                <mat-icon>chat</mat-icon>
+                                <mat-icon>help</mat-icon>
                             </div>
                             <div>
                                 <p>Hasta el momento, no se han realizado preguntas</p>

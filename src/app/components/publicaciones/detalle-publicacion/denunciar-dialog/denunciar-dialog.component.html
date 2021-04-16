@@ -1,8 +1,20 @@
-<h2 mat-dialog-title style="text-align: center">Datos de la publicación</h2>
-<mat-dialog-content class="mat-typography">
-    <input matInput >   
+<h2 mat-dialog-title style="text-align: center">Información sobre tu denuncia</h2>
+<mat-dialog-content class="mat-typography" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="15px">
+    <mat-form-field>
+        <mat-label>Tipo de denuncia</mat-label>
+        <mat-select [(value)]="seleccionado">
+            <mat-option *ngFor="let tipo of tipos" [value]="tipo.value">
+                {{tipo.viewValue}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <textarea (input)="comentario = $event.target.value" matInput placeholder="Comentario (opcional)"></textarea>
+    </mat-form-field>
 </mat-dialog-content>
 
 <mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" mat-dialog-close (click)="enviar()"
+        [disabled]="deshabilitarEnviar()">Enviar</button>
     <button mat-raised-button color="primary" mat-dialog-close (click)="close()">Salir</button>
 </mat-dialog-actions>

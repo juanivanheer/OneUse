@@ -2,12 +2,13 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { SingletonService } from '../../singleton.service';
-import { MatSnackBar } from '@angular/material';
+import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
 import { TooltipPosition } from '@angular/material/tooltip';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/add/observable/zip";
 import { NgxSpinnerService } from 'ngx-spinner';
+import { DenunciarDialogComponent } from './denunciar-dialog/denunciar-dialog.component';
 
 @Component({
   selector: 'app-detalle-publicacion',
@@ -16,7 +17,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class DetallePublicacionComponent implements OnInit {
 
-  constructor(private spinner: NgxSpinnerService, private _auth: AuthService, private _singleton: SingletonService, private _snackBar: MatSnackBar, private _formBuilder: FormBuilder) { }
+  constructor(private spinner: NgxSpinnerService, private _auth: AuthService, public dialog: MatDialog, private _snackBar: MatSnackBar, private _formBuilder: FormBuilder) { }
 
   position: TooltipPosition = 'right';
 
@@ -40,6 +41,7 @@ export class DetallePublicacionComponent implements OnInit {
     cantidadDisponible: 0,
   }
 
+  mostrarDenuncia = false;
   esConIntervencion = false;
   tienePreguntas = false;
   tieneRespuesta = false;
@@ -48,12 +50,14 @@ export class DetallePublicacionComponent implements OnInit {
   estaLogueado = false;
   btnAlquilar = true;
   mostrar = false;
+  usuarioCompleto = false;
+  esActiva = false;
 
   arrayJSON = [];
   arrayCantidadDisponible = [];
   preguntas = [];
   arraycantidadDias = [];
-  esActiva = false;
+  
   JSONfinal;
   id;
   cantidadDiasSeleccionado;
@@ -62,7 +66,7 @@ export class DetallePublicacionComponent implements OnInit {
   tipoAlquiler;
   montoTotal;
   cantidades: FormGroup;
-  usuarioCompleto = false;
+  
 
   ngOnInit() {
     this.spinner.show();
@@ -104,14 +108,14 @@ export class DetallePublicacionComponent implements OnInit {
         this.publicacion.email = publicacion.email
         this.publicacion.estado = publicacion.estado;
 
-        if(this.publicacion.estado == "INACTIVA"){
+        if (this.publicacion.estado == "INACTIVA") {
           this.esActiva = false;
         } else {
           this.esActiva = true;
           for (let i = 0; i <= this.publicacion.cantidadDisponible; i++) {
             this.arrayCantidadDisponible.push(i);
           }
-  
+
           for (let i = 0; i <= this.publicacion.cantDias; i++) {
             this.arraycantidadDias.push(i);
           }
@@ -164,6 +168,32 @@ export class DetallePublicacionComponent implements OnInit {
                 this.tienePreguntas = true;
               }
             }
+            for (let i = 0; i < this.preguntas.length; i++) {
+              const element = this.preguntas[i];
+              
+
+              let fecha = new Date(element.createdAt)
+              let fecha_formatted = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear();
+
+              let update = new Date(element.updatedAt)
+              let update_formatted = update.getDate() + "/" + (update.getMonth() + 1) + "/" + update.getFullYear();
+
+              Object.assign(element, { createdAt_formatted: fecha_formatted })
+              Object.assign(element, { updatedAt_formatted: update_formatted })
+
+              if(element.contador_denuncias_pregunta != undefined && element.contador_denuncias_pregunta > 3){
+                Object.assign(element, { mostrarDenunciaPregunta: true })
+              } else {
+                Object.assign(element, { mostrarDenunciaPregunta: false })
+              }
+
+              if(element.contador_denuncias_respuesta != undefined && element.contador_denuncias_respuesta > 3){
+                Object.assign(element, { mostrarDenunciaRespuesta: true })
+              } else {
+                Object.assign(element, { mostrarDenunciaRespuesta: false })
+              }
+            }
+
             this.mostrar = true;
             this.spinner.hide();
           },
@@ -172,7 +202,7 @@ export class DetallePublicacionComponent implements OnInit {
     )
   }
 
-  completarPerfil(){
+  completarPerfil() {
     window.location.assign("/mi-cuenta/perfil")
   }
 
@@ -245,7 +275,7 @@ export class DetallePublicacionComponent implements OnInit {
 
   registrarAlquiler() {
     let reembolso;
-    if(this.publicacion.tipoAlquiler == "AlquilerSinIntervencion"){
+    if (this.publicacion.tipoAlquiler == "AlquilerSinIntervencion") {
       reembolso = 0;
     } else {
       reembolso = this.montoTotal * 0.40;
@@ -253,7 +283,7 @@ export class DetallePublicacionComponent implements OnInit {
     let nuevo_stock = this.publicacion.cantidadDisponible - this.cantidadDisponibleSeleccionada;
     var obsA = this._auth.registrar_EnProcesoPago(this.id, this.usuario_publicador.name, this.usuario_logueado.name, this.cantidadDiasSeleccionado, this.cantidadDisponibleSeleccionada, this.publicacion.multiplefile[0], this.montoTotal, reembolso, this.publicacion.titulo);
     var obsB = this._auth.reducir_stock(this.id, { nuevo_stock: nuevo_stock });
-    const obsvArray = [obsA,obsB];
+    const obsvArray = [obsA, obsB];
     const zip = Observable.zip(...obsvArray)
     zip.subscribe(
       res => {
@@ -376,6 +406,33 @@ export class DetallePublicacionComponent implements OnInit {
       return false;
     }
     return true;
+  }
+
+  denunciarPregunta(pregunta, event) {
+    if (event.type == "mouseover") {
+      pregunta.denunciarPregunta = true;
+    } else {
+      pregunta.denunciarPregunta = false;
+    }
+  }
+
+  denunciarRespuesta(pregunta, event) {
+    if (event.type == "mouseover") {
+      pregunta.denunciarRespuesta = true;
+    } else {
+      pregunta.denunciarRespuesta = false;
+    }
+  }
+
+
+  denunciarDialogRef: MatDialogRef<DenunciarDialogComponent>;
+  denunciar(data, tipo) {
+    this.denunciarDialogRef = this.dialog.open(DenunciarDialogComponent, { data: { pyr: data, tipo: tipo, usuario: this.usuario_logueado, publicacion: this.publicacion } });
+
+    this.denunciarDialogRef.afterClosed().subscribe(result => {
+      this.ngOnInit();
+      this.openSnackBar("Tu denuncia fue registrada con éxito. ¡Muchas gracias!", "Aceptar")
+    })
   }
 
 }
