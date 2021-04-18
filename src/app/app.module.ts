@@ -109,6 +109,8 @@ import { PagosComponent } from './components/mi-cuenta/superadmin/pagos/pagos.co
 import { DenunciasComponent } from './components/mi-cuenta/superadmin/denuncias/denuncias.component';
 import { DenunciarDialogComponent } from './components/publicaciones/detalle-publicacion/denunciar-dialog/denunciar-dialog.component';
 import { VerImagenComponent } from './components/mi-cuenta/superadmin/reclamos/ver-imagen/ver-imagen.component';
+import { DenunciasDialogComponent } from './components/mi-cuenta/superadmin/denuncias/denuncias-dialog/denuncias-dialog.component';
+import { PyrDialogComponent } from './components/mi-cuenta/superadmin/denuncias/pyr-dialog/pyr-dialog.component';
 FusionChartsModule.fcRoot(FusionCharts, Charts, FusionTheme, TimeSeries, Maps, World, Argentina);
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
@@ -197,6 +199,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     DenunciasComponent,
     DenunciarDialogComponent,
     VerImagenComponent,
+    DenunciasDialogComponent,
+    PyrDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -227,6 +231,6 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     DatosLocatarioDialogComponent, CodigoPropietarioDialogComponent, CodigoLocatarioDialogComponent, CodigoDevolucionLocatarioDialogComponent,
     CodigoDevolucionPropietarioDialogComponent, EliminarUsuarioDialogComponent, DatosUsuariosDialogComponent, ModificarUsuarioDialogComponent, DatosPublicacionesDialogComponent, EliminarPublicacionDialogComponent, ModificarPublicacionDialogComponent,
     DatosAlquileresDialogComponent, ModificarAlquilerDialogComponent, EliminarAlquilerSuperadminDialogComponent, CancelarDialogComponent, PuntuacionComponent, PuntuacionObtenidaDialogComponent, ReclamoDialogComponent, EliminarReclamoDialogComponent, RespuestaReclamoDialogComponent,
-    HabilitarStockDialogComponent, DenunciarDialogComponent, VerImagenComponent]
+    HabilitarStockDialogComponent, DenunciarDialogComponent, VerImagenComponent, PyrDialogComponent, DenunciasDialogComponent]
 })
 export class AppModule { }

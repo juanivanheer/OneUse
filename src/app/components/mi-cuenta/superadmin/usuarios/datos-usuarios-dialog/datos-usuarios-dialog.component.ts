@@ -34,6 +34,8 @@ export class DatosUsuariosDialogComponent implements OnInit {
     codArea: undefined
   };
 
+  mostrar = false;
+
   ngOnInit() {
     this._auth.user_data(this.data.data.email).subscribe(
       res => {
@@ -46,6 +48,10 @@ export class DatosUsuariosDialogComponent implements OnInit {
         }
         if (this.datos.fecha_nacimiento == undefined) {
           this.datos.fecha_nacimiento = 'Sin cargar';
+        } else {
+          let fecha = new Date(this.datos.fecha_nacimiento);
+          let fecha_formatted = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear()
+          this.datos.fecha_nacimiento = fecha_formatted;
         }
         if (this.datos.nombre == undefined) {
           this.datos.nombre = 'Sin cargar';
@@ -80,6 +86,7 @@ export class DatosUsuariosDialogComponent implements OnInit {
         if (this.datos.codArea == undefined) {
           this.datos.codArea = 'Sin cargar';
         }
+        this.mostrar = true;
       }
     )
   }

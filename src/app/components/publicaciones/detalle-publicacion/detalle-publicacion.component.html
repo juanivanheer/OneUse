@@ -2,11 +2,25 @@
     <p style="color: white"> Cargando publicación... </p>
 </ngx-spinner>
 
-<section *ngIf="mostrar">
+<section *ngIf="mostrar && publicacion.deshabilitada" style="background: rgb(238, 240, 241); height: 100%;">
+    <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px" style="padding: 30px;">
+        <img style="width: 300px; height: 300px;" src="../../../../assets/images/error_pub.png">
+        <h4>La publicación ha sido desactivada por un moderador ya que no cumplía con los términos y condiciones del
+            sitio.</h4>
+        <button mat-raised-button color="primary" routerLink="/home">Volver al inicio</button>
+    </div>
+</section>
+
+<section *ngIf="mostrar && !publicacion.deshabilitada">
     <div class="chips">
         <mat-chip-list>
             <mat-chip color="primary" selected>{{publicacion.categoria}}</mat-chip>
             <mat-chip color="primary" selected>{{publicacion.subcategoria}}</mat-chip>
+            <mat-chip *ngIf="!es_publicador" style="margin-left: auto;" color="warn" selected
+                (click)="denunciar('','publicacion')">
+                <mat-icon>report</mat-icon>
+                <span style="margin-left: 5px;">Denunciar</span>
+            </mat-chip>
         </mat-chip-list>
     </div>
     <div fxLayout="row" fxLayoutAlign="center center" class="contenedor-principal">
@@ -55,8 +69,15 @@
                             <div fxLayout="column" fxLayoutAlign="start start" style="overflow-wrap:anywhere"
                                 *ngIf="pregunta.mostrarDenunciaPregunta">
                                 <div fxLayout="row" fxLayoutGap="6px" style="width: 100%;">
-                                    <p style="color: gray; font-style: italic;">La pregunta realizada está siendo
-                                        verificada por un administrador del sitio.</p>
+                                    <p *ngIf="pregunta.pregunta_inhabilitada == false"
+                                        style="color: gray; font-style: italic;">La pregunta realizada está siendo
+                                        <b>verificada</b> por un administrador del sitio.
+                                    </p>
+                                    <p *ngIf="pregunta.pregunta_inhabilitada == true"
+                                        style="color: gray; font-style: italic;">La pregunta realizada fue
+                                        <b>deshabilitada</b>
+                                        por un administrador del sitio.
+                                    </p>
                                 </div>
                                 <div fxLayoutAlign="end" style="width: 100%;">
                                     <p style="font-size: 9px; margin-bottom: 10px;">
@@ -69,7 +90,8 @@
                                 *ngIf="!pregunta.mostrarDenunciaPregunta">
                                 <div fxLayout="row" fxLayoutGap="6px" style="width: 100%;">
                                     <div style="font-size: 35px;margin-right: 0px;"
-                                        (click)="denunciar(pregunta,'pregunta')" *ngIf="pregunta.usuario_pregunta != usuario_logueado.name">
+                                        (click)="denunciar(pregunta,'pregunta')"
+                                        *ngIf="pregunta.usuario_pregunta != usuario_logueado.name">
                                         <mat-icon *ngIf="!pregunta.denunciarPregunta"
                                             (mouseover)="denunciarPregunta(pregunta, $event)"
                                             matTooltip="Denunciar pregunta" matTooltipPosition="left"
@@ -99,17 +121,25 @@
                                 <div fxLayout="column" fxLayoutAlign="start start" style="overflow-wrap:anywhere"
                                     *ngIf="pregunta.mostrarDenunciaRespuesta">
                                     <div fxLayout="row" fxLayoutGap="6px" style="width: 100%;">
-                                        <p style="color: gray; font-style: italic;">La respuesta está siendo verificada
-                                            por un administrador del sitio.</p>
+                                        <p *ngIf="pregunta.respuesta_inhabilitada == false"
+                                            style="color: gray; font-style: italic;">La respuesta realizada está siendo
+                                            <b>verificada</b> por un administrador del sitio.
+                                        </p>
+                                        <p *ngIf="pregunta.respuesta_inhabilitada == true"
+                                            style="color: gray; font-style: italic;">La respuesta realizada fue
+                                            <b>deshabilitada</b>
+                                            por un administrador del sitio.
+                                        </p>
                                     </div>
                                     <div fxLayoutAlign="end" style="width: 100%;">
                                         <p style="font-size: 9px;"> <b>{{pregunta.usuario_publicacion}}</b> -
                                             {{pregunta.updatedAt_formatted}} </p>
                                     </div>
                                 </div>
-                                <div *ngIf="!pregunta.mostrarDenunciaRespuesta"> 
+                                <div *ngIf="!pregunta.mostrarDenunciaRespuesta">
                                     <div fxLayout="row" fxLayoutGap="10px">
-                                        <div (click)="denunciar(pregunta,'respuesta')" *ngIf="pregunta.usuario_publicacion != usuario_logueado.name">
+                                        <div (click)="denunciar(pregunta,'respuesta')"
+                                            *ngIf="pregunta.usuario_publicacion != usuario_logueado.name">
                                             <mat-icon *ngIf="!pregunta.denunciarRespuesta"
                                                 (mouseover)="denunciarRespuesta(pregunta, $event)"
                                                 matTooltip="Denunciar respuesta" matTooltipPosition="left"

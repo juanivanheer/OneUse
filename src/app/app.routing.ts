@@ -41,6 +41,7 @@ import { EstadisticasComponent } from './components//mi-cuenta/superadmin/estadi
 import { PagoMercadopagoComponent } from './components/pago-mercadopago/pago-mercadopago.component'
 import { UsersComponent } from './components/users/users.component'
 import { PagosComponent } from './components/mi-cuenta/superadmin/pagos/pagos.component';
+import { DenunciasComponent } from './components/mi-cuenta/superadmin/denuncias/denuncias.component';
 
 const appRoutes: Routes = [
 
@@ -84,6 +85,7 @@ const appRoutes: Routes = [
     { path: 'superadmin/usuarios', component: UsuariosComponent },
     { path: 'superadmin/estadisticas', component: EstadisticasComponent },
     { path: 'superadmin/pagos', component: PagosComponent },
+    { path: 'superadmin/denuncias', component: DenunciasComponent },
     { path: 'mercadopago', component: PagoMercadopagoComponent },
     { path: 'users/:id', component: UsersComponent},
     { path: '**', component: ErrorComponent },

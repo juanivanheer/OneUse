@@ -92,6 +92,8 @@ export class AuthService {
   private _reducirStock = this.url + 'reducir-stock/'
   private _updatePyr = this.url + "update-pyr/"
   private _registerDenuncia = this.url + "register-denuncia"
+  private _getAllDenuncias = this.url + "get-all-denuncias"
+  private _updateDenuncia = this.url + "update-denuncia"
 
   constructor(private http: HttpClient) { }
 
@@ -441,6 +443,15 @@ export class AuthService {
   registrar_denuncia(objeto) {
     let headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.http.post<any>(this._registerDenuncia, objeto, { headers: headers })
+  }
+
+  get_all_denuncias() {
+    return this.http.get<any>(this._getAllDenuncias)
+  }
+
+  update_denuncia(id, estado) {
+    let headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.http.post<any>(this._updateDenuncia + "/" + id, estado, { headers: headers })
   }
 
 }

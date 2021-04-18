@@ -1,0 +1,36 @@
+<h2 mat-dialog-title style="text-align: center">Denuncias de los usuarios</h2>
+<mat-dialog-content class="mat-typography">
+    <section style="margin: 20px; padding: 20px;">
+        <div *ngFor="let dato of data; let indice = index" style="margin-bottom: 20px;">
+            <div class="mat-elevation-z8" style="width: 800px; height: 100%;padding: 10px;">
+                <h3 style="margin-top: 10px; text-align: center;margin-bottom: 30px;"><b>Denuncia N°{{(indice + 1)}}</b>
+                </h3>
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="50px">
+                    <div>
+                        <h3 style="text-align: center;text-decoration: underline;">Datos de la denuncia</h3>
+                        <p><b>Tipo de denuncia:</b> {{dato.tipo_denuncia}} </p>
+                        <br>
+                        <p style="word-break:break-all"><b>Comentario:</b> {{dato.comentario}} </p>
+                        <br>
+                    </div>
+                    <div>
+                        <h4 style="text-align: center; text-decoration: underline;">Datos del denunciante</h4>
+                        <!-- <p><b>Email del usuario:</b> {{dato.usuario_denunciante.email}} </p> -->
+                        <button style="width: 250px;margin-bottom: 30px;" mat-raised-button (click)="
+                            openDialogDatosUsuarios(dato)">Información del usuario</button>
+                        <br>
+                        <a style="width: 250px;" mat-raised-button target="_blank"
+                            href="/users/{{dato.usuario_denunciante._id}}">Perfil público</a>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" mat-dialog-close (click)="close()">Salir</button>
+</mat-dialog-actions>

@@ -14,7 +14,9 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="center">
-    <button mat-raised-button color="primary" mat-dialog-close (click)="enviar()"
-        [disabled]="deshabilitarEnviar()">Enviar</button>
+    <button *ngIf="data.tipo == 'pregunta' || data.tipo == 'respuesta'" mat-raised-button color="primary"
+        mat-dialog-close (click)="denunciarMensaje()" [disabled]="deshabilitarEnviar()">Enviar</button>
+    <button *ngIf="data.tipo == 'publicacion'" mat-raised-button color="primary"
+        mat-dialog-close (click)="denunciarPublicacion()" [disabled]="deshabilitarEnviar()">Enviar</button>
     <button mat-raised-button color="primary" mat-dialog-close (click)="close()">Salir</button>
 </mat-dialog-actions>

@@ -39,6 +39,8 @@ export class DetallePublicacionComponent implements OnInit {
     createdAt: '',
     cantDias: 0,
     cantidadDisponible: 0,
+    deshabilitada: false,
+    contador_denuncias: 0
   }
 
   mostrarDenuncia = false;
@@ -57,7 +59,8 @@ export class DetallePublicacionComponent implements OnInit {
   arrayCantidadDisponible = [];
   preguntas = [];
   arraycantidadDias = [];
-  
+  usuarios = [];
+
   JSONfinal;
   id;
   cantidadDiasSeleccionado;
@@ -66,7 +69,7 @@ export class DetallePublicacionComponent implements OnInit {
   tipoAlquiler;
   montoTotal;
   cantidades: FormGroup;
-  
+
 
   ngOnInit() {
     this.spinner.show();
@@ -92,8 +95,9 @@ export class DetallePublicacionComponent implements OnInit {
       res => {
 
         let publicacion = res[1];
-        let usuarios = res[2];
+        this.usuarios = res[2];
 
+        this.publicacion._id = publicacion._id;
         this.publicacion.titulo = publicacion.titulo;
         this.publicacion.preciodia = publicacion.preciodia;
         this.publicacion.preciomes = publicacion.preciomes;
@@ -107,7 +111,14 @@ export class DetallePublicacionComponent implements OnInit {
         this.publicacion.multiplefile = publicacion.multiplefile
         this.publicacion.email = publicacion.email
         this.publicacion.estado = publicacion.estado;
+        this.publicacion.createdAt = publicacion.createdAt;
 
+        if (publicacion.deshabilitada == undefined) {
+          this.publicacion.deshabilitada = false;
+        } else {
+          this.publicacion.deshabilitada = publicacion.deshabilitada;
+        }
+        
         if (this.publicacion.estado == "INACTIVA") {
           this.esActiva = false;
         } else {
@@ -140,8 +151,8 @@ export class DetallePublicacionComponent implements OnInit {
           this.estaLogueado = true;
         }
 
-        for (let i = 0; i < usuarios.length; i++) {
-          const element = usuarios[i];
+        for (let i = 0; i < this.usuarios.length; i++) {
+          const element = this.usuarios[i];
           if (element.email == localStorage.getItem("email")) {
             this.usuario_logueado = element;
 
@@ -170,7 +181,7 @@ export class DetallePublicacionComponent implements OnInit {
             }
             for (let i = 0; i < this.preguntas.length; i++) {
               const element = this.preguntas[i];
-              
+
 
               let fecha = new Date(element.createdAt)
               let fecha_formatted = fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear();
@@ -181,13 +192,13 @@ export class DetallePublicacionComponent implements OnInit {
               Object.assign(element, { createdAt_formatted: fecha_formatted })
               Object.assign(element, { updatedAt_formatted: update_formatted })
 
-              if(element.contador_denuncias_pregunta != undefined && element.contador_denuncias_pregunta > 3){
+              if (element.contador_denuncias_pregunta != undefined && element.contador_denuncias_pregunta > 3) {
                 Object.assign(element, { mostrarDenunciaPregunta: true })
               } else {
                 Object.assign(element, { mostrarDenunciaPregunta: false })
               }
 
-              if(element.contador_denuncias_respuesta != undefined && element.contador_denuncias_respuesta > 3){
+              if (element.contador_denuncias_respuesta != undefined && element.contador_denuncias_respuesta > 3) {
                 Object.assign(element, { mostrarDenunciaRespuesta: true })
               } else {
                 Object.assign(element, { mostrarDenunciaRespuesta: false })
@@ -427,11 +438,18 @@ export class DetallePublicacionComponent implements OnInit {
 
   denunciarDialogRef: MatDialogRef<DenunciarDialogComponent>;
   denunciar(data, tipo) {
-    this.denunciarDialogRef = this.dialog.open(DenunciarDialogComponent, { data: { pyr: data, tipo: tipo, usuario: this.usuario_logueado, publicacion: this.publicacion } });
+    if (data == '') {
+      this.denunciarDialogRef = this.dialog.open(DenunciarDialogComponent, { data: { tipo: tipo, usuario: this.usuario_logueado, publicacion: this.publicacion, usuarios: this.usuarios } });
+
+    } else {
+      this.denunciarDialogRef = this.dialog.open(DenunciarDialogComponent, { data: { pyr: data, tipo: tipo, usuario: this.usuario_logueado, publicacion: this.publicacion, usuarios: this.usuarios } });
+    }
 
     this.denunciarDialogRef.afterClosed().subscribe(result => {
       this.ngOnInit();
-      this.openSnackBar("Tu denuncia fue registrada con éxito. ¡Muchas gracias!", "Aceptar")
+      if (result != "Salir") {
+        this.openSnackBar("Tu denuncia fue registrada con éxito. ¡Muchas gracias!", "Aceptar")
+      }
     })
   }
 

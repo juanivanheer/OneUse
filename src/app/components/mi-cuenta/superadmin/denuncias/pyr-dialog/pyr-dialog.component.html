@@ -1,0 +1,14 @@
+<h2 mat-dialog-title style="text-align: center">Pregunta y respuesta</h2>
+<mat-dialog-content class="mat-typography">
+    <p><b>Pregunta: </b> {{pyr.pregunta}} </p>
+    <br>
+    <p><b>Fecha de pregunta: </b> {{pyr.createdAt_formatted}} </p>
+    <br>
+    <p><b>Respuesta: </b> {{pyr.respuesta}} </p>
+    <br>
+    <p><b>Fecha de respuesta: </b> {{pyr.updatedAt_formatted}} </p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" mat-dialog-close (click)="close()">Salir</button>
+</mat-dialog-actions>
