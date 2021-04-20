@@ -614,19 +614,12 @@ export class ReclamarAlquilerComponent implements OnInit {
                      
 
     this._auth.registrar_reclamo(this.reclamoData).subscribe(
-      
       res => {
-
         this._uploadService.makeFileRequest("http://localhost:4201/api/upload-image-reclamo/" + res._id, [], this.filesToUpload, 'removablefile')
             .then((result: any) => {
             });
-      },
-      
+      }, 
     )
-
-
-
-
     // Dejo esto comentado, es lo que cambia de estado del alquiler a en proceso de reclamo para poder hacer muchos reclamos de 1 sola publi
     
     if(this.reclamoData.estado_reclamo == 'Cerrado'){

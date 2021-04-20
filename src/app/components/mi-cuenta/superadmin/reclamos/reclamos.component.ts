@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { SingletonService } from 'src/app/components/singleton.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { MatPaginator, MatSort, MatTableDataSource, MatDialogRef, MatDialog } from '@angular/material';
@@ -8,13 +7,13 @@ import { RespuestaReclamoDialogComponent } from './respuesta-reclamo-dialog/resp
 import { VerImagenComponent } from './ver-imagen/ver-imagen.component';
 
 export interface Reclamos {
-updatedAt: string
-createdAt: string,
-motivo: string,
-tipo: string,
-__v: string,
-usuario_reclamo: string,
-_id: string
+  updatedAt: string
+  createdAt: string,
+  motivo: string,
+  tipo: string,
+  __v: string,
+  usuario_reclamo: string,
+  _id: string
 }
 
 @Component({
@@ -28,28 +27,27 @@ export class ReclamosComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  constructor(private singleton: SingletonService,public dialog: MatDialog, private _auth: AuthService,) { }
-  
-  private subscription: Subscription;
+  constructor(private singleton: SingletonService, public dialog: MatDialog, private _auth: AuthService,) { }
 
   eliminarReclamoDialogRef: MatDialogRef<EliminarReclamoDialogComponent>
   respuestaReclamoDialogRef: MatDialogRef<RespuestaReclamoDialogComponent>
   verImagenDialogRef: MatDialogRef<VerImagenComponent>
-  
-  dataSource;
-  displayedColumns = ['estado_reclamo', 'tipo', 'usuario_reclamo', 'ver_img', 'boton' ];
+
+  dataSource = new MatTableDataSource();
+  displayedColumns = ['estado_reclamo', 'tipo', 'usuario_reclamo', 'ver_img', 'boton'];
   data;
+  mostrar: boolean = false;
 
   ngOnInit() {
-    this.subscription = this._auth.get_all_reclamos().subscribe(
+    this._auth.get_all_reclamos().subscribe(
       res => {
-        console.log(res.reclamos)
         const ELEMENT_DATA: Reclamos[] = res.reclamos;
         this.dataSource = new MatTableDataSource(ELEMENT_DATA);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
+        this.mostrar = true;
       }
-      )
+    )
   }
 
   openDialogEliminarReclamo(data): void {
@@ -87,9 +85,8 @@ export class ReclamosComponent implements OnInit {
   openDialogVerImagen(data): void {
     this.verImagenDialogRef = this.dialog.open(VerImagenComponent,
       {
-        data: {
-          data: data
-        }
+        data: data
+
       });
   }
 

@@ -184,7 +184,7 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
             }
           }
           this.get_notificaciones_nuevas(res.name);
-          this.get_notificaciones_todas(res.name);
+          this.get_notificaciones_todas();
           if (res.nombre != undefined) {
             this.tieneNombre = true;
           }
@@ -294,13 +294,15 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
     )
   }
 
-  get_notificaciones_todas(username) {
-    this.suscripcion = this._auth.notificaciones_todas(username).subscribe(
+  get_notificaciones_todas() {
+    this.suscripcion = this._auth.notificaciones_todas().subscribe(
       res => {
-        if (res.not.length > 0) {
-          this.notificaciones = res.not;
+        if (res.length > 0) {
+          this.notificaciones = res;
           for (let i = 0; i < this.notificaciones.length; i++) {
-            this.arrayTitulos.push(res.not[i].tituloPublicacion);
+            if(this.usuarioLogueado.name == this.notificaciones[i].name_destino){
+              this.arrayTitulos.push(this.notificaciones[i].tituloPublicacion);
+            }
           }
           this.notificaciones.reverse();
           this.arrayTitulos.reverse();

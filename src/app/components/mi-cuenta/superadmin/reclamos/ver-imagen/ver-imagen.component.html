@@ -1,1 +1,10 @@
-<img src="{{'http://localhost:4201/api/get-image-reclamo/'+data.data._id}}">
+<div>
+    <mat-spinner color="primary" mode="indeterminate" *ngIf="!mostrar">
+    </mat-spinner>
+    <img *ngIf="hayImagen && mostrar" src="{{'http://localhost:4201/api/get-image-reclamo/'+data._id}}">
+    <p *ngIf="!hayImagen && mostrar">El usuario no ha cargado ninguna imágen</p>
+</div>
+
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" mat-dialog-close (click)="close()">Salir</button>
+</mat-dialog-actions>

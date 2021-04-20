@@ -94,11 +94,19 @@ export class AuthService {
   private _registerDenuncia = this.url + "register-denuncia"
   private _getAllDenuncias = this.url + "get-all-denuncias"
   private _updateDenuncia = this.url + "update-denuncia"
+  private _getImagenReclamo = this.url + "get-image-reclamo/"
+  private _sendComprobanteDestacacion = this.url + "send-comprobante-destacacion"
 
   constructor(private http: HttpClient) { }
 
   enviarEmail(objeto) {
-    return this.http.post<any>(this._sendMail, objeto)
+    let headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.http.post<any>(this._sendMail, objeto, { headers: headers })
+  }
+
+  enviarComprobanteDestacacion(objeto) {
+    let headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.http.post<any>(this._sendComprobanteDestacacion, objeto, { headers: headers })
   }
 
   /* CRUD DE USUARIOS */
@@ -273,8 +281,8 @@ export class AuthService {
     return this.http.get<any>(this._notificacionesNuevas + username);
   }
 
-  notificaciones_todas(username) {
-    return this.http.get<any>(this._notificacionesTodas + username);
+  notificaciones_todas() {
+    return this.http.get<any>(this._notificacionesTodas);
   }
 
   notificacion_vista(notificacion) {
@@ -402,6 +410,10 @@ export class AuthService {
 
   delete_reclamos(id) {
     return this.http.delete<any>(this._deleteReclamos + id)
+  }
+
+  get_reclamo_imagen(id) {
+    return this.http.get<any>(this._getImagenReclamo + id)
   }
 
   registraDatosPreReclamo(datos) {

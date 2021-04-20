@@ -1,108 +1,137 @@
-<section>
-        
-    <div fxLayout="column" fxLayoutAlign="center center"  ngClass.gt-sm="bloque-que-es-1use" fxLayoutGap="20px"
-        ngClass.lt-lg="bloque-que-es-1use-mobile" fxLayout.lt-lg="column" fxFlexFill
-        fxLayoutAlign.lt-lg="center center">
-        <h3 class="titulo">Bienvenido al servicio de Reclamos de OneUse</h3>
-        <mat-accordion class="example-headers-align">
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        <h4>He pagado el Alquiler pero ya no estoy interesado en el objeto</h4>
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <p class="text-justify">
-                    El locatario tiene 12hs para cancelar el alquiler luego de haberlo pagado para obtener un reembolso,
-                    pasadas las 12hs, se cancela el alquiler pero se devuelve el dinero.
-                </p>
-            </mat-expansion-panel>
+<div fxLayout="column" fxFlexOrder="2" fxLayoutAlign="start center" fxLayout.lt-lg="column"
+    fxLayoutAlign.lt-lg="center center" style="width: 100%; margin: 30px; padding-inline: 30px; ">
+    <div class="mat-elevation-z8" style="width: 95%;">
+        <div fxLayout="column" style="text-align: center; margin-top: 40px" fxLayoutAlign="center center">
+            <p style="font-size: 25px;margin-bottom: 25px; "> Bienvenido al servicio de reclamos de OneUse </p>
+            <mat-divider fxFlexFill></mat-divider>
+            <p style="margin-top: 20px;">A continuación se muestran los distintos tipos de reclamos con sus
+                características principales. Utiliza
+                luego aquel tipo que represente más al problema que tengas.</p>
+            <mat-accordion class="example-headers-align" style="margin: 30px; width: 1250px;">
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px">
+                            <mat-icon>remove_shopping_cart</mat-icon>
+                            <h5>He pagado el alquiler, pero ya no estoy interesado en el objeto</h5>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <p class="text-justify">
+                        El locatario tiene 12hs para cancelar el alquiler luego de haberlo pagado para obtener un
+                        reembolso. Pasadas las 12hs, se cancela el alquiler, pero se devuelve el dinero.
+                    </p>
+                </mat-expansion-panel>
 
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        <h4>No me puedo contactar con el Propietario</h4>
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <p class="text-justify">
-                    El dueño tiene 24hs para contactarse luego del alquiler, si el reclamo se realiza antes de las 24hs, no se acepta ese reclamo ya que consideramos que el dueño aun esta a tiempo de responder. 
-                    Pasadas las 24hs, el reclamo se acepta, OneUse intentara contactarse con el propietario del objeto, avisando que el locatario no se puede contactar, si no puede contactarse en un lapso de 48hs, se realizara la devolución del dinero del alquiler al locatario.
-                </p>
-            </mat-expansion-panel>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px">
+                            <mat-icon>phone_disabled</mat-icon>
+                            <h5>No me puedo contactar con el Propietario</h5>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <p class="text-justify">
+                        El dueño tiene 24hs para contactarse luego del alquiler. Si el reclamo se realiza antes de
+                        las
+                        24hs, no se acepta ese reclamo ya que consideramos que el dueño aún está a tiempo de
+                        responder.
+                        Pasadas las 24hs, el reclamo se acepta y OneUse intentará contactarse con el propietario del
+                        objeto, avisando que el locatario no se puede contactar. Si no se puede establecer contacto en
+                        un lapso
+                        de
+                        48hs, se realizara la devolución del dinero del alquiler al locatario.
+                    </p>
+                </mat-expansion-panel>
 
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title fxLayout="row">
-                        <h4>El producto que alquilé no estaba en las mismas condiciones que se mostraban en las fotos o no funciona correctamente</h4>
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <p class="text-justify">
-                    Si el propietario no ingreso el código proporcionado por el locatario se devuelve el dinero del alquiler al locatario.
-                    Si el propietario ingreso del código proporcionado por el locatario: No hay lugar a reclamo, el alquiler se cancela sin devolución del dinero.
-                </p>
-            </mat-expansion-panel>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title fxLayout="row" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px">
+                            <mat-icon>image_not_supported</mat-icon>
+                            <h5>El producto que alquilé no estaba en las mismas condiciones que se mostraban en las
+                                fotos o no funciona correctamente</h5>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <p class="text-justify">
+                        Si el propietario no ingresó el código proporcionado por el locatario, se procederá a devolver
+                        el dinero
+                        del
+                        alquiler al locatario.
+                        Si el propietario ingresó el código proporcionado por el locatario, no hay lugar a reclamo y el
+                        alquiler se cancela sin devolución del dinero.
+                    </p>
+                </mat-expansion-panel>
 
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        <h4>No me puedo contactar con el propietario para devolver el objeto</h4>
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <p class="text-justify">
-                    Se avisa al propietario que el locatario quiere devolverlo. Si a las 72hs no hay respuesta el sitio liberara el dinero en garantía.
-                </p>
-            </mat-expansion-panel>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title fxLayout="row" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px">
+                            <mat-icon>speaker_notes_off</mat-icon>
+                            <h5>No me puedo contactar con el propietario para devolver el objeto</h5>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <p class="text-justify">
+                        Se avisa al propietario que el locatario quiere devolverlo. Si a las 72hs no hay respuesta, el
+                        sitio liberara el dinero en garantía.
+                    </p>
+                </mat-expansion-panel>
 
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        <h4>No me puedo contactar con el locatario</h4>
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <p class="text-justify">
-                    El locatario tiene 24hs para contactarse luego del alquiler, si el reclamo se realiza antes de las 24hs, no se acepta ese reclamo ya que el locatario aún puede responder. 
-                    Pasadas las 24hs, el reclamo se acepta, OneUse intentara contactarse con el locatario avisando que el propietario no se pudo contactar, si no puede contactarse en un lapso de 48hs, se le otorga el dinero del alquiler al dueño.
-                </p>
-            </mat-expansion-panel>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title fxLayout="row" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px">
+                            <mat-icon>speaker_notes_off</mat-icon>
+                            <h5>No me puedo contactar con el locatario</h5>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <p class="text-justify">
+                        El locatario tiene 24hs para contactarse luego del alquiler. Si el reclamo se realiza antes
+                        de
+                        las 24hs, no se acepta ese reclamo ya que el locatario aún puede responder.
+                        Pasadas las 24hs y si el reclamo se acepta, OneUse intentará contactarse con el locatario
+                        avisando
+                        que el propietario no se pudo contactar. Si no se puede contactar en un lapso de 48hs, se le
+                        otorga el dinero del alquiler al dueño.
+                    </p>
+                </mat-expansion-panel>
 
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        <h4>He tenido un problema con el objeto y no puedo cumplir</h4>
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <p class="text-justify">
-                    Se devuelve el dinero del alquiler al locatario y se cancela el alquiler
-                </p>
-            </mat-expansion-panel>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title fxLayout="row" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px">
+                            <mat-icon>report_problem</mat-icon>
+                            <h5>He tenido un problema con el objeto y no puedo cumplir</h5>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <p class="text-justify">
+                        Se devuelve el dinero del alquiler al locatario y se cancela el alquiler
+                    </p>
+                </mat-expansion-panel>
 
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        <h4>El locatario no se contacto conmigo para devolverme el objeto</h4>
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <p class="text-justify">
-                    Alguien del equipo de OneUse se contactara contigo para resolver el problema lo mas rapido posible
-                </p>
-            </mat-expansion-panel>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title fxLayout="row" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px">
+                            <mat-icon>sync_problem</mat-icon>
+                            <h5>El locatario no se contactó conmigo para devolverme el objeto</h5>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <p class="text-justify">
+                        Alguien del equipo de OneUse se contactará contigo para resolver el problema lo mas rapido
+                        posible
+                    </p>
+                </mat-expansion-panel>
 
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        <h4>El objeto fue devuelto en malas condiciones</h4>
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <p class="text-justify">
-                    Alguien del equipo de OneUse se contactara contigo para resolver el problema lo mas rapido posible
-                </p>
-            </mat-expansion-panel>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title fxLayout="row" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px">
+                            <mat-icon>report</mat-icon>
+                            <h5>El objeto fue devuelto en malas condiciones</h5>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <p class="text-justify">
+                        Alguien del equipo de OneUse se contactará contigo para resolver el problema lo más rápido
+                        posible
+                    </p>
+                </mat-expansion-panel>
 
-        </mat-accordion>
-
-        <div style="padding-bottom: 28px;">
+            </mat-accordion>
+            <div style="padding-bottom: 28px;">
                 <button mat-raised-button (click)="cancelacion()">Continuar con el reclamo</button>
-        </div>  
+            </div>
+        </div>
     </div>
-    
-
-</section>
+</div>

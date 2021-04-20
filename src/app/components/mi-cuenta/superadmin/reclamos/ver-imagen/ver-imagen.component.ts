@@ -9,10 +9,26 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class VerImagenComponent implements OnInit {
 
-  constructor(private dialogRef: MatDialogRef<VerImagenComponent>, @Inject(MAT_DIALOG_DATA) private data) { }
+  constructor(private _auth: AuthService, private dialogRef: MatDialogRef<VerImagenComponent>, @Inject(MAT_DIALOG_DATA) public data) { }
+
+  mostrar: boolean = false;
+  hayImagen: boolean = false;
 
   ngOnInit() {
-    console.log(this.data.data)
+    this._auth.get_reclamo_imagen(this.data._id).subscribe(
+      res => {
+        this.hayImagen = true;
+        this.mostrar = true;
+      },
+      err => {
+        this.hayImagen = false;
+        this.mostrar = true;
+      }
+    )
+  }
+
+  close() {
+    this.dialogRef.close();
   }
 
 }

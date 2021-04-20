@@ -8,7 +8,8 @@
             <p style="font-size: 25px;margin-bottom: 25px;margin-top: 25px;">Notificaciones</p>
             <mat-divider style="width:100%;"></mat-divider>
         </div>
-        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px" *ngIf="!mostrar" style="height: 100%; margin:50px">
+        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px" *ngIf="!mostrar"
+            style="height: 100%; margin:50px">
             <mat-spinner diameter="200"></mat-spinner>
             <p>Cargando...</p>
         </div>
@@ -16,34 +17,21 @@
             <h3 style="height: 100%; align-items: center;place-content: center center; display: flex;"> No hay
                 notificaciones por mostrar </h3>
         </div>
-        <div *ngIf="hayDatos && mostrar" class="mat-elevation-z8">
-            <mat-table #table [dataSource]="dataSource" matSort aria-label="Elements">
-                <ng-container matColumnDef="id">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
-                    <mat-cell mat-menu-item *matCellDef="let row" style="height: 100%; line-height: 38px"
-                        routerLink="/publicaciones/{{row.id_publicacion}}">
-                        <div fxLayout="row" fxLayoutGap="20px" style="margin-top: 10px;">
-                            <div>
-                                <img class="container-muestra-imagenes"
-                                    src="{{'http://localhost:4201/api/get-image-publicacion/'+ row.imagen}}">
-                                <!-- <img class="container-muestra-imagenes"
-                                    src="{{'https://oneuse-backend.herokuapp.com/api/get-image-publicacion/'+ row.imagen}}"> -->
-                            </div>
-                            <div>
-                                <h4> {{row.titulo}} {{row.tituloPublicacion}} </h4>
-                                <p> {{row.mensaje_notificacion}} </p>
-                                <p> Fecha de notificación: {{row.createdAt}} </p>
-                            </div>
-                        </div>
-                    </mat-cell>
-                </ng-container>
-                <!-- <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row> -->
-                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-            </mat-table>
-            <mat-paginator #paginator [length]="dataSource.data.length" [pageIndex]="0" [pageSize]="5"
-                [pageSizeOptions]="[1,5,10,15,20,25,50]">
-            </mat-paginator>
+        <div *ngIf="hayDatos && mostrar">
+            <div *ngFor="let notificacion of notificaciones_usuario_logueado; let indice = index">
+                <div class="mat-elevation-z8 contenedor-individual" fxLayoutAlign="start center" style="cursor: pointer;" routerLink="/publicaciones/{{notificacion.id_publicacion}}">
+                    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="30px">
+                        <a id="titulo" fxLayout="column" fxLayoutAlign="center center"
+                            routerLink="/publicaciones/{{notificacion.id_publicacion}}" style="cursor: pointer;"
+                            matTooltip="Ir a la publicación" matTooltipPosition="left" target="_blank">
+                            <img class="imagen"
+                                src="{{'http://localhost:4201/api/get-image-publicacion/'+ notificacion.imagen}}">
+                        </a>
+
+                        <p> {{notificacion.mensaje_notificacion}} </p>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
-
 </div>

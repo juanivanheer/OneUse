@@ -1,39 +1,78 @@
-<div fxLayout="column" fxFlexOrder="2" fxLayoutAlign="center center" fxLayout.lt-lg="column" fxFlexFill
+<div fxLayout="column" fxFlexOrder="2" fxLayoutAlign="start center" fxLayout.lt-lg="column"
+    fxLayoutAlign.lt-lg="center center" style="margin: 30px; padding-inline: 30px; ">
+    <div class="mat-elevation-z8" style="width: 900px;">
+        <div fxLayout="column" style="text-align: center; margin-block: 40px" fxLayoutAlign="center center" fxLayoutGap="20px">
+            <p style="font-size: 25px;margin-bottom: 25px; "> ¡Realizá tu reclamo! </p>
+            <mat-divider fxFlexFill></mat-divider>
+            <mat-form-field>
+                <mat-select placeholder="Motivos de cancelación" [(ngModel)]="reclamoData.tipo" name="motivo" required>
+                    <mat-option *ngFor="let motivo of motivosCancelacion" [value]="motivo.viewValue">
+                        {{motivo.viewValue}} </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+                <textarea matInput style="font-size: 20px"
+                    placeholder="Escriba la mayor información posible y precisa sobre el reclamo"
+                    [(ngModel)]="reclamoData.motivo" name="motivo" cdkTextareaAutosize required></textarea>
+            </mat-form-field>
+
+            <form [formGroup]="formulario">
+                <mat-form-field>
+                    <ngx-mat-file-input type="file" #removableInput formControlName="removableFile"
+                        (ngModelChange)="imagen = $event" placeholder="Subir imágen"
+                        [accept]="'.png, .jpg, .jpeg, .gif'" (change)="fileChangeEvent($event)">
+                    </ngx-mat-file-input>
+                    <button mat-icon-button matSuffix *ngIf="!removableInput.empty"
+                        (click)="removableInput.clear($event)">
+                        <mat-icon>clear</mat-icon>
+                    </button>
+                    <mat-icon matSuffix>image_search</mat-icon>
+                </mat-form-field>
+            </form>
+
+            <div fxLayoutAlign="center center" styles="padding-bottom: 10px; height: 38px;">
+                <button mat-raised-button color="primary" (click)="reclamar()">Registrar
+                    reclamo</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- <div fxLayout="column" fxFlexOrder="2" fxLayoutAlign="center center" fxLayout.lt-lg="column" fxFlexFill
     fxLayoutAlign.lt-lg="center center">
     <div class="contenedorDeDatos" ngClass.gt-md="tab-gt-md" ngClass.lt-lg="tab-lt-md">
         <h2 style="text-align: center;">¡Realizá tu reclamo!</h2>
         <hr>
         <br>
-        
-            <!-- #udpdateForm="ngForm" -->
-            <mat-tab-group>
-                <mat-tab>
-                    <ng-template mat-tab-label>
-                        <mat-icon class="iconitos">close</mat-icon>
-                        Datos de tu reclamo
-                    </ng-template>
-                    <br>
+        <mat-tab-group>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="iconitos">close</mat-icon>
+                    Datos de tu reclamo
+                </ng-template>
+                <br>
 
-                    <mat-form-field>
-                        <mat-select placeholder="Motivos de cancelación" [(ngModel)]="reclamoData.tipo" name="motivo"
-                            required>
-                            <mat-option *ngFor="let motivo of motivosCancelacion" [value]="motivo.viewValue">
-                                {{motivo.viewValue}} </mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                <mat-form-field>
+                    <mat-select placeholder="Motivos de cancelación" [(ngModel)]="reclamoData.tipo" name="motivo"
+                        required>
+                        <mat-option *ngFor="let motivo of motivosCancelacion" [value]="motivo.viewValue">
+                            {{motivo.viewValue}} </mat-option>
+                    </mat-select>
+                </mat-form-field>
 
-                    <mat-form-field>
-                        <textarea matInput style="font-size: 20px"
-                            placeholder="Escriba la mayor información posible y precisa sobre el reclamo"
-                            [(ngModel)]="reclamoData.motivo" name="motivo" cdkTextareaAutosize required></textarea>
-                    </mat-form-field>
-        
-        <form [formGroup]="formulario">
+                <mat-form-field>
+                    <textarea matInput style="font-size: 20px"
+                        placeholder="Escriba la mayor información posible y precisa sobre el reclamo"
+                        [(ngModel)]="reclamoData.motivo" name="motivo" cdkTextareaAutosize required></textarea>
+                </mat-form-field>
+
+                <form [formGroup]="formulario">
                     <mat-form-field>
                         <ngx-mat-file-input type="file" #removableInput formControlName="removableFile"
                             (ngModelChange)="imagen = $event" placeholder="Subir imagen"
-                            [accept]="'.png, .jpg, .jpeg, .gif'"
-                            (change)="fileChangeEvent($event)">
+                            [accept]="'.png, .jpg, .jpeg, .gif'" (change)="fileChangeEvent($event)">
                         </ngx-mat-file-input>
                         <button mat-icon-button matSuffix *ngIf="!removableInput.empty"
                             (click)="removableInput.clear($event)">
@@ -41,20 +80,16 @@
                         </button>
                         <mat-icon matSuffix>image_search</mat-icon>
                     </mat-form-field>
-        </form>
-                    <div fxLayoutAlign="center center" styles="padding-bottom: 10px; height: 38px;">
-                        <button mat-raised-button class="primary-btn banner-btn" (click)="reclamar()">Registrar
-                            reclamo</button>
-                    </div>
+                </form>
+                <div fxLayoutAlign="center center" styles="padding-bottom: 10px; height: 38px;">
+                    <button mat-raised-button class="primary-btn banner-btn" (click)="reclamar()">Registrar
+                        reclamo</button>
+                </div>
 
 
-                </mat-tab>
+            </mat-tab>
 
-            </mat-tab-group>
-        
-    </div>
-    <div fxLayout="row" fxFlexOrder="3" style="width:100%" fxLayoutAlign="center start" fxShow.lt-lg="true"
-        fxHide.gt-md="true">
+        </mat-tab-group>
 
     </div>
-</div>
+</div> -->

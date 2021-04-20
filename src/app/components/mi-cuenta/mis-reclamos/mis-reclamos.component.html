@@ -7,7 +7,7 @@
         ngClass.lt-md="container-lt-md mat-elevation-z8">
 
         <div fxLayout="column" style="width: 100%; text-align: center; margin-top: 40px;" fxLayoutAlign="center center">
-            <p style="font-size: 25px; margin-bottom: 25px;"> Mis Reclamos </p>
+            <p style="font-size: 25px; margin-bottom: 25px;"> Mis reclamos </p>
             <mat-divider style="width:100%;"></mat-divider>
         </div>
 
@@ -52,7 +52,7 @@
             </ng-container>
 
             <ng-container matColumnDef="estado_reclamo">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado reclamo</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado del reclamo</th>
                 <td mat-cell *matCellDef="let row" (click)="openDialogDatosAlquiler(row)"> {{row.estado_reclamo}}</td>
             </ng-container>
 
