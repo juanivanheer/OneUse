@@ -323,9 +323,9 @@ export class AuthService {
     return this.http.get<any>(this._getAlquilerPropios + name_usuarioLocatario);
   }
 
-  registrar_EnProcesoEntrega(id_alquiler) {
-    let params = JSON.stringify(id_alquiler);
-    return this.http.post<any>(this._registrarEnProcesoEntrega + id_alquiler, params);
+  registrar_EnProcesoEntrega(id_alquiler, objeto) {
+    let headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.http.post<any>(this._registrarEnProcesoEntrega + id_alquiler, objeto, { headers: headers });
   }
 
   registrar_codigoPropietarioEntrega(codigo) {
