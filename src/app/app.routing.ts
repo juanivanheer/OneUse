@@ -76,7 +76,7 @@ const appRoutes: Routes = [
     { path: 'busqueda/p/:p', component: BusquedaPublicacionesComponent },
     { path: 'pos-alquiler/:id', component: PosAlquilerComponent },
     { path: 'prereclamo', component: PrereclamoComponent },
-    { path: 'confirmacion-alquiler/:id', component: ConfirmacionAlquilerComponent },
+    { path: 'confirmacion-alquiler', component: ConfirmacionAlquilerComponent },
     { path: 'reclamo-exito', component: ReclamoExitoComponent },
     { path: 'superadmin', component: SuperadminComponent },
     { path: 'superadmin/alquileres', component: AlquileresComponent },

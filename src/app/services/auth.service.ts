@@ -96,6 +96,7 @@ export class AuthService {
   private _updateDenuncia = this.url + "update-denuncia"
   private _getImagenReclamo = this.url + "get-image-reclamo/"
   private _sendComprobanteDestacacion = this.url + "send-comprobante-destacacion"
+  private _crearPago = this.url + "crear-pago"
 
   constructor(private http: HttpClient) { }
 
@@ -466,4 +467,13 @@ export class AuthService {
     return this.http.post<any>(this._updateDenuncia + "/" + id, estado, { headers: headers })
   }
 
+
+  /* PAGOS */
+  registrar_pago(objeto){
+    let headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.http.post<any>(this._crearPago, objeto, { headers: headers })
+  }
+
 }
+
+

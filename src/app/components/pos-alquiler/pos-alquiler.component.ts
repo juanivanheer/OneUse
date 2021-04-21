@@ -28,6 +28,7 @@ export class PosAlquilerComponent implements OnInit {
   publicaciones;
   usuarios;
   usuarioPropietario;
+  usuarioLocatario;
   publicacionAlquilada;
 
   setStep(index: number) {
@@ -41,13 +42,15 @@ export class PosAlquilerComponent implements OnInit {
     var obsA = this._auth.get_alquiler_id(id);
     var obsB = this._auth.get_all_publicaciones();
     var obsC = this._auth.get_all_users();
-    const obsvArray = [obsA, obsB, obsC];
+    var obsD = this._auth.user_data(localStorage.getItem("email"));
+    const obsvArray = [obsA, obsB, obsC, obsD];
     const zip = Observable.zip(...obsvArray)
     zip.subscribe(
       res => {
         this.alquiler = res[0];
         this.publicaciones = res[1].publicaciones;
         this.usuarios = res[2];
+        this.usuarioLocatario = res[3];
 
         // Datos del usuario propietario
         for (let i = 0; i < this.usuarios.length; i++) {
@@ -68,12 +71,12 @@ export class PosAlquilerComponent implements OnInit {
         this.montoReembolso = this.alquiler.montoReembolso;
         this.stockSeleccionado = this.alquiler.cantidadAlquilar
         this.cantidadDias = this.alquiler.cantidadDias;
-        
+
         //Calculos mostrados al usuario
         this.montoUnitario = parseFloat(this.montoTotal) / parseFloat(this.stockSeleccionado)
         this.montoUnitarioConCantidad = this.montoUnitario * this.stockSeleccionado
         this.montoFinal = this.montoUnitarioConCantidad + this.montoReembolso;
-        
+
         this.mercadopago();
       }
     )
@@ -92,57 +95,28 @@ export class PosAlquilerComponent implements OnInit {
       "purpose": "wallet_purchase",
       "items": [
         {
-          "title": this.alquiler.titulo,
-          "description": this.alquiler.descripcion,
+          "title": this.publicacionAlquilada.titulo,
+          "description": this.publicacionAlquilada.descripcion,
           "quantity": 1,
           "currency_id": "ARS",
           "unit_price": this.montoFinal
         }
       ],
       "back_urls": {
-        "success": "https://localhost:4200/confirmacion-alquiler/" + this.alquiler._id,
+        "success": "https://localhost:4200/confirmacion-alquiler?id_alquiler=" + this.alquiler._id + "&monto_alquiler=" + this.montoFinal + "&monto_reembolso=" + this.montoReembolso + "&id_locatario=" + this.usuarioLocatario._id + "&id_propietario=" + this.usuarioPropietario._id + "&id_publicacion=" + this.publicacionAlquilada._id,
         "failure": "https://localhost:4200"
       },
-      "statement_descriptor": "OneUse"
+      "statement_descriptor": "ONEUSE"
     }
 
-    let objeto_sinIntervencion = {
-      "purpose": "wallet_purchase",
-      "items": [
-        {
-          "title": this.alquiler.titulo,
-          "description": this.alquiler.descripcion,
-          "quantity": 1,
-          "currency_id": "ARS",
-          "unit_price": this.montoFinal
-        },
-      ],
-      "back_urls": {
-        "success": "https://localhost:4200/confirmacion-alquiler/" + this.alquiler._id,
-        "failure": "https://localhost:4200"
+    this.http.post<any>('https://api.mercadopago.com/checkout/preferences', objeto_conIntervencion, httpOptions).subscribe(
+      res => {
+        this.id_pago_mp = res.id;
       },
-      "statement_descriptor": "OneUse"
-    }
-
-    if (this.tipoAlquiler == "AlquilerConIntervencion") {
-      this.http.post<any>('https://api.mercadopago.com/checkout/preferences', objeto_conIntervencion, httpOptions).subscribe(
-        res => {
-          this.id_pago_mp = res.id;
-        },
-        err => {
-          console.log("ERROR: ", err)
-        }
-      )
-    } else {
-      this.http.post<any>('https://api.mercadopago.com/checkout/preferences', objeto_sinIntervencion, httpOptions).subscribe(
-        res => {
-          this.id_pago_mp = res.id;
-        },
-        err => {
-          console.log("ERROR: ", err)
-        }
-      )
-    }
+      err => {
+        console.log("ERROR: ", err)
+      }
+    )
 
     this.mostrar = true;
 

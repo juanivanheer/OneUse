@@ -298,10 +298,11 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
     this.suscripcion = this._auth.notificaciones_todas().subscribe(
       res => {
         if (res.length > 0) {
-          this.notificaciones = res;
-          for (let i = 0; i < this.notificaciones.length; i++) {
-            if(this.usuarioLogueado.name == this.notificaciones[i].name_destino){
-              this.arrayTitulos.push(this.notificaciones[i].tituloPublicacion);
+          for (let i = 0; i < res.length; i++) {
+            const element = res[i]
+            if(this.usuarioLogueado.name == element.name_destino){
+              this.notificaciones.push(element)
+              this.arrayTitulos.push(element.tituloPublicacion);
             }
           }
           this.notificaciones.reverse();
