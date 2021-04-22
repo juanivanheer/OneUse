@@ -15,16 +15,28 @@ export class VerImagenComponent implements OnInit {
   hayImagen: boolean = false;
 
   ngOnInit() {
-    this._auth.get_reclamo_imagen(this.data._id).subscribe(
+    
+    this._auth.get_all_reclamos().subscribe(
       res => {
-        this.hayImagen = true;
+        console.log(this.data)
+        for (let index = 0; index < res.reclamos.length; index++) {
+          const element = res.reclamos[index];
+          if(element._id == this.data._id && this.data.imagen_reclamo != undefined){
+            this.hayImagen = true;
+          }
+        }
         this.mostrar = true;
+
+        
       },
       err => {
+        
         this.hayImagen = false;
         this.mostrar = true;
       }
     )
+
+    
   }
 
   close() {
