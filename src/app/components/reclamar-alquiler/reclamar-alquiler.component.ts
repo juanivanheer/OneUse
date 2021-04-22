@@ -552,7 +552,7 @@ export class ReclamarAlquilerComponent implements OnInit {
                 nro_rta: 2
                 }] 
             }
-  
+          cerrar_reclamo = false
           }else{
   
             this.reclamoData = { tipo: tipo, motivo: motivo, usuario_reclamo: this.emailLogueado, 
@@ -628,7 +628,7 @@ export class ReclamarAlquilerComponent implements OnInit {
     )
     // Dejo esto comentado, es lo que cambia de estado del alquiler a en proceso de reclamo para poder hacer muchos reclamos de 1 sola publi
     
-    if(this.reclamoData.estado_reclamo == 'Cerrado'){
+    if(this.reclamoData.estado_reclamo == 'Cerrado' || cerrar_reclamo == false){
       this._auth.registrar_reclamado(this.datosAlquiler._id).subscribe(
         res => {
           
@@ -653,6 +653,3 @@ export class ReclamarAlquilerComponent implements OnInit {
 
 
 }
-
-
-
