@@ -1,7 +1,7 @@
 <div>
     <mat-spinner color="primary" mode="indeterminate" *ngIf="!mostrar">
     </mat-spinner>
-    <img *ngIf="hayImagen && mostrar" src="{{'http://localhost:4201/api/get-image-reclamo/'+data._id}}">
+    <img *ngIf="hayImagen && mostrar" style="width: 1000px; height: 500px;" src="{{'http://localhost:4201/api/get-image-reclamo/'+data._id}}">
     <p *ngIf="!hayImagen && mostrar">El usuario no ha cargado ninguna imágen</p>
 </div>
 

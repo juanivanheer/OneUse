@@ -10,16 +10,12 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class ReclamoDialogComponent implements OnInit {
 
-  constructor(private dialogRef: MatDialogRef<ReclamoDialogComponent>, private _auth: AuthService, @Inject(MAT_DIALOG_DATA) private data) { }
+  constructor(private dialogRef: MatDialogRef<ReclamoDialogComponent>, private _auth: AuthService, @Inject(MAT_DIALOG_DATA) public data) { }
 
   respuestas = []
   respuesta = undefined
 
   ngOnInit() {
-    if(this.data.data.estado_reclamo == 'Cerrado'){
-      document.getElementById('txt_rta').style.display = 'none';
-      document.getElementById('btn_rta').style.display = 'none';
-    }
     this.respuestas = this.data.data.respuestas
 
   }

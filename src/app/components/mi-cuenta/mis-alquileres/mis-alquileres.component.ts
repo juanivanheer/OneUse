@@ -135,11 +135,12 @@ export class MisAlquileresComponent implements OnInit, AfterViewInit {
                     break;
                   }
                 }
-                this.arrayDatosPropietario.push(element1);
+                console.log(element1)
+                if(element1.estado != "En proceso de reclamo") this.arrayDatosPropietario.push(element1);
               }
               //this.hayAlquileresPropietario = true;
             } else this.hayAlquileresPropietario = false;
-
+            
             /* ALQUILERES PROPIOS */
             var fechaActual = new Date();
             if (this.arrayAlquilerPropios.length > 0) {
@@ -377,7 +378,7 @@ export class MisAlquileresComponent implements OnInit, AfterViewInit {
       } else {
         for (let i = 0; i < this.arrayAlquilerPropietario.length; i++) {
           const element = this.arrayAlquilerPropietario[i];
-          if (element.estado == estado && element.tipoAlquiler == "AlquilerConIntervencion") {
+          if (element.estado == estado && element.tipoAlquiler == "AlquilerConIntervencion" && element.estado != 'En proceso de reclamo') {
             this.arrayDatosPropietario.push(element);
           }
 
@@ -403,7 +404,7 @@ export class MisAlquileresComponent implements OnInit, AfterViewInit {
       } else {
         for (let i = 0; i < this.arrayAlquilerPropios.length; i++) {
           const element = this.arrayAlquilerPropios[i];
-          if (element.estado == estado && element.tipoAlquiler == "AlquilerConIntervencion") {
+          if (element.estado == estado && element.tipoAlquiler == "AlquilerConIntervencion" && element.estado != 'En proceso de reclamo') {
             this.arrayDatosPropios.push(element);
           }
 
@@ -429,7 +430,7 @@ export class MisAlquileresComponent implements OnInit, AfterViewInit {
         this.filtroConIntervencion = true;
         for (let i = 0; i < this.arrayAlquilerPropietario.length; i++) {
           const element = this.arrayAlquilerPropietario[i];
-          if (element.tipoAlquiler == "AlquilerConIntervencion") {
+          if (element.tipoAlquiler == "AlquilerConIntervencion" && element.estado != 'En proceso de reclamo') {
             this.arrayDatosPropietario.push(element)
           }
           //QUITARLO DSP
@@ -467,7 +468,7 @@ export class MisAlquileresComponent implements OnInit, AfterViewInit {
         this.filtroConIntervencion = true;
         for (let i = 0; i < this.arrayAlquilerPropios.length; i++) {
           const element = this.arrayAlquilerPropios[i];
-          if (element.tipoAlquiler == "AlquilerConIntervencion") {
+          if (element.tipoAlquiler == "AlquilerConIntervencion" && element.estado != 'En proceso de reclamo') {
             this.arrayDatosPropios.push(element)
           }
           //QUITARLO DSP
