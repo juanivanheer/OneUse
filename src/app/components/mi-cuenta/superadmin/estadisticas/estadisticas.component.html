@@ -21,13 +21,14 @@
                 <mat-divider fxFlexFill></mat-divider>
             </div>
 
-            <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px" *ngIf="!mostrar" style="margin:50px">
-                <mat-spinner diameter="200" ></mat-spinner>
+            <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="30px" *ngIf="!mostrar"
+                style="margin:50px">
+                <mat-spinner diameter="200"></mat-spinner>
                 <p>Cargando...</p>
             </div>
 
             <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px" *ngIf="mostrar" style="padding: 20px;">
-                <mat-form-field class="selector">
+                <mat-form-field class="selector" *ngIf="ocultar">
                     <mat-label>Estadística</mat-label>
                     <mat-select [(value)]="nombreEstadisticaSeleccionada">
                         <mat-option (click)="clicks('Elegir estadística')" value="none">
@@ -68,8 +69,8 @@
                     </mat-select>
                 </mat-form-field>
 
-                
-                <mat-form-field class="selector" *ngIf="estadisticaGeneralSeleccionada">
+
+                <mat-form-field class="selector" *ngIf="mostrarPeriodo">
                     <mat-label>Período de búsqueda</mat-label>
 
                     <mat-select [(value)]="periodoSeleccionado" [disabled]="deshabilitarPeriodo">

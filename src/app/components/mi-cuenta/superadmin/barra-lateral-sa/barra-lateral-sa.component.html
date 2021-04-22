@@ -1,4 +1,6 @@
-<ngx-spinner bdColor = "rgb(0,0,0)" size = "medium" color = "#ffffff" type = "timer" [fullScreen] = "true"><p style="color: white" > Verificando... </p></ngx-spinner>
+<ngx-spinner bdColor="rgb(0,0,0)" size="medium" color="#ffffff" type="timer" [fullScreen]="true">
+    <p style="color: white"> Verificando... </p>
+</ngx-spinner>
 
 <mat-toolbar style="height: 100%;">
     <mat-toolbar-row>
@@ -14,22 +16,48 @@
     </mat-toolbar-row>
 
     <mat-toolbar-row>
-        <a [routerLink]="['/superadmin/estadisticas']">
-            <mat-icon>assessment</mat-icon><span class="iconitos letritas" fxHide.lt-lg="true">Estadísticas</span>
+        <a mat-button [matMenuTriggerFor]="menu" yPosition="below" xPosition="after" style="padding-inline: 0" fxLayout="row" fxLayoutAlign="center center">
+            <mat-icon>assessment</mat-icon><span style="vertical-align: middle;" class="iconitos letritas" fxHide.lt-lg="true">Estadísticas</span>
         </a>
-    </mat-toolbar-row>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item [matMenuTriggerFor]="alquileres">Alquileres</button>
+            <button mat-menu-item [matMenuTriggerFor]="publicaciones">Publicaciones</button>
+            <button mat-menu-item [matMenuTriggerFor]="usuarios">Usuarios</button>
+            <button mat-menu-item [matMenuTriggerFor]="visitas">Visitas</button>
+            <button mat-menu-item [matMenuTriggerFor]="reclamos">Reclamos</button>
+        </mat-menu>
 
-<!--     <mat-toolbar-row>
-        <a [routerLink]="['/superadmin/pagos']">
-            <mat-icon>credit_score</mat-icon><span class="iconitos letritas"
-                fxHide.lt-lg="true">Pagos</span>
-        </a>
-    </mat-toolbar-row> -->
+        <mat-menu #alquileres="matMenu">
+            <button mat-menu-item (click)="ir('alquiler-categoria')">Cantidad total de alquileres según categoría</button>
+            <button mat-menu-item (click)="ir('alquiler-subcategoria')">Cantidad total de alquileres según subcategoría</button>
+        </mat-menu>
+
+        <mat-menu #publicaciones="matMenu">
+            <button mat-menu-item (click)="ir('publicacion-categoria')">Cantidad total de publicaciones según categoría</button>
+            <button mat-menu-item (click)="ir('publicacion-subcategoria')">Cantidad total de publicaciones según subcategoría</button>
+        </mat-menu>
+
+        <mat-menu #usuarios="matMenu">
+            <button mat-menu-item (click)="ir('usuarios-redsocial')">Cantidad de usuarios filtrado por red social</button>
+            <button mat-menu-item (click)="ir('usuarios-ranking-alquilan')">Ranking de quienes más alquilan objetos</button>
+            <button mat-menu-item (click)="ir('usuarios-ranking-publican')">Ranking de quienes más publican objetos</button>
+            <button mat-menu-item (click)="ir('usuarios-ranking-propietarios')">Ranking de propietarios mejores puntuados del sitio</button>
+            <button mat-menu-item (click)="ir('usuarios-ranking-locatarios')">Ranking de locatarios mejores puntuados del sitio</button>
+<!--             <button mat-menu-item (click)="ir('usuarios-ranking-denunciados')">Ranking de los usuarios más denunciados</button>
+ -->        </mat-menu>
+
+        <mat-menu #visitas="matMenu">
+            <button mat-menu-item (click)="ir('visitantes')">Cantidad de visitantes al sitio</button>
+        </mat-menu>
+
+        <mat-menu #reclamos="matMenu">
+            <button mat-menu-item (click)="ir('reclamos')">Cantidad de reclamos según el tipo de reclamo</button>
+        </mat-menu>
+    </mat-toolbar-row>
 
     <mat-toolbar-row>
         <a [routerLink]="['/superadmin/publicaciones']">
-            <mat-icon>storefront</mat-icon><span class="iconitos letritas"
-                fxHide.lt-lg="true">Publicaciones</span>
+            <mat-icon>storefront</mat-icon><span class="iconitos letritas" fxHide.lt-lg="true">Publicaciones</span>
         </a>
     </mat-toolbar-row>
 
@@ -51,3 +79,10 @@
         </a>
     </mat-toolbar-row>
 </mat-toolbar>
+
+<!--     <mat-toolbar-row>
+        <a [routerLink]="['/superadmin/pagos']">
+            <mat-icon>credit_score</mat-icon><span class="iconitos letritas"
+                fxHide.lt-lg="true">Pagos</span>
+        </a>
+    </mat-toolbar-row> -->

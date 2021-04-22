@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import "rxjs/add/observable/zip";
 import { NgxSpinnerService } from "ngx-spinner";
 import * as FusionCharts from "fusioncharts";
+import { ActivatedRoute } from "@angular/router";
 
 export interface Estadisticas {
   name: string;
@@ -23,7 +24,7 @@ export interface Estadistica {
 })
 export class EstadisticasComponent implements OnInit {
 
-  constructor(private spinner: NgxSpinnerService, private _auth: AuthService, private singleton: SingletonService) { }
+  constructor(private spinner: NgxSpinnerService, private _auth: AuthService, private singleton: SingletonService, private route: ActivatedRoute) { }
 
   /* Cantidad de publicaciones según categoría */
   array_completo = []
@@ -37,6 +38,7 @@ export class EstadisticasComponent implements OnInit {
   usuarios = [];
   visitas = [];
   arrayPeriodo = [];
+  reclamos = [];
   nombreEstadisticaSeleccionada;
   none = 1;
   textoSpinner = "Cargando datos"
@@ -59,12 +61,13 @@ export class EstadisticasComponent implements OnInit {
   mostrarPeriodo = true;
 
   /* Variables UI grafica */
-  width = 900;
-  height = 700;
+  width;
+  height;
   type;
   dataFormat = "json";
   dataSource;
   mostrar: boolean = false;
+  url: URL;
 
   //{ value: 'Categorías donde más se hacen preguntas', viewValue: 'Categorías donde más se hacen preguntas' },
   //{ value: 'Cantidad de ingresos monetarios al sitio', viewValue: 'Cantidad de ingresos monetarios al sitio' },
@@ -116,26 +119,53 @@ export class EstadisticasComponent implements OnInit {
   periodoRanking: string[] = ['Esta semana', 'Por mes', 'Por año']
   periodoRankingMes = []
   periodoRankingAnio = [];
+  ocultar = false;
 
   ngOnInit() {
-    //this.usuariosMasivos();
-    this.deshabilitarTodo();
-    var obsA = this._auth.get_all_alquileres();
-    var obsB = this._auth.get_all_publicaciones();
-    var obsC = this._auth.get_all_users();
-    var obsD = this._auth.get_all_visitas_IP();
-    const obsvArray = [obsA, obsB, obsC, obsD];
-    const zip = Observable.zip(...obsvArray)
-    zip.subscribe(
-      res => {
-        this.alquileres = res[0];
-        this.publicaciones = res[1].publicaciones;
-        this.usuarios = res[2];
-        this.visitas = res[3];
-        this.mostrar = true;
-        //this.alquileresMasivos()
+    this.url = new URL(window.location.href);
+    this.route.queryParams.subscribe(queryParams => {
+      this.width = 900;
+      this.height = 700;
+      this.mostrarPeriodo = true;
+      this.mostrar = false;
+      this.deshabilitarTodo();
+      var obsA = this._auth.get_all_alquileres();
+      var obsB = this._auth.get_all_publicaciones();
+      var obsC = this._auth.get_all_users();
+      var obsD = this._auth.get_all_visitas_IP();
+      var obsE = this._auth.get_all_reclamos();
+      const obsvArray = [obsA, obsB, obsC, obsD, obsE];
+      const zip = Observable.zip(...obsvArray)
+      zip.subscribe(
+        res => {
+          this.alquileres = res[0];
+          this.publicaciones = res[1].publicaciones;
+          this.usuarios = res[2];
+          this.visitas = res[3];
+          this.reclamos = res[4].reclamos;
+          this.mostrar = true;
+          this.estadisticaSeleccionada(obtenerNombreEstadistica(queryParams.est));
+          this.clicks("Estadística seleccionada")
+          //this.alquileresMasivos()
+        }
+      )
+
+      function obtenerNombreEstadistica(url) {
+        if (url == 'alquiler-categoria') return 'Cantidad total de alquileres según categoría'
+        if (url == 'alquiler-subcategoria') return 'Cantidad total de alquileres según subcategorías'
+        if (url == 'publicacion-categoria') return 'Cantidad total de publicaciones según categoría'
+        if (url == 'publicacion-subcategoria') return 'Cantidad total de publicaciones según subcategorías'
+        if (url == 'usuarios-redsocial') return 'Cantidad de usuarios filtrados por red social'
+        if (url == 'usuarios-ranking-alquilan') return 'Ranking de quienes más alquilan objetos'
+        if (url == 'usuarios-ranking-publican') return 'Ranking de quienes más publican objetos'
+        if (url == 'usuarios-ranking-propietarios') return 'Ranking de propietarios mejores puntuados del sitio'
+        if (url == 'usuarios-ranking-locatarios') return 'Ranking de locatarios mejores puntuados del sitio'
+        /*         if (url == 'usuarios-ranking-denunciados') return 'Ranking de los usuarios más denunciados' */
+        if (url == 'visitantes') return 'Cantidad de visitantes al sitio'
+        if (url == 'reclamos') return 'Cantidad de reclamos según el tipo de reclamo'
       }
-    )
+    })
+
   }
 
   deshabilitarTodo() {
@@ -143,14 +173,11 @@ export class EstadisticasComponent implements OnInit {
     this.alquileresSubcategoriaSeleccionada = false;
     this.publicacionesCategoriasSeleccionada = false;
     this.publicacionesSubcategoriaSeleccionada = false
-    this.deshabilitarPeriodo = true;
     this.periodoDiaMesAnio = false;
     this.periodoRankingMesHabilitado = false;
     this.periodoRankingAnioHabilitado = false;
     this.estadisticaGeneralSeleccionada = false;
     this.noHayDatos = false;
-    this.mostrarPeriodo = true;
-
     this.mostrarGrafico = false;
     this.subcategorias = []
     this.array_completo = [];
@@ -169,29 +196,31 @@ export class EstadisticasComponent implements OnInit {
     this.nombreEstadisticaSeleccionada = estadistica;
     /* ALQUILERES */
     if (estadistica == "Cantidad total de alquileres según categoría") {
-      this.spinner.show();
+
       this.alquileresPorCategoria();
       this.alquileresCategoriaSeleccionada = true;
     }
 
     if (estadistica == "Cantidad total de alquileres según subcategorías") {
-      this.spinner.show();
+
       this.alquileresPorCategoria();
       this.alquileresSubcategoriaSeleccionada = true;
+      this.mostrarGrafico = false;
       this.subcategorias = ["Tecnologia", "Hogar", "Deportes", "Musica", "Belleza", "Bebes", "Mascotas", "Herramientas", "Libros", "Otros"]
     }
 
 
     /* PUBLICACIONES */
     if (estadistica == "Cantidad total de publicaciones según categoría") {
-      this.spinner.show();
+
       this.seleccionadoPublicacionesCategorias();
       this.publicacionesCategoriasSeleccionada = true;
     }
 
     if (estadistica == 'Cantidad total de publicaciones según subcategorías') {
-      this.spinner.show();
+
       this.array_completo = this.calcularArrayPublicacionesCategorias(this.publicaciones);
+      this.mostrarGrafico = false;
       this.publicacionesSubcategoriaSeleccionada = true;
       this.subcategorias = ["Tecnologia", "Hogar", "Deportes", "Musica", "Belleza", "Bebes", "Mascotas", "Herramientas", "Libros", "Otros"]
     }
@@ -199,7 +228,7 @@ export class EstadisticasComponent implements OnInit {
 
     /* USUARIOS */
     if (estadistica == "Cantidad de usuarios filtrados por red social") {
-      this.spinner.show();
+
       let facebook = 0, google = 0, oneuse = 0, array = [];
       for (let i = 0; i < this.usuarios.length; i++) {
         const element = this.usuarios[i];
@@ -231,11 +260,11 @@ export class EstadisticasComponent implements OnInit {
         data: array
       };
       this.mostrarGrafico = true;
-      this.spinner.hide();
+
     }
 
     if (estadistica == "Ranking de quienes más alquilan objetos") {
-      this.spinner.show();
+
       var array_usuarios = [], array_calculo = [], array_resultado = [];
 
       for (let i = 0; i < this.alquileres.length; i++) {
@@ -299,7 +328,7 @@ export class EstadisticasComponent implements OnInit {
     }
 
     if (estadistica == "Ranking de quienes más publican objetos") {
-      this.spinner.show();
+
       var array_usuarios = [], array_calculo = [], array_resultado = [];
 
       for (let i = 0; i < this.publicaciones.length; i++) {
@@ -512,7 +541,7 @@ export class EstadisticasComponent implements OnInit {
 
     /* VISITANTES */
     if (estadistica == 'Cantidad de visitantes al sitio') {
-      this.spinner.show();
+      this.mostrarPeriodo = false;
       let array_provincias = [], array_resultado = []
 
       for (let i = 0; i < 25; i++) {
@@ -575,19 +604,19 @@ export class EstadisticasComponent implements OnInit {
           "gradient": "0",
           "color": [
             {
-              "maxvalue": "30",
-              "displayvalue": "1 - 50",
-              "code": "#FFFAFA"
+              "maxvalue": "100",
+              "displayvalue": "1 - 100",
+              "code": "#E6D315"
             },
             {
-              "maxvalue": "150",
-              "displayvalue": "50 - 150",
-              "code": "#F4C2C2"
+              "maxvalue": "300",
+              "displayvalue": "100 - 300",
+              "code": "#E69043"
             },
             {
-              "maxvalue": "400",
-              "displayvalue": "150 - 400",
-              "code": "#FF6961"
+              "maxvalue": "600",
+              "displayvalue": "300 - 600",
+              "code": "#2C60E6"
             }
           ]
         },
@@ -598,7 +627,77 @@ export class EstadisticasComponent implements OnInit {
       this.mostrarGrafico = true;
 
     }
+
+    if (estadistica == 'Cantidad de reclamos según el tipo de reclamo') {
+      this.mostrarPeriodo = false;
+      let array_valores = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+      let array = []
+
+      for (let i = 0; i < this.reclamos.length; i++) {
+        const element = this.reclamos[i];
+        if (element.tipo == "He pagado el alquiler pero ya no estoy interesado en el objeto") {
+          array_valores[0]++;
+        }
+        if (element.tipo == "No me puedo contactar con el propietario para retirar el objeto") {
+          array_valores[1]++;
+        }
+        if (element.tipo == "El objeto que alquilé no estaba en las mismas condiciones que se mostraban en las fotos o no funciona correctamente") {
+          array_valores[2]++;
+        }
+        if (element.tipo == "He tenido un problema con el objeto y no puedo cumplir / No deseo alquilarlo a esta persona") {
+          array_valores[3]++;
+        }
+        if (element.tipo == "No me puedo contactar con el propietario para devolver el objeto") {
+          array_valores[4]++;
+        }
+        if (element.tipo == "No me puedo contactar con el locatario para entregarlo") {
+          array_valores[5]++;
+        }
+        if (element.tipo == "El locatario no se contacto conmigo para devolverme el objeto") {
+          array_valores[6]++;
+        }
+        if (element.tipo == "El objeto fue devuelto en malas condiciones") {
+          array_valores[7]++;
+        }
+        if (element.tipo == "Otro (Especificar que pasó)") {
+          array_valores[8]++;
+        }
+
+      }
+      array.push(
+        { label: 'He pagado el alquiler pero ya no estoy interesado en el objeto', value: array_valores[0], color: "#0F3699" },
+        { label: 'No me puedo contactar con el propietario para retirar el objeto', value: array_valores[1], color: "#996D00" },
+        { label: 'El objeto que alquilé no estaba en las mismas condiciones...', value: array_valores[2], color: "#E6B02C" },
+        { label: 'No me puedo contactar con el propietario para devolver el objeto', value: array_valores[4], color: "#20E62E" },
+        { label: 'He tenido un problema con el objeto y no puedo cumplir...', value: array_valores[3], color: "#4A7DFF" },
+        { label: 'No me puedo contactar con el locatario para entregarlo', value: array_valores[5], color: "#E6437F" },
+        { label: 'El locatario no se contacto conmigo para devolverme el objeto', value: array_valores[6], color: "#E6A915" },
+        { label: 'El objeto fue devuelto en malas condiciones', value: array_valores[7], color: "#998D0E" },
+        { label: 'Otro (Especificar que pasó)', value: array_valores[8], color: "#99602C" },
+      )
+
+      this.type = "pie2d";
+      this.dataFormat = "json";
+      this.height = 1000;
+      this.width = 1200;
+      this.dataSource = {
+        chart: {
+          bgColor: "#fafafa",
+          caption: "Cantidad total de reclamos",
+          subcaption: "Según el tipo de reclamo",
+          plottooltext: "<b>$value</b> reclamos del tipo $label",
+          numbersuffix: " reclamos",
+          usedataplotcolorforlabels: "1",
+          showlabels: "1",
+          enablesmartlabels: "1",
+          theme: "fusion"
+        },
+        data: array
+      };
+      this.mostrarGrafico = true;
+    }
     this.mostrarGrafico = true;
+    this.spinner.hide()
   }
 
   alquileresPorCategoria() {
@@ -649,7 +748,7 @@ export class EstadisticasComponent implements OnInit {
       },
       data: this.arrayAlquileresCategorias
     };
-    this.spinner.hide();
+
     this.mostrarGrafico = true;
   }
 
@@ -840,7 +939,7 @@ export class EstadisticasComponent implements OnInit {
       }
     }
 
-    this.spinner.hide();
+
 
     return [
       {
@@ -934,7 +1033,7 @@ export class EstadisticasComponent implements OnInit {
     this.categoriaSeleccionada = categoria;
 
     if (this.categoriaSeleccionada != undefined) {
-      this.spinner.show();
+
       this.type = "bar2d";
       this.objetoSubcategorias = {}
 
@@ -1049,7 +1148,7 @@ export class EstadisticasComponent implements OnInit {
         },
         data: this.objetoSubcategorias
       }
-      this.spinner.hide();
+
       this.mostrarGrafico = true;
     }
 
@@ -1087,13 +1186,13 @@ export class EstadisticasComponent implements OnInit {
           data: this.arrayPublicacionesCategorias
         };
         this.mostrarGrafico = true;
-        this.spinner.hide();
+
       }
     )
   }
 
   calcularPorPeriodo(periodo) {
-    this.spinner.show();
+
     let array_general = [], array_parcial = [], array_fechas = [], objeto = {};
 
     /* Cantidad total de alquileres según categoría */
@@ -1198,7 +1297,7 @@ export class EstadisticasComponent implements OnInit {
       };
       this.dataSource.data = fusionTable;
       this.mostrarGrafico = true;
-      this.spinner.hide();
+
     }
 
     if (periodo == "Por mes" && this.nombreEstadisticaSeleccionada == "Cantidad total de alquileres según categoría") {
@@ -1365,7 +1464,7 @@ export class EstadisticasComponent implements OnInit {
         ]
       }
       this.mostrarGrafico = true;
-      this.spinner.hide();
+
     }
 
     if (periodo == "Por año" && this.nombreEstadisticaSeleccionada == "Cantidad total de alquileres según categoría") {
@@ -1514,7 +1613,7 @@ export class EstadisticasComponent implements OnInit {
         ]
       }
       this.mostrarGrafico = true;
-      this.spinner.hide();
+
 
     }
 
@@ -1780,7 +1879,7 @@ export class EstadisticasComponent implements OnInit {
       };
       this.dataSource.data = fusionTable;
       this.mostrarGrafico = true;
-      this.spinner.hide();
+
     }
 
     if (periodo == "Por mes" && this.nombreEstadisticaSeleccionada == "Cantidad total de alquileres según subcategorías") {
@@ -2311,7 +2410,7 @@ export class EstadisticasComponent implements OnInit {
       }
 
       this.mostrarGrafico = true;
-      this.spinner.hide();
+
 
     }
 
@@ -2729,7 +2828,7 @@ export class EstadisticasComponent implements OnInit {
         dataset: dataset
       }
       this.mostrarGrafico = true;
-      this.spinner.hide();
+
     }
 
 
@@ -2835,7 +2934,7 @@ export class EstadisticasComponent implements OnInit {
       };
       this.dataSource.data = fusionTable;
       this.mostrarGrafico = true;
-      this.spinner.hide();
+
     }
 
     if (periodo == "Por mes" && this.nombreEstadisticaSeleccionada == "Cantidad total de publicaciones según categoría") {
@@ -3002,7 +3101,7 @@ export class EstadisticasComponent implements OnInit {
         ]
       }
       this.mostrarGrafico = true;
-      this.spinner.hide();
+
     }
 
     if (periodo == "Por año" && this.nombreEstadisticaSeleccionada == "Cantidad total de publicaciones según categoría") {
@@ -3151,7 +3250,7 @@ export class EstadisticasComponent implements OnInit {
         ]
       }
       this.mostrarGrafico = true;
-      this.spinner.hide();
+
     }
 
 
@@ -3415,7 +3514,7 @@ export class EstadisticasComponent implements OnInit {
       };
       this.dataSource.data = fusionTable;
       this.mostrarGrafico = true;
-      this.spinner.hide();
+
     }
 
     if (periodo == "Por mes" && this.nombreEstadisticaSeleccionada == "Cantidad total de publicaciones según subcategorías") {
@@ -3946,7 +4045,7 @@ export class EstadisticasComponent implements OnInit {
       }
 
       this.mostrarGrafico = true;
-      this.spinner.hide();
+
 
     }
 
@@ -4364,7 +4463,7 @@ export class EstadisticasComponent implements OnInit {
         dataset: dataset
       }
       this.mostrarGrafico = true;
-      this.spinner.hide();
+
     }
 
 
@@ -4443,7 +4542,7 @@ export class EstadisticasComponent implements OnInit {
       };
       this.dataSource.data = fusionTable;
       this.mostrarGrafico = true;
-      this.spinner.hide();
+
     }
 
     if (periodo == "Por mes" && this.nombreEstadisticaSeleccionada == "Cantidad de usuarios filtrados por red social") {
@@ -4549,7 +4648,7 @@ export class EstadisticasComponent implements OnInit {
         ]
       }
       this.mostrarGrafico = true;
-      this.spinner.hide();
+
     }
 
     if (periodo == "Por año" && this.nombreEstadisticaSeleccionada == "Cantidad de usuarios filtrados por red social") {
@@ -4642,7 +4741,7 @@ export class EstadisticasComponent implements OnInit {
         ]
       }
       this.mostrarGrafico = true;
-      this.spinner.hide();
+
     }
 
 
@@ -4753,7 +4852,7 @@ export class EstadisticasComponent implements OnInit {
         let muestra = obtenerViewValue(element)
         this.periodoRankingMes.push({ viewValue: muestra, value: element });
       }
-      this.spinner.hide();
+
 
       function obtenerViewValue(elemento) {
         if (elemento == "Jan 20") return "Enero - 2020"
@@ -4803,7 +4902,7 @@ export class EstadisticasComponent implements OnInit {
       }
 
       this.periodoRankingAnio.sort()
-      this.spinner.hide();
+
     }
 
 
@@ -4926,7 +5025,7 @@ export class EstadisticasComponent implements OnInit {
         let muestra = obtenerViewValue(element)
         this.periodoRankingMes.push({ viewValue: muestra, value: element });
       }
-      this.spinner.hide();
+
 
       function obtenerViewValue(elemento) {
         if (elemento == "Jan 19") return "Enero - 2019"
@@ -4988,7 +5087,7 @@ export class EstadisticasComponent implements OnInit {
       }
 
       this.periodoRankingAnio.sort()
-      this.spinner.hide();
+
     }
 
 
@@ -5102,7 +5201,7 @@ export class EstadisticasComponent implements OnInit {
         let muestra = obtenerViewValue(element)
         this.periodoRankingMes.push({ viewValue: muestra, value: element });
       }
-      this.spinner.hide();
+
 
       function obtenerViewValue(elemento) {
         if (elemento == "Jan 19") return "Enero - 2019"
@@ -5166,7 +5265,7 @@ export class EstadisticasComponent implements OnInit {
       }
 
       this.periodoRankingAnio.sort()
-      this.spinner.hide();
+
     }
 
     /* Ranking de propietarios mejores puntuados del sitio */
@@ -5279,7 +5378,7 @@ export class EstadisticasComponent implements OnInit {
         let muestra = obtenerViewValue(element)
         this.periodoRankingMes.push({ viewValue: muestra, value: element });
       }
-      this.spinner.hide();
+
 
       function obtenerViewValue(elemento) {
         if (elemento == "Jan 19") return "Enero - 2019"
@@ -5343,7 +5442,7 @@ export class EstadisticasComponent implements OnInit {
       }
 
       this.periodoRankingAnio.sort()
-      this.spinner.hide();
+
     }
 
   }

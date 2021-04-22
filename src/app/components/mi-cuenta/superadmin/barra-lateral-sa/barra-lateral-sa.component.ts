@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -9,7 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class BarraLateralSaComponent implements OnInit {
 
-  constructor(private _auth: AuthService, private spinner: NgxSpinnerService) { }
+  constructor(private _auth: AuthService, private spinner: NgxSpinnerService, private _router: Router) { }
 
   ngOnInit() {
     this.spinner.show();
@@ -35,6 +36,11 @@ export class BarraLateralSaComponent implements OnInit {
     } else {
       window.location.assign("/error")
     }
+  }
+
+  ir(text) {
+    let url = decodeURI('/superadmin/estadisticas?est=' + text)   
+    this._router.navigateByUrl(url)
   }
 
   cerrarSesion() {
