@@ -29,12 +29,17 @@ export class SuperadminComponent implements OnInit {
       let email = localStorage.getItem("email");
       this._auth.user_data(email).subscribe(
         res => {
-          if (res.admin == false){
+          if (res.admin == undefined) {
             window.location.assign("/error")
           } else {
-            this.spinner.hide();
-            this.verificado = true;
+            if (res.admin == true) {
+              this.verificado = true;
+            } else {
+
+              this.verificado = false;
+            }
           }
+          this.spinner.hide();
         }
       )
     } else {
@@ -48,7 +53,7 @@ export class SuperadminComponent implements OnInit {
 
   botones: Botones[] = [
     { icono: "dashboard", texto: "Alquileres", link: "/superadmin/alquileres" },
-    { icono: "report", texto: "Denuncias", link: "/superadmin/denuncias"},
+    { icono: "report", texto: "Denuncias", link: "/superadmin/denuncias" },
     { icono: "assessment", texto: "Estadísticas", link: "/superadmin/estadisticas" },
     { icono: "storefront", texto: "Publicaciones", link: "/superadmin/publicaciones" },
     { icono: "menu_book", texto: "Reclamos", link: "/superadmin/reclamos" },
