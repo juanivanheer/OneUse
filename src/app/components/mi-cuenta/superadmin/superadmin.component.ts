@@ -35,7 +35,6 @@ export class SuperadminComponent implements OnInit {
             if (res.admin == true) {
               this.verificado = true;
             } else {
-
               this.verificado = false;
             }
           }

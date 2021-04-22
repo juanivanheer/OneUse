@@ -21,10 +21,14 @@ export class BarraLateralSaComponent implements OnInit {
       let email = localStorage.getItem("email");
       this._auth.user_data(email).subscribe(
         res => {
-          if (res.admin == false){
+          if (res.admin == undefined) {
             window.location.assign("/error")
           } else {
-            this.spinner.hide();
+            if (res.admin == false) {
+              window.location.assign("/error")
+            } else {
+              this.spinner.hide();
+            }
           }
         }
       )
@@ -33,7 +37,7 @@ export class BarraLateralSaComponent implements OnInit {
     }
   }
 
-  cerrarSesion(){
+  cerrarSesion() {
     localStorage.clear();
     window.location.assign("/home");
   }
