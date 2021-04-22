@@ -50,11 +50,12 @@ export class SuperadminComponent implements OnInit {
     { icono: "dashboard", texto: "Alquileres", link: "/superadmin/alquileres" },
     { icono: "report", texto: "Denuncias", link: "/superadmin/denuncias"},
     { icono: "assessment", texto: "Estadísticas", link: "/superadmin/estadisticas" },
-    { icono: "credit_score", texto: "Pagos", link: "/superadmin/pagos"},
     { icono: "storefront", texto: "Publicaciones", link: "/superadmin/publicaciones" },
     { icono: "menu_book", texto: "Reclamos", link: "/superadmin/reclamos" },
     { icono: "account_box", texto: "Usuarios", link: "/superadmin/usuarios" },
     { icono: "exit_to_app", texto: "Salir", link: "/home" }
   ]
+
+  //{ icono: "credit_score", texto: "Pagos", link: "/superadmin/pagos"},
 
 }

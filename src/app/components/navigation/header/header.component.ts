@@ -278,6 +278,8 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
 
   /* NOTIFICACIONES */
   get_notificaciones_todas() {
+    this.notificaciones = [];
+    this.notificaciones_nuevas = [];
     this.suscripcion = this._auth.notificaciones_todas().subscribe(
       res => {
         if (res.length > 0) {
