@@ -20,38 +20,37 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
   onToggleSidenav() { this.sidenavToggle.emit(); }
   @ViewChild(MatInput, { static: true }) inputPalabra: MatInput;
 
-
+  noHayNotificaciones = true;
+  noHayNotificacionesNuevas = false;
+  estadoDropdown: boolean = false;
+  estadoNotDropdown: boolean = false;
+  subscriptionIniciada: boolean = false;
+  subscriptionNotIniciada: boolean = false;
+  esImagenGoogle: boolean = false;
+  esImagenFacebook: boolean = false;
+  mostrarImagen: boolean = false;
+  tieneNombre: boolean = false;
+  esImagenOneUse: boolean = false;
+  esAdmin: boolean = false;
   estadoBuscador: boolean;
   inicioSesion: boolean;
   urlActual: string;
   urlRecortada: string;
-  usuarioActivo;
-  estadoDropdown: boolean = false;
-  estadoNotDropdown: boolean = false;
   paginaActual: string;
-  subscriptionIniciada: boolean = false;
-  subscriptionNotIniciada: boolean = false;
-  usuarioIniciado = { name: '' };
-  _id;
-  mostrarImagen = false;
-  tieneNombre = false;
-  usuarioLogueado;
 
-  /* NOTIFICACIONES */
+  usuarioIniciado = { name: '' };
+
+  _id;
+  urlImagenGoogle;
+  usuarioLogueado;
+  urlImagenFacebook;
+  usuarioActivo;
   cantidad;
-  noHayNotificacionesNuevas = false;
-  mensaje;
+
   notificaciones = [];
   notificaciones_nuevas = [];
   tituloPublicacion;
-  arrayTitulos = [];
-  noHayNotificaciones = false;
-  esImagenGoogle: boolean = false;
-  urlImagenGoogle;
-  esImagenFacebook: boolean = false;
-  urlImagenFacebook;
-  esImagenOneUse: boolean = false;
-  esAdmin: boolean = false;
+
 
   constructor(private http: HttpClient, private singleton: SingletonService, private _auth: AuthService, private _snackBar: MatSnackBar, /* private pusherService: PusherService */) { }
 
@@ -183,7 +182,6 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
               this.esImagenGoogle = false;
             }
           }
-          this.get_notificaciones_nuevas(res.name);
           this.get_notificaciones_todas();
           if (res.nombre != undefined) {
             this.tieneNombre = true;
@@ -279,37 +277,36 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   /* NOTIFICACIONES */
-
-  get_notificaciones_nuevas(username) {
-    this.suscripcion = this._auth.notificacion_nueva(username).subscribe(
-      res => {
-        if (res.not.length > 0) {
-          this.noHayNotificacionesNuevas = false;
-          this.cantidad = res.not.length;
-          this.notificaciones_nuevas = res.not;
-        } else {
-          this.noHayNotificacionesNuevas = true;
-        }
-      }
-    )
-  }
-
   get_notificaciones_todas() {
     this.suscripcion = this._auth.notificaciones_todas().subscribe(
       res => {
         if (res.length > 0) {
           for (let i = 0; i < res.length; i++) {
             const element = res[i]
-            if(this.usuarioLogueado.name == element.name_destino){
+            if (this.usuarioLogueado.name == element.name_destino) {
               this.notificaciones.push(element)
-              this.arrayTitulos.push(element.tituloPublicacion);
+            }
+
+            if (this.usuarioLogueado.name == element.name_destino && element.visto == false) {
+              this.notificaciones_nuevas.push(element);
             }
           }
+
+          if (this.notificaciones.length == 0) {
+            this.noHayNotificaciones = true;
+          } else {
+            this.noHayNotificaciones = false;
+          }
+
+          if (this.notificaciones_nuevas.length > 0) {
+            this.noHayNotificacionesNuevas = false;
+          } else {
+            this.noHayNotificacionesNuevas = true;
+          }
+
           this.notificaciones.reverse();
-          this.arrayTitulos.reverse();
         } else {
           this.noHayNotificaciones = true;
-          this.mensaje = "No hay notificaciones para mostrar";
         }
       }
     )
@@ -317,13 +314,12 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
 
   desactivarBadge() {
     this.noHayNotificacionesNuevas = true;
-    for (let i = 0; i < this.notificaciones_nuevas.length; i++) {
-      this._auth.notificacion_vista(this.notificaciones_nuevas[i]).subscribe(
-        res => {
+    this._auth.notificacion_vista(this.notificaciones_nuevas).subscribe(
+      res => {
 
-        }
-      );
-    }
+      }
+    );
+
   }
 
   ngOnDestroy() {

@@ -66,7 +66,7 @@ export class NotificacionesComponent implements OnInit {
           }
         }
 
-        if (this.notificaciones_usuario_logueado.length > 1) {
+        if (this.notificaciones_usuario_logueado.length > 0) {
           for (let i = 0; i < this.notificaciones_usuario_logueado.length; i++) {
             const element = this.notificaciones_usuario_logueado[i]
             /* PARA OBTENER FECHAS EN FORMATO AR*/
@@ -76,7 +76,7 @@ export class NotificacionesComponent implements OnInit {
             this.dt = this.date.getDate();
             this.arrayFechas.push(this.dt + '-' + this.month + '-' + this.year);
             this.arrayJSON.push(element.imagen);
-            this.arrayTitulos.push(element.titulo);
+            this.arrayTitulos.push(element.titulo); 
           }
           this.notificaciones_usuario_logueado.reverse();
           this.arrayJSON.reverse();

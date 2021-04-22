@@ -38,8 +38,8 @@
 
         <div [fxShow]=inicioSesion>
             <div (click)="desactivarBadge()">
-                <p mat-icon-button [matMenuTriggerFor]="menu" [matBadge]=cantidad matBadgeColor="warn"
-                    matBadgePosition="above after" matBadgeSize="small" matBadgeOverlap="true"
+                <p mat-icon-button [matMenuTriggerFor]="menu" [matBadge]=notificaciones_nuevas.length
+                    matBadgeColor="warn" matBadgePosition="above after" matBadgeSize="small" matBadgeOverlap="true"
                     [matBadgeHidden]=noHayNotificacionesNuevas style="margin-right: 8px; margin-top: 4px;">
                     <mat-icon [fxShow]=!noHayNotificacionesNuevas>notifications</mat-icon>
                     <mat-icon [fxShow]=noHayNotificacionesNuevas>notifications_none</mat-icon>
@@ -48,14 +48,16 @@
             <mat-menu #menu="matMenu" xPosition="before">
                 <div mat-menu-item *ngFor="let not of notificaciones; let indice = index"
                     style="max-width: 1000px !important">
-                    <p [fxShow]=!noHayNotificaciones routerLink="/publicaciones/{{not.id_publicacion}}">
-                        {{not.mensaje_notificacion}} {{arrayTitulos[indice]}}</p>
+                    <p *ngIf="!noHayNotificaciones" routerLink="/publicaciones/{{not.id_publicacion}}">
+                        {{not.mensaje_notificacion}} {{not.tituloPublicacion}}</p>
                     <mat-divider style="margin: -1px"></mat-divider>
                 </div>
-                <p mat-menu-item [fxShow]=noHayNotificaciones> No hay notificaciones por mostrar </p>
-                <div mat-menu-item style="padding: 0 5px; margin-top: 5px">
+                <div mat-menu-item [disableRipple]="true" *ngIf="noHayNotificaciones">
+                    <p> No hay notificaciones por mostrar </p>
+                </div>
+                <div style="padding: 0 5px; margin-top: 10px; margin-bottom: 5px; text-align: center;">
                     <button mat-raised-button routerLink="/mi-cuenta/notificaciones" color="primary"
-                        style="text-align: center" fxFlexFill>Mostrar todas</button>
+                        style="text-align: center">Mostrar todas</button>
                 </div>
             </mat-menu>
         </div>
@@ -79,8 +81,8 @@
                 <!-- *ngIf=estadoDropdown -->
                 <div class="bienvenida-container" fxLayout="column" fxFlex>
                     <div fxFlexAlign="center" class="circulo-container">
-                        <svg width="150" height="150">
-                            <circle cx="75" cy="75" r="70" stroke="gray" stroke-width="2" fill="white" />
+                        <svg width="160" height="190">
+                            <circle cx="80" cy="90" r="80" stroke="gray" stroke-width="2" fill="white" />
                         </svg>
                         <div class="posicion-icono" *ngIf="!mostrarImagen">
                             <mat-icon class="tamaño-icono">face</mat-icon>
@@ -102,7 +104,8 @@
                     </div>
                     <div fxLayout="row" fxFlexAlign="center" fxLayoutGap="15px" class="bienvenida-boton">
                         <button mat-raised-button color="primary"
-                            (click)="checkPage('/mi-cuenta'); myDropdown.close();obtenerNombreLogueado(); ir('mi-cuenta/perfil')">Ir a mi cuenta</button>
+                            (click)="checkPage('/mi-cuenta'); myDropdown.close();obtenerNombreLogueado(); ir('mi-cuenta/perfil')">Ir
+                            a mi cuenta</button>
                         <button mat-raised-button color="accent"
                             (click)="checkPage('/superadmin'); myDropdown.close(); ir('superadmin')"
                             *ngIf="esAdmin">Superadmin</button>
