@@ -124,6 +124,7 @@ export class EstadisticasComponent implements OnInit {
   ngOnInit() {
     this.url = new URL(window.location.href);
     this.route.queryParams.subscribe(queryParams => {
+      this.dataSource = {};
       this.width = 900;
       this.height = 700;
       this.mostrarPeriodo = true;

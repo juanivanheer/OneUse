@@ -1,15 +1,21 @@
-<section class="home_partials_herobuttons_view" data-view="home/partials/herobuttons" data-subid="">
+<ngx-spinner bdColor="rgb(0,0,0)" size="medium" color="#ffffff" type="timer" [fullScreen]="true">
+    <p style="color: white"> Registrando pago... </p>
+</ngx-spinner>
+
+<section class="mat-elevation-z8 contenedor" fxLayout.gt-md="column" fxLayoutAlign.gt-md="center center"
+    fxLayoutGap.gt-md="20px" fxLayout.lt-md="column" fxLayoutAlign.lt-md="center center" fxLayoutGap.lt-md="20px" style="background: white;">
     <header class="heroButtonsHeader">
         <section class="banner-area" style="padding-left: 20px;">
             <div class="col-lg-6 mt-30">
-                <div class="banner-content text-center">
+                <div class="banner-content text-center" *ngIf="mostrar">
                     <h3 class="text-uppercase"><b>¡Tu pago ha sido procesado con éxito!</b></h3>
                     <br>
-                    <h5 class="text-uppercase">Se ha enviado un correo ha tu casilla de correo con la información necesaria para continuar con el alquiler</h5>
+                    <h5 class="text-uppercase">Se ha enviado un correo ha tu casilla de correo con la información
+                        necesaria para continuar con el alquiler</h5>
                     <br>
                     <div style="height: 350px; width: 350px; background-color: white" fxLayout="row"
                         fxLayoutAlign="center center" fxFlexFill>
-                        <mat-video [autoplay]="true" [preload]="true" [overlay]="false"
+                        <mat-video *ngIf="mostrar" [autoplay]="true" [preload]="false" [overlay]="false"
                             src="https://media.tenor.com/videos/51752ec7b31cb365a9ec3781efc30f37/mp4"></mat-video>
                     </div>
                     <a class="primary-btn banner-btn" routerLink="/mi-cuenta/mis-alquileres">Ir a mis alquileres</a>

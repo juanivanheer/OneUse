@@ -71,7 +71,7 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
     this.checkCaducidadesAlquilerPropios();
     if (this.urlActual.includes('/p/')) {
       let url = this.urlActual.slice(34);
-      this.inputPalabra.value = url;
+      this.inputPalabra.value = decodeURI(url);
     }
   }
 

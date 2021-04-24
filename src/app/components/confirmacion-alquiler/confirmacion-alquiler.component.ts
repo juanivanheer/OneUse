@@ -2,6 +2,7 @@ import { AfterViewInit, Component } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import "rxjs/add/observable/zip";
 import { Observable } from 'rxjs/Observable';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-confirmacion-alquiler',
@@ -10,9 +11,11 @@ import { Observable } from 'rxjs/Observable';
 })
 export class ConfirmacionAlquilerComponent implements AfterViewInit {
 
-  constructor(private _auth: AuthService) { }
-
+  constructor(private _auth: AuthService, private spinner: NgxSpinnerService) { }
+  mostrar = false;
+  
   ngAfterViewInit() {
+    this.spinner.show();
     setTimeout(() => {
       var url = new URL(window.location.href);
 
@@ -59,6 +62,8 @@ export class ConfirmacionAlquilerComponent implements AfterViewInit {
           this._auth.registrar_pago(objeto).subscribe(
             res => {
               console.log(res);
+              this.spinner.hide();
+              this.mostrar = true;
             }
           )
         }
