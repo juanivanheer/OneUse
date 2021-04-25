@@ -109,7 +109,8 @@ a.neat {
 }
 
 .tamaño-icono{
-    font-size: 140px;
+    font-size: 155px;
+    vertical-align: middle;
 }
 
 .img-user-logged{

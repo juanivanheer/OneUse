@@ -2,7 +2,7 @@
 
 <mat-grid-list cols="3" rowHeight="200px" gutterSize="20px" style="margin: 100px" *ngIf="verificado">
     <mat-grid-tile *ngFor="let boton of botones" class="mat-elevation-z8" [colspan]="1" [rowspan]="1">
-        <a mat-stroked-button [routerLink]="boton.link" style="height: 100%; width: 100%;">
+        <a mat-stroked-button (click)="redirigir(boton.link)" style="height: 100%; width: 100%;">
             <mat-icon class="iconos"> {{boton.icono}} </mat-icon>
             <h2> {{boton.texto}} </h2>
         </a>

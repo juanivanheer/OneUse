@@ -2,10 +2,18 @@ mat-form-field {
     width: 400px;
 }
 
-.input-sm{
+.input-sm {
     width: 80%;
 }
-mat-form-field{
+
+mat-form-field {
     font-size: 18px;
     margin-top: 15px;
+}
+
+.contenedor {
+    margin: 50px;
+    padding: 50px;
+    margin-right: 450px;
+    margin-left: 450px;
 }
