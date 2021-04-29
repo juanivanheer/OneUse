@@ -100,7 +100,8 @@
                         </div>
 
                         <div fxLayout="column" fxLayoutAlign="center center"
-                            *ngIf="alquilerPropietario.tipoAlquiler == 'AlquilerConIntervencion'" style="padding: 10px;">
+                            *ngIf="alquilerPropietario.tipoAlquiler == 'AlquilerConIntervencion'"
+                            style="padding: 10px;">
                             <div fxLayout="row" fxLayoutAlign="center center">
                                 <a id="titulo" fxLayout="column" fxLayoutAlign="center center"
                                     routerLink="/publicaciones/{{alquilerPropietario.id_publicacion}}"
@@ -280,8 +281,9 @@
                                                         <mat-icon>
                                                             query_builder</mat-icon>
                                                         <span style="margin-right: 5px !important;">Entrega tu código de
-                                                            propietario al locatario:
-                                                            {{alquilerPropietario.codigoDevolucionPropietario}} </span>
+                                                            propietario al locatario: <b>
+                                                                {{alquilerPropietario.codigoDevolucionPropietario}}</b>
+                                                        </span>
                                                         <a matTooltip="Copiar al portapapeles"
                                                             matTooltipPosition="right">
                                                             <mat-icon style="cursor: pointer; font-size: 18px;"
@@ -507,7 +509,8 @@
                 </div>
                 <div *ngFor="let alquilerPropio of arrayDatosPropios; let indice = index">
                     <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px"
-                        class="mat-elevation-z8 contenedor-individual" *ngIf="hayAlquileresPropios" style="padding: 10px;">
+                        class="mat-elevation-z8 contenedor-individual" *ngIf="hayAlquileresPropios"
+                        style="padding: 10px;">
 
                         <a routerLink="/publicaciones/{{alquilerPropio.id_publicacion}}" class="titulo_alquiler"
                             target="_blank">
