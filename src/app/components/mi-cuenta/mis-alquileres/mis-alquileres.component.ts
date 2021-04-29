@@ -136,11 +136,11 @@ export class MisAlquileresComponent implements OnInit, AfterViewInit {
                   }
                 }
                 console.log(element1)
-                if(element1.estado != "En proceso de reclamo") this.arrayDatosPropietario.push(element1);
+                if (element1.estado != "En proceso de reclamo") this.arrayDatosPropietario.push(element1);
               }
               //this.hayAlquileresPropietario = true;
             } else this.hayAlquileresPropietario = false;
-            
+
             /* ALQUILERES PROPIOS */
             var fechaActual = new Date();
             if (this.arrayAlquilerPropios.length > 0) {
@@ -160,6 +160,8 @@ export class MisAlquileresComponent implements OnInit, AfterViewInit {
                 this.arrayDatosPropios.push(element1)
               }
             } else this.hayAlquileresPropios = false;
+            this.arrayAlquilerPropios.reverse();
+            this.arrayAlquilerPropietario.reverse();
             this.mostrar = true;
             this.mensaje = ""
           }
@@ -391,6 +393,7 @@ export class MisAlquileresComponent implements OnInit, AfterViewInit {
             }
           }
         }
+        this.arrayAlquilerPropietario.reverse();
       }
     }
   }
@@ -417,6 +420,7 @@ export class MisAlquileresComponent implements OnInit, AfterViewInit {
             }
           }
         }
+        this.arrayAlquilerPropios.reverse();
       }
     }
   }
@@ -497,7 +501,7 @@ export class MisAlquileresComponent implements OnInit, AfterViewInit {
     this.spinner.hide();
   }
 
-  cambioTab(){
+  cambioTab() {
     this.seleccionadoMisPublicaciones = "none";
     this.seleccionadoPropios = "none";
     this.filtroConIntervencion = false;
